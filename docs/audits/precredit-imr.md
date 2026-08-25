@@ -38,6 +38,16 @@ The repository now records the URLs and the fail-closed probe in
 `HEAD` and captures status, ETag, and content type; it does not download the
 large data resources during preflight.
 
+The first real fetcher checks were also run against external endpoints:
+
+- `scripts/fetch_public_source.py --source-id california_dmhc_imr_determinations --resource csv_url` reached the official host and recorded HTTP 403; it created no payload.
+- `scripts/fetch_public_source.py --source-id cms_0057_f_prior_authorization_metrics --resource template_url` received HTTP 200 but no ETag; it rejected the payload and created no cache entry.
+
+Both outcomes are intentional. The repository will not treat a response as a
+reproducible corpus artifact unless the response can be revalidated with an
+ETag. The CMS page remains a verified definition source in preflight, but it is
+not yet a cached benchmark artifact.
+
 ## CMS benchmark definition
 
 The authoritative benchmark definition is:

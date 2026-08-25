@@ -66,6 +66,10 @@ Preflight did not pass. Stop before Phase 1 and resolve the blockers.
   Evidence: `docs/preflight.json` records successful live retrieval of the CMS
   FAQ, reporting template, and final-rule fact sheet. The source is explicitly
   treated as a metric definition, not as a case-level dataset.
+- [ ] An external corpus payload has been accepted into an ETag-backed cache.
+  Evidence: `scripts/fetch_public_source.py` correctly rejected the DMHC CSV
+  with HTTP 403 and rejected the CMS template because the successful response
+  did not provide an ETag. No payload was accepted.
 - [ ] Quota ceilings and demo arithmetic are both verified. Evidence: the
   preflight records the configured six-case load arithmetic, but quota ceilings
   remain `not_checked` until the regional model and managed service bindings
@@ -148,6 +152,9 @@ service-account key was created or stored.
   but its case-level file is currently blocked to the preflight client. A
   manual, provenance-preserving retrieval is required before Phase 1D can
   claim real regulator-determined ground truth.
+- The CMS definition endpoints are reachable, but the template response did
+  not include an ETag. The cache policy therefore rejects it until a
+  validator-backed retrieval path is available.
 - The public Synthea release endpoint initially exposed a moving
   `master-branch-latest` tag. The preflight was corrected to select a dated,
   non-prerelease release; the final evidence records `v4.0.0`.
