@@ -7,22 +7,21 @@ Audit date: 2026-08-25
 The live command used for this audit was:
 
 ```text
-GOOGLE_CLOUD_PROJECT=jennycruzy-53677 python3.12 scripts/preflight.py
+GOOGLE_CLOUD_PROJECT=jennycruzy-53677 APPEAL_GCP_REGION=europe-west2 python3.12 scripts/preflight.py
 ```
 
 The command completed with exit code `2`, which is the script's explicit
 fail-closed result when blockers remain. It wrote
 [`docs/preflight.json`](../preflight.json), generated at
-`2026-08-25T05:34:42.045063Z` in the final run. The artifact SHA-256 printed
+`2026-08-25T05:57:53.750383Z` in the final run. The artifact SHA-256 printed
 by the final run was
-`8394c802759ca009869277e528652c4a6da5fb8f4fb6bf4ca77092c1cc0decbc`.
+`5cf412c432cf0c41025719fcdf06d5c24babddc77fb3664561dec1a2a6d7c175`.
 
 The final run reported:
 
 ```text
-Blockers: 4
+Blockers: 3
 BLOCKER: Gemini model discovery
-BLOCKER: Region and residency
 BLOCKER: Policy source: aetna_cpb
 BLOCKER: Policy source: cigna_policy
 Preflight did not pass. Stop before Phase 1 and resolve the blockers.
@@ -35,9 +34,12 @@ Preflight did not pass. Stop before Phase 1 and resolve the blockers.
   writes `generated_at`.
 - [ ] Every model ID in `config/` traces to a live model listing. Evidence:
   there is intentionally no `config/models.json` and no selected model ID.
-  `Gemini model discovery` is blocked because the project region is not
-  configured and `aiplatform.googleapis.com` is not enabled in the selected
-  project. No model string was guessed.
+  `aiplatform.googleapis.com` is enabled, and the live catalog resolved the
+  current Agent Platform discovery document at
+  `https://aiplatform.googleapis.com/$discovery/rest?version=v1`. The
+  `projects.locations.models.list` probe at `europe-west2` returned
+  `PERMISSION_DENIED: BILLING_DISABLED`. No model string was selected or
+  guessed.
 - [ ] Every managed Agent Platform component has an authenticated probe result.
   Evidence: the component records in `docs/preflight.json` contain public
   catalog matches and explicit fallbacks, but are `not_checked` because no
@@ -79,12 +81,26 @@ jenny-wallet-guard  (950457737025)
 jennycruzy-53677    (346649480730)
 ```
 
-`jennycruzy-53677` was used provisionally for read-only discovery because it
-has the general project name. This choice is not final and no Google Cloud
-resource was created or changed by this build. Its live Service Usage listing
-reported 39 enabled services, including Cloud Resource Manager, Cloud Trace,
-Datastore, Pub/Sub, Logging, Monitoring, and Cloud SQL support. Vertex AI was
-not in the enabled-service list, so model discovery could not proceed.
+The user confirmed `jennycruzy-53677` as the target project. Its live Service
+Usage listing initially reported 39 enabled services. The Vertex AI API was
+then enabled through the Service Usage API; the completed operation and
+resulting service name are recorded in the terminal evidence and in the next
+`docs/preflight.json` run. No application data, database, Cloud Run service,
+or service-account key was created.
+
+`europe-west2` was used as a probe location because the current official Gemini
+3.5 Flash model page lists it as a supported Europe location. It is not yet a
+final residency selection: the live project model probe cannot complete until
+billing is enabled. The source page is:
+`https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/3-5-flash`.
+
+The model probe's final live evidence is in `docs/preflight.json`:
+
+```text
+list_url: https://europe-west2-aiplatform.googleapis.com/v1/projects/jennycruzy-53677/locations/europe-west2/models
+http_status: 403
+error: PERMISSION_DENIED: BILLING_DISABLED
+```
 
 The Mac has Google Cloud CLI `581.0.0` and a user ADC credential. The ADC quota
 project was set locally to `jennycruzy-53677`; this changed only the local ADC
@@ -92,13 +108,18 @@ configuration. No service-account key was created or stored.
 
 ## Gaps
 
-- The project target needs explicit confirmation before enabling
-  `aiplatform.googleapis.com` or any paid/managed service.
-- A region is not selected. It must be chosen from the live model/location
-  surface after Vertex AI access is available; the source code must not infer
-  one from geography or memory.
+- Billing is disabled on `jennycruzy-53677`; Agent Platform model discovery
+  cannot be verified until a billing account is attached.
+- `europe-west2` is only a documented probe location, not an accepted final
+  residency decision. The final region must be recorded after the live model
+  and agent-location probes succeed.
 - Managed Agent Platform component endpoints and residency metadata are not
   yet available through an authenticated probe in this project.
+- The current Agent Platform discovery documents expose publisher-model
+  invocation/get operations but no publisher-model list operation in the
+  discovery schema. The model-list route used by the official Gen AI SDK must
+  be verified against the live project after billing is enabled; until then no
+  model ID may enter `config/`.
 - Quota-metric probing needs the current live service bindings and must be
   completed before deployment arithmetic is accepted.
 - Aetna and Cigna policy sources are not ingestion candidates under the
@@ -109,10 +130,12 @@ configuration. No service-account key was created or stored.
 
 ## Blockers
 
-1. Confirm whether `jennycruzy-53677` is the intended Appeal project or select
-   `jenny-wallet-guard`.
-2. After confirmation, enable and probe the live Vertex/Agent Platform surface
-   using the current discovery document. Do not hardcode a model ID.
+1. Attach billing to the confirmed `jennycruzy-53677` project. The API returned
+   the Google billing URL in the live error; the agent cannot choose a billing
+   account or incur financial commitments on the user's behalf.
+2. After billing propagates, complete the live Agent Platform model-list and
+   publisher-model probes using the current discovery/SDK interface. Do not
+   hardcode a model ID.
 3. Select and record a region only after the live model listing proves the
    required Gemini version is available there.
 4. Complete quota and residency probes, then rerun this audit artifact.

@@ -53,16 +53,26 @@
     },
     {
       "evidence": {
-        "discovery_url": "https://discovery.googleapis.com/discovery/v1/apis/aiplatform/v1/rest",
-        "location": "",
+        "catalog_entry": {
+          "discovery_rest_url": "https://aiplatform.googleapis.com/$discovery/rest?version=v1",
+          "name": "aiplatform",
+          "title": "Agent Platform API",
+          "version": "v1"
+        },
+        "catalog_name": "aiplatform",
+        "discovery_url": "https://aiplatform.googleapis.com/$discovery/rest?version=v1",
+        "error": "PERMISSION_DENIED: BILLING_DISABLED: This API method requires billing to be enabled. Please enable billing on project #jennycruzy-53677 by visiting https://console.developers.google.com/billing/enable?project=jennycruzy-53677 then retry. If you enabled billing for this project recently, wait a few minutes for the action to propagate to our systems and retry.",
+        "etag": "",
+        "http_status": 403,
+        "list_url": "https://europe-west2-aiplatform.googleapis.com/v1/projects/jennycruzy-53677/locations/europe-west2/models",
+        "location": "europe-west2",
         "minimum": "Gemini 3.5",
-        "project": "jennycruzy-53677",
-        "reason": "Google Cloud project or region is not configured"
+        "project": "jennycruzy-53677"
       },
-      "fallback": "Configure Google Cloud project, region, and Application Default Credentials before proceeding.",
+      "fallback": "Resolve regional API access, quota, or IAM before building model-dependent components.",
       "name": "Gemini model discovery",
       "status": "blocked",
-      "summary": "Cannot list regional Gemini models without a project and region."
+      "summary": "The live model-list request did not succeed."
     },
     {
       "evidence": {
@@ -278,8 +288,9 @@
     {
       "evidence": {
         "discovery_url": "https://discovery.googleapis.com/discovery/v1/apis/serviceusage/v1/rest",
-        "enabled_service_count": 39,
+        "enabled_service_count": 40,
         "enabled_services": [
+          "projects/346649480730/services/aiplatform.googleapis.com",
           "projects/346649480730/services/analyticshub.googleapis.com",
           "projects/346649480730/services/appengine.googleapis.com",
           "projects/346649480730/services/bigquery.googleapis.com",
@@ -332,14 +343,14 @@
     {
       "evidence": {
         "memory_bank_generation_region": "not discovered",
-        "model_region": "",
+        "model_region": "europe-west2",
         "project": "jennycruzy-53677",
-        "requested_region": ""
+        "requested_region": "europe-west2"
       },
-      "fallback": "Configure the target region and probe Memory Bank metadata before making a sovereignty claim.",
+      "fallback": "Do not claim same-region Memory Bank processing until the managed service reports it.",
       "name": "Region and residency",
-      "status": "blocked",
-      "summary": "Project region is not configured, and Memory Bank residency cannot be verified."
+      "status": "warning",
+      "summary": "The requested model region is recorded; Memory Bank generation residency still requires an accessible Memory Bank probe."
     },
     {
       "evidence": {
@@ -416,7 +427,7 @@
         "license_spdx_id": "Apache-2.0",
         "license_status": 200,
         "releases_api_url": "https://api.github.com/repos/synthetichealth/synthea/releases?per_page=50",
-        "releases_etag": "W/\"78d790b8456c93d52f18dbd6dfb1c05e1907572cd29afb485fb8bd2822e9ae32\"",
+        "releases_etag": "W/\"92156ab647369835c948ff5a87e9adce4bf034f9841e553ed7c6b688232755fc\"",
         "releases_status": 200,
         "repository_url": "https://github.com/synthetichealth/synthea",
         "seed": 24082501,
@@ -486,11 +497,11 @@
         "payer": "UnitedHealthcare",
         "policy_fetch_performed": false,
         "robots_allows_index": true,
-        "robots_etag": "\"150-6547cd97c256b\"",
+        "robots_etag": "\"150-6547d04c01efd\"",
         "robots_status": 200,
         "robots_url": "https://www.uhcprovider.com/robots.txt",
         "source_id": "uhc_clinical_policy",
-        "terms_etag": "\"1dbf-659d7faab23c9\"",
+        "terms_etag": "\"1dbf-659d8aecab99e\"",
         "terms_interpretation": "manual legal/terms review required; preflight does not infer permission from HTTP success",
         "terms_status": 200,
         "terms_url": "https://www.uhcprovider.com/en/legal/terms-of-use.html"
@@ -501,23 +512,22 @@
       "summary": "robots.txt permits the index path; terms permission remains a human review item."
     }
   ],
-  "generated_at": "2026-08-25T05:34:42.045063Z",
+  "generated_at": "2026-08-25T05:57:53.750383Z",
   "git_commit": "unknown",
   "policy_fetch_policy": "No payer policy document was fetched by Phase 0; robots and terms were checked before any future fetch.",
   "project": "jennycruzy-53677",
-  "region": "",
+  "region": "europe-west2",
   "schema_version": "0.1",
   "security_note": "No credential, access token, private key, or secret is written to this artifact.",
   "summary": {
-    "blocker_count": 4,
+    "blocker_count": 3,
     "blockers": [
       "Gemini model discovery",
-      "Region and residency",
       "Policy source: aetna_cpb",
       "Policy source: cigna_policy"
     ],
     "pass_count": 8,
-    "warning_count": 13,
+    "warning_count": 14,
     "warnings": [
       "Agent Runtime",
       "Sessions",
@@ -530,6 +540,7 @@
       "Code Execution",
       "Agent Evaluation",
       "Agent Simulation",
+      "Region and residency",
       "Model, Agent Runtime, and Firestore quotas",
       "Policy source: uhc_clinical_policy"
     ]

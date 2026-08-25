@@ -142,6 +142,24 @@ def parse_json_body(result: HttpResult) -> JsonObject | None:
     return cast(JsonObject, raw) if isinstance(raw, dict) else None
 
 
+def response_error(result: HttpResult) -> str:
+    body = parse_json_body(result)
+    if body is not None:
+        error = object_value(body.get("error"))
+        message = string_value(error.get("message"))
+        status = string_value(error.get("status"))
+        reasons: list[str] = []
+        for detail in list_value(error.get("details")):
+            if isinstance(detail, dict):
+                reason = string_value(cast(JsonObject, detail).get("reason"))
+                if reason:
+                    reasons.append(reason)
+        parts = [part for part in [status, ",".join(reasons), message] if part]
+        if parts:
+            return ": ".join(parts)[:1000]
+    return result.error or f"HTTP {result.status_code}"
+
+
 def list_strings(value: JsonValue | None) -> list[str]:
     return [item for item in list_value(value) if isinstance(item, str)]
 
@@ -205,8 +223,13 @@ def access_token() -> str | None:
         return None
 
 
-def auth_headers(token: str | None) -> dict[str, str]:
-    return {"Authorization": f"Bearer {token}"} if token else {}
+def auth_headers(token: str | None, quota_project: str | None = None) -> dict[str, str]:
+    if token is None:
+        return {}
+    headers = {"Authorization": f"Bearer {token}"}
+    if quota_project:
+        headers["x-goog-user-project"] = quota_project
+    return headers
 
 
 def discovery_catalog(url: str) -> tuple[Status, list[JsonObject], str | None]:
@@ -244,6 +267,12 @@ def catalog_summary(entry: JsonObject) -> JsonObject:
     }
 
 
+def find_catalog_entry(entries: list[JsonObject], name: str) -> JsonObject | None:
+    matches = [entry for entry in entries if string_value(entry.get("name")) == name]
+    matches.sort(key=lambda entry: string_value(entry.get("version")), reverse=True)
+    return matches[0] if matches else None
+
+
 def discover_path(document_url: str, path_parts: list[str]) -> str | None:
     result = http_request(document_url)
     body = parse_json_body(result)
@@ -258,7 +287,10 @@ def discover_path(document_url: str, path_parts: list[str]) -> str | None:
 
 
 def format_google_path(template: str, *, project: str, location: str | None = None) -> str:
-    path = template.replace("{+parent}", f"projects/{urllib.parse.quote(project, safe='')}")
+    parent = f"projects/{urllib.parse.quote(project, safe='')}"
+    if location:
+        parent = f"{parent}/locations/{urllib.parse.quote(location, safe='')}"
+    path = template.replace("{+parent}", parent)
     path = path.replace("{parent}", f"projects/{urllib.parse.quote(project, safe='')}")
     path = path.replace("{parent=projects/*}", f"projects/{urllib.parse.quote(project, safe='')}")
     path = path.replace("{parent=projects/*/locations/*}", f"projects/{urllib.parse.quote(project, safe='')}/locations/{urllib.parse.quote(location or '', safe='')}")
@@ -266,7 +298,7 @@ def format_google_path(template: str, *, project: str, location: str | None = No
     path = path.replace("{name=projects/*/locations/*/publishers/*/models/*}", "")
     path = path.replace("{name=projects/*/locations/*}", "")
     path = path.replace("{name=projects/*}", "")
-    path = path.replace("{+name}", "")
+    path = path.replace("{+name}", f"projects/{urllib.parse.quote(project, safe='')}")
     return path
 
 
@@ -320,16 +352,22 @@ def check_models(
     location: str | None,
     requirements: JsonObject,
     discovery: JsonObject,
+    catalog_entries: list[JsonObject],
     token: str | None,
 ) -> Check:
     minimum = object_value(requirements.get("gemini"))
     minimum_major = int_value(minimum.get("minimum_major"), 3)
     minimum_minor = int_value(minimum.get("minimum_minor"), 5)
+    catalog_name = string_value(discovery.get("aiplatform_catalog_name"), "aiplatform")
+    catalog_entry = find_catalog_entry(catalog_entries, catalog_name)
+    aiplatform_discovery_url = string_value(catalog_entry.get("discoveryRestUrl")) if catalog_entry else ""
     evidence: JsonObject = {
         "project": project or "",
         "location": location or "",
         "minimum": f"Gemini {minimum_major}.{minimum_minor}",
-        "discovery_url": string_value(discovery.get("aiplatform_discovery_url")),
+        "catalog_name": catalog_name,
+        "catalog_entry": catalog_summary(catalog_entry) if catalog_entry else {},
+        "discovery_url": aiplatform_discovery_url,
     }
     if project is None or location is None:
         evidence["reason"] = "Google Cloud project or region is not configured"
@@ -349,9 +387,18 @@ def check_models(
             evidence,
             "Authenticate with Application Default Credentials and rerun preflight.",
         )
+    if not aiplatform_discovery_url:
+        evidence["reason"] = "The live Google API catalog did not expose the configured Agent Platform API"
+        return Check(
+            "Gemini model discovery",
+            "blocked",
+            "The current discovery catalog did not expose an Agent Platform API document.",
+            evidence,
+            "Use the live API catalog to identify the current Agent Platform discovery URL.",
+        )
     path = discover_path(
-        string_value(discovery.get("aiplatform_discovery_url")),
-        ["resources", "projects", "resources", "locations", "resources", "publishers", "resources", "models", "methods", "list", "path"],
+        aiplatform_discovery_url,
+        ["resources", "projects", "resources", "locations", "resources", "models", "methods", "list", "path"],
     )
     if path is None:
         evidence["reason"] = "The live aiplatform discovery document did not expose a model-list method at the expected resource"
@@ -363,13 +410,13 @@ def check_models(
             "Inspect the current discovery document and add the discovered operation without hardcoding a model ID.",
         )
     url = regional_api_url(location, format_google_path(path, project=project, location=location))
-    result = http_request(url, headers=auth_headers(token))
+    result = http_request(url, headers=auth_headers(token, project))
     body = parse_json_body(result)
     evidence["list_url"] = url
     evidence["http_status"] = result.status_code if result.status_code is not None else -1
     evidence["etag"] = result.headers.get("etag", "")
     if result.status_code != 200 or body is None:
-        evidence["error"] = result.error or "model list response was not a JSON object"
+        evidence["error"] = response_error(result) if result.status_code != 200 else "model list response was not a JSON object"
         return Check(
             "Gemini model discovery",
             "blocked",
@@ -443,13 +490,13 @@ def check_service_usage(
         return Check("Enabled Google APIs", "blocked", "The live Service Usage discovery document could not be resolved.", evidence, "Use the current Service Usage discovery document to locate the service-list method.")
     formatted = format_google_path(path, project=project)
     url = f"https://serviceusage.googleapis.com/{formatted.lstrip('/')}?filter=state:ENABLED&pageSize=200"
-    result = http_request(url, headers=auth_headers(token))
+    result = http_request(url, headers=auth_headers(token, project))
     body = parse_json_body(result)
     evidence["list_url"] = url
     evidence["http_status"] = result.status_code if result.status_code is not None else -1
     evidence["etag"] = result.headers.get("etag", "")
     if result.status_code != 200 or body is None:
-        evidence["error"] = result.error or "service list response was not a JSON object"
+        evidence["error"] = response_error(result) if result.status_code != 200 else "service list response was not a JSON object"
         return Check("Enabled Google APIs", "blocked", "The live Service Usage request did not succeed.", evidence, "Resolve Service Usage IAM and quota before probing managed components.")
     services = [string_value(object_value(item).get("name")) for item in list_value(body.get("services")) if isinstance(item, dict)]
     evidence["enabled_service_count"] = len(services)
@@ -648,7 +695,7 @@ def build_preflight() -> tuple[JsonObject, int]:
     checks: list[Check] = local_checks()
     checks.append(Check("Application Default Credentials", "pass" if token else "blocked", auth_summary or "ADC status unknown", {"available": token is not None, "project_detected": project or ""}, "Configure ADC with a user or workload identity; never commit a service-account key."))
     checks.append(Check("Google API discovery catalog", catalog_status, "Live Google API catalog retrieved." if catalog_status == "pass" else "Google API catalog could not be retrieved.", {"url": string_value(discovery.get("google_api_catalog_url")), "entry_count": len(catalog_entries), "error": catalog_error or ""}, "Use the live discovery catalog rather than a remembered API surface."))
-    checks.append(check_models(project=project, location=location, requirements=requirements, discovery=discovery, token=token))
+    checks.append(check_models(project=project, location=location, requirements=requirements, discovery=discovery, catalog_entries=catalog_entries, token=token))
     checks.extend(check_platform_components(components=components, catalog_entries=catalog_entries, project=project, token=token))
     checks.append(check_service_usage(project=project, token=token, discovery_url=string_value(discovery.get("serviceusage_discovery_url"))))
     checks.append(check_region(project, location))

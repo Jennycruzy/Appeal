@@ -32,7 +32,7 @@
   },
   "discovery": {
     "google_api_catalog_url": "https://discovery.googleapis.com/discovery/v1/apis?preferred=true",
-    "aiplatform_discovery_url": "https://discovery.googleapis.com/discovery/v1/apis/aiplatform/v1/rest",
+    "aiplatform_catalog_name": "aiplatform",
     "serviceusage_discovery_url": "https://discovery.googleapis.com/discovery/v1/apis/serviceusage/v1/rest"
   }
 }
