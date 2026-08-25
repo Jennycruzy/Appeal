@@ -463,13 +463,37 @@
         "robots_status": 200,
         "robots_url": "https://www.uhcprovider.com/robots.txt",
         "source_id": "uhc_clinical_policy",
-        "terms_etag": "\"1dbf-659e616ddd49a\"",
+        "terms_etag": "\"1dbf-659e64be82f3f\"",
         "terms_interpretation": "manual legal/terms review required; preflight does not infer permission from HTTP success",
         "terms_status": 200,
         "terms_url": "https://www.uhcprovider.com/en/legal/terms-of-use.html"
       },
       "fallback": "Record explicit terms permission before enabling automated document ingestion.",
       "name": "Policy source: uhc_clinical_policy",
+      "status": "warning",
+      "summary": "robots.txt permits the index path; terms permission remains a human review item."
+    },
+    {
+      "evidence": {
+        "configured_automated_fetch_authorized": false,
+        "fetch_method": "GET with If-None-Match and disk/GCS cache; use only policy text whose terms permit the intended use; exclude restricted CPT/CDT/UB-04 data",
+        "index_etag": "",
+        "index_status": -1,
+        "index_url": "https://www.cms.gov/medicare-coverage-database/downloads/downloads.aspx",
+        "payer": "Centers for Medicare & Medicaid Services",
+        "policy_fetch_performed": false,
+        "robots_allows_index": true,
+        "robots_etag": "\"1787687628\"",
+        "robots_status": 200,
+        "robots_url": "https://www.cms.gov/robots.txt",
+        "source_id": "cms_mcd_ncd",
+        "terms_etag": "",
+        "terms_interpretation": "manual legal/terms review required; preflight does not infer permission from HTTP success",
+        "terms_status": 200,
+        "terms_url": "https://www.cms.gov/medicare-coverage-database/downloads/downloads.aspx"
+      },
+      "fallback": "Record explicit terms permission before enabling automated document ingestion.",
+      "name": "Policy source: cms_mcd_ncd",
       "status": "warning",
       "summary": "robots.txt permits the index path; terms permission remains a human review item."
     },
@@ -482,9 +506,9 @@
         "declared_license_url": "http://www.opendefinition.org/licenses/cc-by",
         "fetch_method": "HEAD/GET with ETag capture; do not modify or redistribute a transformed copy; fail closed on access or licence uncertainty.",
         "inaccessible_data_urls": [
-          "csv_url",
-          "data_dictionary_url",
           "archive_url",
+          "data_dictionary_url",
+          "csv_url",
           "datastore_api_url"
         ],
         "kind": "regulator_determinations",
@@ -596,7 +620,7 @@
       "summary": "Official CMS-0057-F metric definitions and reporting guidance were retrieved."
     }
   ],
-  "generated_at": "2026-08-25T21:53:20.892012Z",
+  "generated_at": "2026-08-25T22:09:56.317666Z",
   "git_commit": "unknown",
   "policy_fetch_policy": "No payer policy document was fetched by Phase 0; robots and terms were checked before any future fetch.",
   "project": "appeal-fleet-2026-0825",
@@ -612,7 +636,7 @@
       "Real corpus source: california_dmhc_imr_determinations"
     ],
     "pass_count": 9,
-    "warning_count": 14,
+    "warning_count": 15,
     "warnings": [
       "Agent Runtime",
       "Sessions",
@@ -627,7 +651,8 @@
       "Agent Simulation",
       "Region and residency",
       "Model, Agent Runtime, and Firestore quotas",
-      "Policy source: uhc_clinical_policy"
+      "Policy source: uhc_clinical_policy",
+      "Policy source: cms_mcd_ncd"
     ]
   }
 }

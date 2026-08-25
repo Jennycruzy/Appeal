@@ -26,6 +26,16 @@
       "robots_url": "https://www.uhcprovider.com/robots.txt",
       "fetch_method": "GET with If-None-Match and disk/GCS cache; extract only cited spans",
       "automated_fetch_authorized": false
+    },
+    {
+      "id": "cms_mcd_ncd",
+      "payer": "Centers for Medicare & Medicaid Services",
+      "index_url": "https://www.cms.gov/medicare-coverage-database/downloads/downloads.aspx",
+      "terms_url": "https://www.cms.gov/medicare-coverage-database/downloads/downloads.aspx",
+      "robots_url": "https://www.cms.gov/robots.txt",
+      "fetch_method": "GET with If-None-Match and disk/GCS cache; use only policy text whose terms permit the intended use; exclude restricted CPT/CDT/UB-04 data",
+      "automated_fetch_authorized": false,
+      "manual_terms_note": "CMS publishes NCD/LCD datasets but the page presents separate AMA, ADA, and AHA licence agreements. Terms must be reviewed for the selected NCD documents before any fetch."
     }
   ]
 }

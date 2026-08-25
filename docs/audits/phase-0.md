@@ -13,9 +13,9 @@ GOOGLE_CLOUD_PROJECT=appeal-fleet-2026-0825 APPEAL_GCP_REGION=europe-west2 pytho
 The command completed with exit code `2`, which is the script's explicit
 fail-closed result when blockers remain. It wrote
 [`docs/preflight.json`](../preflight.json), generated at
-`2026-08-25T21:53:20.892012Z` in the final live run. The artifact SHA-256 for
+`2026-08-25T22:09:56.317666Z` in the final live run. The artifact SHA-256 for
 this run is
-`6ccbe8241cc512aec92472d70a10675892ef86518adbcac15bc664f686876693`.
+`c09d662843ca811a40ec049c128aa1cd3725be3ea1278d76fd19f8e4c1827d9b`.
 
 The final live run reported:
 
@@ -52,7 +52,7 @@ Preflight did not pass. Stop before Phase 1 and resolve the blockers.
   Policies, Model Armor, Code Execution, Agent Evaluation, and Agent
   Simulation; the values are copied into the preflight evidence.
 - [x] Policy-source access was checked before document fetching. Evidence:
-  `docs/preflight.json` records robots and terms HTTP results for all three
+  `docs/preflight.json` records robots and terms HTTP results for all four
   configured sources and `policy_fetch_performed: false` for each. Aetna and
   Cigna returned robots/terms responses that do not permit automated fetching;
   UHC robots permits the index path but still requires human terms review.
@@ -124,6 +124,9 @@ datastore, and searchable-decision endpoints returned HTTP 403 to the live
 preflight client. The CMS metric-definition endpoints returned HTTP 200. The
 full source notes and manual-retrieval fallback are in
 [`docs/audits/precredit-imr.md`](precredit-imr.md).
+The CMS MCD policy candidate is recorded in
+[`docs/audits/precredit-policy-source.md`](precredit-policy-source.md); it was
+not fetched because its page presents additional licence terms.
 
 The Mac has Google Cloud CLI `581.0.0` and a user ADC credential for the
 Devpost-linked Google account. The ADC quota project was set locally to
@@ -147,7 +150,8 @@ service-account key was created or stored.
 - Quota-metric probing needs the current live service bindings and must be
   completed before deployment arithmetic is accepted.
 - Aetna and Cigna policy sources are not ingestion candidates under the
-  observed robots/terms responses. UHC remains pending human terms review.
+  observed robots/terms responses. UHC remains pending human terms review. CMS
+  MCD is a reachable candidate, but its terms review is not complete.
 - The official DMHC catalogue is discovered and licensed as a public source,
   but its case-level file is currently blocked to the preflight client. A
   manual, provenance-preserving retrieval is required before Phase 1D can
