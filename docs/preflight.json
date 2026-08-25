@@ -42,7 +42,7 @@
     },
     {
       "evidence": {
-        "entry_count": 312,
+        "entry_count": 311,
         "error": "",
         "url": "https://discovery.googleapis.com/discovery/v1/apis?preferred=true"
       },
@@ -389,7 +389,7 @@
         "license_spdx_id": "Apache-2.0",
         "license_status": 200,
         "releases_api_url": "https://api.github.com/repos/synthetichealth/synthea/releases?per_page=50",
-        "releases_etag": "W/\"9a8e0591a5a89d528edf246ffd99c9a6f803547f699f5aeacd1183f69cbb1a9f\"",
+        "releases_etag": "W/\"a3ff76a6a4155edb61947c6512680983d19e6b39c3981c124aaccb444c88fe57\"",
         "releases_status": 200,
         "repository_url": "https://github.com/synthetichealth/synthea",
         "seed": 24082501,
@@ -459,11 +459,11 @@
         "payer": "UnitedHealthcare",
         "policy_fetch_performed": false,
         "robots_allows_index": true,
-        "robots_etag": "\"150-6547cd97c256b\"",
+        "robots_etag": "\"150-6547d04c01efd\"",
         "robots_status": 200,
         "robots_url": "https://www.uhcprovider.com/robots.txt",
         "source_id": "uhc_clinical_policy",
-        "terms_etag": "\"1dbf-659d9a82a07a4\"",
+        "terms_etag": "\"1dbf-659e616ddd49a\"",
         "terms_interpretation": "manual legal/terms review required; preflight does not infer permission from HTTP success",
         "terms_status": 200,
         "terms_url": "https://www.uhcprovider.com/en/legal/terms-of-use.html"
@@ -472,9 +472,131 @@
       "name": "Policy source: uhc_clinical_policy",
       "status": "warning",
       "summary": "robots.txt permits the index path; terms permission remains a human review item."
+    },
+    {
+      "evidence": {
+        "case_level_data_fetched": false,
+        "case_level_ground_truth_verified": false,
+        "case_level_schema_observed": false,
+        "central_case_level_dataset": false,
+        "declared_license_url": "http://www.opendefinition.org/licenses/cc-by",
+        "fetch_method": "HEAD/GET with ETag capture; do not modify or redistribute a transformed copy; fail closed on access or licence uncertainty.",
+        "inaccessible_data_urls": [
+          "csv_url",
+          "data_dictionary_url",
+          "archive_url",
+          "datastore_api_url"
+        ],
+        "kind": "regulator_determinations",
+        "publisher": "California Department of Managed Health Care",
+        "reported_coverage": "DMHC states that its IMR decision database contains decisions since January 1, 2001.",
+        "source_id": "california_dmhc_imr_determinations",
+        "url_results": {
+          "archive_url": {
+            "content_type": "text/html; charset=UTF-8",
+            "error": "HTTP Error 403: Forbidden",
+            "etag": "",
+            "status": 403,
+            "url": "https://data.chhs.ca.gov/dataset/b79b3447-4c10-4ae6-84e2-1076f83bb24e/resource/9ab6e381-bef2-43dd-b096-efa85d93a804/download/independent-medical-review-imr-determinations-trend-wroodu9e.zip"
+          },
+          "catalog_url": {
+            "content_type": "text/html; charset=utf-8",
+            "error": "",
+            "etag": "",
+            "status": 200,
+            "url": "https://catalog.data.gov/dataset/independent-medical-review-imr-determinations-trend"
+          },
+          "csv_url": {
+            "content_type": "text/html; charset=UTF-8",
+            "error": "HTTP Error 403: Forbidden",
+            "etag": "",
+            "status": 403,
+            "url": "https://data.chhs.ca.gov/dataset/b79b3447-4c10-4ae6-84e2-1076f83bb24e/resource/3340c5d7-4054-4d03-90e0-5f44290ed095/download/independent-medical-review-imr-determinations-trends.csv"
+          },
+          "data_dictionary_url": {
+            "content_type": "text/html; charset=UTF-8",
+            "error": "HTTP Error 403: Forbidden",
+            "etag": "",
+            "status": 403,
+            "url": "https://data.chhs.ca.gov/dataset/b79b3447-4c10-4ae6-84e2-1076f83bb24e/resource/2c5c2144-138f-4feb-b2af-a1176995e1b1/download/imrdatadictionary.pdf"
+          },
+          "datastore_api_url": {
+            "content_type": "text/html; charset=UTF-8",
+            "error": "HTTP Error 403: Forbidden",
+            "etag": "",
+            "status": 403,
+            "url": "https://data.ca.gov/api/action/datastore_search?resource_id=1e9714f7-ad88-4d73-adb3-72bd65c8aa77&limit=0"
+          },
+          "decisions_page_url": {
+            "content_type": "text/html",
+            "error": "HTTP Error 403: Forbidden",
+            "etag": "",
+            "status": 403,
+            "url": "https://dmhc.ca.gov/FileaComplaint/ConsumerIndependentMedicalReviewComplaint/IMRDecisions.aspx"
+          },
+          "open_data_url": {
+            "content_type": "text/html; charset=utf-8",
+            "error": "HTTP Error 500: Internal Server Error",
+            "etag": "",
+            "status": 500,
+            "url": "https://lab.data.ca.gov/dataset/independent-medical-review-imr-determinations-trend/1e9714f7-ad88-4d73-adb3-72bd65c8aa77"
+          },
+          "search_url": {
+            "content_type": "text/html",
+            "error": "HTTP Error 403: Forbidden",
+            "etag": "",
+            "status": 403,
+            "url": "https://wpso.dmhc.ca.gov/imr/"
+          }
+        }
+      },
+      "fallback": "Use the official browser download or documented manual provenance path, then inspect the unmodified source before accepting it as case-level ground truth.",
+      "name": "Real corpus source: california_dmhc_imr_determinations",
+      "status": "blocked",
+      "summary": "The official source was discovered, but its data or schema endpoint is not currently retrievable by this client."
+    },
+    {
+      "evidence": {
+        "case_level_ground_truth_verified": false,
+        "central_case_level_dataset": false,
+        "declared_license_url": "",
+        "fetch_method": "Fetch CMS definitions and template; collect actual 2025 reports from each payer or program's public website with URL, timestamp, ETag, and content hash.",
+        "inaccessible_urls": [],
+        "kind": "regulatory_benchmark_definition",
+        "publisher": "Centers for Medicare & Medicaid Services",
+        "reported_coverage": "",
+        "source_id": "cms_0057_f_prior_authorization_metrics",
+        "url_results": {
+          "faq_url": {
+            "content_type": "text/html; charset=utf-8",
+            "error": "",
+            "etag": "\"1787689935-gzip\"",
+            "status": 200,
+            "url": "https://www.cms.gov/initiatives/burden-reduction/overview/interoperability/frequently-asked-questions/prior-authorization-api"
+          },
+          "final_rule_fact_sheet_url": {
+            "content_type": "text/html; charset=utf-8",
+            "error": "",
+            "etag": "\"1787687707-gzip\"",
+            "status": 200,
+            "url": "https://www.cms.gov/newsroom/fact-sheets/cms-interoperability-prior-authorization-final-rule-cms-0057-f"
+          },
+          "template_url": {
+            "content_type": "application/pdf",
+            "error": "",
+            "etag": "",
+            "status": 200,
+            "url": "https://www.cms.gov/prior-authorization-metrics-reporting-overview-template"
+          }
+        }
+      },
+      "fallback": "Collect actual public payer reports with provenance; the CMS template is a definition, not a case-level dataset.",
+      "name": "Real benchmark definition: cms_0057_f_prior_authorization_metrics",
+      "status": "pass",
+      "summary": "Official CMS-0057-F metric definitions and reporting guidance were retrieved."
     }
   ],
-  "generated_at": "2026-08-25T07:09:36.390843Z",
+  "generated_at": "2026-08-25T21:53:20.892012Z",
   "git_commit": "unknown",
   "policy_fetch_policy": "No payer policy document was fetched by Phase 0; robots and terms were checked before any future fetch.",
   "project": "appeal-fleet-2026-0825",
@@ -482,13 +604,14 @@
   "schema_version": "0.1",
   "security_note": "No credential, access token, private key, or secret is written to this artifact.",
   "summary": {
-    "blocker_count": 3,
+    "blocker_count": 4,
     "blockers": [
       "Gemini model discovery",
       "Policy source: aetna_cpb",
-      "Policy source: cigna_policy"
+      "Policy source: cigna_policy",
+      "Real corpus source: california_dmhc_imr_determinations"
     ],
-    "pass_count": 8,
+    "pass_count": 9,
     "warning_count": 14,
     "warnings": [
       "Agent Runtime",

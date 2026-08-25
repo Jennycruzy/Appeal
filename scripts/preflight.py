@@ -654,6 +654,103 @@ def check_policy_source(source: JsonObject) -> Check:
     return Check(f"Policy source: {source_id}", "warning", "robots.txt permits the index path; terms permission remains a human review item.", evidence, "Record explicit terms permission before enabling automated document ingestion.")
 
 
+def check_real_corpus_source(source: JsonObject) -> Check:
+    source_id = string_value(source.get("id"), "unknown")
+    kind = string_value(source.get("kind"), "unknown")
+    evidence: JsonObject = {
+        "source_id": source_id,
+        "kind": kind,
+        "publisher": string_value(source.get("publisher")),
+        "declared_license_url": string_value(source.get("declared_license_url")),
+        "reported_coverage": string_value(source.get("reported_coverage")),
+        "case_level_ground_truth_verified": source.get("case_level_ground_truth_verified") is True,
+        "central_case_level_dataset": source.get("central_case_level_dataset") is True,
+        "fetch_method": string_value(source.get("fetch_method")),
+        "url_results": {},
+    }
+    urls: list[tuple[str, str]] = []
+    for field in [
+        "catalog_url",
+        "open_data_url",
+        "decisions_page_url",
+        "search_url",
+        "csv_url",
+        "data_dictionary_url",
+        "archive_url",
+        "datastore_api_url",
+        "faq_url",
+        "template_url",
+        "final_rule_fact_sheet_url",
+    ]:
+        url = string_value(source.get(field))
+        if url:
+            urls.append((field, url))
+    for label, url in urls:
+        result = http_request(url, method="HEAD", headers={"Accept": "text/html, application/json, application/pdf, text/csv;q=0.8"})
+        results = object_value(evidence.get("url_results"))
+        results[label] = {
+            "url": url,
+            "status": result.status_code if result.status_code is not None else -1,
+            "etag": result.headers.get("etag", ""),
+            "content_type": result.headers.get("content-type", ""),
+            "error": result.error or "",
+        }
+        evidence["url_results"] = results
+
+    if kind == "regulator_determinations":
+        data_labels = {"csv_url", "data_dictionary_url", "archive_url", "datastore_api_url"}
+        data_results = object_value(evidence.get("url_results"))
+        inaccessible = [
+            label
+            for label in data_labels
+            if int_value(object_value(data_results.get(label)).get("status"), -1) >= 400
+            or int_value(object_value(data_results.get(label)).get("status"), -1) < 0
+        ]
+        evidence["case_level_schema_observed"] = False
+        evidence["case_level_data_fetched"] = False
+        evidence["inaccessible_data_urls"] = inaccessible
+        if inaccessible:
+            return Check(
+                f"Real corpus source: {source_id}",
+                "blocked",
+                "The official source was discovered, but its data or schema endpoint is not currently retrievable by this client.",
+                evidence,
+                "Use the official browser download or documented manual provenance path, then inspect the unmodified source before accepting it as case-level ground truth.",
+            )
+        return Check(
+            f"Real corpus source: {source_id}",
+            "warning",
+            "The official regulator source is reachable, but case-level schema and ground truth still require inspection of the unmodified data.",
+            evidence,
+            "Inspect the official data dictionary and records; do not claim a case-level benchmark until the fields and determination labels are verified.",
+        )
+
+    required_labels = {"faq_url", "template_url", "final_rule_fact_sheet_url"}
+    results = object_value(evidence.get("url_results"))
+    inaccessible = [
+        label
+        for label in required_labels
+        if int_value(object_value(results.get(label)).get("status"), -1) >= 400
+        or int_value(object_value(results.get(label)).get("status"), -1) < 0
+    ]
+    evidence["inaccessible_urls"] = inaccessible
+    if inaccessible:
+        return Check(
+            f"Real benchmark definition: {source_id}",
+            "blocked",
+            "The official CMS benchmark definition could not be retrieved from every required endpoint.",
+            evidence,
+            "Resolve official CMS access before calibrating the payer or reporting a benchmark.",
+        )
+    return Check(
+        f"Real benchmark definition: {source_id}",
+        "pass",
+        "Official CMS-0057-F metric definitions and reporting guidance were retrieved.",
+        evidence,
+        "Collect actual public payer reports with provenance; the CMS template is a definition, not a case-level dataset.",
+    )
+
+
 def local_checks() -> list[Check]:
     version = sys.version_info
     required_python = (3, 12)
@@ -682,6 +779,7 @@ def build_preflight() -> tuple[JsonObject, int]:
     load = load_json(CONFIG_DIR / "demo_load.json")
     components = load_json(CONFIG_DIR / "platform_components.json")
     policy_sources = load_json(CONFIG_DIR / "policy_sources.json")
+    real_corpus_sources = load_json(CONFIG_DIR / "real_corpus_sources.json")
     discovery = object_value(requirements.get("discovery"))
     pas = object_value(requirements.get("pas"))
     synthea = object_value(requirements.get("synthea"))
@@ -705,6 +803,9 @@ def build_preflight() -> tuple[JsonObject, int]:
     for source in list_value(policy_sources.get("sources")):
         if isinstance(source, dict):
             checks.append(check_policy_source(cast(JsonObject, source)))
+    for source in list_value(real_corpus_sources.get("sources")):
+        if isinstance(source, dict):
+            checks.append(check_real_corpus_source(cast(JsonObject, source)))
     blockers = [check.name for check in checks if check.status == "blocked"]
     warnings = [check.name for check in checks if check.status in {"warning", "not_checked"}]
     payload: JsonObject = {

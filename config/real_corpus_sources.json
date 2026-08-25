@@ -1,0 +1,41 @@
+{
+  "sources": [
+    {
+      "id": "california_dmhc_imr_determinations",
+      "kind": "regulator_determinations",
+      "publisher": "California Department of Managed Health Care",
+      "catalog_url": "https://catalog.data.gov/dataset/independent-medical-review-imr-determinations-trend",
+      "open_data_url": "https://lab.data.ca.gov/dataset/independent-medical-review-imr-determinations-trend/1e9714f7-ad88-4d73-adb3-72bd65c8aa77",
+      "decisions_page_url": "https://dmhc.ca.gov/FileaComplaint/ConsumerIndependentMedicalReviewComplaint/IMRDecisions.aspx",
+      "search_url": "https://wpso.dmhc.ca.gov/imr/",
+      "csv_url": "https://data.chhs.ca.gov/dataset/b79b3447-4c10-4ae6-84e2-1076f83bb24e/resource/3340c5d7-4054-4d03-90e0-5f44290ed095/download/independent-medical-review-imr-determinations-trends.csv",
+      "data_dictionary_url": "https://data.chhs.ca.gov/dataset/b79b3447-4c10-4ae6-84e2-1076f83bb24e/resource/2c5c2144-138f-4feb-b2af-a1176995e1b1/download/imrdatadictionary.pdf",
+      "archive_url": "https://data.chhs.ca.gov/dataset/b79b3447-4c10-4ae6-84e2-1076f83bb24e/resource/9ab6e381-bef2-43dd-b096-efa85d93a804/download/independent-medical-review-imr-determinations-trend-wroodu9e.zip",
+      "datastore_api_url": "https://data.ca.gov/api/action/datastore_search?resource_id=1e9714f7-ad88-4d73-adb3-72bd65c8aa77&limit=0",
+      "declared_license_url": "http://www.opendefinition.org/licenses/cc-by",
+      "reported_coverage": "DMHC states that its IMR decision database contains decisions since January 1, 2001.",
+      "fetch_method": "HEAD/GET with ETag capture; do not modify or redistribute a transformed copy; fail closed on access or licence uncertainty.",
+      "case_level_ground_truth_verified": false
+    },
+    {
+      "id": "cms_0057_f_prior_authorization_metrics",
+      "kind": "regulatory_benchmark_definition",
+      "publisher": "Centers for Medicare & Medicaid Services",
+      "faq_url": "https://www.cms.gov/initiatives/burden-reduction/overview/interoperability/frequently-asked-questions/prior-authorization-api",
+      "template_url": "https://www.cms.gov/prior-authorization-metrics-reporting-overview-template",
+      "final_rule_fact_sheet_url": "https://www.cms.gov/newsroom/fact-sheets/cms-interoperability-prior-authorization-final-rule-cms-0057-f",
+      "reporting_year_first_required": 2025,
+      "first_publication_deadline": "2026-03-31",
+      "scope": "Aggregated medical-item and service metrics, reported at the applicable MA contract, state, Medicaid managed-care plan, CHIP entity, or QHP issuer level.",
+      "metrics_used_for_calibration": [
+        "standard approval percentage",
+        "standard denial percentage",
+        "standard approval-after-appeal percentage",
+        "expedited approval and denial percentages",
+        "mean and median time to determination"
+      ],
+      "fetch_method": "Fetch CMS definitions and template; collect actual 2025 reports from each payer or program's public website with URL, timestamp, ETag, and content hash.",
+      "central_case_level_dataset": false
+    }
+  ]
+}

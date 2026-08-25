@@ -13,17 +13,18 @@ GOOGLE_CLOUD_PROJECT=appeal-fleet-2026-0825 APPEAL_GCP_REGION=europe-west2 pytho
 The command completed with exit code `2`, which is the script's explicit
 fail-closed result when blockers remain. It wrote
 [`docs/preflight.json`](../preflight.json), generated at
-`2026-08-25T07:09:36.390843Z` in the final run. The artifact SHA-256 for this
-run is
-`650a61e5b0e6facfd69a0b00ed1f27a19ecba4b8f96a47a0ce5bb4a133c8ffdb`.
+`2026-08-25T21:53:20.892012Z` in the final live run. The artifact SHA-256 for
+this run is
+`6ccbe8241cc512aec92472d70a10675892ef86518adbcac15bc664f686876693`.
 
-The final run reported:
+The final live run reported:
 
 ```text
-Blockers: 3
+Blockers: 4
 BLOCKER: Gemini model discovery
 BLOCKER: Policy source: aetna_cpb
 BLOCKER: Policy source: cigna_policy
+BLOCKER: Real corpus source: california_dmhc_imr_determinations
 Preflight did not pass. Stop before Phase 1 and resolve the blockers.
 ```
 
@@ -56,6 +57,15 @@ Preflight did not pass. Stop before Phase 1 and resolve the blockers.
   Cigna returned robots/terms responses that do not permit automated fetching;
   UHC robots permits the index path but still requires human terms review.
   No policy document was fetched.
+- [ ] The real IMR determination source is retrievable and its case-level
+  schema is verified. Evidence: `config/real_corpus_sources.json` records the
+  official catalogue, DMHC, CSV, dictionary, archive, and datastore URLs;
+  `docs/preflight.json` records HTTP 403 for the official data endpoints. No
+  IMR data was fetched or committed.
+- [x] The CMS-0057-F benchmark definition is recorded from official sources.
+  Evidence: `docs/preflight.json` records successful live retrieval of the CMS
+  FAQ, reporting template, and final-rule fact sheet. The source is explicitly
+  treated as a metric definition, not as a case-level dataset.
 - [ ] Quota ceilings and demo arithmetic are both verified. Evidence: the
   preflight records the configured six-case load arithmetic, but quota ceilings
   remain `not_checked` until the regional model and managed service bindings
@@ -104,6 +114,13 @@ http_status: 403
 error: PERMISSION_DENIED: BILLING_DISABLED
 ```
 
+The real-corpus discovery evidence is also in `docs/preflight.json`. The
+official DMHC catalogue was reachable, but the direct CSV, dictionary, archive,
+datastore, and searchable-decision endpoints returned HTTP 403 to the live
+preflight client. The CMS metric-definition endpoints returned HTTP 200. The
+full source notes and manual-retrieval fallback are in
+[`docs/audits/precredit-imr.md`](precredit-imr.md).
+
 The Mac has Google Cloud CLI `581.0.0` and a user ADC credential for the
 Devpost-linked Google account. The ADC quota project was set locally to
 `appeal-fleet-2026-0825`; this changed only the local ADC configuration. No
@@ -127,6 +144,10 @@ service-account key was created or stored.
   completed before deployment arithmetic is accepted.
 - Aetna and Cigna policy sources are not ingestion candidates under the
   observed robots/terms responses. UHC remains pending human terms review.
+- The official DMHC catalogue is discovered and licensed as a public source,
+  but its case-level file is currently blocked to the preflight client. A
+  manual, provenance-preserving retrieval is required before Phase 1D can
+  claim real regulator-determined ground truth.
 - The public Synthea release endpoint initially exposed a moving
   `master-branch-latest` tag. The preflight was corrected to select a dated,
   non-prerelease release; the final evidence records `v4.0.0`.
@@ -144,9 +165,13 @@ service-account key was created or stored.
 4. Complete quota and residency probes, then rerun this audit artifact.
 5. Obtain explicit terms permission or replace Aetna/Cigna with permitted
    policy sources before Phase 1 ingestion.
+6. Retrieve and inspect the official DMHC IMR data or its official searchable
+   records without modifying the source; verify the case-level rationale and
+   determination fields before accepting it as the Phase 1D corpus.
 
 ## Exit criteria
 
 Phase 0 is not complete. The model ID, component availability, region,
-quotas, and source permissions are not all verified. The build is therefore
-stopped before Phase 1, as required by the specification.
+quotas, policy-source permissions, and DMHC case-level data access are not all
+verified. The build is therefore stopped before Phase 1, as required by the
+specification.
