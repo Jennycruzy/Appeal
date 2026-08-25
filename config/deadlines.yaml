@@ -1,0 +1,63 @@
+{
+  "schema_version": "0.1",
+  "source_policy": "Only clocks with verified citations are executable. Program-specific appeal deadlines remain blocked until their governing source is discovered and recorded.",
+  "clocks": {
+    "intake_unverified": {
+      "status": "unverified",
+      "duration_seconds": null,
+      "unit": "unknown",
+      "citation_url": "",
+      "note": "Intake handling is operational, not a CMS-0057-F statutory clock. A service-level target must be selected separately."
+    },
+    "standard_prior_authorization": {
+      "status": "verified",
+      "duration_seconds": 604800,
+      "unit": "calendar_days",
+      "citation_url": "https://www.cms.gov/initiatives/burden-reduction/overview/interoperability/frequently-asked-questions/prior-authorization-api",
+      "note": "CMS-0057-F standard prior authorization decision timeframe: seven calendar days for applicable impacted payers."
+    },
+    "expedited_prior_authorization": {
+      "status": "verified",
+      "duration_seconds": 259200,
+      "unit": "hours",
+      "citation_url": "https://www.cms.gov/initiatives/burden-reduction/overview/interoperability/frequently-asked-questions/prior-authorization-api",
+      "note": "CMS-0057-F expedited prior authorization decision timeframe: 72 hours for applicable impacted payers."
+    },
+    "appeal_program_specific": {
+      "status": "unverified",
+      "duration_seconds": null,
+      "unit": "unknown",
+      "citation_url": "https://www.cms.gov/initiatives/burden-reduction/overview/interoperability/frequently-asked-questions/prior-authorization-api",
+      "note": "CMS says the definition of an appeal varies by payer program; this artifact does not invent an appeal filing deadline."
+    },
+    "terminal_no_deadline": {
+      "status": "not_applicable",
+      "duration_seconds": null,
+      "unit": "none",
+      "citation_url": "",
+      "note": "Terminal case state."
+    }
+  },
+  "state_deadlines": {
+    "INTAKE_RECEIVED": "intake_unverified",
+    "DENIAL_PARSED": "standard_prior_authorization",
+    "PARSE_FAILED_HUMAN_REVIEW": "intake_unverified",
+    "POLICY_LOCATED": "standard_prior_authorization",
+    "POLICY_NOT_FOUND_HUMAN_REVIEW": "intake_unverified",
+    "CRITERION_IDENTIFIED": "standard_prior_authorization",
+    "EVIDENCE_ASSEMBLED": "standard_prior_authorization",
+    "EVIDENCE_INSUFFICIENT": "intake_unverified",
+    "DRAFT_READY": "standard_prior_authorization",
+    "AWAITING_CLINICIAN": "standard_prior_authorization",
+    "DRAFT_REVISION": "standard_prior_authorization",
+    "SUBMITTED_LEVEL_1": "standard_prior_authorization",
+    "AWAITING_DETERMINATION": "standard_prior_authorization",
+    "DETERMINATION_RECEIVED": "terminal_no_deadline",
+    "ESCALATION_ELIGIBLE": "appeal_program_specific",
+    "PEER_TO_PEER_REQUESTED": "appeal_program_specific",
+    "EXTERNAL_REVIEW_FILED": "appeal_program_specific",
+    "CLOSED_WON": "terminal_no_deadline",
+    "CLOSED_LOST": "terminal_no_deadline",
+    "CLOSED_ABANDONED_DEADLINE": "terminal_no_deadline"
+  }
+}
