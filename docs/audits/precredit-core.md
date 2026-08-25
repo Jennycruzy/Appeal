@@ -31,6 +31,13 @@ does not claim that Phase 1 has started or that Phase 0 is complete.
 - `.venv/bin/mypy --strict src/appeal_core` passed with mypy `2.3.1`.
 - `scripts/verify_ledger.py` and the `make verify-ledger` target are present;
   they fail when the requested ledger does not exist or its chain is invalid.
+- `src/appeal_core/criteria.py` implements the Evidence Floor: boolean tree
+  evaluation, first-class absent evidence, source-traceable policy spans, and
+  validation that supported, absent, or contradicted draft claims cite only
+  Evidence Miner observations in the relevant criterion subtree.
+- `tests/test_criteria.py` adds five tests for nested boolean logic, absence,
+  supported claims, absence claims, and stable criterion fingerprints. The
+  combined suite ran 16 tests and all passed.
 
 ## Gaps
 

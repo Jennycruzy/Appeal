@@ -25,6 +25,21 @@ from .ledger import (
     ReceiptDraft,
     VerificationResult,
 )
+from .criteria import (
+    ClaimKind,
+    CriterionEvaluation,
+    CriterionLogic,
+    CriterionStatus,
+    CriterionValidationError,
+    DraftClaim,
+    EvidenceDisposition,
+    EvidenceFloorViolation,
+    EvidenceObservation,
+    PolicyCriterion,
+    SourceSpan,
+    evaluate_criterion,
+    validate_claims,
+)
 
 __all__ = [
     "Actor",
@@ -48,4 +63,17 @@ __all__ = [
     "ReceiptLedger",
     "ReceiptDraft",
     "VerificationResult",
+    "ClaimKind",
+    "CriterionEvaluation",
+    "CriterionLogic",
+    "CriterionStatus",
+    "CriterionValidationError",
+    "DraftClaim",
+    "EvidenceDisposition",
+    "EvidenceFloorViolation",
+    "EvidenceObservation",
+    "PolicyCriterion",
+    "SourceSpan",
+    "evaluate_criterion",
+    "validate_claims",
 ]
