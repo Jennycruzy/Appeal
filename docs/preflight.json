@@ -33,7 +33,7 @@
     {
       "evidence": {
         "available": true,
-        "project_detected": "jennycruzy-53677"
+        "project_detected": "appeal-fleet-2026-0825"
       },
       "fallback": "Configure ADC with a user or workload identity; never commit a service-account key.",
       "name": "Application Default Credentials",
@@ -61,13 +61,13 @@
         },
         "catalog_name": "aiplatform",
         "discovery_url": "https://aiplatform.googleapis.com/$discovery/rest?version=v1",
-        "error": "PERMISSION_DENIED: BILLING_DISABLED: This API method requires billing to be enabled. Please enable billing on project #jennycruzy-53677 by visiting https://console.developers.google.com/billing/enable?project=jennycruzy-53677 then retry. If you enabled billing for this project recently, wait a few minutes for the action to propagate to our systems and retry.",
+        "error": "PERMISSION_DENIED: BILLING_DISABLED: This API method requires billing to be enabled. Please enable billing on project #appeal-fleet-2026-0825 by visiting https://console.developers.google.com/billing/enable?project=appeal-fleet-2026-0825 then retry. If you enabled billing for this project recently, wait a few minutes for the action to propagate to our systems and retry.",
         "etag": "",
         "http_status": 403,
-        "list_url": "https://europe-west2-aiplatform.googleapis.com/v1/projects/jennycruzy-53677/locations/europe-west2/models",
+        "list_url": "https://europe-west2-aiplatform.googleapis.com/v1/projects/appeal-fleet-2026-0825/locations/europe-west2/models",
         "location": "europe-west2",
         "minimum": "Gemini 3.5",
-        "project": "jennycruzy-53677"
+        "project": "appeal-fleet-2026-0825"
       },
       "fallback": "Resolve regional API access, quota, or IAM before building model-dependent components.",
       "name": "Gemini model discovery",
@@ -83,7 +83,7 @@
         ],
         "component_id": "agent_runtime",
         "probe": "service enablement and component endpoint probing requires a discovered service binding",
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "public_discovery_matches": []
       },
       "fallback": "ADK service on Cloud Run behind the project policy enforcement point",
@@ -99,7 +99,7 @@
         ],
         "component_id": "sessions",
         "probe": "service enablement and component endpoint probing requires a discovered service binding",
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "public_discovery_matches": [
           {
             "discovery_rest_url": "https://cloudshell.googleapis.com/$discovery/rest?version=v1",
@@ -122,7 +122,7 @@
         ],
         "component_id": "memory_bank",
         "probe": "service enablement and component endpoint probing requires a discovered service binding",
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "public_discovery_matches": []
       },
       "fallback": "Per-case Firestore memory revisions with tenant-scoped IAM",
@@ -138,7 +138,7 @@
         ],
         "component_id": "agent_registry",
         "probe": "service enablement and component endpoint probing requires a discovered service binding",
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "public_discovery_matches": [
           {
             "discovery_rest_url": "https://agentregistry.googleapis.com/$discovery/rest?version=v1",
@@ -161,7 +161,7 @@
         ],
         "component_id": "agent_identity",
         "probe": "service enablement and component endpoint probing requires a discovered service binding",
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "public_discovery_matches": [
           {
             "discovery_rest_url": "https://agentidentity.googleapis.com/$discovery/rest?version=v1",
@@ -190,7 +190,7 @@
         ],
         "component_id": "agent_gateway",
         "probe": "service enablement and component endpoint probing requires a discovered service binding",
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "public_discovery_matches": []
       },
       "fallback": "Dedicated policy enforcement service for every tool call",
@@ -206,7 +206,7 @@
         ],
         "component_id": "agent_policies",
         "probe": "service enablement and component endpoint probing requires a discovered service binding",
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "public_discovery_matches": []
       },
       "fallback": "Versioned policy files enforced by the project policy enforcement point",
@@ -222,7 +222,7 @@
         ],
         "component_id": "model_armor",
         "probe": "service enablement and component endpoint probing requires a discovered service binding",
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "public_discovery_matches": []
       },
       "fallback": "Self-hosted inbound and egress inspection with an explicit deny-by-default policy",
@@ -238,7 +238,7 @@
         ],
         "component_id": "code_execution",
         "probe": "service enablement and component endpoint probing requires a discovered service binding",
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "public_discovery_matches": []
       },
       "fallback": "No code execution until a separately isolated sandbox is approved",
@@ -254,7 +254,7 @@
         ],
         "component_id": "agent_evaluation",
         "probe": "service enablement and component endpoint probing requires a discovered service binding",
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "public_discovery_matches": []
       },
       "fallback": "Committed deterministic evaluation harness with objective graders",
@@ -270,7 +270,7 @@
         ],
         "component_id": "agent_simulation",
         "probe": "service enablement and component endpoint probing requires a discovered service binding",
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "public_discovery_matches": [
           {
             "discovery_rest_url": "https://policysimulator.googleapis.com/$discovery/rest?version=v1",
@@ -288,53 +288,15 @@
     {
       "evidence": {
         "discovery_url": "https://discovery.googleapis.com/discovery/v1/apis/serviceusage/v1/rest",
-        "enabled_service_count": 40,
+        "enabled_service_count": 2,
         "enabled_services": [
-          "projects/346649480730/services/aiplatform.googleapis.com",
-          "projects/346649480730/services/analyticshub.googleapis.com",
-          "projects/346649480730/services/appengine.googleapis.com",
-          "projects/346649480730/services/bigquery.googleapis.com",
-          "projects/346649480730/services/bigqueryconnection.googleapis.com",
-          "projects/346649480730/services/bigquerydatapolicy.googleapis.com",
-          "projects/346649480730/services/bigquerydatatransfer.googleapis.com",
-          "projects/346649480730/services/bigquerymigration.googleapis.com",
-          "projects/346649480730/services/bigqueryreservation.googleapis.com",
-          "projects/346649480730/services/bigquerystorage.googleapis.com",
-          "projects/346649480730/services/calendar-json.googleapis.com",
-          "projects/346649480730/services/cloudaicompanion.googleapis.com",
-          "projects/346649480730/services/cloudapis.googleapis.com",
-          "projects/346649480730/services/cloudresourcemanager.googleapis.com",
-          "projects/346649480730/services/cloudtrace.googleapis.com",
-          "projects/346649480730/services/dataform.googleapis.com",
-          "projects/346649480730/services/dataplex.googleapis.com",
-          "projects/346649480730/services/datastore.googleapis.com",
-          "projects/346649480730/services/fcm.googleapis.com",
-          "projects/346649480730/services/fcmregistrations.googleapis.com",
-          "projects/346649480730/services/firebase.googleapis.com",
-          "projects/346649480730/services/firebaseappdistribution.googleapis.com",
-          "projects/346649480730/services/firebasehosting.googleapis.com",
-          "projects/346649480730/services/firebaseinstallations.googleapis.com",
-          "projects/346649480730/services/firebaseremoteconfig.googleapis.com",
-          "projects/346649480730/services/firebaseremoteconfigrealtime.googleapis.com",
-          "projects/346649480730/services/firebaserules.googleapis.com",
-          "projects/346649480730/services/identitytoolkit.googleapis.com",
-          "projects/346649480730/services/logging.googleapis.com",
-          "projects/346649480730/services/monitoring.googleapis.com",
-          "projects/346649480730/services/pubsub.googleapis.com",
-          "projects/346649480730/services/runtimeconfig.googleapis.com",
-          "projects/346649480730/services/securetoken.googleapis.com",
-          "projects/346649480730/services/servicemanagement.googleapis.com",
-          "projects/346649480730/services/serviceusage.googleapis.com",
-          "projects/346649480730/services/sql-component.googleapis.com",
-          "projects/346649480730/services/storage-api.googleapis.com",
-          "projects/346649480730/services/storage-component.googleapis.com",
-          "projects/346649480730/services/storage.googleapis.com",
-          "projects/346649480730/services/testing.googleapis.com"
+          "projects/509610029798/services/aiplatform.googleapis.com",
+          "projects/509610029798/services/serviceusage.googleapis.com"
         ],
         "etag": "",
         "http_status": 200,
-        "list_url": "https://serviceusage.googleapis.com/v1/projects/jennycruzy-53677/services?filter=state:ENABLED&pageSize=200",
-        "project": "jennycruzy-53677"
+        "list_url": "https://serviceusage.googleapis.com/v1/projects/appeal-fleet-2026-0825/services?filter=state:ENABLED&pageSize=200",
+        "project": "appeal-fleet-2026-0825"
       },
       "name": "Enabled Google APIs",
       "status": "pass",
@@ -344,7 +306,7 @@
       "evidence": {
         "memory_bank_generation_region": "not discovered",
         "model_region": "europe-west2",
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "requested_region": "europe-west2"
       },
       "fallback": "Do not claim same-region Memory Bank processing until the managed service reports it.",
@@ -361,7 +323,7 @@
           "open_cases": 6,
           "sentinel_runs_per_day": 4
         },
-        "project": "jennycruzy-53677",
+        "project": "appeal-fleet-2026-0825",
         "reason": "quota metric discovery is deferred until the live service bindings are identified",
         "services_to_probe": [
           "aiplatform.googleapis.com",
@@ -427,7 +389,7 @@
         "license_spdx_id": "Apache-2.0",
         "license_status": 200,
         "releases_api_url": "https://api.github.com/repos/synthetichealth/synthea/releases?per_page=50",
-        "releases_etag": "W/\"92156ab647369835c948ff5a87e9adce4bf034f9841e553ed7c6b688232755fc\"",
+        "releases_etag": "W/\"9a8e0591a5a89d528edf246ffd99c9a6f803547f699f5aeacd1183f69cbb1a9f\"",
         "releases_status": 200,
         "repository_url": "https://github.com/synthetichealth/synthea",
         "seed": 24082501,
@@ -497,11 +459,11 @@
         "payer": "UnitedHealthcare",
         "policy_fetch_performed": false,
         "robots_allows_index": true,
-        "robots_etag": "\"150-6547d04c01efd\"",
+        "robots_etag": "\"150-6547cd97c256b\"",
         "robots_status": 200,
         "robots_url": "https://www.uhcprovider.com/robots.txt",
         "source_id": "uhc_clinical_policy",
-        "terms_etag": "\"1dbf-659d8aecab99e\"",
+        "terms_etag": "\"1dbf-659d9a82a07a4\"",
         "terms_interpretation": "manual legal/terms review required; preflight does not infer permission from HTTP success",
         "terms_status": 200,
         "terms_url": "https://www.uhcprovider.com/en/legal/terms-of-use.html"
@@ -512,10 +474,10 @@
       "summary": "robots.txt permits the index path; terms permission remains a human review item."
     }
   ],
-  "generated_at": "2026-08-25T05:57:53.750383Z",
+  "generated_at": "2026-08-25T07:09:36.390843Z",
   "git_commit": "unknown",
   "policy_fetch_policy": "No payer policy document was fetched by Phase 0; robots and terms were checked before any future fetch.",
-  "project": "jennycruzy-53677",
+  "project": "appeal-fleet-2026-0825",
   "region": "europe-west2",
   "schema_version": "0.1",
   "security_note": "No credential, access token, private key, or secret is written to this artifact.",

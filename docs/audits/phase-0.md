@@ -7,15 +7,15 @@ Audit date: 2026-08-25
 The live command used for this audit was:
 
 ```text
-GOOGLE_CLOUD_PROJECT=jennycruzy-53677 APPEAL_GCP_REGION=europe-west2 python3.12 scripts/preflight.py
+GOOGLE_CLOUD_PROJECT=appeal-fleet-2026-0825 APPEAL_GCP_REGION=europe-west2 python3.12 scripts/preflight.py
 ```
 
 The command completed with exit code `2`, which is the script's explicit
 fail-closed result when blockers remain. It wrote
 [`docs/preflight.json`](../preflight.json), generated at
-`2026-08-25T05:57:53.750383Z` in the final run. The artifact SHA-256 printed
-by the final run was
-`5cf412c432cf0c41025719fcdf06d5c24babddc77fb3664561dec1a2a6d7c175`.
+`2026-08-25T07:09:36.390843Z` in the final run. The artifact SHA-256 for this
+run is
+`650a61e5b0e6facfd69a0b00ed1f27a19ecba4b8f96a47a0ce5bb4a133c8ffdb`.
 
 The final run reported:
 
@@ -74,19 +74,21 @@ Preflight did not pass. Stop before Phase 1 and resolve the blockers.
 
 ## Live project evidence
 
-The authenticated user can see two active Google Cloud projects:
+The authenticated Devpost-linked Google account created a clean project:
 
 ```text
-jenny-wallet-guard  (950457737025)
-jennycruzy-53677    (346649480730)
+Project ID:     appeal-fleet-2026-0825
+Project number: 509610029798
+Name:           APPEAL Fleet 2026
+State:          ACTIVE
 ```
 
-The user confirmed `jennycruzy-53677` as the target project. Its live Service
-Usage listing initially reported 39 enabled services. The Vertex AI API was
-then enabled through the Service Usage API; the completed operation and
-resulting service name are recorded in the terminal evidence and in the next
-`docs/preflight.json` run. No application data, database, Cloud Run service,
-or service-account key was created.
+The project was created through the Cloud Resource Manager API after the
+account accepted the Google Cloud Terms of Service. Service Usage was enabled
+through the Cloud Console, and the Agent Platform API was then enabled through
+the Service Usage API. The completed enablement result is recorded in the
+terminal evidence and in `docs/preflight.json`. No application data, database,
+Cloud Run service, or service-account key was created.
 
 `europe-west2` was used as a probe location because the current official Gemini
 3.5 Flash model page lists it as a supported Europe location. It is not yet a
@@ -97,18 +99,19 @@ billing is enabled. The source page is:
 The model probe's final live evidence is in `docs/preflight.json`:
 
 ```text
-list_url: https://europe-west2-aiplatform.googleapis.com/v1/projects/jennycruzy-53677/locations/europe-west2/models
+list_url: https://europe-west2-aiplatform.googleapis.com/v1/projects/appeal-fleet-2026-0825/locations/europe-west2/models
 http_status: 403
 error: PERMISSION_DENIED: BILLING_DISABLED
 ```
 
-The Mac has Google Cloud CLI `581.0.0` and a user ADC credential. The ADC quota
-project was set locally to `jennycruzy-53677`; this changed only the local ADC
-configuration. No service-account key was created or stored.
+The Mac has Google Cloud CLI `581.0.0` and a user ADC credential for the
+Devpost-linked Google account. The ADC quota project was set locally to
+`appeal-fleet-2026-0825`; this changed only the local ADC configuration. No
+service-account key was created or stored.
 
 ## Gaps
 
-- Billing is disabled on `jennycruzy-53677`; Agent Platform model discovery
+- Billing is disabled on `appeal-fleet-2026-0825`; Agent Platform model discovery
   cannot be verified until a billing account is attached.
 - `europe-west2` is only a documented probe location, not an accepted final
   residency decision. The final region must be recorded after the live model
@@ -130,9 +133,9 @@ configuration. No service-account key was created or stored.
 
 ## Blockers
 
-1. Attach billing to the confirmed `jennycruzy-53677` project. The API returned
-   the Google billing URL in the live error; the agent cannot choose a billing
-   account or incur financial commitments on the user's behalf.
+1. Attach billing to `appeal-fleet-2026-0825`. The API returned the Google
+   billing URL in the live error; the agent cannot choose a billing account or
+   incur financial commitments on the user's behalf.
 2. After billing propagates, complete the live Agent Platform model-list and
    publisher-model probes using the current discovery/SDK interface. Do not
    hardcode a model ID.
