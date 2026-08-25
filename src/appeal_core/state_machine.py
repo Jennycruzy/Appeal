@@ -108,7 +108,7 @@ def _string(value: JsonValue | None, label: str) -> str:
 def _object(value: JsonValue | None, label: str) -> JsonObject:
     if not isinstance(value, dict):
         raise ValueError(f"{label} must be an object")
-    return cast(JsonObject, value)
+    return value
 
 
 def _optional_int(value: JsonValue | None, label: str) -> int | None:

@@ -28,15 +28,14 @@ does not claim that Phase 1 has started or that Phase 0 is complete.
   abandoned-deadline state, duplicate delivery idempotency and conflict,
   verified versus unverified deadlines, serialization, and stable fingerprints.
 - `python3.12 -m py_compile` passed for the core and test modules.
+- `.venv/bin/mypy --strict src/appeal_core` passed with mypy `2.3.1`.
+- `scripts/verify_ledger.py` and the `make verify-ledger` target are present;
+  they fail when the requested ledger does not exist or its chain is invalid.
 
 ## Gaps
 
-- `mypy` is not installed on this Mac, so the strict static check has not yet
-  run. The repository includes strict configuration in `pyproject.toml`; the
-  dependency must be installed before the CI gate can be meaningful.
 - The case state machine has no persistence adapter yet. Firestore integration
   remains a cloud-dependent task after Phase 0 model and component discovery.
-- The receipt ledger and hash-chain verifier are not yet implemented.
 
 ## Blockers
 
