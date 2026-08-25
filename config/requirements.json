@@ -1,0 +1,38 @@
+{
+  "python": {
+    "required_major": 3,
+    "required_minor": 12
+  },
+  "gemini": {
+    "minimum_major": 3,
+    "minimum_minor": 5,
+    "required_generation_method": "generateContent"
+  },
+  "google_cloud": {
+    "project_env_vars": [
+      "GOOGLE_CLOUD_PROJECT",
+      "GCLOUD_PROJECT"
+    ],
+    "region_env_vars": [
+      "APPEAL_GCP_REGION",
+      "GOOGLE_CLOUD_LOCATION"
+    ]
+  },
+  "pas": {
+    "selection": "latest_published_release",
+    "package_list_url": "https://hl7.org/fhir/us/davinci-pas/package-list.json",
+    "ig_url": "https://hl7.org/fhir/us/davinci-pas/",
+    "cms_context_url": "https://www.cms.gov/priorities/burden-reduction/overview/interoperability/prior-authorization-and-interoperability"
+  },
+  "synthea": {
+    "releases_api_url": "https://api.github.com/repos/synthetichealth/synthea/releases?per_page=50",
+    "license_api_url": "https://api.github.com/repos/synthetichealth/synthea/license",
+    "repository_url": "https://github.com/synthetichealth/synthea",
+    "seed": 24082501
+  },
+  "discovery": {
+    "google_api_catalog_url": "https://discovery.googleapis.com/discovery/v1/apis?preferred=true",
+    "aiplatform_discovery_url": "https://discovery.googleapis.com/discovery/v1/apis/aiplatform/v1/rest",
+    "serviceusage_discovery_url": "https://discovery.googleapis.com/discovery/v1/apis/serviceusage/v1/rest"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "expected_open_cases": 6,
+  "sentinel_runs_per_day": 4,
+  "expected_case_transitions_per_case": 12,
+  "expected_external_submissions_per_case": 3,
+  "expected_model_calls_per_case": 12,
+  "expected_firestore_reads_per_sentinel_run": 10,
+  "expected_firestore_writes_per_transition": 3,
+  "expected_pubsub_messages_per_transition": 1,
+  "quota_safety_fraction": 0.5
+}

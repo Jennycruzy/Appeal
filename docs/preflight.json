@@ -1,0 +1,537 @@
+{
+  "checks": [
+    {
+      "evidence": {
+        "required": "3.12+",
+        "version": "3.12.13"
+      },
+      "fallback": "Install Python 3.12 or newer before running typed core packages.",
+      "name": "Python runtime",
+      "status": "pass",
+      "summary": "Python 3.12.13 detected."
+    },
+    {
+      "evidence": {
+        "available": true,
+        "executable": "git"
+      },
+      "fallback": "Install the missing tool before corpus or deployment work.",
+      "name": "Local tool: git",
+      "status": "pass",
+      "summary": "git is available on PATH."
+    },
+    {
+      "evidence": {
+        "available": true,
+        "executable": "curl"
+      },
+      "fallback": "Install the missing tool before corpus or deployment work.",
+      "name": "Local tool: curl",
+      "status": "pass",
+      "summary": "curl is available on PATH."
+    },
+    {
+      "evidence": {
+        "available": true,
+        "project_detected": "jennycruzy-53677"
+      },
+      "fallback": "Configure ADC with a user or workload identity; never commit a service-account key.",
+      "name": "Application Default Credentials",
+      "status": "pass",
+      "summary": "ADC available through the gcloud CLI"
+    },
+    {
+      "evidence": {
+        "entry_count": 312,
+        "error": "",
+        "url": "https://discovery.googleapis.com/discovery/v1/apis?preferred=true"
+      },
+      "fallback": "Use the live discovery catalog rather than a remembered API surface.",
+      "name": "Google API discovery catalog",
+      "status": "pass",
+      "summary": "Live Google API catalog retrieved."
+    },
+    {
+      "evidence": {
+        "discovery_url": "https://discovery.googleapis.com/discovery/v1/apis/aiplatform/v1/rest",
+        "location": "",
+        "minimum": "Gemini 3.5",
+        "project": "jennycruzy-53677",
+        "reason": "Google Cloud project or region is not configured"
+      },
+      "fallback": "Configure Google Cloud project, region, and Application Default Credentials before proceeding.",
+      "name": "Gemini model discovery",
+      "status": "blocked",
+      "summary": "Cannot list regional Gemini models without a project and region."
+    },
+    {
+      "evidence": {
+        "catalog_terms": [
+          "agent runtime",
+          "agent engine",
+          "reasoning engine"
+        ],
+        "component_id": "agent_runtime",
+        "probe": "service enablement and component endpoint probing requires a discovered service binding",
+        "project": "jennycruzy-53677",
+        "public_discovery_matches": []
+      },
+      "fallback": "ADK service on Cloud Run behind the project policy enforcement point",
+      "name": "Agent Runtime",
+      "status": "not_checked",
+      "summary": "A public catalog match was recorded, but no authenticated component binding was discovered."
+    },
+    {
+      "evidence": {
+        "catalog_terms": [
+          "agent sessions",
+          "sessions"
+        ],
+        "component_id": "sessions",
+        "probe": "service enablement and component endpoint probing requires a discovered service binding",
+        "project": "jennycruzy-53677",
+        "public_discovery_matches": [
+          {
+            "discovery_rest_url": "https://cloudshell.googleapis.com/$discovery/rest?version=v1",
+            "name": "cloudshell",
+            "title": "Cloud Shell API",
+            "version": "v1"
+          }
+        ]
+      },
+      "fallback": "Firestore case sessions with explicit state-machine transitions",
+      "name": "Sessions",
+      "status": "not_checked",
+      "summary": "A public catalog match was recorded, but no authenticated component binding was discovered."
+    },
+    {
+      "evidence": {
+        "catalog_terms": [
+          "memory bank",
+          "agent memory"
+        ],
+        "component_id": "memory_bank",
+        "probe": "service enablement and component endpoint probing requires a discovered service binding",
+        "project": "jennycruzy-53677",
+        "public_discovery_matches": []
+      },
+      "fallback": "Per-case Firestore memory revisions with tenant-scoped IAM",
+      "name": "Memory Bank",
+      "status": "not_checked",
+      "summary": "A public catalog match was recorded, but no authenticated component binding was discovered."
+    },
+    {
+      "evidence": {
+        "catalog_terms": [
+          "agent registry",
+          "agent catalog"
+        ],
+        "component_id": "agent_registry",
+        "probe": "service enablement and component endpoint probing requires a discovered service binding",
+        "project": "jennycruzy-53677",
+        "public_discovery_matches": [
+          {
+            "discovery_rest_url": "https://agentregistry.googleapis.com/$discovery/rest?version=v1",
+            "name": "agentregistry",
+            "title": "Agent Registry API",
+            "version": "v1"
+          }
+        ]
+      },
+      "fallback": "Versioned registry service backed by Firestore and protected by IAM",
+      "name": "Agent Registry",
+      "status": "not_checked",
+      "summary": "A public catalog match was recorded, but no authenticated component binding was discovered."
+    },
+    {
+      "evidence": {
+        "catalog_terms": [
+          "agent identity",
+          "agent identities"
+        ],
+        "component_id": "agent_identity",
+        "probe": "service enablement and component endpoint probing requires a discovered service binding",
+        "project": "jennycruzy-53677",
+        "public_discovery_matches": [
+          {
+            "discovery_rest_url": "https://agentidentity.googleapis.com/$discovery/rest?version=v1",
+            "name": "agentidentity",
+            "title": "Agent Identity API",
+            "version": "v1"
+          },
+          {
+            "discovery_rest_url": "https://agentidentitycredentials.googleapis.com/$discovery/rest?version=v1",
+            "name": "agentidentitycredentials",
+            "title": "Agent Identity Credentials API",
+            "version": "v1"
+          }
+        ]
+      },
+      "fallback": "Dedicated Google service accounts with explicit IAM bindings",
+      "name": "Agent Identity",
+      "status": "not_checked",
+      "summary": "A public catalog match was recorded, but no authenticated component binding was discovered."
+    },
+    {
+      "evidence": {
+        "catalog_terms": [
+          "agent gateway",
+          "agent tool gateway"
+        ],
+        "component_id": "agent_gateway",
+        "probe": "service enablement and component endpoint probing requires a discovered service binding",
+        "project": "jennycruzy-53677",
+        "public_discovery_matches": []
+      },
+      "fallback": "Dedicated policy enforcement service for every tool call",
+      "name": "Agent Gateway",
+      "status": "not_checked",
+      "summary": "A public catalog match was recorded, but no authenticated component binding was discovered."
+    },
+    {
+      "evidence": {
+        "catalog_terms": [
+          "agent policies",
+          "agent policy"
+        ],
+        "component_id": "agent_policies",
+        "probe": "service enablement and component endpoint probing requires a discovered service binding",
+        "project": "jennycruzy-53677",
+        "public_discovery_matches": []
+      },
+      "fallback": "Versioned policy files enforced by the project policy enforcement point",
+      "name": "Agent Policies",
+      "status": "not_checked",
+      "summary": "A public catalog match was recorded, but no authenticated component binding was discovered."
+    },
+    {
+      "evidence": {
+        "catalog_terms": [
+          "model armor",
+          "model safety"
+        ],
+        "component_id": "model_armor",
+        "probe": "service enablement and component endpoint probing requires a discovered service binding",
+        "project": "jennycruzy-53677",
+        "public_discovery_matches": []
+      },
+      "fallback": "Self-hosted inbound and egress inspection with an explicit deny-by-default policy",
+      "name": "Model Armor",
+      "status": "not_checked",
+      "summary": "A public catalog match was recorded, but no authenticated component binding was discovered."
+    },
+    {
+      "evidence": {
+        "catalog_terms": [
+          "code execution",
+          "sandboxed code execution"
+        ],
+        "component_id": "code_execution",
+        "probe": "service enablement and component endpoint probing requires a discovered service binding",
+        "project": "jennycruzy-53677",
+        "public_discovery_matches": []
+      },
+      "fallback": "No code execution until a separately isolated sandbox is approved",
+      "name": "Code Execution",
+      "status": "not_checked",
+      "summary": "A public catalog match was recorded, but no authenticated component binding was discovered."
+    },
+    {
+      "evidence": {
+        "catalog_terms": [
+          "agent evaluation",
+          "evaluation"
+        ],
+        "component_id": "agent_evaluation",
+        "probe": "service enablement and component endpoint probing requires a discovered service binding",
+        "project": "jennycruzy-53677",
+        "public_discovery_matches": []
+      },
+      "fallback": "Committed deterministic evaluation harness with objective graders",
+      "name": "Agent Evaluation",
+      "status": "not_checked",
+      "summary": "A public catalog match was recorded, but no authenticated component binding was discovered."
+    },
+    {
+      "evidence": {
+        "catalog_terms": [
+          "agent simulation",
+          "simulation"
+        ],
+        "component_id": "agent_simulation",
+        "probe": "service enablement and component endpoint probing requires a discovered service binding",
+        "project": "jennycruzy-53677",
+        "public_discovery_matches": [
+          {
+            "discovery_rest_url": "https://policysimulator.googleapis.com/$discovery/rest?version=v1",
+            "name": "policysimulator",
+            "title": "Policy Simulator API",
+            "version": "v1"
+          }
+        ]
+      },
+      "fallback": "Local deterministic scenario runner with all outputs receipt-recorded",
+      "name": "Agent Simulation",
+      "status": "not_checked",
+      "summary": "A public catalog match was recorded, but no authenticated component binding was discovered."
+    },
+    {
+      "evidence": {
+        "discovery_url": "https://discovery.googleapis.com/discovery/v1/apis/serviceusage/v1/rest",
+        "enabled_service_count": 39,
+        "enabled_services": [
+          "projects/346649480730/services/analyticshub.googleapis.com",
+          "projects/346649480730/services/appengine.googleapis.com",
+          "projects/346649480730/services/bigquery.googleapis.com",
+          "projects/346649480730/services/bigqueryconnection.googleapis.com",
+          "projects/346649480730/services/bigquerydatapolicy.googleapis.com",
+          "projects/346649480730/services/bigquerydatatransfer.googleapis.com",
+          "projects/346649480730/services/bigquerymigration.googleapis.com",
+          "projects/346649480730/services/bigqueryreservation.googleapis.com",
+          "projects/346649480730/services/bigquerystorage.googleapis.com",
+          "projects/346649480730/services/calendar-json.googleapis.com",
+          "projects/346649480730/services/cloudaicompanion.googleapis.com",
+          "projects/346649480730/services/cloudapis.googleapis.com",
+          "projects/346649480730/services/cloudresourcemanager.googleapis.com",
+          "projects/346649480730/services/cloudtrace.googleapis.com",
+          "projects/346649480730/services/dataform.googleapis.com",
+          "projects/346649480730/services/dataplex.googleapis.com",
+          "projects/346649480730/services/datastore.googleapis.com",
+          "projects/346649480730/services/fcm.googleapis.com",
+          "projects/346649480730/services/fcmregistrations.googleapis.com",
+          "projects/346649480730/services/firebase.googleapis.com",
+          "projects/346649480730/services/firebaseappdistribution.googleapis.com",
+          "projects/346649480730/services/firebasehosting.googleapis.com",
+          "projects/346649480730/services/firebaseinstallations.googleapis.com",
+          "projects/346649480730/services/firebaseremoteconfig.googleapis.com",
+          "projects/346649480730/services/firebaseremoteconfigrealtime.googleapis.com",
+          "projects/346649480730/services/firebaserules.googleapis.com",
+          "projects/346649480730/services/identitytoolkit.googleapis.com",
+          "projects/346649480730/services/logging.googleapis.com",
+          "projects/346649480730/services/monitoring.googleapis.com",
+          "projects/346649480730/services/pubsub.googleapis.com",
+          "projects/346649480730/services/runtimeconfig.googleapis.com",
+          "projects/346649480730/services/securetoken.googleapis.com",
+          "projects/346649480730/services/servicemanagement.googleapis.com",
+          "projects/346649480730/services/serviceusage.googleapis.com",
+          "projects/346649480730/services/sql-component.googleapis.com",
+          "projects/346649480730/services/storage-api.googleapis.com",
+          "projects/346649480730/services/storage-component.googleapis.com",
+          "projects/346649480730/services/storage.googleapis.com",
+          "projects/346649480730/services/testing.googleapis.com"
+        ],
+        "etag": "",
+        "http_status": 200,
+        "list_url": "https://serviceusage.googleapis.com/v1/projects/jennycruzy-53677/services?filter=state:ENABLED&pageSize=200",
+        "project": "jennycruzy-53677"
+      },
+      "name": "Enabled Google APIs",
+      "status": "pass",
+      "summary": "Enabled services were listed from the live project."
+    },
+    {
+      "evidence": {
+        "memory_bank_generation_region": "not discovered",
+        "model_region": "",
+        "project": "jennycruzy-53677",
+        "requested_region": ""
+      },
+      "fallback": "Configure the target region and probe Memory Bank metadata before making a sovereignty claim.",
+      "name": "Region and residency",
+      "status": "blocked",
+      "summary": "Project region is not configured, and Memory Bank residency cannot be verified."
+    },
+    {
+      "evidence": {
+        "discovery_url": "https://discovery.googleapis.com/discovery/v1/apis/serviceusage/v1/rest",
+        "expected_load": {
+          "daily_case_transitions_upper_bound": 72,
+          "daily_model_calls_upper_bound": 288,
+          "open_cases": 6,
+          "sentinel_runs_per_day": 4
+        },
+        "project": "jennycruzy-53677",
+        "reason": "quota metric discovery is deferred until the live service bindings are identified",
+        "services_to_probe": [
+          "aiplatform.googleapis.com",
+          "firestore.googleapis.com"
+        ]
+      },
+      "fallback": "Query consumer quota metrics for each discovered service before deployment.",
+      "name": "Model, Agent Runtime, and Firestore quotas",
+      "status": "not_checked",
+      "summary": "The load arithmetic is recorded, but quota ceilings are not yet verified."
+    },
+    {
+      "evidence": {
+        "available_versions": [
+          "current",
+          "2.2.1",
+          "2.2.0",
+          "2.2.0-ballot",
+          "2.1.0",
+          "2.1.0-preview",
+          "2.0.1",
+          "1.2.0-ballot",
+          "1.1.0",
+          "1.0.0",
+          "0.1.0"
+        ],
+        "cms_context_etag": "\"7cbbd3b9688482f7e25174f6e5287f6d:1723479282.481221\"",
+        "cms_context_status": 404,
+        "cms_context_url": "https://www.cms.gov/priorities/burden-reduction/overview/interoperability/prior-authorization-and-interoperability",
+        "ig_url": "https://hl7.org/fhir/us/davinci-pas/",
+        "package_list_etag": "\"e10-64df936948f99\"",
+        "package_list_status": 200,
+        "package_list_url": "https://hl7.org/fhir/us/davinci-pas/package-list.json",
+        "selected": {
+          "corrections": [
+            {
+              "date": "2026-03-27",
+              "path": "hl7.fhir.us.davinci-pas-2.2.0.zip",
+              "version": "2.2.0"
+            }
+          ],
+          "current": true,
+          "date": "2026-03-27",
+          "desc": "STU 2.2.1 technical correction",
+          "descmd": "STU 2.2.1 technical corrections.  See [list of changes](http://hl7.org/fhir/us/davinci-pas/2.2.1/changelog.html#release-221)",
+          "fhirversion": "4.0.1",
+          "path": "http://hl7.org/fhir/us/davinci-pas/2.2.1",
+          "sequence": "STU 2",
+          "status": "trial-use",
+          "version": "2.2.1"
+        },
+        "selection_reason": "latest published release from HL7 package-list.json; CMS page retained for comparison"
+      },
+      "name": "Da Vinci PAS IG discovery",
+      "status": "pass",
+      "summary": "A published PAS version was selected from the live HL7 package list."
+    },
+    {
+      "evidence": {
+        "license_api_url": "https://api.github.com/repos/synthetichealth/synthea/license",
+        "license_etag": "W/\"63c4fa47ff386d72a91aacd5ab28c50b529530c2bbe4bac70e3f2fa4b41f2aab\"",
+        "license_name": "Apache License 2.0",
+        "license_spdx_id": "Apache-2.0",
+        "license_status": 200,
+        "releases_api_url": "https://api.github.com/repos/synthetichealth/synthea/releases?per_page=50",
+        "releases_etag": "W/\"78d790b8456c93d52f18dbd6dfb1c05e1907572cd29afb485fb8bd2822e9ae32\"",
+        "releases_status": 200,
+        "repository_url": "https://github.com/synthetichealth/synthea",
+        "seed": 24082501,
+        "selected_release_published_at": "2026-03-05T22:37:08Z",
+        "selected_release_tag": "v4.0.0",
+        "selected_release_url": "https://github.com/synthetichealth/synthea/releases/tag/v4.0.0"
+      },
+      "name": "Synthea availability and licence",
+      "status": "pass",
+      "summary": "Synthea release and licence metadata were discovered from the live repository."
+    },
+    {
+      "evidence": {
+        "configured_automated_fetch_authorized": false,
+        "fetch_method": "GET with If-None-Match and disk/GCS cache; extract only cited spans",
+        "index_etag": "",
+        "index_status": -1,
+        "index_url": "https://www.aetna.com/cpb/medical/data/1_99/0001.html",
+        "payer": "Aetna",
+        "policy_fetch_performed": false,
+        "robots_allows_index": false,
+        "robots_etag": "",
+        "robots_status": 403,
+        "robots_url": "https://www.aetna.com/robots.txt",
+        "source_id": "aetna_cpb",
+        "terms_etag": "",
+        "terms_interpretation": "manual legal/terms review required; preflight does not infer permission from HTTP success",
+        "terms_status": 403,
+        "terms_url": "https://www.aetna.com/legal-notices.html"
+      },
+      "fallback": "Use a source with permitted automated access or obtain a documented manual-fetch provenance path.",
+      "name": "Policy source: aetna_cpb",
+      "status": "blocked",
+      "summary": "Policy fetching is not permitted until robots access is confirmed."
+    },
+    {
+      "evidence": {
+        "configured_automated_fetch_authorized": false,
+        "fetch_method": "GET with If-None-Match and disk/GCS cache; extract only cited spans",
+        "index_etag": "",
+        "index_status": -1,
+        "index_url": "https://www.cigna.com/health-care-providers/coverage-and-claims/medical-clinical-policy-bulletins",
+        "payer": "Cigna Healthcare",
+        "policy_fetch_performed": false,
+        "robots_allows_index": false,
+        "robots_etag": "",
+        "robots_status": -1,
+        "robots_url": "https://www.cigna.com/robots.txt",
+        "source_id": "cigna_policy",
+        "terms_etag": "",
+        "terms_interpretation": "manual legal/terms review required; preflight does not infer permission from HTTP success",
+        "terms_status": -1,
+        "terms_url": "https://www.cigna.com/legal/members"
+      },
+      "fallback": "Use a source with permitted automated access or obtain a documented manual-fetch provenance path.",
+      "name": "Policy source: cigna_policy",
+      "status": "blocked",
+      "summary": "Policy fetching is not permitted until robots access is confirmed."
+    },
+    {
+      "evidence": {
+        "configured_automated_fetch_authorized": false,
+        "fetch_method": "GET with If-None-Match and disk/GCS cache; extract only cited spans",
+        "index_etag": "",
+        "index_status": -1,
+        "index_url": "https://www.uhcprovider.com/en/policies-protocols/clinical-policies/clinical-policy.html",
+        "payer": "UnitedHealthcare",
+        "policy_fetch_performed": false,
+        "robots_allows_index": true,
+        "robots_etag": "\"150-6547cd97c256b\"",
+        "robots_status": 200,
+        "robots_url": "https://www.uhcprovider.com/robots.txt",
+        "source_id": "uhc_clinical_policy",
+        "terms_etag": "\"1dbf-659d7faab23c9\"",
+        "terms_interpretation": "manual legal/terms review required; preflight does not infer permission from HTTP success",
+        "terms_status": 200,
+        "terms_url": "https://www.uhcprovider.com/en/legal/terms-of-use.html"
+      },
+      "fallback": "Record explicit terms permission before enabling automated document ingestion.",
+      "name": "Policy source: uhc_clinical_policy",
+      "status": "warning",
+      "summary": "robots.txt permits the index path; terms permission remains a human review item."
+    }
+  ],
+  "generated_at": "2026-08-25T05:34:42.045063Z",
+  "git_commit": "unknown",
+  "policy_fetch_policy": "No payer policy document was fetched by Phase 0; robots and terms were checked before any future fetch.",
+  "project": "jennycruzy-53677",
+  "region": "",
+  "schema_version": "0.1",
+  "security_note": "No credential, access token, private key, or secret is written to this artifact.",
+  "summary": {
+    "blocker_count": 4,
+    "blockers": [
+      "Gemini model discovery",
+      "Region and residency",
+      "Policy source: aetna_cpb",
+      "Policy source: cigna_policy"
+    ],
+    "pass_count": 8,
+    "warning_count": 13,
+    "warnings": [
+      "Agent Runtime",
+      "Sessions",
+      "Memory Bank",
+      "Agent Registry",
+      "Agent Identity",
+      "Agent Gateway",
+      "Agent Policies",
+      "Model Armor",
+      "Code Execution",
+      "Agent Evaluation",
+      "Agent Simulation",
+      "Model, Agent Runtime, and Firestore quotas",
+      "Policy source: uhc_clinical_policy"
+    ]
+  }
+}

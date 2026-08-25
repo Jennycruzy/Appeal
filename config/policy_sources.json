@@ -1,0 +1,31 @@
+{
+  "sources": [
+    {
+      "id": "aetna_cpb",
+      "payer": "Aetna",
+      "index_url": "https://www.aetna.com/cpb/medical/data/1_99/0001.html",
+      "terms_url": "https://www.aetna.com/legal-notices.html",
+      "robots_url": "https://www.aetna.com/robots.txt",
+      "fetch_method": "GET with If-None-Match and disk/GCS cache; extract only cited spans",
+      "automated_fetch_authorized": false
+    },
+    {
+      "id": "cigna_policy",
+      "payer": "Cigna Healthcare",
+      "index_url": "https://www.cigna.com/health-care-providers/coverage-and-claims/medical-clinical-policy-bulletins",
+      "terms_url": "https://www.cigna.com/legal/members",
+      "robots_url": "https://www.cigna.com/robots.txt",
+      "fetch_method": "GET with If-None-Match and disk/GCS cache; extract only cited spans",
+      "automated_fetch_authorized": false
+    },
+    {
+      "id": "uhc_clinical_policy",
+      "payer": "UnitedHealthcare",
+      "index_url": "https://www.uhcprovider.com/en/policies-protocols/clinical-policies/clinical-policy.html",
+      "terms_url": "https://www.uhcprovider.com/en/legal/terms-of-use.html",
+      "robots_url": "https://www.uhcprovider.com/robots.txt",
+      "fetch_method": "GET with If-None-Match and disk/GCS cache; extract only cited spans",
+      "automated_fetch_authorized": false
+    }
+  ]
+}

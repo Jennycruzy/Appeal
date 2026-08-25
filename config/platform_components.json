@@ -1,0 +1,70 @@
+{
+  "components": [
+    {
+      "id": "agent_runtime",
+      "label": "Agent Runtime",
+      "catalog_terms": ["agent runtime", "agent engine", "reasoning engine"],
+      "fallback": "ADK service on Cloud Run behind the project policy enforcement point"
+    },
+    {
+      "id": "sessions",
+      "label": "Sessions",
+      "catalog_terms": ["agent sessions", "sessions"],
+      "fallback": "Firestore case sessions with explicit state-machine transitions"
+    },
+    {
+      "id": "memory_bank",
+      "label": "Memory Bank",
+      "catalog_terms": ["memory bank", "agent memory"],
+      "fallback": "Per-case Firestore memory revisions with tenant-scoped IAM"
+    },
+    {
+      "id": "agent_registry",
+      "label": "Agent Registry",
+      "catalog_terms": ["agent registry", "agent catalog"],
+      "fallback": "Versioned registry service backed by Firestore and protected by IAM"
+    },
+    {
+      "id": "agent_identity",
+      "label": "Agent Identity",
+      "catalog_terms": ["agent identity", "agent identities"],
+      "fallback": "Dedicated Google service accounts with explicit IAM bindings"
+    },
+    {
+      "id": "agent_gateway",
+      "label": "Agent Gateway",
+      "catalog_terms": ["agent gateway", "agent tool gateway"],
+      "fallback": "Dedicated policy enforcement service for every tool call"
+    },
+    {
+      "id": "agent_policies",
+      "label": "Agent Policies",
+      "catalog_terms": ["agent policies", "agent policy"],
+      "fallback": "Versioned policy files enforced by the project policy enforcement point"
+    },
+    {
+      "id": "model_armor",
+      "label": "Model Armor",
+      "catalog_terms": ["model armor", "model safety"],
+      "fallback": "Self-hosted inbound and egress inspection with an explicit deny-by-default policy"
+    },
+    {
+      "id": "code_execution",
+      "label": "Code Execution",
+      "catalog_terms": ["code execution", "sandboxed code execution"],
+      "fallback": "No code execution until a separately isolated sandbox is approved"
+    },
+    {
+      "id": "agent_evaluation",
+      "label": "Agent Evaluation",
+      "catalog_terms": ["agent evaluation", "evaluation"],
+      "fallback": "Committed deterministic evaluation harness with objective graders"
+    },
+    {
+      "id": "agent_simulation",
+      "label": "Agent Simulation",
+      "catalog_terms": ["agent simulation", "simulation"],
+      "fallback": "Local deterministic scenario runner with all outputs receipt-recorded"
+    }
+  ]
+}
