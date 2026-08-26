@@ -58,11 +58,37 @@ comparison results.
   the metadata-only result is in `evidence/ny-dfs-export-acquisition.json`.
   Identifier candidates and reuse status keep it out of the accepted evaluation
   corpus.
+
 - Synthea v4.0.0, the JAR digest, both seeds, fixed dates, California geography,
   and the recorder are now pinned. A bounded five-patient California fixed-end
   smoke run passed twice with an identical patient-bundle fingerprint. The full
   300-patient manifest and comparison are still outstanding. Details are in
   `docs/audits/precredit-synthea.md` and `evidence/synthea-smoke.json`.
+
+### NY DFS schema mismatch — resume here
+
+The NY DFS website displays an `Appeal Type` filter, but the downloaded workbook
+contains `Denial Reason` instead and does not contain an `Appeal Type` column.
+The category counts also differ between the rendered page and the workbook, so
+the two fields must not be treated as equivalent from naming alone. Do not add a
+guessed column or rename `Denial Reason` to `Appeal Type`.
+
+When resuming, use this order:
+
+1. Keep `peasadata.xlsx` unchanged in Downloads and keep its recorded hash.
+2. Obtain official confirmation or documentation explaining whether the export's
+   `Denial Reason` is the source equivalent of the archive's `Appeal Type`.
+   A comparison of a small set of website-filtered rows is useful evidence, but
+   it is not a substitute for confirmation if the counts remain different.
+3. In the application schema, keep `appeal_type` nullable and use
+   `denial_reason` as the only currently verified category. Any mapping must be
+   recorded as verified or unresolved; never silently coerce the names.
+4. Complete the privacy review of the 140 physical-address-shaped values, 8
+   date-of-birth labels, and 9 member-ID labels, and resolve the unresolved reuse
+   position before accepting any rows.
+5. Only after those checks, select a reviewed subset relevant to prior
+   authorization and run the real-denial evaluation. Until then the counts stay
+   at zero Appeal evaluations and zero regulator-ground-truth comparisons.
 
 ### Reproducibility investigation
 
@@ -118,15 +144,16 @@ threads/JVM memory. The full population must not be restarted blindly.
    terms, and hash recorded; it has not been evaluated. The NY DFS export is a
    larger local candidate, but its 140 physical-address-shaped summary values,
    date-of-birth/member-ID labels, and unresolved reuse position must be
-   reviewed before any row is accepted. Continue with privacy/reuse review,
-   the separate California Department of Insurance IMR database, and another
-   reusable case-level source if needed. The tested DMHC and NY DFS routes
-   return access errors, and the CDI link redirects into an unavailable/legacy
-   application; all findings and URLs are documented in
-   `docs/audits/precredit-imr.md`. Do not claim real regulator evaluation until
-   Appeal has run against an accepted case set and the comparison is recorded.
-   Pennsylvania, CMS, Oregon, and similar aggregate reports are calibration
-   inputs only.
+   reviewed before any row is accepted. Its `Denial Reason` field must not be
+   called `Appeal Type` until the source mapping is verified; see the resume
+   instructions above. Continue with privacy/reuse review, the separate
+   California Department of Insurance IMR database, and another reusable
+   case-level source if needed. The tested DMHC and NY DFS routes return access
+   errors, and the CDI link redirects into an unavailable/legacy application;
+   all findings and URLs are documented in `docs/audits/precredit-imr.md`. Do
+   not claim real regulator evaluation until Appeal has run against an accepted
+   case set and the comparison is recorded. Pennsylvania, CMS, Oregon, and
+   similar aggregate reports are calibration inputs only.
 4. Complete policy terms review and ingest only permitted, ETag-backed policy
    documents. Extract traceable criterion trees and perform human validation.
 5. Re-run cloud preflight after billing is active. Discover the model ID and
