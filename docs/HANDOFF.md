@@ -15,6 +15,12 @@ No real PHI, payer credential, member ID, or service-account key was used or
 added to the repository. Raw synthetic FHIR output is kept only in the ignored
 `.cache/synthea/` directory.
 
+The real-denial workstream is still explicitly empty: no DMHC, CDI, NY DFS,
+Michigan, Texas, Washington, or Pennsylvania case records have been ingested or
+evaluated. The project must not claim real regulator ground truth until a source
+file or export has been retrieved, its schema and redaction reviewed, its terms
+checked, and its hash recorded in a corpus manifest.
+
 ## Done and verified
 
 - Live discovery scaffolding and the current blocked preflight artifact are in
@@ -89,11 +95,14 @@ threads/JVM memory. The full population must not be restarted blindly.
    `evidence/corpus.json` with a passing patient-bundle comparison.
 2. Inspect the generated evidence distribution and then pin and run HAPI FHIR
    locally. Do not hand-edit patient records.
-3. Resolve the DMHC access path or obtain the unmodified file through an
-   official browser/manual route; inspect its case-level schema before claiming
-   real regulator ground truth. The tested routes currently return Cloudflare
-   403, documented in `docs/audits/precredit-imr.md`; this is not marked as
-   unavailable.
+3. Resolve the real-denial source. Try the separate California Department of
+   Insurance IMR database first, then the New York DFS External Appeals yearly
+   export, then a documented Michigan PRIRA sample. The tested DMHC and NY DFS
+   routes currently return access errors, and the CDI link redirects into an
+   unavailable/legacy application; all findings and URLs are documented in
+   `docs/audits/precredit-imr.md`. Do not claim any source is ingested until its
+   bytes, schema, privacy/redaction, terms, and hash are recorded. Pennsylvania,
+   CMS, Oregon, and similar aggregate reports are calibration inputs only.
 4. Complete policy terms review and ingest only permitted, ETag-backed policy
    documents. Extract traceable criterion trees and perform human validation.
 5. Re-run cloud preflight after billing is active. Discover the model ID and
@@ -103,6 +112,7 @@ threads/JVM memory. The full population must not be restarted blindly.
    identities/tools, event spine, Memory Bank, governance boundary, Gemma,
    observability, console, evaluation, and seeded demo.
 7. The Phase 9 real-denial run and mandatory human-choice stop have not happened.
+   The stop cannot begin until an accepted regulator case corpus exists.
 
 ## Push status
 

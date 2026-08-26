@@ -81,6 +81,110 @@ an official response from the DMHC Open Data contact at
 hashed, and recorded with the original URL, retrieval date, and licence before
 any analysis. Until then, the case-level corpus remains pending.
 
+## Alternative regulator sources investigated
+
+The DMHC access failure is being treated as an unresolved retrieval blocker, not
+as permission to claim that the data was ingested. Separate public regulator
+sources were investigated on 2026-08-26. None has been accepted into the
+corpus yet.
+
+### New York Department of Financial Services — primary fallback candidate
+
+The [official External Appeals Searchable Archive](https://www.dfs.ny.gov/public-appeal/search)
+describes a database of closed New York external appeals with case summaries and
+outcomes. The published fields include diagnosis, treatment, health plan,
+decision, appeal type, coverage type, age range, decision year, appeal agent,
+case number, summary, and references. The official page advertises an
+all-data-by-year Excel export and its rendered result count was 47,682 records
+when discovered. The official [external-appeal description](https://www.dfs.ny.gov/complaints/file_external_appeal)
+confirms that these reviews concern denials based on medical necessity,
+experimental/investigational treatment, or out-of-network care, and that the
+external agent may uphold or overturn the denial.
+
+This is the strongest substitute found for regulator-determined denial
+rationales and outcomes. It is not automatically equivalent to a source of
+original denial letters: the archive exposes summaries, and the presence of a
+prior-authorization denial must be established from its `Appeal Type`, treatment,
+and summary fields rather than assumed. It also does not provide the claimant's
+clinical chart. If accepted, it will be used for external evaluation of denial
+language and outcome only; Synthea remains the separate synthetic chart corpus.
+
+The official archive page returned HTTP 403 with a Cloudflare challenge to the
+current command-line environment on 2026-08-26. No Excel export or case bytes
+were downloaded. The [DFS privacy policy](https://www.dfs.ny.gov/privacy)
+states that browsing or downloading publicly available information is generally
+available, but that is not a dataset redistribution licence. A human terms and
+reuse review, followed by a manual/browser export or an official access path,
+is still required before ingestion.
+
+### California Department of Insurance — California-specific candidate
+
+The [California Department of Insurance health page](https://www.insurance.ca.gov/01-consumers/110-health/)
+links to an Independent Medical Review Statistics Searchable Database. The
+California statute describes a searchable, privacy-protected database of
+director decisions adopting independent review determinations, including
+diagnosis, disputed service, review type, reviewer criteria, final result, year,
+and a detailed case summary. This is a distinct regulator and host from DMHC.
+
+The current CDI link resolves to the Oracle APEX application `f?p=192`. A
+direct request from this environment returned a redirect to `LOGIN_DESKTOP`,
+while the older `/IMR/faces/search` URL returned HTTP 404. No case record or
+export was obtained, and statutory publication does not by itself establish a
+licence to redistribute the records. CDI remains the first manual/browser path
+to try because it preserves California relevance, but it is not yet a usable
+corpus.
+
+### Michigan Department of Insurance and Financial Services — rich secondary
+
+The [official PRIRA Orders page](https://www.michigan.gov/difs/legal/hearings-decisions/prira)
+states that its PDFs are formal external-review determinations and include the
+health plan, disputed treatment, certificate benefits, independent-review
+findings, and the director's decision to reverse or uphold the insurer. This is
+case-level narrative material and is technically promising for a small,
+manually curated secondary set. The page is dynamic, earlier archives are
+limited, and no bulk-export or reuse terms have been verified. It must not be
+called the primary benchmark until a documented sample and terms review exist.
+
+### Washington Office of the Insurance Commissioner — promising, access pending
+
+The [official Washington online-services page](https://www.insurance.wa.gov/online-services)
+and [appeals guidance](https://www.insurance.wa.gov/insurance-resources/health-insurance/appealing-health-insurance-denial/how-appeal-health-insurance-denial)
+describe a public IRO decision search by company, diagnosis, treatment,
+decision, and reason for appeal. The [official reporting documentation](https://www.insurance.wa.gov/sites/default/files/documents/IRO-carrier-reporting-instructions.pdf)
+also describes case-detail access and redacted public decisions. The current
+search endpoint and an export path were not verified from this environment, so
+this is a candidate only.
+
+### Texas and Pennsylvania — useful but not primary equivalents
+
+The [Texas Department of Insurance IRO page](https://www.tdi.texas.gov/hmo/mcqa/iro_decisions.html)
+publishes redacted case decisions, but the page explicitly identifies the
+collection as workers' compensation IRO decisions. It is useful for parser
+robustness, not as a commercial-health prior-authorization benchmark.
+
+The [Pennsylvania Insurance Department's external-review process](https://www.pa.gov/services/insurance/request-a-review-if-your-health-insurance-denied-a-treatment-medication-or-service)
+is directly relevant to denied health services, and its [2024 report](https://www.pa.gov/content/dam/copapwp-pagov/en/insurance/documents/departments-and-offices/hca3/doc-library/2024-annual-report-summary.pdf)
+publishes counts and outcomes. It does not expose a public case-summary archive
+in the material reviewed, so it is aggregate calibration evidence only.
+
+### Source decision
+
+The ranked retrieval order is: (1) try the separate California CDI database
+through a normal browser or official contact, (2) obtain and inspect the NY DFS
+yearly export, (3) use a documented Michigan order sample if a broader export
+remains inaccessible, and (4) use Pennsylvania, CMS, Oregon, and similar
+aggregate reports only for calibration. The project currently has **zero real
+denial records ingested, zero real denial cases evaluated, and zero regulator
+ground-truth results**. No README, evaluation file, demo case, or metric may say
+otherwise until the bytes, schema, terms, and hashes are recorded here and in a
+corpus manifest.
+
+The two-corpus boundary remains explicit: regulator records can test denial
+language, criterion-location reasoning, and externally recorded outcomes;
+Synthea records can test chart retrieval, evidence sufficiency, and the
+Evidence Floor. A real regulator case must never be joined to a synthetic
+patient or presented as if its chart were available.
+
 ## CMS benchmark definition
 
 The authoritative benchmark definition is:
