@@ -15,11 +15,15 @@ No real PHI, payer credential, member ID, or service-account key was used or
 added to the repository. Raw synthetic FHIR output is kept only in the ignored
 `.cache/synthea/` directory.
 
-The real-denial workstream is still explicitly empty: no DMHC, CDI, NY DFS,
-Michigan, Texas, Washington, or Pennsylvania case records have been ingested or
-evaluated. The project must not claim real regulator ground truth until a source
-file or export has been retrieved, its schema and redaction reviewed, its terms
-checked, and its hash recorded in a corpus manifest.
+The real-denial workstream now has one manually acquired local candidate: the
+official Michigan DIFS PRIRA order `BCC_237502.pdf`. Its metadata, SHA-256,
+schema inspection, omitted-field review, and terms decision are recorded in
+`evidence/manual-review-acquisition.json`. The raw PDF is not in the
+repository. It is a regulator order that quotes the insurer's denial rationale,
+not the original denial letter. Because Michigan terms restrict automated
+access and reuse, this is local-only pending permission or a clear applicable
+exception. No real regulator case has been run through Appeal, and there are
+still zero regulator-ground-truth comparison results.
 
 ## Done and verified
 
@@ -40,6 +44,9 @@ checked, and its hash recorded in a corpus manifest.
   FHIR reference.
 - The local test suite has 16 passing tests, and strict mypy has passed for the
   core package. Re-run both after any changes.
+- One official Michigan PRIRA order was manually downloaded and inspected. The
+  result is in `evidence/manual-review-acquisition.json`; it counts as one
+  local regulator-order candidate, not as an evaluation result.
 - Synthea v4.0.0, the JAR digest, both seeds, fixed dates, California geography,
   and the recorder are now pinned. A bounded five-patient California fixed-end
   smoke run passed twice with an identical patient-bundle fingerprint. The full
@@ -95,17 +102,18 @@ threads/JVM memory. The full population must not be restarted blindly.
    `evidence/corpus.json` with a passing patient-bundle comparison.
 2. Inspect the generated evidence distribution and then pin and run HAPI FHIR
    locally. Do not hand-edit patient records.
-3. Resolve the real-denial source. Try the separate California Department of
-   Insurance IMR database first, then the New York DFS External Appeals yearly
-   export. The tested DMHC and NY DFS routes currently return access errors, and
-   the CDI link redirects into an unavailable/legacy application; all findings
-   and URLs are documented in `docs/audits/precredit-imr.md`. Michigan PRIRA is
-   a possible manually obtained local sample, but Michigan terms prohibit
-   automated access and copying/redistribution without an applicable exception
-   or written permission, so it is not an unrestricted fallback. Do not claim
-   any source is ingested until its bytes, schema, privacy/redaction, terms, and
-   hash are recorded. Pennsylvania, CMS, Oregon, and similar aggregate reports
-   are calibration inputs only.
+3. Resolve the real-denial source. The Michigan PRIRA order is now a manually
+   acquired, local-only candidate with its bytes, schema, omission review,
+   terms, and hash recorded; it has not been evaluated. Continue with the
+   separate California Department of Insurance IMR database, then the New York
+   DFS External Appeals yearly export, and seek permission if Michigan material
+   is needed beyond local analysis. The tested DMHC and NY DFS routes currently
+   return access errors, and the CDI link redirects into an unavailable/legacy
+   application; all findings and URLs are documented in
+   `docs/audits/precredit-imr.md`. Do not claim real regulator evaluation until
+   Appeal has run against an accepted case set and the comparison is recorded.
+   Pennsylvania, CMS, Oregon, and similar aggregate reports are calibration
+   inputs only.
 4. Complete policy terms review and ingest only permitted, ETag-backed policy
    documents. Extract traceable criterion trees and perform human validation.
 5. Re-run cloud preflight after billing is active. Discover the model ID and

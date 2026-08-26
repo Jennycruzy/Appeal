@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-08-26T12:16:04Z",
+  "status": "manual_local_candidate",
+  "counts": {
+    "manual_artifacts_acquired": 1,
+    "public_evaluation_corpus_records": 0,
+    "appeal_cases_evaluated": 0,
+    "regulator_ground_truth_comparisons": 0
+  },
+  "artifact": {
+    "source_id": "michigan_difs_prira",
+    "publisher": "Michigan Department of Insurance and Financial Services",
+    "official_index_url": "https://www.michigan.gov/difs/legal/hearings-decisions/prira",
+    "document_url": "https://www.michigan.gov/difs/-/media/Project/Websites/difs/PRIRA/2025/August/BCC_237502.pdf",
+    "document_title": "BCC 237502",
+    "file_name": "BCC_237502.pdf",
+    "file_number": "237502-001",
+    "issued_date": "2025-08-06",
+    "retrieval_method": "manual_browser_download",
+    "retrieval_date": "2026-08-26",
+    "local_file_size_bytes": 137369,
+    "sha256": "e59b85c75b793eba66990eef6ca2962bf1ac2136d8945427bba5f72207be5f51",
+    "pdf_version": "1.7",
+    "page_count": 5,
+    "transformation": "none",
+    "raw_artifact_location": "local_download_only_not_repo"
+  },
+  "inspection": {
+    "text_extraction": {
+      "tool": "pypdf 6.16.2 in a temporary local environment",
+      "extractable": true,
+      "page_character_counts": [1907, 2353, 2396, 3055, 2509]
+    },
+    "document_type": "official regulator order containing the quoted insurer denial rationale",
+    "denial_rationale_present": true,
+    "independent_review_analysis_present": true,
+    "regulator_outcome_present": true,
+    "case_summary": {
+      "respondent": "Blue Cross Complete of Michigan, LLC",
+      "disputed_service": "laboratory testing",
+      "denied_procedure_codes": ["81270", "81219"],
+      "director_disposition": "reversed the final adverse determination and ordered coverage"
+    },
+    "redaction_review": {
+      "status": "omitted_identifying_fields_observed",
+      "petitioner_name_in_extracted_text": false,
+      "age_in_extracted_text": false,
+      "contact_details_in_extracted_text": false,
+      "member_id_label_found": false,
+      "date_of_birth_label_found": false,
+      "address_label_found": false,
+      "phone_pattern_in_page_text": false,
+      "email_pattern_in_page_text": false,
+      "ssn_pattern_in_page_text": false,
+      "explicit_redacted_marker_found": false,
+      "caveat": "The order uses omitted or blank fields rather than an explicit redaction marker; this is not a guarantee of complete de-identification."
+    },
+    "pdf_structure": {
+      "encrypted": false,
+      "embedded_attachments": [],
+      "annotation_count": 0
+    }
+  },
+  "terms": {
+    "terms_url": "https://www.michigan.gov/som/footer/policies",
+    "automated_access": "not_permitted_unless_specifically_allowed",
+    "copy_modify_distribute_or_publish": "restricted_without_lawful_exception_or_prior_written_permission",
+    "commercial_use_or_resale": "restricted_without_permission",
+    "raw_artifact_committed": false,
+    "derived_public_dataset_created": false,
+    "reuse_decision": "local_analysis_only_pending_permission_or_a_clear_applicable_exception"
+  },
+  "evaluation_status": {
+    "local_inspection_complete": true,
+    "ingested_into_public_evaluation_corpus": false,
+    "appeal_evaluation_run": false,
+    "ground_truth_comparison_run": false,
+    "phase_9_hard_stop_started": false
+  }
+}

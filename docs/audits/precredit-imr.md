@@ -148,7 +148,41 @@ permission applies. Therefore no automated request was made for a PRIRA PDF.
 An authorized human may download a single order through the official page for
 local inspection, but the raw file and any derived public dataset must remain
 out of the repository unless the reuse position is cleared in writing. It is
-not currently an accepted evaluation corpus.
+not an unrestricted evaluation corpus. One order was obtained through that
+manual path and inspected as a local-only candidate; the inspection record is
+below.
+
+## Manual Michigan artifact inspection
+
+On 2026-08-26 the user manually downloaded the official
+[BCC 237502 order](https://www.michigan.gov/difs/-/media/Project/Websites/difs/PRIRA/2025/August/BCC_237502.pdf)
+from the Michigan DIFS PRIRA source. The raw PDF remains in the user's local
+Downloads directory and is not committed or redistributed. The metadata-only
+record is `evidence/manual-review-acquisition.json`.
+
+The local artifact is 137,369 bytes, PDF 1.7, five pages, and has SHA-256
+`e59b85c75b793eba66990eef6ca2962bf1ac2136d8945427bba5f72207be5f51`. A
+temporary `pypdf` extraction found the insurer's quoted denial rationale, the
+independent review analysis, and the Director's final disposition. The order
+identifies the disputed laboratory-testing codes as 81270 and 81219 and states
+that the Director reversed the insurer's adverse determination and ordered
+coverage.
+
+The extraction review found no petitioner name, age, contact details, member-ID
+label, date-of-birth label, address label, phone pattern, email pattern, or
+SSN-like pattern in page text. The document uses blank or omitted fields rather
+than an explicit `[redacted]` marker, so this is recorded as an omitted-field
+review and not a guarantee of complete de-identification. The PDF was
+unencrypted and contained no embedded attachments or annotations.
+
+The Michigan [site policies](https://www.michigan.gov/som/footer/policies)
+restrict automated access and restrict copying, modification, distribution,
+publication, commercial use, and resale without a lawful exception or prior
+written permission. Accordingly, the count is **one manually acquired local
+regulator-order candidate**, **zero public evaluation-corpus records**, **zero
+Appeal evaluations**, and **zero regulator-ground-truth comparisons**. The
+document is not the original insurer denial letter; it is a regulator order
+that quotes the denial rationale. No Phase 9 hard-stop result exists yet.
 
 ### Washington Office of the Insurance Commissioner — promising, access pending
 
@@ -179,11 +213,12 @@ through a normal browser or official contact, (2) obtain and inspect the NY DFS
 yearly export, (3) only use a manually obtained Michigan order for local
 analysis if its restrictive terms are acceptable or written permission is
 obtained, and (4) use Pennsylvania, CMS, Oregon, and similar aggregate reports
-only for calibration. The project currently has **zero real
-denial records ingested, zero real denial cases evaluated, and zero regulator
-ground-truth results**. No README, evaluation file, demo case, or metric may say
-otherwise until the bytes, schema, terms, and hashes are recorded here and in a
-corpus manifest.
+only for calibration. The project currently has **zero real denial cases
+evaluated and zero regulator-ground-truth results**. It has one manually
+acquired Michigan regulator-order candidate recorded in
+`evidence/manual-review-acquisition.json`, but zero records in a public
+evaluation corpus. No README, evaluation file, demo case, or metric may claim
+an Appeal evaluation until a case is actually run and the result is recorded.
 
 The two-corpus boundary remains explicit: regulator records can test denial
 language, criterion-location reasoning, and externally recorded outcomes;
@@ -212,16 +247,20 @@ they are used to calibrate the reference payer.
 - The DMHC resource name indicates a trend dataset, but its case-level schema
   has not been inspected because every tested official access route is behind
   the same Cloudflare restriction.
-- No real redacted denial letter has been accepted into the repository.
+- One official Michigan regulator order has been inspected locally; no raw real
+  document or derived public case dataset has been accepted into the
+  repository.
 - No CMS payer report has yet been collected as calibration evidence.
 - No real denial has been run through Appeal, so the Phase 9 hard-stop report
   does not exist yet.
 
 ## Blockers
 
-- Phase 1D cannot claim a real case-level evaluation set until the official
-  DMHC data or its official searchable records can be retrieved and inspected.
-  This is an unresolved retrieval blocker, not an unavailable-data finding.
+- Phase 1D cannot claim a broad real case-level evaluation set. One Michigan
+  order is available for local-only analysis, but restrictive reuse terms mean
+  it cannot currently serve as a public corpus, and it has not been evaluated
+  by Appeal. DMHC, CDI, NY DFS, or another reusable case-level source is still
+  needed for the external evaluation claim.
 - Phase 2 payer calibration cannot claim a target distribution until actual
   public 2025 reports are collected and hashed.
 - The overall build remains stopped at the Phase 0 billing/model-discovery
@@ -229,6 +268,8 @@ they are used to calibrate the reference payer.
 
 ## Exit status
 
-Pre-credit source discovery is complete. Official retrieval remains blocked by
-Cloudflare from this environment; corpus ingestion is not complete, and the
-project must not advance the main phase protocol on this evidence alone.
+Pre-credit source discovery is complete. One Michigan regulator order has been
+manually acquired and inspected locally, but broad corpus ingestion and all
+Appeal evaluation remain incomplete. The project must not claim regulator
+ground-truth performance or advance the main phase protocol on this evidence
+alone.
