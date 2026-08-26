@@ -97,12 +97,15 @@ threads/JVM memory. The full population must not be restarted blindly.
    locally. Do not hand-edit patient records.
 3. Resolve the real-denial source. Try the separate California Department of
    Insurance IMR database first, then the New York DFS External Appeals yearly
-   export, then a documented Michigan PRIRA sample. The tested DMHC and NY DFS
-   routes currently return access errors, and the CDI link redirects into an
-   unavailable/legacy application; all findings and URLs are documented in
-   `docs/audits/precredit-imr.md`. Do not claim any source is ingested until its
-   bytes, schema, privacy/redaction, terms, and hash are recorded. Pennsylvania,
-   CMS, Oregon, and similar aggregate reports are calibration inputs only.
+   export. The tested DMHC and NY DFS routes currently return access errors, and
+   the CDI link redirects into an unavailable/legacy application; all findings
+   and URLs are documented in `docs/audits/precredit-imr.md`. Michigan PRIRA is
+   a possible manually obtained local sample, but Michigan terms prohibit
+   automated access and copying/redistribution without an applicable exception
+   or written permission, so it is not an unrestricted fallback. Do not claim
+   any source is ingested until its bytes, schema, privacy/redaction, terms, and
+   hash are recorded. Pennsylvania, CMS, Oregon, and similar aggregate reports
+   are calibration inputs only.
 4. Complete policy terms review and ingest only permitted, ETag-backed policy
    documents. Extract traceable criterion trees and perform human validation.
 5. Re-run cloud preflight after billing is active. Discover the model ID and

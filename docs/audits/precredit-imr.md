@@ -141,9 +141,14 @@ states that its PDFs are formal external-review determinations and include the
 health plan, disputed treatment, certificate benefits, independent-review
 findings, and the director's decision to reverse or uphold the insurer. This is
 case-level narrative material and is technically promising for a small,
-manually curated secondary set. The page is dynamic, earlier archives are
-limited, and no bulk-export or reuse terms have been verified. It must not be
-called the primary benchmark until a documented sample and terms review exist.
+manually curated secondary set. The [Michigan terms of use](https://www.michigan.gov/som/footer/policies)
+prohibit automated access and prohibit copying, distributing, modifying, or
+commercially using site data unless an exception in law or separate written
+permission applies. Therefore no automated request was made for a PRIRA PDF.
+An authorized human may download a single order through the official page for
+local inspection, but the raw file and any derived public dataset must remain
+out of the repository unless the reuse position is cleared in writing. It is
+not currently an accepted evaluation corpus.
 
 ### Washington Office of the Insurance Commissioner — promising, access pending
 
@@ -171,9 +176,10 @@ in the material reviewed, so it is aggregate calibration evidence only.
 
 The ranked retrieval order is: (1) try the separate California CDI database
 through a normal browser or official contact, (2) obtain and inspect the NY DFS
-yearly export, (3) use a documented Michigan order sample if a broader export
-remains inaccessible, and (4) use Pennsylvania, CMS, Oregon, and similar
-aggregate reports only for calibration. The project currently has **zero real
+yearly export, (3) only use a manually obtained Michigan order for local
+analysis if its restrictive terms are acceptable or written permission is
+obtained, and (4) use Pennsylvania, CMS, Oregon, and similar aggregate reports
+only for calibration. The project currently has **zero real
 denial records ingested, zero real denial cases evaluated, and zero regulator
 ground-truth results**. No README, evaluation file, demo case, or metric may say
 otherwise until the bytes, schema, terms, and hashes are recorded here and in a
