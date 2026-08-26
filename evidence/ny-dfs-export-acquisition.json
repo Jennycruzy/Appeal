@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-08-26T13:50:44Z",
+  "status": "manual_local_candidate_blocked_pending_privacy_review",
+  "counts": {
+    "source_artifacts_acquired": 1,
+    "export_rows_observed": 61606,
+    "accepted_public_evaluation_corpus_records": 0,
+    "appeal_cases_evaluated": 0,
+    "regulator_ground_truth_comparisons": 0
+  },
+  "artifact": {
+    "source_id": "ny_dfs_external_appeal_archive",
+    "publisher": "New York State Department of Financial Services",
+    "archive_url": "https://www.dfs.ny.gov/public-appeal/search",
+    "external_appeal_description_url": "https://www.dfs.ny.gov/complaints/file_external_appeal",
+    "file_name": "peasadata.xlsx",
+    "export_type": "manual_browser_excel_export",
+    "export_scope": "all_years_export",
+    "retrieval_method": "manual_browser_download",
+    "retrieval_date": "2026-08-26",
+    "local_file_size_bytes": 67128160,
+    "sha256": "999c8bb5338844cd56d90db11a3c8691af887592f2956a62418bbddfa9c4876a",
+    "workbook_type": "OOXML_XLSX",
+    "raw_artifact_location": "local_download_only_not_repo",
+    "transformation": "none"
+  },
+  "inspection": {
+    "tool": "scripts/inspect_ny_export.py",
+    "sheet_name": "Sheet0",
+    "dimension": "A1:S61607",
+    "rows_in_dimension": 61607,
+    "data_rows": 61606,
+    "nonempty_data_rows": 61606,
+    "columns": 19,
+    "shared_string_count": 243367,
+    "headers": [
+      "Case Number",
+      "Diagnosis",
+      "Treatment",
+      "Health Plan",
+      "Coverage Type",
+      "Appeal Decision",
+      "Denial Reason",
+      "Gender",
+      "Age Range",
+      "Decision Year",
+      "Agent",
+      "Summary 1",
+      "Summary 2",
+      "Summary 3",
+      "Summary 4",
+      "References 1",
+      "References 2",
+      "References 3",
+      "References 4"
+    ],
+    "appeal_type_column_present": false,
+    "summary_rows_with_content": 61606,
+    "reference_rows_with_content": 61606,
+    "distinct_counts": {
+      "Case Number": 60356,
+      "Diagnosis": 1357,
+      "Treatment": 104,
+      "Health Plan": 98,
+      "Agent": 6
+    },
+    "decision_counts": {
+      "Overturned": 28280,
+      "Overturned in Part": 1166,
+      "Upheld": 32160
+    },
+    "denial_reason_counts": {
+      "Medical necessity": 55316,
+      "Formulary Exception": 3961,
+      "Experimental/Investigational": 2245,
+      "Step Therapy": 78,
+      "Out-of-Network Service": 6
+    },
+    "decision_year_counts": {
+      "2019": 4129,
+      "2020": 5816,
+      "2021": 6540,
+      "2022": 8249,
+      "2023": 8539,
+      "2024": 9315,
+      "2025": 11556,
+      "2026": 7462
+    },
+    "missing_by_column": {
+      "Summary 2": 59140,
+      "Summary 3": 59351,
+      "Summary 4": 61596,
+      "References 2": 59140,
+      "References 3": 59351,
+      "References 4": 61596
+    }
+  },
+  "privacy_review": {
+    "scan_scope": "Distinct string values in Summary 1 through Summary 4; no narrative text or case number was emitted.",
+    "distinct_summary_values_scanned": 64934,
+    "candidate_counts": {
+      "email_shape": 0,
+      "ssn_shape": 0,
+      "phone_shape": 0,
+      "address_word": 2402,
+      "street_word": 89,
+      "avenue_word": 6,
+      "road_word": 26,
+      "zip_code_phrase": 0,
+      "physical_address_shape": 140,
+      "date_of_birth_label": 8,
+      "date_of_birth_with_date_shape": 0,
+      "member_id_label": 9,
+      "member_id_with_value_shape": 0
+    },
+    "status": "blocked_unreviewed_identifier_candidates",
+    "decision": "Do not accept rows into the evaluation corpus or redistribute derived narrative data until a human privacy review or permitted redaction workflow resolves the candidates."
+  },
+  "terms": {
+    "privacy_policy_url": "https://www.dfs.ny.gov/privacy",
+    "public_download": "A manual browser export was obtained from the official public archive; no automated retrieval was performed.",
+    "redistribution_license": "not established by the reviewed privacy policy",
+    "official_disclaimer": "The archive describes the database as informational and does not guarantee that it is complete, accurate, or up to date.",
+    "raw_artifact_committed": false,
+    "derived_public_dataset_created": false,
+    "reuse_decision": "local_metadata_only_pending_privacy_review_and_explicit_reuse_clearance"
+  },
+  "evaluation_status": {
+    "local_inspection_complete": true,
+    "case_level_schema_observed": true,
+    "accepted_into_public_evaluation_corpus": false,
+    "appeal_evaluation_run": false,
+    "ground_truth_comparison_run": false,
+    "phase_9_hard_stop_started": false
+  }
+}

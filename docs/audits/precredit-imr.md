@@ -92,11 +92,10 @@ corpus yet.
 
 The [official External Appeals Searchable Archive](https://www.dfs.ny.gov/public-appeal/search)
 describes a database of closed New York external appeals with case summaries and
-outcomes. The published fields include diagnosis, treatment, health plan,
-decision, appeal type, coverage type, age range, decision year, appeal agent,
-case number, summary, and references. The official page advertises an
-all-data-by-year Excel export and its rendered result count was 47,682 records
-when discovered. The official [external-appeal description](https://www.dfs.ny.gov/complaints/file_external_appeal)
+outcomes. The archive page advertises filters for diagnosis, treatment, health
+plan, decision, appeal type, coverage type, age range, decision year, appeal
+agent, case number, summary, and references, plus an all-data-by-year Excel
+export. The official [external-appeal description](https://www.dfs.ny.gov/complaints/file_external_appeal)
 confirms that these reviews concern denials based on medical necessity,
 experimental/investigational treatment, or out-of-network care, and that the
 external agent may uphold or overturn the denial.
@@ -110,12 +109,76 @@ clinical chart. If accepted, it will be used for external evaluation of denial
 language and outcome only; Synthea remains the separate synthetic chart corpus.
 
 The official archive page returned HTTP 403 with a Cloudflare challenge to the
-current command-line environment on 2026-08-26. No Excel export or case bytes
-were downloaded. The [DFS privacy policy](https://www.dfs.ny.gov/privacy)
-states that browsing or downloading publicly available information is generally
-available, but that is not a dataset redistribution licence. A human terms and
-reuse review, followed by a manual/browser export or an official access path,
-is still required before ingestion.
+current command-line environment on 2026-08-26. The user then manually exported
+`peasadata.xlsx` from the archive in a browser on 2026-08-26. The workbook is an
+all-years export, not the intended 2024-only slice; its decision-year values run
+from 2019 through 2026. The rendered browser table showed 55,571 records at the
+time of the export, while the workbook contains 61,606 data rows. That
+rendered-count/export-count discrepancy is recorded as a gap rather than
+silently reconciled.
+
+The [DFS privacy policy](https://www.dfs.ny.gov/privacy) states that browsing or
+downloading publicly available information is generally available, but that is
+not a dataset redistribution licence. The raw workbook remains in the user's
+Downloads directory and is not committed or redistributed. Its metadata-only
+inspection is recorded in `evidence/ny-dfs-export-acquisition.json`; the
+inspection script is `scripts/inspect_ny_export.py`.
+
+## Manual NY DFS export inspection
+
+The local artifact is an OOXML XLSX workbook named `peasadata.xlsx`, 67,128,160
+bytes, with SHA-256
+`999c8bb5338844cd56d90db11a3c8691af887592f2956a62418bbddfa9c4876a`. It has one
+sheet (`Sheet0`), dimension `A1:S61607`, 61,606 data rows, 19 columns, and
+243,367 unique shared strings. The exact inspected headers are:
+
+```text
+Case Number | Diagnosis | Treatment | Health Plan | Coverage Type |
+Appeal Decision | Denial Reason | Gender | Age Range | Decision Year | Agent |
+Summary 1 | Summary 2 | Summary 3 | Summary 4 | References 1 | References 2 |
+References 3 | References 4
+```
+
+The export has no explicit `Appeal Type` column; `Denial Reason` is present and
+contains Medical necessity (55,316), Experimental/Investigational (2,245),
+Formulary Exception (3,961), Step Therapy (78), and Out-of-Network Service (6).
+The outcome field contains 28,280 `Overturned`, 1,166 `Overturned in Part`, and
+32,160 `Upheld` rows. Summary 1 and References 1 are populated for all 61,606
+rows. There are 60,356 distinct case-number values, 1,357 diagnoses, 104
+treatments, 98 health plans, and 6 appeal agents. The export therefore has
+case-level outcome-shaped data, but prior-authorization eligibility still needs
+to be established from the denial-reason, treatment, and narrative fields rather
+than assumed.
+
+The privacy scan covered distinct values from Summary 1 through Summary 4 and
+emitted no narrative text or case number. It found zero email-shaped values and
+zero SSN-shaped values, but it also found 140 physical-address-shaped values, 8
+date-of-birth labels, and 9 member-ID labels. These are unreviewed identifier
+candidates, so the artifact is **blocked from corpus acceptance**. The additional
+word-level counts were 2,402 `address`, 89 `street`, 6 `avenue`, 26 `road`, and
+no confirmed date/member value was accepted. The scan is conservative: a shape
+candidate is enough to stop acceptance until a human privacy review or a
+permitted redaction workflow resolves it.
+
+The current count is therefore **one manually acquired NY DFS export artifact**,
+**61,606 rows observed locally**, **zero accepted public evaluation-corpus
+records**, **zero Appeal evaluations**, and **zero regulator-ground-truth
+comparisons**. This is schema/provenance progress, not a Phase 9 result.
+
+Verification commands and results:
+
+```text
+python3 scripts/inspect_ny_export.py /Users/user/Downloads/peasadata.xlsx
+  data_rows=61606; columns=19; appeal_type_column_present=false
+  distinct_summary_values_scanned=64934
+  physical_address_shape=140; date_of_birth_label=8; member_id_label=9
+shasum -a 256 /Users/user/Downloads/peasadata.xlsx
+  999c8bb5338844cd56d90db11a3c8691af887592f2956a62418bbddfa9c4876a
+```
+
+The inspector was run locally after the workbook download and is intentionally
+an aggregate-only command: it does not print summaries, references, or case
+numbers.
 
 ### California Department of Insurance — California-specific candidate
 
@@ -208,17 +271,16 @@ in the material reviewed, so it is aggregate calibration evidence only.
 
 ### Source decision
 
-The ranked retrieval order is: (1) try the separate California CDI database
-through a normal browser or official contact, (2) obtain and inspect the NY DFS
-yearly export, (3) only use a manually obtained Michigan order for local
-analysis if its restrictive terms are acceptable or written permission is
-obtained, and (4) use Pennsylvania, CMS, Oregon, and similar aggregate reports
-only for calibration. The project currently has **zero real denial cases
-evaluated and zero regulator-ground-truth results**. It has one manually
-acquired Michigan regulator-order candidate recorded in
-`evidence/manual-review-acquisition.json`, but zero records in a public
-evaluation corpus. No README, evaluation file, demo case, or metric may claim
-an Appeal evaluation until a case is actually run and the result is recorded.
+The ranked retrieval order is: (1) resolve privacy and reuse for the manually
+acquired NY DFS export, (2) try the separate California CDI database through a
+normal browser or official contact, (3) seek permission if Michigan material is
+needed beyond local analysis, and (4) use Pennsylvania, CMS, Oregon, and similar
+aggregate reports only for calibration. The project currently has **zero real
+denial cases evaluated and zero regulator-ground-truth results**. It has one
+manually acquired Michigan regulator-order candidate and one manually acquired
+NY DFS export candidate, both recorded as metadata-only local artifacts. No
+README, evaluation file, demo case, or metric may claim an Appeal evaluation
+until an accepted case set is actually run and the result is recorded.
 
 The two-corpus boundary remains explicit: regulator records can test denial
 language, criterion-location reasoning, and externally recorded outcomes;
@@ -250,6 +312,12 @@ they are used to calibrate the reference payer.
 - One official Michigan regulator order has been inspected locally; no raw real
   document or derived public case dataset has been accepted into the
   repository.
+- The NY DFS export has 61,606 locally observed rows, but the privacy scan found
+  unreviewed physical-address-shaped, date-of-birth-label, and member-ID-label
+  candidates. Its reuse licence is also not established by the DFS privacy
+  policy. It remains local-only and is not an accepted evaluation corpus.
+- The NY browser table and downloaded workbook disagree on the visible record
+  count (55,571 versus 61,606); the reason has not been established.
 - No CMS payer report has yet been collected as calibration evidence.
 - No real denial has been run through Appeal, so the Phase 9 hard-stop report
   does not exist yet.
@@ -259,8 +327,10 @@ they are used to calibrate the reference payer.
 - Phase 1D cannot claim a broad real case-level evaluation set. One Michigan
   order is available for local-only analysis, but restrictive reuse terms mean
   it cannot currently serve as a public corpus, and it has not been evaluated
-  by Appeal. DMHC, CDI, NY DFS, or another reusable case-level source is still
-  needed for the external evaluation claim.
+  by Appeal. The NY DFS export is larger, but its identifier candidates and
+  reuse status are unresolved, so it also cannot currently serve as the accepted
+  evaluation set. DMHC, CDI, NY DFS after review, or another reusable case-level
+  source is still needed for the external evaluation claim.
 - Phase 2 payer calibration cannot claim a target distribution until actual
   public 2025 reports are collected and hashed.
 - The overall build remains stopped at the Phase 0 billing/model-discovery
@@ -268,8 +338,8 @@ they are used to calibrate the reference payer.
 
 ## Exit status
 
-Pre-credit source discovery is complete. One Michigan regulator order has been
-manually acquired and inspected locally, but broad corpus ingestion and all
-Appeal evaluation remain incomplete. The project must not claim regulator
-ground-truth performance or advance the main phase protocol on this evidence
-alone.
+Pre-credit source discovery is complete. One Michigan regulator order and one NY
+DFS export have been manually acquired and inspected locally, but broad corpus
+acceptance and all Appeal evaluation remain incomplete. The project must not
+claim regulator-ground-truth performance or advance the main phase protocol on
+this evidence alone.

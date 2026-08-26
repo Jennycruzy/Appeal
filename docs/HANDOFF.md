@@ -15,15 +15,19 @@ No real PHI, payer credential, member ID, or service-account key was used or
 added to the repository. Raw synthetic FHIR output is kept only in the ignored
 `.cache/synthea/` directory.
 
-The real-denial workstream now has one manually acquired local candidate: the
-official Michigan DIFS PRIRA order `BCC_237502.pdf`. Its metadata, SHA-256,
-schema inspection, omitted-field review, and terms decision are recorded in
-`evidence/manual-review-acquisition.json`. The raw PDF is not in the
-repository. It is a regulator order that quotes the insurer's denial rationale,
-not the original denial letter. Because Michigan terms restrict automated
-access and reuse, this is local-only pending permission or a clear applicable
-exception. No real regulator case has been run through Appeal, and there are
-still zero regulator-ground-truth comparison results.
+The real-denial workstream now has two manually acquired local candidates: the
+official Michigan DIFS PRIRA order `BCC_237502.pdf` and the NY DFS external
+appeals export `peasadata.xlsx`. Their metadata, hashes, schema inspections,
+privacy reviews, and terms decisions are recorded in
+`evidence/manual-review-acquisition.json` and
+`evidence/ny-dfs-export-acquisition.json`. Neither raw artifact is in the
+repository. The Michigan file is a regulator order that quotes the insurer's
+denial rationale, not the original denial letter. The NY workbook contains
+61,606 all-years case-summary rows and outcome fields, but its privacy scan found
+unreviewed identifier-shaped candidates and its reuse licence is not
+established. Both remain local-only pending review. No real regulator case has
+been run through Appeal, and there are still zero regulator-ground-truth
+comparison results.
 
 ## Done and verified
 
@@ -47,6 +51,13 @@ still zero regulator-ground-truth comparison results.
 - One official Michigan PRIRA order was manually downloaded and inspected. The
   result is in `evidence/manual-review-acquisition.json`; it counts as one
   local regulator-order candidate, not as an evaluation result.
+- One official NY DFS all-years Excel export was manually downloaded and
+  inspected with `scripts/inspect_ny_export.py`. It has 61,606 rows, 19 columns,
+  `Appeal Decision` outcomes, and a `Denial Reason` field but no explicit
+  `Appeal Type` column. The raw workbook remains outside the repository, and
+  the metadata-only result is in `evidence/ny-dfs-export-acquisition.json`.
+  Identifier candidates and reuse status keep it out of the accepted evaluation
+  corpus.
 - Synthea v4.0.0, the JAR digest, both seeds, fixed dates, California geography,
   and the recorder are now pinned. A bounded five-patient California fixed-end
   smoke run passed twice with an identical patient-bundle fingerprint. The full
@@ -102,12 +113,14 @@ threads/JVM memory. The full population must not be restarted blindly.
    `evidence/corpus.json` with a passing patient-bundle comparison.
 2. Inspect the generated evidence distribution and then pin and run HAPI FHIR
    locally. Do not hand-edit patient records.
-3. Resolve the real-denial source. The Michigan PRIRA order is now a manually
+3. Resolve the real-denial source. The Michigan PRIRA order is a manually
    acquired, local-only candidate with its bytes, schema, omission review,
-   terms, and hash recorded; it has not been evaluated. Continue with the
-   separate California Department of Insurance IMR database, then the New York
-   DFS External Appeals yearly export, and seek permission if Michigan material
-   is needed beyond local analysis. The tested DMHC and NY DFS routes currently
+   terms, and hash recorded; it has not been evaluated. The NY DFS export is a
+   larger local candidate, but its 140 physical-address-shaped summary values,
+   date-of-birth/member-ID labels, and unresolved reuse position must be
+   reviewed before any row is accepted. Continue with privacy/reuse review,
+   the separate California Department of Insurance IMR database, and another
+   reusable case-level source if needed. The tested DMHC and NY DFS routes
    return access errors, and the CDI link redirects into an unavailable/legacy
    application; all findings and URLs are documented in
    `docs/audits/precredit-imr.md`. Do not claim real regulator evaluation until

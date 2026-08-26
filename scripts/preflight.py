@@ -672,6 +672,7 @@ def check_real_corpus_source(source: JsonObject) -> Check:
         "declared_license_url": string_value(source.get("declared_license_url")),
         "reported_coverage": string_value(source.get("reported_coverage")),
         "case_level_ground_truth_verified": source.get("case_level_ground_truth_verified") is True,
+        "case_level_outcome_field_observed": source.get("case_level_outcome_field_observed") is True,
         "central_case_level_dataset": source.get("central_case_level_dataset") is True,
         "fetch_method": string_value(source.get("fetch_method")),
         "url_results": {},
@@ -704,6 +705,34 @@ def check_real_corpus_source(source: JsonObject) -> Check:
             "error": result.error or "",
         }
         evidence["url_results"] = results
+
+    if kind == "regulator_external_appeals":
+        required_labels = {"archive_url"}
+        results = object_value(evidence.get("url_results"))
+        inaccessible = [
+            label
+            for label in required_labels
+            if int_value(object_value(results.get(label)).get("status"), -1) >= 400
+            or int_value(object_value(results.get(label)).get("status"), -1) < 0
+        ]
+        evidence["case_level_schema_observed"] = source.get("case_level_schema_observed") is True
+        evidence["case_level_data_fetched"] = False
+        evidence["inaccessible_data_urls"] = inaccessible
+        if inaccessible:
+            return Check(
+                f"Real corpus source: {source_id}",
+                "blocked",
+                "The official external-appeal archive was discovered, but its archive endpoint is not currently retrievable by this client.",
+                evidence,
+                "Use the official browser export or another documented access path, then inspect the unmodified source before accepting it as case-level ground truth.",
+            )
+        return Check(
+            f"Real corpus source: {source_id}",
+            "warning",
+            "The official external-appeal archive is reachable, but case-level reuse and privacy review still require inspection of the unmodified export.",
+            evidence,
+            "Inspect the export terms and records; do not claim a public benchmark until reuse and identifier review are complete.",
+        )
 
     if kind == "regulator_determinations":
         data_labels = {"csv_url", "data_dictionary_url", "archive_url", "datastore_api_url"}

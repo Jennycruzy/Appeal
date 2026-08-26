@@ -36,6 +36,21 @@
       ],
       "fetch_method": "Fetch CMS definitions and template; collect actual 2025 reports from each payer or program's public website with URL, timestamp, ETag, and content hash.",
       "central_case_level_dataset": false
+    },
+    {
+      "id": "ny_dfs_external_appeal_archive",
+      "kind": "regulator_external_appeals",
+      "publisher": "New York State Department of Financial Services",
+      "archive_url": "https://www.dfs.ny.gov/public-appeal/search",
+      "external_appeal_description_url": "https://www.dfs.ny.gov/complaints/file_external_appeal",
+      "privacy_policy_url": "https://www.dfs.ny.gov/privacy",
+      "reported_coverage": "Closed New York external appeals issued on or after May 31, 2019; the manually downloaded workbook observed years 2019 through 2026.",
+      "fetch_method": "Manual browser export only while the archive endpoint returns access errors; preserve the downloaded workbook unchanged, hash it, and do not automate or redistribute it until reuse and privacy review are complete.",
+      "case_level_ground_truth_verified": false,
+      "case_level_outcome_field_observed": true,
+      "case_level_schema_observed": true,
+      "central_case_level_dataset": false,
+      "reuse_status": "local_candidate_pending_privacy_and_terms_review"
     }
   ]
 }
