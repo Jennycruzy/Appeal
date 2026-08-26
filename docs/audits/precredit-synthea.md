@@ -34,6 +34,12 @@ metadata filenames and in active encounter, Claim, and ExplanationOfBenefit
 dates. The failed comparison is evidence of a real defect in the invocation,
 not a passing determinism result.
 
+The cause is confirmed in Synthea's official CLI source: `-r` assigns the
+reference time, while `-e` independently assigns the simulation end time. When
+`-e` is omitted, the end time remains the process wall clock. The same source
+documents the separate clinician seed option `-cs`:
+<https://raw.githubusercontent.com/synthetichealth/synthea/master/src/main/java/App.java>.
+
 The invocation was corrected to include `-e 20260826`, and the recorder was
 updated to fingerprint only patient FHIR bundles rather than Synthea's
 timestamped organization/practitioner metadata. That corrected run was still
@@ -41,13 +47,26 @@ in progress when the work session was interrupted and its container was then
 stopped. No fixed-end comparison has passed yet, and `evidence/corpus.json`
 does not exist.
 
+The fix is therefore specific and testable: run the same JAR with `-s`, `-cs`,
+`-r`, `-e`, and the configured thread-pool setting twice, then require the
+recorder's `regeneration_comparison.identical` result to be true.
+
+The first attempt at that corrected command was stopped during module startup
+after it began consuming too much Mac memory. Its ignored output directory was
+7.5 MB with four non-patient JSON files and no patient bundle. This is an
+operational resource finding, not a reproducibility result. The next safe step
+is a small fixed-date smoke run with bounded threads/JVM memory, followed by a
+measured scale-up; the 300-patient run must not be restarted until that profile
+is understood.
+
 ## Gaps
 
 - The final fixed-end corpus manifest and byte-identical comparison are still
   outstanding.
-- The raw output directory may contain a partial corrected run in the ignored
-  local cache; it must not be treated as evidence without a successful recorder
-  result.
+- The raw output directory contains only a stopped startup attempt in the
+  ignored local cache; it must not be treated as evidence without a successful
+  recorder result.
+- The full export's Mac memory profile has not been measured or bounded yet.
 - The generated corpus has not yet been inspected against the evidence types
   required by the selected real policy criteria.
 - HAPI FHIR has not yet been pinned, started, or loaded with this corpus.

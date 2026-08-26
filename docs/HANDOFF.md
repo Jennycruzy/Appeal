@@ -38,9 +38,32 @@ added to the repository. Raw synthetic FHIR output is kept only in the ignored
   fixed-end byte-identical comparison is not yet proven. Details are in
   `docs/audits/precredit-synthea.md`.
 
+### Reproducibility investigation
+
+The first failed comparison was diagnostic, not random. Synthea's official CLI
+source shows that `-r` sets the simulation reference time while `-e` separately
+sets the simulation end time. Omitting `-e` left the end time at the process
+wall clock, which changed active encounter, Claim, and ExplanationOfBenefit
+timestamps between runs. Synthea also emits hospital/practitioner metadata
+filenames containing a runtime timestamp. See the
+[official Synthea CLI source](https://raw.githubusercontent.com/synthetichealth/synthea/master/src/main/java/App.java),
+especially the `-cs`, `-r`, and `-e` option handling.
+
+The correction is to pin both seeds, `-r`, and `-e`, and to fingerprint only
+patient FHIR bundles. The corrected command has not yet completed twice, so
+this remains an open verification item rather than a claimed pass. A second
+attempt was stopped because the full 300-patient export was consuming too much
+Mac memory; it reached module startup and emitted only a few small files, not a
+partial patient corpus. No Docker container is currently running.
+
+The next attempt must first use a small fixed-date smoke run with bounded
+threads/JVM memory, then scale only after its resource profile is understood.
+The full population must not be restarted blindly.
+
 ## Still outstanding
 
-1. Finish two corrected fixed-end Synthea runs and produce
+1. Finish two corrected fixed-end Synthea runs, confirm the cause/fix above,
+   address the memory profile with a bounded smoke run, and produce
    `evidence/corpus.json` with a passing byte-identical comparison.
 2. Inspect the generated evidence distribution and then pin and run HAPI FHIR
    locally. Do not hand-edit patient records.
