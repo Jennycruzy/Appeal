@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "artifact": "bounded_reproducibility_smoke",
+  "observed_on": "2026-08-26",
+  "scope": "patient_fhir_bundles_only; not the final 300-patient corpus",
+  "generator": {
+    "version": "v4.0.0",
+    "jar_sha256": "ed43c20ad40ba5c3bc724503a5af032715fe3c491620b766148e7c2361e6ecc1",
+    "patient_seed": 24082501,
+    "clinician_seed": 24082502,
+    "population": 5,
+    "reference_date": "20260826",
+    "end_date": "20260826",
+    "thread_pool_size": 1
+  },
+  "container": {
+    "image": "eclipse-temurin:17-jre",
+    "memory_limit": "2g",
+    "memory_swap_limit": "2g",
+    "cpu_limit": 1,
+    "java_tool_options": "-Xmx1400m"
+  },
+  "runs": [
+    {
+      "label": "A",
+      "patient_bundle_count": 5,
+      "resource_type_count": 17,
+      "records_total": 5,
+      "records_alive": 5,
+      "records_dead": 0,
+      "rng": 5,
+      "clinician_rng": 5645
+    },
+    {
+      "label": "B",
+      "patient_bundle_count": 5,
+      "resource_type_count": 17,
+      "records_total": 5,
+      "records_alive": 5,
+      "records_dead": 0,
+      "rng": 5,
+      "clinician_rng": 5645
+    }
+  ],
+  "bundle_set_fingerprint": "66d5c5ed651c09c2f9ea33567d6774eeda194171002e230e6fe229de1f9f9caa",
+  "regeneration_comparison": {
+    "identical": true,
+    "changed_files": [],
+    "missing_from_second": [],
+    "extra_in_second": []
+  },
+  "limitations": [
+    "This is smoke-scale evidence only.",
+    "Runtime-timestamped hospital and practitioner metadata is outside the patient-bundle comparison scope.",
+    "The final 300-patient corpus must produce evidence/corpus.json after two successful runs."
+  ]
+}

@@ -20,6 +20,17 @@ requirements and it does not claim that the data-plane exit criteria are met.
   container. The completed run using fixed patient, clinician, and reference
   inputs reported `Records: total=346, alive=300, dead=46`, `RNG=300`, and
   `Clinician RNG=5645`.
+- A bounded corrected smoke run was executed twice with Docker limited to 2 GiB
+  and one CPU, JVM heap limited to 1.4 GiB, and Synthea's thread pool set to
+  one. Each run used five patients, both pinned seeds, `-r 20260826`, and
+  `-e 20260826`; each completed with `Records: total=5, alive=5, dead=0`,
+  `RNG=5`, and `Clinician RNG=5645`.
+- The recorder compared the two smoke outputs and passed with five patient
+  bundles, 17 resource types, and patient-bundle fingerprint
+  `66d5c5ed651c09c2f9ea33567d6774eeda194171002e230e6fe229de1f9f9caa`.
+  Its comparison was `identical=true`, with no changed, missing, or extra
+  patient bundle files. This is recorded in
+  `evidence/synthea-smoke.json`.
 - An independent local scan of an earlier completed output found 344 patient
   FHIR bundles and a broad set of FHIR resource types. The authoritative
   aggregate counts for the final fixed-end corpus are not committed yet; they
@@ -42,31 +53,67 @@ documents the separate clinician seed option `-cs`:
 
 The invocation was corrected to include `-e 20260826`, and the recorder was
 updated to fingerprint only patient FHIR bundles rather than Synthea's
-timestamped organization/practitioner metadata. That corrected run was still
-in progress when the work session was interrupted and its container was then
-stopped. No fixed-end comparison has passed yet, and `evidence/corpus.json`
-does not exist.
+timestamped organization/practitioner metadata. The first full-scale attempt
+with that correction was stopped during module startup because it consumed too
+much Mac memory. It did not produce a patient corpus. The bounded smoke run
+then completed twice and passed the patient-bundle comparison, but
+`evidence/corpus.json` does not exist because the full 300-patient proof is
+still outstanding.
 
 The fix is therefore specific and testable: run the same JAR with `-s`, `-cs`,
 `-r`, `-e`, and the configured thread-pool setting twice, then require the
 recorder's `regeneration_comparison.identical` result to be true.
 
-The first attempt at that corrected command was stopped during module startup
-after it began consuming too much Mac memory. Its ignored output directory was
-7.5 MB with four non-patient JSON files and no patient bundle. This is an
-operational resource finding, not a reproducibility result. The next safe step
-is a small fixed-date smoke run with bounded threads/JVM memory, followed by a
-measured scale-up; the 300-patient run must not be restarted until that profile
-is understood.
+The first full-scale attempt at that corrected command was stopped during
+module startup after it began consuming too much Mac memory. Its ignored output
+directory was about 6.2 MB with four non-patient JSON files and no patient
+bundle. This is an operational resource finding, not a reproducibility result.
+The bounded smoke run shows that the same fixed-end inputs work under a 2 GiB
+container limit. The next safe step is a measured scale-up, such as 25 and then
+100 patients under the same cap, before deciding whether the 300-patient run
+needs a lower-memory export strategy.
+
+## Bounded smoke verification
+
+The following command was run into `smoke_fixed_a` and then repeated unchanged
+into `smoke_fixed_b`:
+
+```text
+docker run --rm --pull=never --memory=2g --memory-swap=2g --cpus=1 \
+  -e JAVA_TOOL_OPTIONS=-Xmx1400m \
+  -v /Users/user/appeal/.cache/synthea/v4.0.0:/data \
+  eclipse-temurin:17-jre java -jar /data/synthea-with-dependencies.jar \
+  -s 24082501 -cs 24082502 -p 5 -r 20260826 -e 20260826 \
+  --generate.thread_pool_size=1 \
+  --exporter.baseDirectory=/data/smoke_fixed_a \
+  --exporter.fhir.export=true
+```
+
+The second run changed only the output directory to `smoke_fixed_b`. Both runs
+completed successfully. The recorder output was:
+
+```text
+patient_bundle_count=5
+bundle_set_fingerprint=66d5c5ed651c09c2f9ea33567d6774eeda194171002e230e6fe229de1f9f9caa
+resource_types=17
+regeneration_comparison={'changed_files': [], 'extra_in_second': [], 'identical': True, 'missing_from_second': []}
+```
+
+This is a patient-bundle byte comparison at smoke scale. It intentionally does
+not claim that Synthea's runtime-timestamped hospital/practitioner metadata is
+byte-identical. Appeal's clinical corpus fingerprint is defined over patient
+FHIR bundles, and the final manifest must preserve that scope explicitly.
 
 ## Gaps
 
-- The final fixed-end corpus manifest and byte-identical comparison are still
-  outstanding.
+- The final fixed-end corpus manifest and full 300-patient patient-bundle
+  comparison are still outstanding; the smoke-scale comparison passed.
 - The raw output directory contains only a stopped startup attempt in the
   ignored local cache; it must not be treated as evidence without a successful
   recorder result.
-- The full export's Mac memory profile has not been measured or bounded yet.
+- The full export's Mac memory profile has not been measured at intermediate
+  population sizes; the passing smoke limit is not evidence that 300 patients
+  will fit under it.
 - The generated corpus has not yet been inspected against the evidence types
   required by the selected real policy criteria.
 - HAPI FHIR has not yet been pinned, started, or loaded with this corpus.
@@ -80,7 +127,8 @@ is understood.
 
 ## Next reproducibility command
 
-Run the exact pinned command twice into two new ignored directories, then run:
+Scale the bounded command to an intermediate population, measure it, then run
+the exact pinned command twice into two new ignored directories and run:
 
 ```text
 python3.12 scripts/record_synthea_corpus.py \
@@ -90,10 +138,12 @@ python3.12 scripts/record_synthea_corpus.py \
 ```
 
 The command must exit zero and report `regeneration_comparison.identical: true`
-before the local corpus is considered reproducible.
+before the local corpus is considered reproducible. The smoke result is not a
+substitute for the final 300-patient manifest.
 
 ## Exit status
 
-The Synthea asset is pinned and a substantial synthetic corpus was generated,
-but the fixed-end byte-identical proof and corpus manifest are incomplete.
-The data-plane work must not be represented as complete.
+The Synthea asset is pinned, and the corrected fixed-end invocation has passed
+at bounded smoke scale. The full 300-patient byte-identical patient-bundle
+proof and corpus manifest are incomplete. The data-plane work must not be
+represented as complete.
