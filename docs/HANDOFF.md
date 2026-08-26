@@ -34,10 +34,10 @@ added to the repository. Raw synthetic FHIR output is kept only in the ignored
   FHIR reference.
 - The local test suite has 16 passing tests, and strict mypy has passed for the
   core package. Re-run both after any changes.
-- Synthea v4.0.0, the JAR digest, both seeds, fixed dates, and the recorder are
-  now pinned. A bounded five-patient fixed-end smoke run passed twice with an
-  identical patient-bundle fingerprint. The full 300-patient manifest and
-  comparison are still outstanding. Details are in
+- Synthea v4.0.0, the JAR digest, both seeds, fixed dates, California geography,
+  and the recorder are now pinned. A bounded five-patient California fixed-end
+  smoke run passed twice with an identical patient-bundle fingerprint. The full
+  300-patient manifest and comparison are still outstanding. Details are in
   `docs/audits/precredit-synthea.md` and `evidence/synthea-smoke.json`.
 
 ### Reproducibility investigation
@@ -51,14 +51,15 @@ filenames containing a runtime timestamp. See the
 [official Synthea CLI source](https://raw.githubusercontent.com/synthetichealth/synthea/master/src/main/java/App.java),
 especially the `-cs`, `-r`, and `-e` option handling.
 
-The correction is to pin both seeds, `-r`, and `-e`, and to fingerprint only
-patient FHIR bundles. A bounded five-patient smoke run using that invocation
-completed twice with the same 64-character patient-bundle fingerprint. This
-proves the corrected invocation at smoke scale; it does not prove the full
-300-patient export is safe or reproducible yet. A prior full-scale attempt was
-stopped because it was consuming too much Mac memory; it reached module
-startup and emitted only a few small files, not a partial patient corpus. No
-Docker container is currently running.
+The correction is to pin both seeds, `-r`, and `-e`, pass the positional
+`California` geography, and fingerprint only patient FHIR bundles. A bounded
+five-patient smoke run using that invocation completed twice with the same
+64-character patient-bundle fingerprint. This proves the corrected invocation
+at smoke scale; it does not prove the full 300-patient export is safe or
+reproducible yet. A prior full-scale attempt was stopped because it was
+consuming too much Mac memory; it reached module startup and emitted only a few
+small files, not a partial patient corpus. No Docker container is currently
+running.
 
 Smoke settings and result:
 
@@ -66,9 +67,9 @@ Smoke settings and result:
 Docker limit: 2 GiB memory, 1 CPU
 JVM heap: -Xmx1400m
 Synthea: v4.0.0, -s 24082501, -cs 24082502, -p 5,
-         -r 20260826, -e 20260826, thread pool 1
+         -r 20260826, -e 20260826, thread pool 1, California
 Run A/B: 5 patient bundles each; resource types 17
-Patient-bundle fingerprint: 66d5c5ed651c09c2f9ea33567d6774eeda194171002e230e6fe229de1f9f9caa
+Patient-bundle fingerprint: d2f26ad6ffb4b0238fea62d5e86bb2a8ccdf6246733a7c9f42250a71d8f67215
 Recorder comparison: identical=true; changed_files=[]; missing_from_second=[]; extra_in_second=[]
 ```
 
@@ -78,9 +79,8 @@ those metadata files and compares the patient FHIR bundle set, which is the
 corpus consumed by Appeal. The full-scale run must use this same documented
 scope and produce the final `evidence/corpus.json`.
 
-The next attempt must first use a small fixed-date smoke run with bounded
-threads/JVM memory, then scale only after its resource profile is understood.
-The full population must not be restarted blindly.
+The next attempt is a measured intermediate scale-up with the same bounded
+threads/JVM memory. The full population must not be restarted blindly.
 
 ## Still outstanding
 
@@ -89,9 +89,11 @@ The full population must not be restarted blindly.
    `evidence/corpus.json` with a passing patient-bundle comparison.
 2. Inspect the generated evidence distribution and then pin and run HAPI FHIR
    locally. Do not hand-edit patient records.
-3. Resolve the DMHC access path or document an official browser/manual
-   provenance path; inspect the unmodified case-level schema before claiming
-   real regulator ground truth.
+3. Resolve the DMHC access path or obtain the unmodified file through an
+   official browser/manual route; inspect its case-level schema before claiming
+   real regulator ground truth. The tested routes currently return Cloudflare
+   403, documented in `docs/audits/precredit-imr.md`; this is not marked as
+   unavailable.
 4. Complete policy terms review and ingest only permitted, ETag-backed policy
    documents. Extract traceable criterion trees and perform human validation.
 5. Re-run cloud preflight after billing is active. Discover the model ID and

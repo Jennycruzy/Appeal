@@ -1,6 +1,6 @@
 # Pre-credit real-corpus discovery
 
-Audit date: 2026-08-25
+Audit date: 2026-08-26
 
 This is a discovery record for the local, no-billing workstream. It does not
 clear the blocked Phase 0 exit criteria and it does not claim that the Phase
@@ -48,6 +48,39 @@ reproducible corpus artifact unless the response can be revalidated with an
 ETag. The CMS page remains a verified definition source in preflight, but it is
 not yet a cached benchmark artifact.
 
+## Retrieval follow-up
+
+The 403 is being treated as an access problem to resolve, not as evidence that
+the DMHC corpus is unavailable. The following official routes were tested on
+2026-08-26:
+
+- A plain GET of the official CSV returned HTTP 403.
+- A GET with a current Safari User-Agent, Referer, Accept headers, and a 1 KB
+  Range request also returned HTTP 403.
+- The California Open Data datastore endpoint returned HTTP 403.
+- The official Data.gov catalogue was inspected. Its harvested metadata exposes
+  the same CSV, ZIP, and dictionary URLs on `data.chhs.ca.gov`; it does not
+  provide a separate data mirror.
+- The DMHC searchable IMR database at `https://wpso.dmhc.ca.gov/imr/` returned
+  HTTP 403 from the command-line client and timed out through the web retrieval
+  client.
+- The public portal page and direct CSV URL were opened in a normal Mac browser
+  session. The browser displayed Access Denied and no file appeared in the
+  Downloads directory.
+- Socrata SODA URL shapes were tested diagnostically and returned HTTP 403. The
+  official portal page exposes a CKAN/DKAN-style `data.ca.gov/api/3/action`
+  datastore endpoint and UUID resource IDs, so no Socrata app token route has
+  been established for this dataset. No token was created or stored.
+
+The direct download response identifies Cloudflare and the protected host as
+`ogopendata.com`. This explains the consistent 403 across the bulk file, API,
+and searchable database routes. It is not a licence denial. The next permitted
+access path is a manual download from a browser/network that passes the WAF, or
+an official response from the DMHC Open Data contact at
+`opendata@dmhc.ca.gov`. If a file is obtained, it must be kept unmodified,
+hashed, and recorded with the original URL, retrieval date, and licence before
+any analysis. Until then, the case-level corpus remains pending.
+
 ## CMS benchmark definition
 
 The authoritative benchmark definition is:
@@ -67,7 +100,8 @@ they are used to calibrate the reference payer.
 ## Gaps
 
 - The DMHC resource name indicates a trend dataset, but its case-level schema
-  has not been inspected because the official data endpoint returned 403.
+  has not been inspected because every tested official access route is behind
+  the same Cloudflare restriction.
 - No real redacted denial letter has been accepted into the repository.
 - No CMS payer report has yet been collected as calibration evidence.
 - No real denial has been run through Appeal, so the Phase 9 hard-stop report
@@ -77,6 +111,7 @@ they are used to calibrate the reference payer.
 
 - Phase 1D cannot claim a real case-level evaluation set until the official
   DMHC data or its official searchable records can be retrieved and inspected.
+  This is an unresolved retrieval blocker, not an unavailable-data finding.
 - Phase 2 payer calibration cannot claim a target distribution until actual
   public 2025 reports are collected and hashed.
 - The overall build remains stopped at the Phase 0 billing/model-discovery
@@ -84,5 +119,6 @@ they are used to calibrate the reference payer.
 
 ## Exit status
 
-Pre-credit source discovery is complete. Corpus ingestion is not complete, and
-the project must not advance the main phase protocol on this evidence alone.
+Pre-credit source discovery is complete. Official retrieval remains blocked by
+Cloudflare from this environment; corpus ingestion is not complete, and the
+project must not advance the main phase protocol on this evidence alone.

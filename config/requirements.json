@@ -37,6 +37,7 @@
     "seed": 24082501,
     "clinician_seed": 24082502,
     "population": 300,
+    "state": "California",
     "reference_date": "20260826",
     "end_date": "20260826",
     "thread_pool_size": 4

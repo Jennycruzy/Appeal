@@ -10,24 +10,25 @@ requirements and it does not claim that the data-plane exit criteria are met.
 - `config/requirements.json` pins Synthea `v4.0.0`, release commit `0185c09`,
   the `synthea-with-dependencies.jar` asset, its SHA-256
   `ed43c20ad40ba5c3bc724503a5af032715fe3c491620b766148e7c2361e6ecc1`, Java
-  major version 17, population 300, patient seed `24082501`, clinician/provider
-  seed `24082502`, reference date `20260826`, end date `20260826`, and a four
-  thread pool.
+  major version 17, population 300, California geography, patient seed
+  `24082501`, clinician/provider seed `24082502`, reference date `20260826`,
+  end date `20260826`, and a four thread pool.
 - The pinned JAR was downloaded to `.cache/synthea/v4.0.0/` and verified with
   `shasum -a 256`. The raw JAR and all generated patient bundles are ignored by
   `.gitignore` and are not repository artifacts.
 - The official Synthea release was run in the pinned `eclipse-temurin:17-jre`
-  container. The completed run using fixed patient, clinician, and reference
-  inputs reported `Records: total=346, alive=300, dead=46`, `RNG=300`, and
-  `Clinician RNG=5645`.
-- A bounded corrected smoke run was executed twice with Docker limited to 2 GiB
-  and one CPU, JVM heap limited to 1.4 GiB, and Synthea's thread pool set to
-  one. Each run used five patients, both pinned seeds, `-r 20260826`, and
-  `-e 20260826`; each completed with `Records: total=5, alive=5, dead=0`,
-  `RNG=5`, and `Clinician RNG=5645`.
+  container. A historical default-geography run, before the California
+  alignment, reported `Records: total=346, alive=300, dead=46`, `RNG=300`,
+  and `Clinician RNG=5645`; it is not the current corpus proof.
+- A bounded corrected California smoke run was executed twice with Docker
+  limited to 2 GiB and one CPU, JVM heap limited to 1.4 GiB, and Synthea's
+  thread pool set to one. Each run used five patients, both pinned seeds,
+  `-r 20260826`, `-e 20260826`, and the positional `California` location; each
+  completed with `Records: total=5, alive=5, dead=0`, `RNG=5`, and
+  `Clinician RNG=34460`.
 - The recorder compared the two smoke outputs and passed with five patient
   bundles, 17 resource types, and patient-bundle fingerprint
-  `66d5c5ed651c09c2f9ea33567d6774eeda194171002e230e6fe229de1f9f9caa`.
+  `d2f26ad6ffb4b0238fea62d5e86bb2a8ccdf6246733a7c9f42250a71d8f67215`.
   Its comparison was `identical=true`, with no changed, missing, or extra
   patient bundle files. This is recorded in
   `evidence/synthea-smoke.json`.
@@ -75,8 +76,8 @@ needs a lower-memory export strategy.
 
 ## Bounded smoke verification
 
-The following command was run into `smoke_fixed_a` and then repeated unchanged
-into `smoke_fixed_b`:
+The following command was run into `smoke_california_fixed_a` and then repeated
+unchanged into `smoke_california_fixed_b`:
 
 ```text
 docker run --rm --pull=never --memory=2g --memory-swap=2g --cpus=1 \
@@ -85,16 +86,17 @@ docker run --rm --pull=never --memory=2g --memory-swap=2g --cpus=1 \
   eclipse-temurin:17-jre java -jar /data/synthea-with-dependencies.jar \
   -s 24082501 -cs 24082502 -p 5 -r 20260826 -e 20260826 \
   --generate.thread_pool_size=1 \
-  --exporter.baseDirectory=/data/smoke_fixed_a \
-  --exporter.fhir.export=true
+  --exporter.baseDirectory=/data/smoke_california_fixed_a \
+  --exporter.fhir.export=true California
 ```
 
-The second run changed only the output directory to `smoke_fixed_b`. Both runs
+The second run changed only the output directory to
+`smoke_california_fixed_b`. Both runs
 completed successfully. The recorder output was:
 
 ```text
 patient_bundle_count=5
-bundle_set_fingerprint=66d5c5ed651c09c2f9ea33567d6774eeda194171002e230e6fe229de1f9f9caa
+bundle_set_fingerprint=d2f26ad6ffb4b0238fea62d5e86bb2a8ccdf6246733a7c9f42250a71d8f67215
 resource_types=17
 regeneration_comparison={'changed_files': [], 'extra_in_second': [], 'identical': True, 'missing_from_second': []}
 ```

@@ -174,6 +174,7 @@ def build_manifest(
             "seed": int_value(synthea.get("seed")),
             "clinician_seed": int_value(synthea.get("clinician_seed")),
             "population_requested": int_value(synthea.get("population")),
+            "state": string_value(synthea.get("state")),
             "reference_date": string_value(synthea.get("reference_date")),
             "end_date": string_value(synthea.get("end_date")),
             "thread_pool_size": int_value(synthea.get("thread_pool_size")),
