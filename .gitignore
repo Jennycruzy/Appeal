@@ -17,3 +17,4 @@ dist/
 *.crt
 docs/preflight.local.json
 .cache/public-sources/
+.cache/synthea/

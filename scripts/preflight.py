@@ -572,8 +572,8 @@ def choose_pas_version(package_list_url: str, ig_url: str, cms_url: str) -> Chec
     return Check("Da Vinci PAS IG discovery", "pass", "A published PAS version was selected from the live HL7 package list.", evidence)
 
 
-def check_synthea(releases_url: str, license_url: str, repository_url: str, seed: int) -> Check:
-    evidence: JsonObject = {"releases_api_url": releases_url, "license_api_url": license_url, "repository_url": repository_url, "seed": seed}
+def check_synthea(releases_url: str, license_url: str, repository_url: str, seed: int, required_asset_name: str) -> Check:
+    evidence: JsonObject = {"releases_api_url": releases_url, "license_api_url": license_url, "repository_url": repository_url, "seed": seed, "required_asset_name": required_asset_name}
     releases_result = http_request(releases_url, headers={"Accept": "application/vnd.github+json"})
     license_result = http_request(license_url, headers={"Accept": "application/vnd.github+json"})
     release_raw: object
@@ -608,7 +608,15 @@ def check_synthea(releases_url: str, license_url: str, repository_url: str, seed
     evidence["selected_release_published_at"] = string_value(selected_release.get("published_at")) if selected_release else ""
     evidence["license_spdx_id"] = string_value(license_metadata.get("spdx_id"))
     evidence["license_name"] = string_value(license_metadata.get("name"))
-    if selected_release is None or not string_value(license_metadata.get("spdx_id")):
+    assets = [cast(JsonObject, item) for item in list_value(selected_release.get("assets")) if isinstance(item, dict)] if selected_release else []
+    selected_asset = next((asset for asset in assets if string_value(asset.get("name")) == required_asset_name), None)
+    evidence["selected_asset"] = {
+        "name": string_value(selected_asset.get("name")) if selected_asset else "",
+        "browser_download_url": string_value(selected_asset.get("browser_download_url")) if selected_asset else "",
+        "size": int_value(selected_asset.get("size")) if selected_asset else 0,
+        "digest": string_value(selected_asset.get("digest")) if selected_asset else "",
+    }
+    if selected_release is None or not string_value(license_metadata.get("spdx_id")) or selected_asset is None or not string_value(selected_asset.get("digest")):
         return Check("Synthea availability and licence", "warning", "Synthea was reachable but the release or licence metadata was incomplete.", evidence, "Manually verify the exact pinned release and licence before Phase 1.")
     return Check("Synthea availability and licence", "pass", "Synthea release and licence metadata were discovered from the live repository.", evidence)
 
@@ -799,7 +807,7 @@ def build_preflight() -> tuple[JsonObject, int]:
     checks.append(check_region(project, location))
     checks.append(check_quota(project=project, token=token, discovery_url=string_value(discovery.get("serviceusage_discovery_url")), load=load))
     checks.append(choose_pas_version(string_value(pas.get("package_list_url")), string_value(pas.get("ig_url")), string_value(pas.get("cms_context_url"))))
-    checks.append(check_synthea(string_value(synthea.get("releases_api_url")), string_value(synthea.get("license_api_url")), string_value(synthea.get("repository_url")), int_value(synthea.get("seed"))))
+    checks.append(check_synthea(string_value(synthea.get("releases_api_url")), string_value(synthea.get("license_api_url")), string_value(synthea.get("repository_url")), int_value(synthea.get("seed")), string_value(synthea.get("asset_name"))))
     for source in list_value(policy_sources.get("sources")):
         if isinstance(source, dict):
             checks.append(check_policy_source(cast(JsonObject, source)))
