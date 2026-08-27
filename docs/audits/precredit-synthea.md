@@ -136,8 +136,8 @@ satisfied.
   `docs/audits/phase-0.md`.
 - The official DMHC IMR data endpoints returned HTTP 403 to the fail-closed
   fetcher. A separate Oregon external-review outcome subset is accepted for
-  local-only use, but it has not yet been evaluated by Appeal and is not a
-  prior-authorization corpus.
+  local-only use; its adapter preflight abstained on all rows before denial
+  parsing, and it is not a prior-authorization corpus.
 
 ## Reproducible HAPI verification
 

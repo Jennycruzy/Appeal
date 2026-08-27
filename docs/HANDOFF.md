@@ -54,8 +54,10 @@ established. The Oregon workbook contains 2,230 case-detail rows and an
 explicit `Case Outcome` field. Under the project owner's direction, all 1,640
 completed-review outcome rows are accepted for local-only external-review
 evaluation; this does not label them as prior authorization or authorize
-redistribution. No real regulator case has been run through Appeal, and there
-are still zero regulator-ground-truth comparison results.
+redistribution. The fail-closed adapter preflight has now exercised the case
+state machine for all 1,640 rows and recorded 1,640 explicit abstentions before
+denial parsing. No real regulator case has completed Appeal, and there are
+still zero regulator-ground-truth comparison results.
 
 ## Done and verified
 
@@ -97,7 +99,9 @@ are still zero regulator-ground-truth comparison results.
   metadata-only. `evidence/oregon-acceptance.json` records the project-owner
   decision to use 1,640 completed-review rows locally, while
   `docs/oregon-iro-review-request.md` remains an optional request for redacted
-  synopses and written confirmation.
+  synopses and written confirmation. `scripts/run_oregon_local_evaluation.py`
+  has since run the adapter preflight across those rows; the aggregate report
+  records 1,640 abstentions and zero full Appeal evaluations.
 
 - Synthea v4.0.0, the JAR digest, both seeds, fixed dates, California geography,
   and a one-thread bounded invocation are now pinned. The corrected fixed-end
@@ -146,8 +150,9 @@ When resuming, use this order:
    date-of-birth labels, and 9 member-ID labels, and resolve the unresolved reuse
    position before accepting any rows.
 5. Only after those checks, select a reviewed subset relevant to prior
-   authorization and run the real-denial evaluation. Until then the counts stay
-   at zero Appeal evaluations and zero regulator-ground-truth comparisons.
+   authorization and run the real-denial evaluation. The Oregon adapter
+   preflight is complete, but all 1,640 rows abstained before denial parsing;
+   full Appeal evaluations and regulator-ground-truth comparisons remain zero.
 
 The repository now has a fail-closed review workflow for this gate:
 
@@ -212,8 +217,21 @@ make prepare-oregon-local-evaluation \
 
 The command verifies the workbook hash, selects all 1,640 completed-review
 outcomes, and writes treatment text only to the outside-repository output path.
-It does not run Appeal or produce an evaluation score; the next implementation
-step is the local Appeal adapter and outcome-comparison recorder.
+It does not run the full Appeal workflow or produce an evaluation score.
+
+To run the fail-closed adapter preflight against that local input:
+
+```text
+make run-oregon-local-evaluation \
+  OREGON_IRO_LOCAL_OUTPUT=../Downloads/oregon-iro-local-evaluation.json
+```
+
+The preflight exercises the actual case state machine and records every row as
+`PARSE_FAILED_HUMAN_REVIEW`: the Oregon report has no denial narrative, policy
+reference, or clinical evidence. Its aggregate-only result is in
+`evidence/oregon-evaluation.json`; it deliberately leaves full Appeal
+evaluation and outcome comparison at zero. The next implementation step is a
+real Appeal adapter only after those required inputs are available.
 
 ### Reproducibility investigation
 
@@ -288,9 +306,10 @@ server survives restart.
    identities/tools, event spine, Memory Bank, governance boundary, Gemma,
    observability, console, evaluation, and seeded demo.
 5. The Phase 9 real-denial run and mandatory human-choice stop have not happened.
-   The Oregon source gate is ready for a local-only outcome run; the stop still
-   requires the Appeal adapter, policy mapping, and recorded regulator-outcome
-   comparison to be completed first.
+   The Oregon adapter preflight is complete, but it found no rows with the
+   denial, policy, and clinical inputs needed for a full Appeal run. The stop
+   still requires those inputs, the full adapter, and a recorded
+   regulator-outcome comparison.
 
 ## Resume checkpoint — after the PC is charged
 

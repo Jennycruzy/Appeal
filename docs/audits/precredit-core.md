@@ -50,8 +50,9 @@ does not claim that Phase 1 has started or that Phase 0 is complete.
   a selected governing program. The state machine intentionally refuses to
   calculate them instead of using a remembered number.
 - Phase 0 cloud/model discovery, policy-source review, and statutory-clock work
-  remain incomplete in `docs/audits/phase-0.md`. Oregon has a local-only
-  external-review outcome input prepared, but no Appeal evaluation has run.
+  remain incomplete in `docs/audits/phase-0.md`. Oregon's adapter preflight has
+  exercised all 1,640 local-only external-review rows, but every row abstained
+  before denial parsing; no full Appeal evaluation has run.
 
 ## Exit status
 

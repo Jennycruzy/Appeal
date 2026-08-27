@@ -210,8 +210,11 @@ calibration report. The project owner has authorized local-only use of the
 (`Upheld Denial`, `Overturned Denial`, or `Partial Overturn`). The acceptance
 decision is recorded in `evidence/oregon-acceptance.json`. This is not a claim
 of prior-authorization eligibility, written regulator permission, or
-redistribution rights. No case has yet been run through Appeal. The raw
-workbook is unchanged, local-only, and not committed; case numbers and free
+redistribution rights. The adapter preflight has now exercised the state
+machine for all 1,640 rows, but every row abstained before denial parsing
+because the report has no denial narrative, policy reference, or clinical
+evidence. No case has completed Appeal. The raw workbook is unchanged,
+local-only, and not committed; case numbers and free
 text are generated into a separate local evaluation file outside the
 repository. The written request in `docs/oregon-iro-review-request.md` is now
 an optional follow-up for confirmation and redacted synopses.
@@ -225,8 +228,16 @@ make prepare-oregon-local-evaluation \
 ```
 
 The command verifies the recorded workbook hash and writes the selected free
-text only outside the repository. It prepares input; it does not run Appeal or
-produce regulator-comparison metrics.
+text only outside the repository. It prepares input; it does not run the full
+Appeal workflow or produce regulator-comparison metrics. The adapter preflight
+can be reproduced with:
+
+```text
+make run-oregon-local-evaluation \
+  OREGON_IRO_LOCAL_OUTPUT=../Downloads/oregon-iro-local-evaluation.json
+```
+
+The aggregate result is `evidence/oregon-evaluation.json`.
 
 ### California Department of Insurance — California-specific candidate
 
@@ -319,16 +330,19 @@ in the material reviewed, so it is aggregate calibration evidence only.
 
 ### Source decision
 
-The ranked retrieval order is now: (1) run the accepted Oregon local
-external-review outcome input through the Appeal adapter, (2) continue the NY
+The ranked retrieval order is now: (1) supply the missing denial, policy, and
+clinical inputs for the accepted Oregon local external-review outcome input
+and run the full Appeal adapter, (2) continue the NY
 DFS privacy/reuse review while waiting for the written mapping response, (3)
 try the separate California CDI and DMHC databases, and (4) verify the
 Washington OIC search/export path. Pennsylvania and CMS remain aggregate
 calibration sources. The project currently has **zero real denial cases
 evaluated and zero regulator-ground-truth comparisons**. It has three
-metadata-only source artifacts plus a local-only Oregon evaluation input that
-has not yet been scored. No README, evaluation file, demo case, or metric may
-claim an Appeal evaluation until the adapter run and comparison are recorded.
+metadata-only source artifacts plus a local-only Oregon evaluation input. The
+Oregon adapter preflight is recorded, but it abstained on every row and did not
+produce an Appeal score. No README, evaluation file, demo case, or metric may
+claim an Appeal evaluation until a full adapter run and comparison are
+recorded.
 
 The two-corpus boundary remains explicit: regulator records can test denial
 language, criterion-location reasoning, and externally recorded outcomes;
@@ -364,7 +378,9 @@ they are used to calibrate the reference payer.
   2,230 observed rows and explicit outcome fields. The project owner accepted
   1,640 completed-review rows for local-only outcome evaluation. Its raw
   workbook, case numbers, and free text remain outside the repository; no
-  prior-authorization claim or redistribution permission is asserted.
+  prior-authorization claim or redistribution permission is asserted. The
+  adapter preflight ran against all 1,640 rows and abstained before denial
+  parsing; no full Appeal case was evaluated.
 - The NY DFS export has 61,606 locally observed rows, but the privacy scan found
   unreviewed physical-address-shaped, date-of-birth-label, and member-ID-label
   candidates. Its reuse licence is also not established by the DFS privacy
@@ -372,18 +388,20 @@ they are used to calibrate the reference payer.
 - The NY browser table and downloaded workbook disagree on the visible record
   count (55,571 versus 61,606); the reason has not been established.
 - No CMS payer report has yet been collected as calibration evidence.
-- No real denial has been run through Appeal, so the Phase 9 hard-stop report
-  does not exist yet.
+- No real denial has completed Appeal, so the Phase 9 hard-stop report does not
+  exist yet. The adapter preflight is an explicit input-gap report, not a
+  performance result.
 
 ## Blockers
 
-- Phase 1D can now run a bounded local-only external-review outcome evaluation
-  against the accepted Oregon subset, but it cannot claim prior-authorization
-  eligibility or public corpus redistribution. One Michigan order remains
-  local-only and unevaluated. The NY DFS export remains blocked by its mapping,
-  privacy, and reuse decisions. DMHC, CDI, Washington, and the NY source remain
-  parallel alternatives for a broader or more directly prior-authorization
-  aligned corpus.
+- Phase 1D's Oregon adapter preflight is complete, but the accepted subset
+  contains no denial narrative, policy reference, or clinical evidence, so all
+  1,640 rows abstained before a full Appeal evaluation. It cannot claim
+  prior-authorization eligibility or public corpus redistribution. One Michigan
+  order remains local-only and unevaluated. The NY DFS export remains blocked
+  by its mapping, privacy, and reuse decisions. DMHC, CDI, Washington, and the
+  NY source remain parallel alternatives for a broader or more directly
+  prior-authorization aligned corpus.
 - Phase 2 payer calibration cannot claim a target distribution until actual
   public 2025 reports are collected and hashed.
 - The overall build remains stopped at the Phase 0 billing/model-discovery
@@ -393,6 +411,7 @@ they are used to calibrate the reference payer.
 
 Pre-credit source discovery has identified three manually acquired regulator
 artifacts: one Michigan order, one NY DFS export, and one Oregon IRO workbook.
-Oregon is accepted for a local-only external-review outcome run, but no Appeal
+Oregon is accepted for local-only external-review outcome handling, and its
+adapter preflight is recorded as 1,640 explicit abstentions. No full Appeal
 evaluation or regulator-ground-truth comparison has been completed. The
 project must not claim performance until those results are recorded.

@@ -21,8 +21,11 @@ official regulator candidates are now tracked:
   the official public download; no redistribution or prior-authorization claim
   is made.
 - NY privacy/mapping/reuse review remains unresolved. Oregon is accepted only
-  for local external-review outcome evaluation; Appeal evaluations and
-  regulator-ground-truth comparisons remain **zero** until the adapter runs.
+  for local external-review outcome evaluation. The fail-closed adapter
+  preflight has run across all 1,640 accepted rows and abstained before denial
+  parsing because the source does not provide denial text, policy references,
+  or clinical evidence. Full Appeal evaluations and regulator-ground-truth
+  comparisons remain **zero**.
 
 Start with the [NY DFS handoff](docs/HANDOFF.md#ny-dfs-schema-mismatch--resume-here),
 the [Oregon fallback](docs/HANDOFF.md#oregon-iro-case-detail-fallback), the
@@ -35,8 +38,10 @@ follow-up [request](docs/oregon-iro-review-request.md).
 
 The Synthea/HAPI material is a reproducible integration fixture and data-plane
 check. It is not real-denial evidence and does not support a clinical or
-regulator-ground-truth claim. The Oregon source-specific gate now permits a
-local outcome run; the NY source remains separately blocked.
+regulator-ground-truth claim. The Oregon source-specific gate permits a
+local-only adapter preflight and outcome-label inventory; it does not yet
+support a full denial appeal evaluation. The NY source remains separately
+blocked.
 
 All corpus gates are fail-closed. The raw NY DFS and Oregon workbooks are not
 committed. The local Oregon evaluation input is generated outside the
@@ -54,7 +59,13 @@ make inspect-oregon-iro \
 make prepare-oregon-local-evaluation \
   OREGON_IRO_INPUT=../Downloads/oregon-iro-case-detail-report.xlsx \
   OREGON_IRO_LOCAL_OUTPUT=../Downloads/oregon-iro-local-evaluation.json
+make run-oregon-local-evaluation \
+  OREGON_IRO_LOCAL_OUTPUT=../Downloads/oregon-iro-local-evaluation.json
 ```
+
+The Oregon run writes aggregate-only evidence to
+`evidence/oregon-evaluation.json`. Its current result is an adapter preflight
+with 1,640 explicit abstentions, not an Appeal score.
 
 To create the local privacy-review packet, use the unchanged workbook and an
 output path outside this repository:
