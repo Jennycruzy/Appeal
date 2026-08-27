@@ -36,6 +36,7 @@
       "export_field": "Denial Reason",
       "mapping_decision": "unresolved",
       "verified_equivalent": null,
+      "mapping_evidence_sha256": null,
       "evidence_refs": [],
       "reviewer": null,
       "reviewed_at": null
@@ -49,6 +50,7 @@
         "member_id_label": 9
       },
       "decision": null,
+      "review_record_sha256": null,
       "evidence_refs": [
         "evidence/ny-dfs-export-acquisition.json"
       ],
@@ -60,6 +62,7 @@
       "permitted_use": null,
       "permission_source": null,
       "permission_reference": null,
+      "permission_evidence_sha256": null,
       "evidence_refs": [
         "evidence/ny-dfs-export-acquisition.json"
       ],

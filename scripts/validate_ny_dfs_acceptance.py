@@ -125,6 +125,7 @@ def validate_manifest(
         mapping.get("status") == "verified"
         and mapping.get("mapping_decision") == "equivalent_verified"
         and mapping.get("verified_equivalent") is True
+        and bool(HEX64.fullmatch(string_value(mapping.get("mapping_evidence_sha256"))))
         and bool(list_value(mapping.get("evidence_refs")))
         and appeal_type.get("status") == "verified_mapping"
         and appeal_type.get("source_column") == "Denial Reason"
@@ -147,6 +148,7 @@ def validate_manifest(
         and bool(string_value(privacy.get("reviewed_at")))
         and bool(list_value(privacy.get("evidence_refs")))
         and bool(string_value(privacy.get("decision")))
+        and bool(HEX64.fullmatch(string_value(privacy.get("review_record_sha256"))))
     )
 
     reuse = object_value(gates.get("reuse"))
@@ -154,6 +156,7 @@ def validate_manifest(
         reuse.get("status") in {"permitted_for_local_evaluation", "permitted_for_evaluation_and_redistribution"}
         and bool(string_value(reuse.get("permission_source")))
         and bool(string_value(reuse.get("permission_reference")))
+        and bool(HEX64.fullmatch(string_value(reuse.get("permission_evidence_sha256"))))
         and bool(list_value(reuse.get("evidence_refs")))
         and bool(string_value(reuse.get("reviewer")))
         and bool(string_value(reuse.get("reviewed_at")))
