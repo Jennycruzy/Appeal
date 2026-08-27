@@ -14,7 +14,16 @@ and declares a Creative Commons Attribution licence, but the case-level
 payload has not been retrieved or accepted. See the [real-corpus audit](docs/audits/precredit-imr.md#source-decision)
 for the current retrieval decision.
 
-Two manually acquired regulator candidates are also tracked locally:
+The official download and API are currently returning Cloudflare 403 responses.
+A public Kaggle mirror was therefore downloaded outside the repository and
+inspected as a fallback candidate: 19,245 rows, 11 columns, `Determination`,
+`Findings`, treatment categories, and `Reference ID`. It has no explicit
+`Denial Reason` field and its technical scan found 22 physical-address-shaped
+values; it remains blocked pending provenance, privacy, reuse, and
+prior-authorization review. The metadata-only record is
+[`evidence/dmhc-kaggle-acquisition.json`](evidence/dmhc-kaggle-acquisition.json).
+
+Two other manually acquired regulator candidates are also tracked locally:
 
 - The NY DFS all-years export is preserved unchanged and local-only.
 - It contains 61,606 observed rows, an `Appeal Decision` outcome, and a
@@ -55,10 +64,10 @@ local-only adapter preflight and outcome-label inventory; it does not yet
 support a full denial appeal evaluation. The NY source remains separately
 blocked.
 
-All corpus gates are fail-closed. The raw NY DFS and Oregon workbooks are not
-committed. The local Oregon evaluation input is generated outside the
-repository; repository evidence contains metadata and aggregate counts only—not
-case numbers, treatment strings, or narrative values.
+All corpus gates are fail-closed. The raw NY DFS, Oregon, and DMHC mirror files
+are not committed. The local Oregon evaluation input and DMHC mirror CSV stay
+outside the repository; repository evidence contains metadata and aggregate
+counts only—not case numbers, treatment strings, or narrative values.
 
 ## Verification
 

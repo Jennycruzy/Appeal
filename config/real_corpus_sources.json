@@ -17,8 +17,8 @@
       "official_metadata_refresh_url": "https://lab.data.ca.gov/dataset/independent-medical-review-imr-determinations-trend",
       "contact_email": "opendata@dmhc.ca.gov",
       "candidate_priority": "primary_real_source_target",
-      "last_checked": "2026-08-27",
-      "retrieval_status": "official_metadata_verified_payload_not_retrieved",
+      "last_checked": "2026-08-28",
+      "retrieval_status": "official_payload_blocked_third_party_mirror_inspected_pending_acceptance",
       "fetch_method": "HEAD/GET with ETag capture; do not modify or redistribute a transformed copy; fail closed on access or licence uncertainty.",
       "case_level_ground_truth_verified": false
     },

@@ -94,6 +94,35 @@ a denial basis, treatment, clinical findings, and an overturned determination.
 It is not an official payload, it has not been independently reconciled to the
 DMHC export, and it is not accepted as a corpus row or evaluation result.
 
+### Third-party DMHC mirror acquisition — blocked local fallback
+
+Because the official download and API returned HTTP 403 to both the workspace
+and the user's browser, a public [Kaggle copy](https://www.kaggle.com/datasets/prasad22/ca-independent-medical-review)
+was downloaded on 2026-08-28 into the user's Downloads directory. The source
+card claims DMHC as the original source and declares `CC0: Public Domain`; both
+claims are recorded as third-party metadata and are not treated as official
+DMHC permission.
+
+The unchanged downloaded ZIP is
+`/Users/user/Downloads/dmhc-imr-kaggle-ca-independent-medical-review-2023-11-20.zip`
+with SHA-256
+`659b6f3e9912dffd0e6f8f7a7ea1db08262a88b28ff54d995d0ebc46211b2ed9`. Its sole
+member is `Independent_Medical_Reviews.csv` (26,520,166 bytes), whose extracted
+bytes have SHA-256
+`27d35967a6eb4dd1c5cf61dafe4a6eb5f2b8b43dd6ad97f685403b3d1ac323bf`. The
+metadata-only inspection is `evidence/dmhc-kaggle-acquisition.json`; neither
+the ZIP nor CSV is in Git.
+
+The copy has 19,245 rows and 11 columns: `Reference ID`, `Determination`,
+`Type`, treatment categories, and `Findings`. `Determination` is populated for
+all rows, `Findings` is populated for 19,225 rows, and the technical privacy
+scan found 22 physical-address-shaped values in findings. There is no explicit
+`Denial Reason` column. `Type` is retained as a source case-type field and is
+not mapped to `denial_reason` or `appeal_type`. The candidate is blocked pending
+human privacy review, provenance reconciliation to the official DMHC resource,
+source-specific reuse review, and a prior-authorization scope decision. It has
+zero accepted rows, zero Appeal evaluations, and zero regulator comparisons.
+
 ## Alternative regulator sources investigated
 
 The DMHC access failure is being treated as an unresolved retrieval blocker, not
@@ -361,11 +390,13 @@ No source is currently verified as complete end-to-end. For this project,
 "complete" means a public, provenance-preserving case record with a denial
 basis, requested service, usable clinical rationale, regulator outcome, and a
 defensible prior-authorization scope decision. The ranked retrieval order is
-now: (1) obtain and inspect the official DMHC case-level resource or an
-official DMHC searchable record; (2) if that remains inaccessible, try the
-California CDI and Washington OIC case-level paths; (3) continue NY DFS only
+now: (1) reconcile the downloaded DMHC mirror against the official data
+dictionary/resource and complete its privacy, reuse, and prior-authorization
+gates; (2) obtain and inspect the official DMHC case-level resource or an
+official DMHC searchable record; (3) if both remain inaccessible, try the
+California CDI and Washington OIC case-level paths; (4) continue NY DFS only
 through its explicit mapping, privacy, reuse, and prior-authorization gates;
-and (4) treat Oregon as outcome-only until a denial packet or redacted synopsis
+and (5) treat Oregon as outcome-only until a denial packet or redacted synopsis
 supplies the missing inputs. Pennsylvania and CMS remain aggregate calibration
 sources. DWC is excluded for scope and completeness reasons.
 
@@ -405,6 +436,11 @@ they are used to calibrate the reference payer.
   inspected because the downloadable payload and datastore remain behind the
   same Cloudflare-protected host. The lab catalog is a metadata route, not a
   second data copy.
+- A third-party DMHC mirror is now available locally with 19,245 case rows,
+  `Determination`, `Findings`, treatment, and `Reference ID` fields. It is not
+  accepted because its provenance is not reconciled to the current official
+  export, its technical scan found 22 address-shaped findings, and its reuse
+  and prior-authorization decisions remain open.
 - One official Michigan regulator order has been inspected locally; no raw real
   document or derived public case dataset has been accepted into the
   repository.

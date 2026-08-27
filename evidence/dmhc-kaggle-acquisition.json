@@ -1,0 +1,163 @@
+{
+  "artifact": {
+    "catalog_url": "https://www.kaggle.com/datasets/prasad22/ca-independent-medical-review",
+    "official_catalog_url": "https://lab.data.ca.gov/dataset/independent-medical-review-imr-determinations-trend",
+    "file_name": "dmhc-imr-kaggle-ca-independent-medical-review-2023-11-20.csv",
+    "local_file_size_bytes": 26520166,
+    "publisher": "Kaggle public mirror; original source claimed as California Department of Managed Health Care",
+    "raw_artifact_location": "local_download_only_not_repo",
+    "retrieval_method": "public_kaggle_api_download",
+    "sha256": "27d35967a6eb4dd1c5cf61dafe4a6eb5f2b8b43dd6ad97f685403b3d1ac323bf",
+    "source_id": "california_dmhc_imr_kaggle_mirror",
+    "source_url": "https://www.kaggle.com/api/v1/datasets/download/prasad22/ca-independent-medical-review",
+    "archive_file_name": "dmhc-imr-kaggle-ca-independent-medical-review-2023-11-20.zip",
+    "archive_sha256": "659b6f3e9912dffd0e6f8f7a7ea1db08262a88b28ff54d995d0ebc46211b2ed9",
+    "archive_member": "Independent_Medical_Reviews.csv",
+    "archive_member_size_bytes": 26520166,
+    "transformation": "none"
+  },
+  "field_policy": {
+    "regulator_outcome": {
+      "application_field": "regulator_outcome",
+      "source_column": "Determination",
+      "status": "observed_case_level_outcome_field"
+    },
+    "findings": {
+      "application_field": "findings",
+      "source_column": "Findings",
+      "status": "observed_case_level_findings_field_local_only"
+    },
+    "treatment": {
+      "application_field": "treatment_text",
+      "source_column": "Treatment Category and Treatment Sub Category",
+      "status": "observed_case_level_treatment_fields_local_only"
+    },
+    "review_type": {
+      "application_field": "review_type",
+      "source_column": "Type",
+      "status": "observed_source_case_type_do_not_map_to_denial_reason_or_appeal_type"
+    },
+    "denial_reason": {
+      "application_field": "denial_reason",
+      "source_column": null,
+      "status": "not_present"
+    },
+    "appeal_type": {
+      "application_field": "appeal_type",
+      "source_column": null,
+      "status": "nullable_unverified"
+    },
+    "case_reference": {
+      "application_field": "source_case_ref",
+      "source_column": "Reference ID",
+      "status": "observed_source_reference_local_only"
+    }
+  },
+  "provenance": {
+    "kaggle_dataset_page": "https://www.kaggle.com/datasets/prasad22/ca-independent-medical-review",
+    "kaggle_metadata_endpoint": "https://www.kaggle.com/api/v1/datasets/view/prasad22/ca-independent-medical-review",
+    "kaggle_declared_last_updated": "2023-11-20T14:29:22.823Z",
+    "kaggle_declared_license": "CC0: Public Domain",
+    "kaggle_license_interpretation": "third_party_uploader_declaration_pending_verification; not treated as official DMHC permission",
+    "original_source_claim": "California Department of Managed Health Care",
+    "official_source_reconciliation": "pending_against_current_official_payload",
+    "current_official_catalog_last_checked": "2026-08-28"
+  },
+  "acceptance": {
+    "decision": "blocked_pending_official_reconciliation_privacy_reuse_prior_authorization_review",
+    "accepted_for_local_evaluation": false,
+    "accepted_for_repository": false,
+    "accepted_record_count": 0,
+    "accepted_narrative_record_count": 0,
+    "raw_artifact_committed": false,
+    "findings_text_committed": false
+  },
+  "evaluation": {
+    "accepted_record_count": 0,
+    "appeal_cases_evaluated": 0,
+    "regulator_ground_truth_comparisons": 0
+  },
+  "gates": {
+    "prior_authorization": "not_verified",
+    "privacy": "pending_human_review",
+    "reuse": "pending_source_specific_review",
+    "schema_mapping": {
+      "appeal_type": "nullable_unverified",
+      "denial_reason": "use_only_if_explicitly_present_and_verified",
+      "status": "human_review_required"
+    }
+  },
+  "inspection": {
+    "case_reference_field_present": true,
+    "columns": 11,
+    "data_rows": 19245,
+    "denial_reason_field_present": false,
+    "distinct_counts": {
+      "Age Range": 7,
+      "Determination": 2,
+      "Diagnosis Category": 29,
+      "Diagnosis Sub Category": 278,
+      "Findings": 19196,
+      "Patient Gender": 2,
+      "Reference ID": 19245,
+      "Report Year": 16,
+      "Treatment Category": 31,
+      "Treatment Sub Category": 283,
+      "Type": 3
+    },
+    "findings_field_present": true,
+    "headers": [
+      "Reference ID",
+      "Report Year",
+      "Diagnosis Category",
+      "Diagnosis Sub Category",
+      "Treatment Category",
+      "Treatment Sub Category",
+      "Determination",
+      "Type",
+      "Age Range",
+      "Patient Gender",
+      "Findings"
+    ],
+    "nonempty_counts": {
+      "Age Range": 18035,
+      "Determination": 19245,
+      "Diagnosis Category": 19186,
+      "Diagnosis Sub Category": 17341,
+      "Findings": 19225,
+      "Patient Gender": 18035,
+      "Reference ID": 19245,
+      "Report Year": 19245,
+      "Treatment Category": 18795,
+      "Treatment Sub Category": 17977,
+      "Type": 19245
+    },
+    "nonempty_data_rows": 19245,
+    "outcome_distinct_count": 2,
+    "outcome_field": "Determination",
+    "outcome_nonempty": 19245,
+    "resolved_fields": {
+      "case_reference": "Reference ID",
+      "denial_reason": null,
+      "findings": "Findings",
+      "regulator_outcome": "Determination",
+      "treatment": "Treatment Category"
+    },
+    "treatment_field_present": true
+  },
+  "privacy_scan": {
+    "candidate_counts": {
+      "physical_address_shape": 22
+    },
+    "candidate_counts_by_field": {
+      "Findings": {
+        "physical_address_shape": 22
+      }
+    },
+    "distinct_field_values_scanned": 39092,
+    "status": "technical_pattern_scan_only_no_legal_determination_claimed"
+  },
+  "recorded_at": "2026-08-27T23:35:49.365954Z",
+  "schema_version": "0.1",
+  "status": "blocked_third_party_mirror_pending_provenance_privacy_reuse_review"
+}

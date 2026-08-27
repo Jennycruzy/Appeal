@@ -15,7 +15,13 @@ from typing import Any
 
 
 FIELD_ALIASES: dict[str, tuple[str, ...]] = {
-    "case_reference": ("case number", "case id", "imr case number", "imr number"),
+    "case_reference": (
+        "case number",
+        "case id",
+        "imr case number",
+        "imr number",
+        "reference id",
+    ),
     "regulator_outcome": ("determination", "decision", "outcome"),
     "denial_reason": ("denial reason", "reason for denial", "denial"),
     "treatment": ("treatment", "service", "procedure", "request"),
@@ -141,7 +147,15 @@ def read_csv(path: Path) -> dict[str, Any]:
     }
 
 
-def inspect(path: Path) -> dict[str, Any]:
+def inspect(
+    path: Path,
+    *,
+    source_id: str = "california_dmhc_imr_determinations",
+    publisher: str = "California Department of Managed Health Care",
+    catalog_url: str = "https://lab.data.ca.gov/dataset/independent-medical-review-imr-determinations-trend",
+    source_url: str = "https://data.chhs.ca.gov/dataset/b79b3447-4c10-4ae6-84e2-1076f83bb24e/resource/3340c5d7-4054-4d03-90e0-5f44290ed095/download/independent-medical-review-determinations-trends.csv",
+    retrieval_method: str = "manual_or_authorized_download",
+) -> dict[str, Any]:
     if not path.is_file():
         raise FileNotFoundError(path)
     inspection = read_csv(path)
@@ -151,12 +165,12 @@ def inspect(path: Path) -> dict[str, Any]:
         "recorded_at": now_iso(),
         "status": "public_source_inspected_local_only_pending_acceptance",
         "artifact": {
-            "source_id": "california_dmhc_imr_determinations",
-            "publisher": "California Department of Managed Health Care",
-            "catalog_url": "https://lab.data.ca.gov/dataset/independent-medical-review-imr-determinations-trend",
-            "csv_url": "https://data.chhs.ca.gov/dataset/b79b3447-4c10-4ae6-84e2-1076f83bb24e/resource/3340c5d7-4054-4d03-90e0-5f44290ed095/download/independent-medical-review-determinations-trends.csv",
+            "source_id": source_id,
+            "publisher": publisher,
+            "catalog_url": catalog_url,
+            "source_url": source_url,
             "file_name": path.name,
-            "retrieval_method": "manual_or_authorized_download",
+            "retrieval_method": retrieval_method,
             "local_file_size_bytes": path.stat().st_size,
             "sha256": sha256_file(path),
             "raw_artifact_location": "local_download_only_not_repo",
@@ -201,12 +215,30 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--csv", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--source-id", default="california_dmhc_imr_determinations")
+    parser.add_argument("--publisher", default="California Department of Managed Health Care")
+    parser.add_argument(
+        "--catalog-url",
+        default="https://lab.data.ca.gov/dataset/independent-medical-review-imr-determinations-trend",
+    )
+    parser.add_argument(
+        "--source-url",
+        default="https://data.chhs.ca.gov/dataset/b79b3447-4c10-4ae6-84e2-1076f83bb24e/resource/3340c5d7-4054-4d03-90e0-5f44290ed095/download/independent-medical-review-determinations-trends.csv",
+    )
+    parser.add_argument("--retrieval-method", default="manual_or_authorized_download")
     args = parser.parse_args()
     input_path = args.csv.expanduser().resolve()
     output_path = args.output.expanduser().resolve()
     if input_path == output_path:
         raise ValueError("refusing to overwrite the raw CSV with its inspection report")
-    report = inspect(input_path)
+    report = inspect(
+        input_path,
+        source_id=args.source_id,
+        publisher=args.publisher,
+        catalog_url=args.catalog_url,
+        source_url=args.source_url,
+        retrieval_method=args.retrieval_method,
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
         json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"

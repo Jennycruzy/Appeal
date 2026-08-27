@@ -62,13 +62,16 @@ still zero regulator-ground-truth comparison results.
 The next real-source target is the official California DMHC IMR determinations
 dataset. Its current state Open Data record reports coverage from 2001 to the
 present and a Creative Commons Attribution licence, but the downloadable
-payload still resolves to a Cloudflare-protected host and no DMHC rows have
-been accepted. `scripts/inspect_dmhc_imr.py` is ready for the first authorized
-CSV download and emits aggregate schema, outcome, hash, and privacy-pattern
-evidence only. A published third-party case example is a lead, not an
-accepted official record. California DWC was investigated and rejected as a
-primary source because it is workers' compensation and does not expose the
-complete denial packet needed by this benchmark.
+payload still resolves to a Cloudflare-protected host. A public Kaggle mirror
+was successfully downloaded outside the repository and inspected as a blocked
+fallback candidate: 19,245 rows and 11 columns, with `Reference ID`,
+`Determination`, `Findings`, and treatment categories. Its technical scan found
+22 physical-address-shaped values; no narrative rows are accepted. The
+metadata-only acquisition record is
+`evidence/dmhc-kaggle-acquisition.json`. A published third-party case example
+is a lead, not an official payload. California DWC was investigated and
+rejected as a primary source because it is workers' compensation and does not
+expose the complete denial packet needed by this benchmark.
 
 ## Done and verified
 
@@ -215,6 +218,20 @@ prior-authorization scope decision, a technical privacy review, and a
 source-specific reuse decision. Until those checks pass, keep the CSV local,
 keep `appeal_type` nullable unless officially established, and keep Appeal
 evaluation and regulator comparisons at zero.
+
+The official portal/API was not usable from either the workspace or the user's
+browser, so the fallback copy is currently at:
+
+```text
+/Users/user/Downloads/dmhc-imr-kaggle-ca-independent-medical-review-2023-11-20.zip
+/Users/user/Downloads/dmhc-imr-kaggle-ca-independent-medical-review-2023-11-20.csv
+```
+
+The Kaggle copy is not the current official DMHC export. Its card declares a
+CC0 licence and claims DMHC as the original source, but that declaration is
+third-party provenance, not official permission. Reconcile it against the
+official data dictionary or a future official payload before treating it as
+regulator ground truth.
 
 ### Oregon IRO case-detail fallback
 
