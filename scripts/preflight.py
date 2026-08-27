@@ -18,6 +18,7 @@ import shutil
 import ssl
 import subprocess
 import sys
+import tempfile
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -306,7 +307,213 @@ def regional_api_url(location: str, path: str) -> str:
     return f"https://{urllib.parse.quote(location, safe='')}-aiplatform.googleapis.com/{path.lstrip('/')}"
 
 
-def select_gemini_model(models: list[JsonObject], minimum_major: int, minimum_minor: int) -> tuple[JsonObject | None, list[JsonObject]]:
+def check_cloud_billing(project: str | None, token: str | None) -> Check:
+    """Verify the project billing link without reading or changing payment data."""
+
+    evidence: JsonObject = {
+        "project": project or "",
+        "prepay_balance_checked": False,
+        "payment_method_checked": False,
+    }
+    if project is None or token is None:
+        evidence["reason"] = "project or access token unavailable"
+        return Check(
+            "Cloud Billing link",
+            "blocked",
+            "The project billing link could not be checked without authenticated access.",
+            evidence,
+            "Authenticate and rerun before making a paid-tier or credit-availability claim.",
+        )
+    project_url = f"https://cloudbilling.googleapis.com/v1/projects/{urllib.parse.quote(project, safe='')}/billingInfo"
+    project_result = http_request(project_url, headers=auth_headers(token, project))
+    project_body = parse_json_body(project_result)
+    evidence["project_billing_info_url"] = project_url
+    evidence["project_http_status"] = project_result.status_code if project_result.status_code is not None else -1
+    if project_result.status_code != 200 or project_body is None:
+        project_error = response_error(project_result) if project_result.status_code != 200 else "billingInfo response was not a JSON object"
+        evidence["project_error"] = project_error
+        if "SERVICE_DISABLED" in project_error:
+            return Check(
+                "Cloud Billing link",
+                "warning",
+                "Cloud Billing API is disabled, so the project/account link was not re-queried by preflight.",
+                evidence,
+                "Use the authenticated AI Studio Billing or Cloud Console view for payment status; do not enable an API or invoke a model solely for this check.",
+            )
+        return Check(
+            "Cloud Billing link",
+            "blocked",
+            "The project billing link request did not succeed.",
+            evidence,
+            "Resolve Cloud Billing IAM or API access before continuing cloud-dependent work.",
+        )
+    billing_account_name = string_value(project_body.get("billingAccountName"))
+    billing_enabled = project_body.get("billingEnabled") is True
+    evidence["billing_account_name"] = billing_account_name
+    evidence["billing_account_id"] = billing_account_name.rsplit("/", 1)[-1] if billing_account_name else ""
+    evidence["billing_enabled"] = billing_enabled
+    if not billing_account_name:
+        return Check(
+            "Cloud Billing link",
+            "blocked",
+            "The active project has no linked Cloud Billing account.",
+            evidence,
+            "Link the intended billing account in Cloud Console; do not use the obsolete appeal-fleet project.",
+        )
+    account_id = billing_account_name.rsplit("/", 1)[-1]
+    account_url = f"https://cloudbilling.googleapis.com/v1/billingAccounts/{urllib.parse.quote(account_id, safe='')}"
+    account_result = http_request(account_url, headers=auth_headers(token, project))
+    account_body = parse_json_body(account_result)
+    evidence["account_url"] = account_url
+    evidence["account_http_status"] = account_result.status_code if account_result.status_code is not None else -1
+    if account_result.status_code != 200 or account_body is None:
+        evidence["account_error"] = response_error(account_result) if account_result.status_code != 200 else "billing account response was not a JSON object"
+        return Check(
+            "Cloud Billing link",
+            "blocked",
+            "The linked Cloud Billing account could not be verified as open.",
+            evidence,
+            "Resolve Cloud Billing account access before treating the project as paid-ready.",
+        )
+    account_open = account_body.get("open") is True
+    evidence["billing_account_open"] = account_open
+    evidence["billing_account_display_name"] = string_value(account_body.get("displayName"))
+    evidence["currency_code"] = string_value(account_body.get("currencyCode"))
+    if not billing_enabled or not account_open:
+        return Check(
+            "Cloud Billing link",
+            "blocked",
+            "The project is not linked to an open, active Cloud Billing account.",
+            evidence,
+            "Resolve the project/account billing state before using paid cloud services.",
+        )
+    return Check(
+        "Cloud Billing link",
+        "pass",
+        "The project is linked to an open Cloud Billing account; AI Studio Prepay balance was not queried.",
+        evidence,
+    )
+
+
+def gcloud_model_garden_models(project: str, token: str) -> tuple[list[JsonObject], str | None]:
+    """List publisher-model metadata without invoking a model.
+
+    The public Agent Platform discovery document exposes custom-model list
+    methods but not a publisher-model list method.  The installed gcloud CLI
+    has a read-only Model Garden command for that catalog.  The token is
+    passed through a short-lived 0600 temporary file so it never appears in
+    the command arguments or the preflight artifact.
+    """
+
+    executable = shutil.which("gcloud")
+    if executable is None:
+        return [], "gcloud CLI is not available on PATH"
+    token_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            prefix="appeal-model-garden-",
+            delete=False,
+        ) as token_file:
+            token_file.write(token)
+            token_path = Path(token_file.name)
+        result = subprocess.run(
+            [
+                executable,
+                "ai",
+                "model-garden",
+                "models",
+                "list",
+                "--access-token-file",
+                str(token_path),
+                "--billing-project",
+                project,
+                "--model-filter",
+                "gemini",
+                "--full-resource-name",
+                "--limit",
+                "1000",
+                "--format",
+                "json",
+                "--quiet",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=90,
+            check=False,
+        )
+    except (OSError, subprocess.SubprocessError) as error:
+        return [], redact_error(f"gcloud Model Garden listing failed: {error}")
+    finally:
+        if token_path is not None:
+            try:
+                token_path.unlink()
+            except OSError:
+                pass
+    if result.returncode != 0:
+        return [], f"gcloud Model Garden listing failed with exit code {result.returncode}"
+    try:
+        raw: object = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return [], "gcloud Model Garden listing returned invalid JSON"
+    if not isinstance(raw, list):
+        return [], "gcloud Model Garden listing did not return a JSON array"
+    models = [cast(JsonObject, item) for item in raw if isinstance(item, dict)]
+    return models, None
+
+
+def publisher_model_records(
+    models: list[JsonObject],
+    *,
+    project: str,
+    location: str,
+    required_generation_method: str,
+) -> list[JsonObject]:
+    """Normalize live Model Garden entries for the common model selector."""
+
+    records: list[JsonObject] = []
+    for model in models:
+        catalog_name = string_value(model.get("name"))
+        if not catalog_name.startswith("publishers/google/models/gemini"):
+            continue
+        actions = object_value(model.get("supportedActions"))
+        if not object_value(actions.get("openGenerationAiStudio")):
+            continue
+        template = string_value(model.get("publisherModelTemplate"))
+        version_id = string_value(model.get("versionId"), "default")
+        if template:
+            resource_name = (
+                template.replace("{project}", project)
+                .replace("{location}", location)
+                .replace("{version}", version_id)
+            )
+            if "{" in resource_name or "}" in resource_name:
+                continue
+        else:
+            resource_name = f"projects/{project}/locations/{location}/{catalog_name}"
+        display_name = string_value(model.get("displayName")) or catalog_name.rsplit("/", 1)[-1]
+        records.append(
+            {
+                "name": resource_name,
+                "displayName": display_name,
+                "version": version_id,
+                "supportedGenerationMethods": [required_generation_method],
+                "publisher_catalog_name": catalog_name,
+                "publisher_model_template": template,
+                "launchStage": string_value(model.get("launchStage")),
+                "publisher_generation_action": "openGenerationAiStudio",
+            }
+        )
+    return records
+
+
+def select_gemini_model(
+    models: list[JsonObject],
+    minimum_major: int,
+    minimum_minor: int,
+    required_generation_method: str = "generateContent",
+) -> tuple[JsonObject | None, list[JsonObject]]:
     version_pattern = re.compile(r"gemini[-_ ]?(\d+)(?:[.-](\d+))?", re.IGNORECASE)
     candidates: list[JsonObject] = []
     for model in models:
@@ -320,7 +527,7 @@ def select_gemini_model(models: list[JsonObject], minimum_major: int, minimum_mi
         major = int(match.group(1))
         minor = int(match.group(2) or "0")
         methods = list_strings(model.get("supportedGenerationMethods"))
-        if (major, minor) >= (minimum_major, minimum_minor) and "generateContent" in methods:
+        if (major, minor) >= (minimum_major, minimum_minor) and required_generation_method in methods:
             candidates.append(
                 {
                     "name": name,
@@ -332,6 +539,10 @@ def select_gemini_model(models: list[JsonObject], minimum_major: int, minimum_mi
                     "input_token_limit": model.get("inputTokenLimit"),
                     "output_token_limit": model.get("outputTokenLimit"),
                     "raw_create_time": model.get("createTime"),
+                    "publisher_catalog_name": model.get("publisher_catalog_name"),
+                    "publisher_model_template": model.get("publisher_model_template"),
+                    "launch_stage": model.get("launchStage"),
+                    "publisher_generation_action": model.get("publisher_generation_action"),
                 }
             )
     candidates.sort(
@@ -358,6 +569,7 @@ def check_models(
     minimum = object_value(requirements.get("gemini"))
     minimum_major = int_value(minimum.get("minimum_major"), 3)
     minimum_minor = int_value(minimum.get("minimum_minor"), 5)
+    required_generation_method = string_value(minimum.get("required_generation_method"), "generateContent")
     catalog_name = string_value(discovery.get("aiplatform_catalog_name"), "aiplatform")
     catalog_entry = find_catalog_entry(catalog_entries, catalog_name)
     aiplatform_discovery_url = string_value(catalog_entry.get("discoveryRestUrl")) if catalog_entry else ""
@@ -368,6 +580,7 @@ def check_models(
         "catalog_name": catalog_name,
         "catalog_entry": catalog_summary(catalog_entry) if catalog_entry else {},
         "discovery_url": aiplatform_discovery_url,
+        "required_generation_method": required_generation_method,
     }
     if project is None or location is None:
         evidence["reason"] = "Google Cloud project or region is not configured"
@@ -415,29 +628,68 @@ def check_models(
     evidence["list_url"] = url
     evidence["http_status"] = result.status_code if result.status_code is not None else -1
     evidence["etag"] = result.headers.get("etag", "")
+    regional_error: str | None = None
     if result.status_code != 200 or body is None:
+        regional_error = response_error(result) if result.status_code != 200 else "model list response was not a JSON object"
         evidence["error"] = response_error(result) if result.status_code != 200 else "model list response was not a JSON object"
-        return Check(
-            "Gemini model discovery",
-            "blocked",
-            "The live model-list request did not succeed.",
-            evidence,
-            "Resolve regional API access, quota, or IAM before building model-dependent components.",
-        )
-    models = [cast(JsonObject, item) for item in list_value(body.get("models")) if isinstance(item, dict)]
-    selected, candidates = select_gemini_model(models, minimum_major, minimum_minor)
+        models: list[JsonObject] = []
+    else:
+        models = [cast(JsonObject, item) for item in list_value(body.get("models")) if isinstance(item, dict)]
+    selected, candidates = select_gemini_model(models, minimum_major, minimum_minor, required_generation_method)
     evidence["listed_model_count"] = len(models)
+    evidence["regional_qualifying_models"] = candidates
     evidence["qualifying_models"] = candidates
     evidence["selected_model"] = selected or {}
-    if selected is None:
+    if selected is not None:
+        evidence["model_invocation_performed"] = False
+        return Check("Gemini model discovery", "pass", "A qualifying Gemini model was selected from the live regional listing.", evidence)
+
+    publisher_models, publisher_error = gcloud_model_garden_models(project, token)
+    evidence["publisher_catalog"] = {
+        "source": "gcloud ai model-garden models list",
+        "model_filter": "gemini",
+        "billing_project": project,
+        "listed_model_count": len(publisher_models),
+        "metadata_only": True,
+        "error": publisher_error or "",
+    }
+    publisher_records = publisher_model_records(
+        publisher_models,
+        project=project,
+        location=location,
+        required_generation_method=required_generation_method,
+    )
+    publisher_selected, publisher_candidates = select_gemini_model(
+        publisher_records,
+        minimum_major,
+        minimum_minor,
+        required_generation_method,
+    )
+    evidence["publisher_qualifying_models"] = publisher_candidates
+    if publisher_selected is not None:
+        evidence["model_catalog_source"] = "gcloud ai model-garden models list"
+        evidence["qualifying_models"] = publisher_candidates
+        evidence["selected_model"] = publisher_selected
+        evidence["model_invocation_performed"] = False
         return Check(
             "Gemini model discovery",
-            "blocked",
-            f"No listed model satisfied Gemini {minimum_major}.{minimum_minor} with generateContent support.",
+            "pass",
+            "A qualifying Gemini publisher model was selected from live Model Garden metadata; no model was invoked.",
             evidence,
-            "Stop and report the model availability blocker; do not substitute an unverified model ID.",
         )
-    return Check("Gemini model discovery", "pass", "A qualifying Gemini model was selected from the live regional listing.", evidence)
+    if regional_error:
+        summary = "The regional model-list request failed, and no qualifying publisher model was verified from Model Garden metadata."
+    elif publisher_error:
+        summary = "No qualifying regional model was listed, and the Model Garden metadata fallback could not complete."
+    else:
+        summary = f"No listed model satisfied Gemini {minimum_major}.{minimum_minor} with {required_generation_method} support."
+    return Check(
+        "Gemini model discovery",
+        "blocked",
+        summary,
+        evidence,
+        "Resolve regional API access or rerun the read-only Model Garden catalog check; do not substitute an unverified model ID.",
+    )
 
 
 def check_platform_components(
@@ -822,6 +1074,7 @@ def build_preflight() -> tuple[JsonObject, int]:
     synthea = object_value(requirements.get("synthea"))
     cloud = object_value(requirements.get("google_cloud"))
     project = next((os.environ.get(name) for name in list_strings(cloud.get("project_env_vars")) if os.environ.get(name)), None)
+    project = project or string_value(cloud.get("default_project_id")) or None
     location = next((os.environ.get(name) for name in list_strings(cloud.get("region_env_vars")) if os.environ.get(name)), None)
     auth_summary, detected_project = read_adc()
     project = project or detected_project
@@ -830,6 +1083,7 @@ def build_preflight() -> tuple[JsonObject, int]:
     checks: list[Check] = local_checks()
     checks.append(Check("Application Default Credentials", "pass" if token else "blocked", auth_summary or "ADC status unknown", {"available": token is not None, "project_detected": project or ""}, "Configure ADC with a user or workload identity; never commit a service-account key."))
     checks.append(Check("Google API discovery catalog", catalog_status, "Live Google API catalog retrieved." if catalog_status == "pass" else "Google API catalog could not be retrieved.", {"url": string_value(discovery.get("google_api_catalog_url")), "entry_count": len(catalog_entries), "error": catalog_error or ""}, "Use the live discovery catalog rather than a remembered API surface."))
+    checks.append(check_cloud_billing(project, token))
     checks.append(check_models(project=project, location=location, requirements=requirements, discovery=discovery, catalog_entries=catalog_entries, token=token))
     checks.extend(check_platform_components(components=components, catalog_entries=catalog_entries, project=project, token=token))
     checks.append(check_service_usage(project=project, token=token, discovery_url=string_value(discovery.get("serviceusage_discovery_url"))))

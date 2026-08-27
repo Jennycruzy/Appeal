@@ -1,8 +1,13 @@
 # Phase 0 self-audit — discovery baseline
 
-Status: blocked; Phase 1 must not start.
+Status: historical snapshot; superseded by the 2026-08-27 registration
+addendum below. Phase 1 must not start.
 
 Audit date: 2026-08-25
+
+> This document preserves the original `appeal-fleet-2026-0825` discovery
+> evidence. The current Appeal project is `onyx-yeti-506606-i9`; see the
+> addendum below and the current `docs/preflight.json` artifact.
 
 The live command used for this audit was:
 
@@ -186,3 +191,43 @@ Phase 0 is not complete. The model ID, component availability, region,
 quotas, policy-source permissions, and DMHC case-level data access are not all
 verified. The build is therefore stopped before Phase 1, as required by the
 specification.
+
+## 2026-08-27 registration addendum
+
+The workspace has been re-registered against the project shown in the current
+Cloud Console and AI Studio evidence:
+
+```text
+Project ID:     onyx-yeti-506606-i9
+Project number: 835653516606
+Former target:  appeal-fleet-2026-0825
+Region probe:   europe-west2
+```
+
+The command used for the current live preflight was:
+
+```text
+GOOGLE_CLOUD_PROJECT=onyx-yeti-506606-i9 APPEAL_GCP_REGION=europe-west2 python3.12 scripts/preflight.py
+```
+
+The current `docs/preflight.json` records the new project, 10 passes, 16
+warnings, and 4 blockers. Application Default Credentials and Service Usage
+are available for project `onyx-yeti-506606-i9`, and
+`aiplatform.googleapis.com` is enabled. The regional custom-model list is
+reachable but empty; the preflight therefore uses the read-only Model Garden
+publisher catalog and records a qualifying GA publisher model without
+invoking it. The current selected metadata is
+`gemini-3.7-flash@default` in the `europe-west2` resource path; this is a live
+catalog result, not a generation test or a claim that residency is finalized.
+
+The supplied AI Studio evidence shows setup complete, Gemini API Paid Tier
+activated, and a successful $10 Cloud Prepay payment. The Cloud Console
+evidence shows the same active project with a $300 free trial and $0 used; that
+is a separate Cloud trial balance and is not treated as Gemini API credit.
+Google's [current Gemini API billing guidance](https://ai.google.dev/gemini-api/docs/billing)
+states that Cloud Welcome/free-trial credits should not be assumed usable for
+Gemini API or AI Studio usage. Preflight deliberately does not query private
+Prepay balance/transaction details, and the optional Cloud Billing REST API is
+disabled, so the artifact marks that billing-link check as a warning rather
+than enabling another API. No model prompt, deployment, or other
+credit-consuming operation has been performed.

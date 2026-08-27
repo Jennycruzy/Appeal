@@ -9,6 +9,7 @@
     "required_generation_method": "generateContent"
   },
   "google_cloud": {
+    "default_project_id": "onyx-yeti-506606-i9",
     "project_env_vars": [
       "GOOGLE_CLOUD_PROJECT",
       "GCLOUD_PROJECT"
@@ -40,7 +41,16 @@
     "state": "California",
     "reference_date": "20260826",
     "end_date": "20260826",
-    "thread_pool_size": 4
+    "thread_pool_size": 1
+  },
+  "hapi": {
+    "image": "hapiproject/hapi:v8.10.0-3",
+    "image_digest": "sha256:55213612779ab3eeec919226b7bad378f0061ade823393a61d7dd46dd5087a3d",
+    "fhir_version": "R4",
+    "base_url": "http://127.0.0.1:8080/fhir",
+    "application_config": "config/hapi.application.yaml",
+    "auto_create_placeholder_reference_targets": true,
+    "enforce_referential_integrity_on_write": false
   },
   "discovery": {
     "google_api_catalog_url": "https://discovery.googleapis.com/discovery/v1/apis?preferred=true",
