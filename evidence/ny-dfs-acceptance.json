@@ -1,0 +1,93 @@
+{
+  "schema_version": "0.1",
+  "recorded_at": "2026-08-27",
+  "status": "blocked",
+  "source_id": "ny_dfs_external_appeal_archive",
+  "artifact": {
+    "file_name": "peasadata.xlsx",
+    "raw_artifact_location": "local_download_only_not_repo",
+    "sha256": "999c8bb5338844cd56d90db11a3c8691af887592f2956a62418bbddfa9c4876a",
+    "observed_data_rows": 61606,
+    "source_evidence": "evidence/ny-dfs-export-acquisition.json"
+  },
+  "field_policy": {
+    "denial_reason": {
+      "application_field": "denial_reason",
+      "source_column": "Denial Reason",
+      "status": "observed"
+    },
+    "appeal_type": {
+      "application_field": "appeal_type",
+      "source_column": null,
+      "status": "nullable_unverified"
+    }
+  },
+  "gates": {
+    "source_integrity": {
+      "status": "pass",
+      "method": "compare local file SHA-256 to acquisition evidence; raw file remains outside repository",
+      "evidence_refs": [
+        "evidence/ny-dfs-export-acquisition.json"
+      ]
+    },
+    "schema_mapping": {
+      "status": "blocked",
+      "archive_filter": "Appeal Type",
+      "export_field": "Denial Reason",
+      "mapping_decision": "unresolved",
+      "verified_equivalent": null,
+      "evidence_refs": [],
+      "reviewer": null,
+      "reviewed_at": null
+    },
+    "privacy": {
+      "status": "blocked",
+      "review_scope": "Distinct values in Summary 1 through Summary 4; review via local packet and unchanged workbook",
+      "candidate_counts": {
+        "physical_address_shape": 140,
+        "date_of_birth_label": 8,
+        "member_id_label": 9
+      },
+      "decision": null,
+      "evidence_refs": [
+        "evidence/ny-dfs-export-acquisition.json"
+      ],
+      "reviewer": null,
+      "reviewed_at": null
+    },
+    "reuse": {
+      "status": "blocked",
+      "permitted_use": null,
+      "permission_source": null,
+      "permission_reference": null,
+      "evidence_refs": [
+        "evidence/ny-dfs-export-acquisition.json"
+      ],
+      "reviewer": null,
+      "reviewed_at": null
+    },
+    "prior_authorization": {
+      "status": "blocked",
+      "eligibility_basis": "Require verified source mapping plus human review of denial reason, treatment, coverage, and sanitized summary context; do not assume every external appeal is prior authorization.",
+      "eligible_count": 0,
+      "accepted_count": 0,
+      "reviewed_count": 0,
+      "excluded_count": 0,
+      "selection_fingerprint": null,
+      "evidence_refs": [],
+      "reviewer": null,
+      "reviewed_at": null
+    }
+  },
+  "acceptance": {
+    "decision": "blocked_pending_all_gates",
+    "accepted_for_local_evaluation": false,
+    "accepted_for_repository": false,
+    "accepted_record_count": 0
+  },
+  "evaluation": {
+    "appeal_cases_evaluated": 0,
+    "regulator_ground_truth_comparisons": 0,
+    "phase_9_hard_stop_started": false
+  }
+}

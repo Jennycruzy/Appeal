@@ -18,3 +18,4 @@ dist/
 docs/preflight.local.json
 .cache/public-sources/
 .cache/synthea/
+.cache/ny-dfs/
