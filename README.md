@@ -47,3 +47,8 @@ make prepare-ny-dfs-review \
   NY_DFS_INPUT=../Downloads/peasadata.xlsx \
   NY_DFS_PRIVACY_REVIEW=../Downloads/ny-dfs-privacy-review.json
 ```
+
+Then run `make review-ny-dfs-privacy`. The reviewer sees candidate values only
+in the terminal; the saved decision file contains hashes and decisions only.
+Hash that decision file and record the hash in the acceptance manifest after
+the review is complete.

@@ -1,10 +1,15 @@
 # NY DFS external-appeal review request (draft)
 
-Use the official NY DFS contact route for the external-appeal archive. Do not
-attach `peasadata.xlsx` or any case narrative. The request is for schema and
-reuse clarification, not for a case-level disclosure.
+Use the official NY DFS external-appeal questions route,
+`externalappealquestions@dfs.ny.gov`, listed on the [NY State External Appeal
+page](https://www.dfs.ny.gov/complaints/file_external_appeal). Do not attach
+`peasadata.xlsx` or any case narrative. The request is for schema and reuse
+clarification, not for a case-level disclosure.
 
 ## Questions to send
+
+Suggested subject: `Request for schema mapping and permitted reuse — NY DFS
+External Appeals export`
 
 1. The archive UI exposes an `Appeal Type` filter, while the all-years Excel
    export contains `Denial Reason` and no `Appeal Type` column. Does the export
@@ -23,12 +28,21 @@ reuse clarification, not for a case-level disclosure.
    summary text containing possible addresses, date-of-birth labels, or member
    identifiers?
 
+The official archive describes the material as closed external-appeal decisions
+with summaries and outcomes, and its search UI advertises an `Appeal Type`
+filter. Cite those official pages in the request rather than treating the
+workbook's `Denial Reason` header as an equivalent field.
+
 ## Evidence to retain with the reply
 
 Record the date, responder/office, response or document URL, and a local hash of
 the response. Store only the minimum response text needed to support the
 decision; do not add workbook rows, case numbers, or narrative values to the
 repository.
+
+Record the response hash in `gates.schema_mapping.mapping_evidence_sha256` and
+`gates.reuse.permission_evidence_sha256` as applicable. Hash the completed local
+privacy-decision file and record it in `gates.privacy.review_record_sha256`.
 
 The acceptance manifest is
 `evidence/ny-dfs-acceptance.json`. Its `schema_mapping`, `privacy`, `reuse`,

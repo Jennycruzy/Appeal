@@ -141,6 +141,9 @@ The repository now has a fail-closed review workflow for this gate:
   a local-only privacy packet containing cell locators, value hashes, lengths,
   and match categories. It refuses to write inside the repository and never
   writes raw narrative values.
+- `make review-ny-dfs-privacy` presents those candidates to an authorized human
+  reviewer in the terminal and saves only hashed decisions outside the
+  repository. A partial or unresolved review does not clear the privacy gate.
 - `docs/ny-dfs-review-request.md` is the draft request for official schema and
   reuse confirmation. Do not attach the workbook or case narratives.
 - `evidence/ny-dfs-acceptance.json` is the metadata-only decision manifest.
