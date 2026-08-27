@@ -135,6 +135,19 @@ When resuming, use this order:
    authorization and run the real-denial evaluation. Until then the counts stay
    at zero Appeal evaluations and zero regulator-ground-truth comparisons.
 
+The repository now has a fail-closed review workflow for this gate:
+
+- `make prepare-ny-dfs-review` verifies the unchanged workbook hash and writes
+  a local-only privacy packet containing cell locators, value hashes, lengths,
+  and match categories. It refuses to write inside the repository and never
+  writes raw narrative values.
+- `docs/ny-dfs-review-request.md` is the draft request for official schema and
+  reuse confirmation. Do not attach the workbook or case narratives.
+- `evidence/ny-dfs-acceptance.json` is the metadata-only decision manifest.
+  `make validate-ny-dfs` checks its shape; `make require-ny-dfs-ready` must fail
+  until mapping, privacy, reuse, and prior-authorization review are explicitly
+  recorded.
+
 ### Reproducibility investigation
 
 The first failed comparison was diagnostic, not random. Synthea's official CLI
