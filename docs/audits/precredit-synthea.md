@@ -1,9 +1,10 @@
 # Pre-credit Synthea audit
 
-Audit date: 2026-08-26
+Audit date: 2026-08-27
 
-This is local, no-billing work. It does not clear the blocked cloud discovery
-requirements and it does not claim that the data-plane exit criteria are met.
+This is local, no-billing work. The synthetic corpus and local HAPI data-plane
+checks were completed on 2026-08-27. It does not clear the blocked cloud
+discovery requirements or establish a real-denial evaluation corpus.
 
 ## Completed evidence
 
@@ -12,7 +13,7 @@ requirements and it does not claim that the data-plane exit criteria are met.
   `ed43c20ad40ba5c3bc724503a5af032715fe3c491620b766148e7c2361e6ecc1`, Java
   major version 17, population 300, California geography, patient seed
   `24082501`, clinician/provider seed `24082502`, reference date `20260826`,
-  end date `20260826`, and a four thread pool.
+  end date `20260826`, and a one-thread pool for bounded reproducible runs.
 - The pinned JAR was downloaded to `.cache/synthea/v4.0.0/` and verified with
   `shasum -a 256`. The raw JAR and all generated patient bundles are ignored by
   `.gitignore` and are not repository artifacts.
@@ -32,10 +33,25 @@ requirements and it does not claim that the data-plane exit criteria are met.
   Its comparison was `identical=true`, with no changed, missing, or extra
   patient bundle files. This is recorded in
   `evidence/synthea-smoke.json`.
-- An independent local scan of an earlier completed output found 344 patient
-  FHIR bundles and a broad set of FHIR resource types. The authoritative
-  aggregate counts for the final fixed-end corpus are not committed yet; they
-  must come from the successful recorder run below.
+- Two measured fixed-end runs at each of 25, 100, and 300 requested patients
+  passed the recorder comparison. The full run produced 342 patient bundles,
+  20 resource types, and about 1.1 GiB of ignored local output. The authoritative
+  aggregate counts, tracked hashes, and full comparison are recorded in
+  `evidence/corpus.json`.
+- The exact 342-bundle manifest set was loaded into pinned HAPI FHIR R4 using
+  the default in-memory H2 database and a 5 GiB JVM heap. All 342 transaction
+  POSTs returned HTTP 200; the load report is `evidence/hapi-load-full.json`.
+- `make verify-hapi` passed with exact matches for all 20 source resource types.
+  HAPI created 830 server-side `Practitioner` placeholder resources for
+  unresolved references; the verifier records them as unexpected without
+  treating them as source corpus resources.
+- A follow-up restart test against a file-backed H2 variant failed with
+  `Chunk 15190 not found`; file-backed H2 persistence is therefore not part of
+  the accepted setup. Recreate a fresh HAPI instance for another verified load.
+- `make inspect-synthea` passed against the manifest-tracked hashes. Its
+  aggregate-only report is `evidence/synthea-distribution.json`; it describes
+  chart evidence availability and explicitly does not establish policy
+  criterion sufficiency.
 
 ## Reproducibility finding
 
@@ -52,14 +68,13 @@ reference time, while `-e` independently assigns the simulation end time. When
 documents the separate clinician seed option `-cs`:
 <https://raw.githubusercontent.com/synthetichealth/synthea/master/src/main/java/App.java>.
 
-The invocation was corrected to include `-e 20260826`, and the recorder was
-updated to fingerprint only patient FHIR bundles rather than Synthea's
-timestamped organization/practitioner metadata. The first full-scale attempt
-with that correction was stopped during module startup because it consumed too
-much Mac memory. It did not produce a patient corpus. The bounded smoke run
-then completed twice and passed the patient-bundle comparison, but
-`evidence/corpus.json` does not exist because the full 300-patient proof is
-still outstanding.
+The invocation was corrected to include `-e 20260826`, use one generator thread,
+and fingerprint only patient FHIR bundles rather than Synthea's timestamped
+organization/practitioner metadata. The first full-scale attempt with that
+correction was stopped during module startup because it consumed too much Mac
+memory. The bounded 25-, 100-, and 300-patient runs then completed twice at
+each scale and passed the patient-bundle comparison. The final manifest is
+`evidence/corpus.json`.
 
 The fix is therefore specific and testable: run the same JAR with `-s`, `-cs`,
 `-r`, `-e`, and the configured thread-pool setting twice, then require the
@@ -69,10 +84,10 @@ The first full-scale attempt at that corrected command was stopped during
 module startup after it began consuming too much Mac memory. Its ignored output
 directory was about 6.2 MB with four non-patient JSON files and no patient
 bundle. This is an operational resource finding, not a reproducibility result.
-The bounded smoke run shows that the same fixed-end inputs work under a 2 GiB
-container limit. The next safe step is a measured scale-up, such as 25 and then
-100 patients under the same cap, before deciding whether the 300-patient run
-needs a lower-memory export strategy.
+The measured bounded runs show that the fixed-end inputs work under a 2 GiB
+container limit. The 300-patient proof, HAPI import, aggregate verification,
+and evidence distribution review are complete; policy mapping and real-denial
+evaluation remain separate gates.
 
 ## Bounded smoke verification
 
@@ -106,46 +121,43 @@ not claim that Synthea's runtime-timestamped hospital/practitioner metadata is
 byte-identical. Appeal's clinical corpus fingerprint is defined over patient
 FHIR bundles, and the final manifest must preserve that scope explicitly.
 
-## Gaps
+## Remaining data-plane gap
 
-- The final fixed-end corpus manifest and full 300-patient patient-bundle
-  comparison are still outstanding; the smoke-scale comparison passed.
-- The raw output directory contains only a stopped startup attempt in the
-  ignored local cache; it must not be treated as evidence without a successful
-  recorder result.
-- The full export's Mac memory profile has not been measured at intermediate
-  population sizes; the passing smoke limit is not evidence that 300 patients
-  will fit under it.
-- The generated corpus has not yet been inspected against the evidence types
-  required by the selected real policy criteria.
-- HAPI FHIR has not yet been pinned, started, or loaded with this corpus.
+The aggregate report describes what FHIR evidence types are available, but no
+policy document has yet been selected and human-validated against those types.
+The report must not be read as proof that any individual policy criterion is
+satisfied.
 
 ## Blockers
 
-- Cloud billing is disabled, so Gemini model discovery and managed Agent
-  Platform probes remain blocked as recorded in `docs/audits/phase-0.md`.
+- At the time of this 2026-08-26 pre-credit audit, cloud billing was disabled,
+  so Gemini model discovery and managed Agent Platform probes were blocked.
+  The current project state is recorded in the 2026-08-27 addendum in
+  `docs/audits/phase-0.md`.
 - The official DMHC IMR data endpoints returned HTTP 403 to the fail-closed
   fetcher. No real denial/outcome corpus has been accepted.
 
-## Next reproducibility command
+## Reproducible HAPI verification
 
-Scale the bounded command to an intermediate population, measure it, then run
-the exact pinned command twice into two new ignored directories and run:
+With an empty in-memory HAPI container running, load the exact patient-bundle
+set from the full manifest and then verify aggregate resource counts:
 
 ```text
-python3.12 scripts/record_synthea_corpus.py \
-  --input-dir .cache/synthea/v4.0.0/<first-fixed-end-output> \
-  --compare-dir .cache/synthea/v4.0.0/<second-fixed-end-output> \
-  --output evidence/corpus.json
+make load-hapi
+make verify-hapi
+make inspect-synthea
 ```
 
-The command must exit zero and report `regeneration_comparison.identical: true`
-before the local corpus is considered reproducible. The smoke result is not a
-substitute for the final 300-patient manifest.
+The loader must use the 342 tracked patient bundles from `evidence/corpus.json`;
+the reports must contain aggregate results only. Do not replay POST bundles
+against a populated database or after a restart; use the loader's explicit
+`HAPI_START_INDEX` only after reconciling the HAPI count in the same live
+process.
 
 ## Exit status
 
 The Synthea asset is pinned, and the corrected fixed-end invocation has passed
-at bounded smoke scale. The full 300-patient byte-identical patient-bundle
-proof and corpus manifest are incomplete. The data-plane work must not be
-represented as complete.
+two-run patient-bundle comparison at full requested population. The corpus
+manifest is complete; the exact corpus was loaded and verified in a live local
+HAPI session, and its aggregate evidence distribution is recorded. Real-denial
+evaluation, policy terms, and cloud-dependent work remain incomplete.

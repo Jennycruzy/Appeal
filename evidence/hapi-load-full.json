@@ -1,0 +1,20 @@
+{
+  "accepted_bundle_count": 342,
+  "accepted_this_run_count": 342,
+  "base_url": "http://127.0.0.1:8080/fhir",
+  "candidate_file_count": 342,
+  "fhir_version": "R4",
+  "finished_at": "2026-08-27T17:57:37.209921Z",
+  "http_status_counts": {
+    "200": 342
+  },
+  "input_manifest": {
+    "bundle_set_fingerprint": "c5c6b666f0cb8840a47934fdc0dbfbb4bf8b09dc60c2fe100fadc053e7548649",
+    "patient_bundle_count": 342
+  },
+  "remaining_file_count": 342,
+  "schema_version": 1,
+  "start_index": 1,
+  "started_at": "2026-08-27T15:41:57.409070Z",
+  "status": "pass"
+}

@@ -1,0 +1,62 @@
+{
+  "base_url": "http://127.0.0.1:8080/fhir",
+  "checked_at": "2026-08-27T17:58:55.117773Z",
+  "expected_patient_bundle_count": 342,
+  "expected_resource_counts": {
+    "AllergyIntolerance": 352,
+    "CarePlan": 1110,
+    "CareTeam": 1110,
+    "Claim": 34180,
+    "Condition": 11566,
+    "Device": 501,
+    "DiagnosticReport": 38003,
+    "DocumentReference": 19663,
+    "Encounter": 19663,
+    "ExplanationOfBenefit": 34180,
+    "ImagingStudy": 571,
+    "Immunization": 5048,
+    "Medication": 4749,
+    "MedicationAdministration": 4749,
+    "MedicationRequest": 14517,
+    "Observation": 165817,
+    "Patient": 342,
+    "Procedure": 40142,
+    "Provenance": 342,
+    "SupplyDelivery": 2717
+  },
+  "finished_at": "2026-08-27T17:59:25.738257Z",
+  "mismatches": {},
+  "observed_resource_counts": {
+    "AllergyIntolerance": 352,
+    "CarePlan": 1110,
+    "CareTeam": 1110,
+    "Claim": 34180,
+    "Condition": 11566,
+    "Device": 501,
+    "DiagnosticReport": 38003,
+    "DocumentReference": 19663,
+    "Encounter": 19663,
+    "ExplanationOfBenefit": 34180,
+    "ImagingStudy": 571,
+    "Immunization": 5048,
+    "Medication": 4749,
+    "MedicationAdministration": 4749,
+    "MedicationRequest": 14517,
+    "Observation": 165817,
+    "Patient": 342,
+    "Practitioner": 830,
+    "Procedure": 40142,
+    "Provenance": 342,
+    "SupplyDelivery": 2717
+  },
+  "schema_version": 1,
+  "server_fhir_version": "4.0.1",
+  "server_software": {
+    "name": "HAPI FHIR Server",
+    "version": "8.10.0"
+  },
+  "status": "pass",
+  "unexpected_resource_counts": {
+    "Practitioner": 830
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "bundle_count": 342,
+  "coded_resource_counts": {
+    "AllergyIntolerance": 352,
+    "Claim": 34180,
+    "Condition": 11566,
+    "Device": 501,
+    "DiagnosticReport": 38003,
+    "DocumentReference": 19663,
+    "Encounter": 19663,
+    "ExplanationOfBenefit": 34180,
+    "Medication": 4749,
+    "MedicationAdministration": 4749,
+    "MedicationRequest": 14517,
+    "Observation": 165817,
+    "Procedure": 40142,
+    "SupplyDelivery": 2717
+  },
+  "entry_count": {
+    "bundles": 342,
+    "max": 20752,
+    "mean": 1167.61,
+    "median": 575.0,
+    "min": 31
+  },
+  "evidence_roles": {
+    "care_context": [
+      "Encounter",
+      "CareTeam",
+      "DocumentReference",
+      "AllergyIntolerance"
+    ],
+    "clinical_findings": [
+      "Condition",
+      "Observation",
+      "DiagnosticReport",
+      "ImagingStudy"
+    ],
+    "treatment_history": [
+      "Procedure",
+      "Medication",
+      "MedicationRequest",
+      "MedicationAdministration",
+      "CarePlan"
+    ],
+    "utilization_and_claims": [
+      "Claim",
+      "ExplanationOfBenefit"
+    ]
+  },
+  "generated_at": "2026-08-27T18:04:02.039925Z",
+  "input_manifest": {
+    "bundle_set_fingerprint": "c5c6b666f0cb8840a47934fdc0dbfbb4bf8b09dc60c2fe100fadc053e7548649",
+    "patient_bundle_count": 342
+  },
+  "interpretation": {
+    "patient_identifiers_or_narrative_emitted": false,
+    "policy_criterion_sufficiency": "not established by this aggregate report",
+    "purpose": "availability and distribution review for synthetic chart retrieval",
+    "real_denial_ground_truth": false
+  },
+  "patient_coverage": {
+    "AllergyIntolerance": {
+      "max": 12,
+      "mean": 1.03,
+      "median": 0.0,
+      "min": 0,
+      "patients_total": 342,
+      "patients_with_resource": 59
+    },
+    "CarePlan": {
+      "max": 10,
+      "mean": 3.25,
+      "median": 3.0,
+      "min": 0,
+      "patients_total": 342,
+      "patients_with_resource": 307
+    },
+    "CareTeam": {
+      "max": 10,
+      "mean": 3.25,
+      "median": 3.0,
+      "min": 0,
+      "patients_total": 342,
+      "patients_with_resource": 307
+    },
+    "Claim": {
+      "max": 1512,
+      "mean": 99.94,
+      "median": 50.0,
+      "min": 1,
+      "patients_total": 342,
+      "patients_with_resource": 342
+    },
+    "Condition": {
+      "max": 264,
+      "mean": 33.82,
+      "median": 28.0,
+      "min": 1,
+      "patients_total": 342,
+      "patients_with_resource": 342
+    },
+    "DiagnosticReport": {
+      "max": 1832,
+      "mean": 111.12,
+      "median": 62.5,
+      "min": 2,
+      "patients_total": 342,
+      "patients_with_resource": 342
+    },
+    "DocumentReference": {
+      "max": 689,
+      "mean": 57.49,
+      "median": 34.0,
+      "min": 1,
+      "patients_total": 342,
+      "patients_with_resource": 342
+    },
+    "Encounter": {
+      "max": 689,
+      "mean": 57.49,
+      "median": 34.0,
+      "min": 1,
+      "patients_total": 342,
+      "patients_with_resource": 342
+    },
+    "ExplanationOfBenefit": {
+      "max": 1512,
+      "mean": 99.94,
+      "median": 50.0,
+      "min": 1,
+      "patients_total": 342,
+      "patients_with_resource": 342
+    },
+    "ImagingStudy": {
+      "max": 105,
+      "mean": 1.67,
+      "median": 0.0,
+      "min": 0,
+      "patients_total": 342,
+      "patients_with_resource": 97
+    },
+    "Medication": {
+      "max": 606,
+      "mean": 13.89,
+      "median": 0.0,
+      "min": 0,
+      "patients_total": 342,
+      "patients_with_resource": 100
+    },
+    "MedicationAdministration": {
+      "max": 606,
+      "mean": 13.89,
+      "median": 0.0,
+      "min": 0,
+      "patients_total": 342,
+      "patients_with_resource": 100
+    },
+    "MedicationRequest": {
+      "max": 899,
+      "mean": 42.45,
+      "median": 8.0,
+      "min": 0,
+      "patients_total": 342,
+      "patients_with_resource": 325
+    },
+    "Observation": {
+      "max": 11589,
+      "mean": 484.85,
+      "median": 167.0,
+      "min": 21,
+      "patients_total": 342,
+      "patients_with_resource": 342
+    },
+    "Procedure": {
+      "max": 1320,
+      "mean": 117.37,
+      "median": 74.0,
+      "min": 0,
+      "patients_total": 342,
+      "patients_with_resource": 340
+    }
+  },
+  "resource_counts": {
+    "AllergyIntolerance": 352,
+    "CarePlan": 1110,
+    "CareTeam": 1110,
+    "Claim": 34180,
+    "Condition": 11566,
+    "Device": 501,
+    "DiagnosticReport": 38003,
+    "DocumentReference": 19663,
+    "Encounter": 19663,
+    "ExplanationOfBenefit": 34180,
+    "ImagingStudy": 571,
+    "Immunization": 5048,
+    "Medication": 4749,
+    "MedicationAdministration": 4749,
+    "MedicationRequest": 14517,
+    "Observation": 165817,
+    "Patient": 342,
+    "Procedure": 40142,
+    "Provenance": 342,
+    "SupplyDelivery": 2717
+  },
+  "schema_version": 1,
+  "status_counts": {
+    "CarePlan": {
+      "active": 550,
+      "completed": 560
+    },
+    "CareTeam": {
+      "active": 550,
+      "inactive": 560
+    },
+    "Claim": {
+      "active": 34180
+    },
+    "Device": {
+      "active": 501
+    },
+    "DiagnosticReport": {
+      "final": 38003
+    },
+    "DocumentReference": {
+      "current": 342,
+      "superseded": 19321
+    },
+    "Encounter": {
+      "finished": 19663
+    },
+    "ExplanationOfBenefit": {
+      "active": 34180
+    },
+    "ImagingStudy": {
+      "available": 571
+    },
+    "Immunization": {
+      "completed": 5048
+    },
+    "Medication": {
+      "active": 4749
+    },
+    "MedicationAdministration": {
+      "completed": 4749
+    },
+    "MedicationRequest": {
+      "active": 830,
+      "completed": 13687
+    },
+    "Observation": {
+      "final": 165817
+    },
+    "Procedure": {
+      "completed": 40142
+    },
+    "SupplyDelivery": {
+      "completed": 2717
+    }
+  },
+  "synthetic_only": true,
+  "value_bearing_resource_counts": {
+    "Observation": 157994
+  }
+}
