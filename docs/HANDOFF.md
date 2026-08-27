@@ -37,19 +37,23 @@ No real PHI, payer credential, member ID, or service-account key was used or
 added to the repository. Raw synthetic FHIR output is kept only in the ignored
 `.cache/synthea/` directory.
 
-The real-denial workstream now has two manually acquired local candidates: the
-official Michigan DIFS PRIRA order `BCC_237502.pdf` and the NY DFS external
-appeals export `peasadata.xlsx`. Their metadata, hashes, schema inspections,
-privacy reviews, and terms decisions are recorded in
-`evidence/manual-review-acquisition.json` and
-`evidence/ny-dfs-export-acquisition.json`. Neither raw artifact is in the
+The real-denial workstream now has three manually acquired local candidates: the
+official Michigan DIFS PRIRA order `BCC_237502.pdf`, the NY DFS external appeals
+export `peasadata.xlsx`, and Oregon's IRO Case Detail Report
+`oregon-iro-case-detail-report.xlsx`. Their metadata, hashes, schema
+inspections, privacy-scan results, and terms decisions are recorded in
+`evidence/manual-review-acquisition.json`,
+`evidence/ny-dfs-export-acquisition.json`, and
+`evidence/oregon-iro-acquisition.json`. None of the raw artifacts is in the
 repository. The Michigan file is a regulator order that quotes the insurer's
 denial rationale, not the original denial letter. The NY workbook contains
 61,606 all-years case-summary rows and outcome fields, but its privacy scan found
 unreviewed identifier-shaped candidates and its reuse licence is not
-established. Both remain local-only pending review. No real regulator case has
-been run through Appeal, and there are still zero regulator-ground-truth
-comparison results.
+established. The Oregon workbook contains 2,230 case-detail rows and an
+explicit `Case Outcome` field, but synopsis access, human privacy review, and
+written reuse permission remain unresolved. All three remain local-only pending
+review. No real regulator case has been run through Appeal, and there are still
+zero regulator-ground-truth comparison results.
 
 ## Done and verified
 
@@ -72,7 +76,7 @@ comparison results.
   in `src/appeal_core/criteria.py`. The Argument Builder cannot be represented
   as having clinical evidence unless an Evidence Miner observation supplies a
   FHIR reference.
-- The local test suite has 16 passing tests, and strict mypy has passed for the
+- The local test suite has 19 passing tests, and strict mypy has passed for the
   core package. Re-run both after any changes.
 - One official Michigan PRIRA order was manually downloaded and inspected. The
   result is in `evidence/manual-review-acquisition.json`; it counts as one
@@ -84,6 +88,12 @@ comparison results.
   the metadata-only result is in `evidence/ny-dfs-export-acquisition.json`.
   Identifier candidates and reuse status keep it out of the accepted evaluation
   corpus.
+- One official Oregon IRO Case Detail Report was downloaded unchanged and
+  inspected with `scripts/inspect_oregon_iro.py`. It has 2,230 rows, nine
+  observed fields, and an explicit `Case Outcome` field. The raw workbook
+  remains outside the repository; `evidence/oregon-iro-acquisition.json` is
+  metadata-only, and `docs/oregon-iro-review-request.md` requests redacted
+  synopses and written reuse confirmation.
 
 - Synthea v4.0.0, the JAR digest, both seeds, fixed dates, California geography,
   and a one-thread bounded invocation are now pinned. The corrected fixed-end
@@ -151,6 +161,40 @@ The repository now has a fail-closed review workflow for this gate:
   until mapping, privacy, reuse, and prior-authorization review are explicitly
   recorded.
 
+### Oregon IRO case-detail fallback
+
+Oregon is the strongest immediate alternative while the NY DFS response is
+pending. Its official report already exposes a case-level `Case Outcome` and
+does not require guessing whether `Denial Reason` means `Appeal Type`. The
+report is still not an accepted corpus: its treatment column is free text, the
+report alone is not a written reuse grant, and no redacted synopsis has been
+received.
+
+The local candidate is represented by:
+
+- `/Users/user/Downloads/oregon-iro-case-detail-report.xlsx` — unchanged raw
+  workbook, local-only, SHA-256 recorded in `evidence/oregon-iro-acquisition.json`;
+- `scripts/inspect_oregon_iro.py` — aggregate-only inspection; it does not emit
+  case numbers, treatment values, or narrative text;
+- `evidence/oregon-iro-acquisition.json` — schema, hash, aggregate counts, and
+  blocked status;
+- `docs/oregon-iro-review-request.md` — draft request to
+  `Exreview.Ins@dcbs.oregon.gov`.
+
+When the Oregon office responds, record the response hash and exact permitted
+use in a dedicated acceptance decision before copying any synopsis text into
+the repository. If it confirms only local research, keep the raw workbook and
+synopses outside Git and derive only the minimum redacted evaluation rows. If
+it denies reuse or does not answer, leave Oregon blocked and continue with the
+NY, DMHC, CDI, and Washington retrieval paths.
+
+To reproduce the metadata inspection:
+
+```text
+make inspect-oregon-iro \
+  OREGON_IRO_INPUT=../Downloads/oregon-iro-case-detail-report.xlsx
+```
+
 ### Reproducibility investigation
 
 The first failed comparison was diagnostic, not random. Synthea's official CLI
@@ -207,14 +251,14 @@ server survives restart.
    date-of-birth/member-ID labels, and unresolved reuse position must be
    reviewed before any row is accepted. Its `Denial Reason` field must not be
    called `Appeal Type` until the source mapping is verified; see the resume
-   instructions above. Continue with privacy/reuse review, the separate
-   California Department of Insurance IMR database, and another reusable
-   case-level source if needed. The tested DMHC and NY DFS routes return access
-   errors, and the CDI link redirects into an unavailable/legacy application;
-   all findings and URLs are documented in `docs/audits/precredit-imr.md`. Do
-   not claim real regulator evaluation until Appeal has run against an accepted
-   case set and the comparison is recorded. Pennsylvania, CMS, Oregon, and
-   similar aggregate reports are calibration inputs only.
+   instructions above. Oregon is a second local candidate with 2,230 rows and
+   explicit outcomes, but its redacted synopsis and written-reuse gates remain
+   open. Continue with both review requests, the separate California Department
+   of Insurance and DMHC databases, and the Washington OIC search path; all
+   findings and URLs are documented in `docs/audits/precredit-imr.md`. Do not
+   claim real regulator evaluation until Appeal has run against an accepted
+   case corpus and the comparison is recorded. Pennsylvania, CMS, and similar
+   aggregate reports remain calibration inputs only.
 2. Complete policy terms review and ingest only permitted, ETag-backed policy
    documents. Extract traceable criterion trees and perform human validation.
 3. Complete quota and residency probes and authenticated managed-component

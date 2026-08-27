@@ -1,6 +1,6 @@
 # Pre-credit real-corpus discovery
 
-Audit date: 2026-08-26
+Audit date: 2026-08-27
 
 This is a discovery record for the local, no-billing workstream. It does not
 clear the blocked Phase 0 exit criteria and it does not claim that the Phase
@@ -85,7 +85,7 @@ any analysis. Until then, the case-level corpus remains pending.
 
 The DMHC access failure is being treated as an unresolved retrieval blocker, not
 as permission to claim that the data was ingested. Separate public regulator
-sources were investigated on 2026-08-26. None has been accepted into the
+sources were investigated on 2026-08-27. None has been accepted into the
 corpus yet.
 
 ### New York Department of Financial Services — primary fallback candidate
@@ -180,6 +180,38 @@ The inspector was run locally after the workbook download and is intentionally
 an aggregate-only command: it does not print summaries, references, or case
 numbers.
 
+### Oregon Division of Financial Regulation — strongest live fallback
+
+The [official Oregon IRO Case Detail Report](https://dfr.oregon.gov/insure/health/understand/coverage/Pages/iro-decision-report.aspx)
+describes a quarterly, rolling-four-year report of completed external-review
+cases. Oregon explicitly says that the external review is a document review
+that produces a final case synopsis, and lists the report fields, including
+review type, decision date, case outcome, case category, and the full
+procedure/service/treatment name. The same page says that redacted synopsis
+reports can be requested by case number from
+`Exreview.Ins@dcbs.oregon.gov`.
+
+On 2026-08-27 an unchanged workbook was downloaded from Oregon's official
+Excel link and kept in `/Users/user/Downloads/oregon-iro-case-detail-report.xlsx`.
+The local metadata-only inspection is
+`evidence/oregon-iro-acquisition.json`, produced by
+`scripts/inspect_oregon_iro.py`. It records 2,230 data rows, nine observed
+fields, 2,230 distinct external-review case numbers, an explicit `Case Outcome`
+field, and a free-text treatment field. The technical pattern scan found no
+email, phone, SSN, date-of-birth-label, member-ID-label, or physical-address
+matches in the inspected values; that is not a legal privacy determination and
+does not replace human review.
+
+The workbook is a real regulator case-detail candidate, not an aggregate
+calibration report, but it is **blocked from corpus acceptance**. No redacted
+synopsis has been received, reuse permission has not been established, and no
+case has been run through Appeal. The raw workbook is unchanged, local-only,
+and not committed. The written request is drafted in
+`docs/oregon-iro-review-request.md`; it asks for permitted research use,
+selected redacted synopses, retention limits, redistribution limits, and any
+approved redaction procedure. Until Oregon answers, the project must treat the
+case-detail fields as provenance evidence only.
+
 ### California Department of Insurance — California-specific candidate
 
 The [California Department of Insurance health page](https://www.insurance.ca.gov/01-consumers/110-health/)
@@ -271,16 +303,18 @@ in the material reviewed, so it is aggregate calibration evidence only.
 
 ### Source decision
 
-The ranked retrieval order is: (1) resolve privacy and reuse for the manually
-acquired NY DFS export, (2) try the separate California CDI database through a
-normal browser or official contact, (3) seek permission if Michigan material is
-needed beyond local analysis, and (4) use Pennsylvania, CMS, Oregon, and similar
-aggregate reports only for calibration. The project currently has **zero real
-denial cases evaluated and zero regulator-ground-truth results**. It has one
-manually acquired Michigan regulator-order candidate and one manually acquired
-NY DFS export candidate, both recorded as metadata-only local artifacts. No
-README, evaluation file, demo case, or metric may claim an Appeal evaluation
-until an accepted case set is actually run and the result is recorded.
+The ranked retrieval order is now: (1) run the NY DFS privacy/reuse review while
+waiting for the written mapping response, (2) request Oregon redacted synopses
+and written reuse confirmation, (3) try the separate California CDI and DMHC
+databases through a normal browser or official contact, (4) verify the
+Washington OIC search/export path, and (5) seek permission if Michigan material
+is needed beyond local analysis. Pennsylvania and CMS remain aggregate
+calibration sources. The project currently has **zero real denial cases
+evaluated and zero regulator-ground-truth results**. It has three metadata-only
+local artifacts: the Michigan regulator-order candidate, the NY DFS export, and
+the Oregon IRO workbook. No README, evaluation file, demo case, or metric may
+claim an Appeal evaluation until an accepted case set is actually run and the
+result is recorded.
 
 The two-corpus boundary remains explicit: regulator records can test denial
 language, criterion-location reasoning, and externally recorded outcomes;
@@ -312,6 +346,10 @@ they are used to calibrate the reference payer.
 - One official Michigan regulator order has been inspected locally; no raw real
   document or derived public case dataset has been accepted into the
   repository.
+- The Oregon IRO Case Detail Report is a real regulator case-level candidate
+  with 2,230 observed rows and explicit outcome fields. Its raw workbook is
+  local-only; written reuse permission, human privacy review, and redacted
+  synopsis access are still pending.
 - The NY DFS export has 61,606 locally observed rows, but the privacy scan found
   unreviewed physical-address-shaped, date-of-birth-label, and member-ID-label
   candidates. Its reuse licence is also not established by the DFS privacy
@@ -328,9 +366,10 @@ they are used to calibrate the reference payer.
   order is available for local-only analysis, but restrictive reuse terms mean
   it cannot currently serve as a public corpus, and it has not been evaluated
   by Appeal. The NY DFS export is larger, but its identifier candidates and
-  reuse status are unresolved, so it also cannot currently serve as the accepted
-  evaluation set. DMHC, CDI, NY DFS after review, or another reusable case-level
-  source is still needed for the external evaluation claim.
+  reuse status are unresolved. Oregon is the strongest immediate fallback, but
+  its synopsis and written-reuse gates are also unresolved. DMHC, CDI, NY DFS
+  after review, Oregon after review, or another reusable case-level source is
+  still needed for the external evaluation claim.
 - Phase 2 payer calibration cannot claim a target distribution until actual
   public 2025 reports are collected and hashed.
 - The overall build remains stopped at the Phase 0 billing/model-discovery
@@ -338,8 +377,8 @@ they are used to calibrate the reference payer.
 
 ## Exit status
 
-Pre-credit source discovery is complete. One Michigan regulator order and one NY
-DFS export have been manually acquired and inspected locally, but broad corpus
-acceptance and all Appeal evaluation remain incomplete. The project must not
-claim regulator-ground-truth performance or advance the main phase protocol on
-this evidence alone.
+Pre-credit source discovery has identified three manually acquired regulator
+artifacts: one Michigan order, one NY DFS export, and one Oregon IRO workbook.
+Broad corpus acceptance and all Appeal evaluation remain incomplete. The
+project must not claim regulator-ground-truth performance or advance the main
+phase protocol on this evidence alone.
