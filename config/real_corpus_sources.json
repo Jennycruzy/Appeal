@@ -63,10 +63,14 @@
       "case_level_schema_observed": true,
       "case_level_outcome_field_observed": true,
       "case_level_ground_truth_verified": false,
+      "operator_accepted_for_local_outcome_comparison": true,
+      "prior_authorization_verified": false,
       "central_case_level_dataset": false,
       "redacted_synopsis_available_on_request": true,
-      "fetch_method": "Official direct Excel download; preserve the workbook unchanged and request redacted synopses through the Oregon review staff before any case-level use.",
-      "reuse_status": "local_candidate_pending_written_reuse_and_privacy_review"
+      "fetch_method": "Official direct Excel download; preserve the workbook unchanged; local-only case-level evaluation is authorized by evidence/oregon-acceptance.json; request redacted synopses if needed and do not redistribute.",
+      "reuse_status": "operator_authorized_local_only_pending_written_confirmation_for_redistribution",
+      "local_evaluation_status": "accepted_completed_external_review_outcomes_only",
+      "local_evaluation_acceptance": "evidence/oregon-acceptance.json"
     }
   ]
 }

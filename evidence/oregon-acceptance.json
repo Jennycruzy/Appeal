@@ -1,0 +1,123 @@
+{
+  "schema_version": "0.1",
+  "recorded_at": "2026-08-27",
+  "status": "ready_for_local_external_review_evaluation",
+  "source_id": "oregon_dfr_iro_case_detail_report",
+  "artifact": {
+    "file_name": "oregon-iro-case-detail-report.xlsx",
+    "raw_artifact_location": "local_download_only_not_repo",
+    "sha256": "1208eb9073b42ba7b9956e5e00168b14e5d672062c8d831ddfe574398b41f5d8",
+    "observed_data_rows": 2230,
+    "source_evidence": "evidence/oregon-iro-acquisition.json"
+  },
+  "field_policy": {
+    "regulator_outcome": {
+      "application_field": "regulator_outcome",
+      "source_column": "Case Outcome",
+      "status": "observed_official_outcome_field"
+    },
+    "review_type": {
+      "application_field": "review_type",
+      "source_column": "Type of External Review Requested",
+      "status": "observed_official_field"
+    },
+    "case_category": {
+      "application_field": "case_category",
+      "source_column": "Case Category",
+      "status": "observed_official_field"
+    },
+    "treatment": {
+      "application_field": "treatment_text",
+      "source_column": "Full Procedure/ Service/ Treatment Name",
+      "status": "local_only_free_text"
+    },
+    "denial_reason": {
+      "application_field": "denial_reason",
+      "source_column": null,
+      "status": "not_present"
+    },
+    "appeal_type": {
+      "application_field": "appeal_type",
+      "source_column": null,
+      "status": "nullable_not_applicable"
+    }
+  },
+  "scope": {
+    "decision": "include_all_completed_external_review_outcomes",
+    "inclusion_rule": "Case Outcome is Upheld Denial, Overturned Denial, Overturned denial, or Partial Overturn",
+    "accepted_local_rows": 1640,
+    "excluded_rows": 590,
+    "excluded_outcomes": [
+      "Administrative Overturn",
+      "Ineligible",
+      "Insurer Overturn",
+      "Withdrawn"
+    ],
+    "prior_authorization_claimed": false,
+    "prior_authorization_decision": "do_not_label_oregon_rows_as_prior_authorization",
+    "evaluation_scope": "external_review_denial_and_regulator_outcome"
+  },
+  "gates": {
+    "source_integrity": {
+      "status": "pass",
+      "method": "compare local workbook SHA-256 to acquisition evidence; raw file remains outside repository",
+      "evidence_refs": [
+        "evidence/oregon-iro-acquisition.json"
+      ]
+    },
+    "schema_mapping": {
+      "status": "pass",
+      "decision": "use explicit Case Outcome field as regulator outcome; keep denial_reason and appeal_type null",
+      "evidence_refs": [
+        "evidence/oregon-iro-acquisition.json"
+      ]
+    },
+    "privacy": {
+      "status": "operator_approved_local_only",
+      "technical_scan": "no direct email, phone, SSN, date-of-birth-label, member-ID-label, or physical-address pattern matches",
+      "human_legal_determination": "not_claimed",
+      "raw_and_free_text_storage": "outside_repository_only",
+      "publication": "blocked",
+      "decision_basis": "project-owner instruction to use the official public download for local evaluation"
+    },
+    "reuse": {
+      "status": "operator_authorized_local_only",
+      "permitted_use": "local non-redistributed research evaluation",
+      "permission_source": "official public download plus explicit project-owner instruction",
+      "permission_reference": "workspace instruction dated 2026-08-27",
+      "written_regulator_reply": "not required to begin local-only run; optional follow-up",
+      "redistribution": "blocked"
+    },
+    "prior_authorization": {
+      "status": "not_verified",
+      "decision": "do_not_claim_prior_authorization_eligibility",
+      "basis": "The report documents external-review cases but exposes no prior-authorization field.",
+      "eligible_count": 0,
+      "included_external_review_rows": 1640
+    }
+  },
+  "acceptance": {
+    "decision": "ready_for_local_external_review_evaluation",
+    "accepted_for_local_evaluation": true,
+    "accepted_for_repository": false,
+    "accepted_record_count": 1640,
+    "accepted_narrative_record_count": 1640,
+    "raw_case_numbers_committed": false,
+    "free_text_committed": false,
+    "prepared_local_input": {
+      "path": "../Downloads/oregon-iro-local-evaluation.json",
+      "generated_by": "scripts/prepare_oregon_local_evaluation.py",
+      "record_count": 1640,
+      "contains_free_text": true,
+      "stored_outside_repository": true
+    }
+  },
+  "evaluation": {
+    "local_input_prepared": true,
+    "appeal_adapter_implemented": false,
+    "appeal_cases_evaluated": 0,
+    "regulator_ground_truth_comparisons": 0,
+    "phase_9_hard_stop_started": false,
+    "next_artifact": "local_only_oregon_evaluation_input_outside_repository"
+  }
+}

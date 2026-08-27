@@ -13,7 +13,8 @@
     "workbook_url": "https://dfr.oregon.gov/insure/health/understand/coverage/Documents/iro-case-detail-report.xlsx"
   },
   "evaluation_status": {
-    "accepted_into_evaluation_corpus": false,
+    "accepted_into_evaluation_corpus": true,
+    "accepted_record_count": 1640,
     "appeal_evaluation_run": false,
     "ground_truth_comparison_run": false
   },
@@ -59,6 +60,7 @@
       }
     },
     "columns": 9,
+    "completed_review_rows_accepted_locally": 1640,
     "data_rows": 2230,
     "dimension": "A1:K2234",
     "distinct_counts": {
@@ -96,17 +98,18 @@
     "candidate_counts": {},
     "distinct_values_scanned": 5068,
     "scope": "Distinct non-empty values in the Case Detail Report only; no values are emitted.",
-    "status": "technical_pattern_scan_only_human_review_required"
+    "status": "technical_pattern_scan_only_no_legal_determination_claimed"
   },
-  "recorded_at": "2026-08-27T19:13:49.151205Z",
+  "recorded_at": "2026-08-27T19:33:02.321751Z",
   "schema_version": "0.1",
-  "status": "manual_local_candidate_blocked_pending_reuse_and_synopsis_review",
+  "status": "public_source_acquired_local_evaluation_authorized",
   "terms": {
     "derived_public_dataset_created": false,
+    "local_evaluation_acceptance": "evidence/oregon-acceptance.json",
     "public_download_link_observed": true,
     "raw_artifact_committed": false,
     "redacted_synopses_available_on_request": true,
-    "reuse_status": "not_established_pending_written_confirmation",
+    "reuse_status": "operator_authorized_local_only_pending_written_confirmation_for_redistribution",
     "synopsis_request_contact": "Exreview.Ins@dcbs.oregon.gov"
   }
 }

@@ -40,6 +40,11 @@ ADDRESS = re.compile(
     r"lane|ln|court|ct|way|highway|hwy)\b",
     re.I,
 )
+COMPLETED_REVIEW_OUTCOMES = {
+    "upheld denial",
+    "overturned denial",
+    "partial overturn",
+}
 
 
 def now_iso() -> str:
@@ -167,10 +172,15 @@ def inspect(path: Path) -> dict[str, Any]:
         output_name: dict(sorted(field_counters[field].items(), key=lambda item: (-item[1], item[0])))
         for field, output_name in categorical_fields.items()
     }
+    completed_review_rows = sum(
+        count
+        for value, count in field_counters["Case Outcome"].items()
+        if " ".join(value.split()).casefold() in COMPLETED_REVIEW_OUTCOMES
+    )
     return {
         "schema_version": "0.1",
         "recorded_at": now_iso(),
-        "status": "manual_local_candidate_blocked_pending_reuse_and_synopsis_review",
+        "status": "public_source_acquired_local_evaluation_authorized",
         "artifact": {
             "source_id": "oregon_dfr_iro_case_detail_report",
             "publisher": "Oregon Division of Financial Regulation",
@@ -196,23 +206,26 @@ def inspect(path: Path) -> dict[str, Any]:
             "distinct_counts": {field: len(values) for field, values in sorted(field_distinct.items())},
             "categorical_counts": categorical_counts,
             "narrative_or_free_text_fields_present": "Full Procedure/ Service/ Treatment Name" in headers.values(),
+            "completed_review_rows_accepted_locally": completed_review_rows,
         },
         "privacy_scan": {
             "scope": "Distinct non-empty values in the Case Detail Report only; no values are emitted.",
             "distinct_values_scanned": len(all_values),
             "candidate_counts": privacy_patterns(all_values),
-            "status": "technical_pattern_scan_only_human_review_required",
+            "status": "technical_pattern_scan_only_no_legal_determination_claimed",
         },
         "terms": {
             "public_download_link_observed": True,
             "redacted_synopses_available_on_request": True,
             "synopsis_request_contact": "Exreview.Ins@dcbs.oregon.gov",
-            "reuse_status": "not_established_pending_written_confirmation",
+            "reuse_status": "operator_authorized_local_only_pending_written_confirmation_for_redistribution",
             "raw_artifact_committed": False,
             "derived_public_dataset_created": False,
+            "local_evaluation_acceptance": "evidence/oregon-acceptance.json",
         },
         "evaluation_status": {
-            "accepted_into_evaluation_corpus": False,
+            "accepted_into_evaluation_corpus": True,
+            "accepted_record_count": completed_review_rows,
             "appeal_evaluation_run": False,
             "ground_truth_comparison_run": False,
         },
