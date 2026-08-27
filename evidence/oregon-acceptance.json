@@ -114,10 +114,13 @@
   },
   "evaluation": {
     "local_input_prepared": true,
+    "adapter_preflight_implemented": true,
+    "adapter_preflight_completed": true,
+    "adapter_preflight_report": "evidence/oregon-evaluation.json",
     "appeal_adapter_implemented": false,
     "appeal_cases_evaluated": 0,
     "regulator_ground_truth_comparisons": 0,
     "phase_9_hard_stop_started": false,
-    "next_artifact": "local_only_oregon_evaluation_input_outside_repository"
+    "next_artifact": "full_appeal_adapter_requires_denial_policy_and_clinical_inputs"
   }
 }

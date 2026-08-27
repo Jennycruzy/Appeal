@@ -1,0 +1,60 @@
+{
+  "schema_version": "0.1",
+  "status": "adapter_preflight_blocked",
+  "recorded_at": "2026-08-27",
+  "source_id": "oregon_dfr_iro_case_detail_report",
+  "source": {
+    "input_file_name": "oregon-iro-local-evaluation.json",
+    "input_sha256": "adea8ba6541d50267aba63f8a355b8474f7d020ca3b30f4a8c9f0900a197e220",
+    "raw_workbook_sha256": "1208eb9073b42ba7b9956e5e00168b14e5d672062c8d831ddfe574398b41f5d8",
+    "input_location": "local_only_outside_repository",
+    "acceptance_manifest": "evidence/oregon-acceptance.json",
+    "record_count": 1640,
+    "free_text_emitted_to_report": false
+  },
+  "adapter_preflight": {
+    "implemented": true,
+    "version": "0.1",
+    "state_machine_exercised": true,
+    "state_machine_anchor": "2026-08-27T00:00:00Z",
+    "anchor_is_case_date": false,
+    "decision_source": "oregon-local-evaluation-adapter",
+    "cases_seen": 1640,
+    "cases_abstained": 1640,
+    "cases_ready_for_full_appeal": 0,
+    "terminal_state_counts": {
+      "PARSE_FAILED_HUMAN_REVIEW": 1640
+    },
+    "blocking_reasons": {
+      "missing_denial_narrative": 1640,
+      "missing_denial_reason": 1640,
+      "missing_policy_reference": 1640,
+      "missing_clinical_evidence": 1640,
+      "prior_authorization_unverified": 1640
+    }
+  },
+  "regulator_outcomes": {
+    "counts": {
+      "overturned_denial": 566,
+      "partial_overturn": 19,
+      "upheld_denial": 1055
+    },
+    "field": "Case Outcome",
+    "interpretation": "observed_regulator_outcome_only"
+  },
+  "comparison": {
+    "status": "not_run",
+    "appeal_outcome_field_present": false,
+    "compared_cases": 0,
+    "matches": 0,
+    "mismatches": 0,
+    "reason": "No Appeal outcome exists because every row abstained before denial parsing."
+  },
+  "evaluation": {
+    "adapter_preflight_completed": true,
+    "full_appeal_evaluation_completed": false,
+    "appeal_cases_evaluated": 0,
+    "regulator_ground_truth_comparisons": 0,
+    "phase_9_hard_stop_started": false
+  }
+}

@@ -14,8 +14,9 @@ OREGON_IRO_INPUT ?= ../Downloads/oregon-iro-case-detail-report.xlsx
 OREGON_IRO_REPORT ?= evidence/oregon-iro-acquisition.json
 OREGON_IRO_ACCEPTANCE_MANIFEST ?= evidence/oregon-acceptance.json
 OREGON_IRO_LOCAL_OUTPUT ?= ../Downloads/oregon-iro-local-evaluation.json
+OREGON_IRO_EVALUATION_REPORT ?= evidence/oregon-evaluation.json
 
-.PHONY: verify-ledger test typecheck load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-oregon-iro prepare-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -52,3 +53,6 @@ inspect-oregon-iro:
 
 prepare-oregon-local-evaluation:
 	$(PYTHON) scripts/prepare_oregon_local_evaluation.py --xlsx "$(OREGON_IRO_INPUT)" --manifest "$(OREGON_IRO_ACCEPTANCE_MANIFEST)" --output "$(OREGON_IRO_LOCAL_OUTPUT)"
+
+run-oregon-local-evaluation:
+	PYTHONPATH=src $(PYTHON) scripts/run_oregon_local_evaluation.py --input "$(OREGON_IRO_LOCAL_OUTPUT)" --manifest "$(OREGON_IRO_ACCEPTANCE_MANIFEST)" --output "$(OREGON_IRO_EVALUATION_REPORT)"

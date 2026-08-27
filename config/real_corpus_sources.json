@@ -69,7 +69,7 @@
       "redacted_synopsis_available_on_request": true,
       "fetch_method": "Official direct Excel download; preserve the workbook unchanged; local-only case-level evaluation is authorized by evidence/oregon-acceptance.json; request redacted synopses if needed and do not redistribute.",
       "reuse_status": "operator_authorized_local_only_pending_written_confirmation_for_redistribution",
-      "local_evaluation_status": "accepted_completed_external_review_outcomes_only",
+      "local_evaluation_status": "adapter_preflight_completed_all_rows_abstained_before_denial_parsing",
       "local_evaluation_acceptance": "evidence/oregon-acceptance.json"
     }
   ]

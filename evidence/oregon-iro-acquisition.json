@@ -15,6 +15,9 @@
   "evaluation_status": {
     "accepted_into_evaluation_corpus": true,
     "accepted_record_count": 1640,
+    "adapter_preflight_completed": true,
+    "adapter_preflight_report": "evidence/oregon-evaluation.json",
+    "adapter_preflight_abstentions": 1640,
     "appeal_evaluation_run": false,
     "ground_truth_comparison_run": false
   },
