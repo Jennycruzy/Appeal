@@ -1,0 +1,112 @@
+{
+  "artifact": {
+    "file_name": "oregon-iro-case-detail-report.xlsx",
+    "local_file_size_bytes": 184200,
+    "publisher": "Oregon Division of Financial Regulation",
+    "raw_artifact_location": "local_download_only_not_repo",
+    "retrieval_date": "2026-08-27",
+    "retrieval_method": "official_direct_download",
+    "sha256": "1208eb9073b42ba7b9956e5e00168b14e5d672062c8d831ddfe574398b41f5d8",
+    "source_id": "oregon_dfr_iro_case_detail_report",
+    "source_page_url": "https://dfr.oregon.gov/insure/health/understand/coverage/Pages/iro-decision-report.aspx",
+    "transformation": "none",
+    "workbook_url": "https://dfr.oregon.gov/insure/health/understand/coverage/Documents/iro-case-detail-report.xlsx"
+  },
+  "evaluation_status": {
+    "accepted_into_evaluation_corpus": false,
+    "appeal_evaluation_run": false,
+    "ground_truth_comparison_run": false
+  },
+  "inspection": {
+    "case_detail_sheet": "Case Detail Report",
+    "categorical_counts": {
+      "case_category_counts": {
+        "Administrative Overturn": 1,
+        "Cancer Treatment": 70,
+        "Diagnostic Imaging/ Screening / Testing": 515,
+        "General Surgery": 362,
+        "General Surgery ": 2,
+        "General Therapy": 77,
+        "General Treatment": 297,
+        "Insurer Overturn": 42,
+        "Medical Equipment": 56,
+        "Mental Health Treatment": 75,
+        "None Provided": 261,
+        "None Provided ": 142,
+        "Out of Network Request": 6,
+        "Pharmacy/ Prescription Drugs": 263,
+        "Withdrawn": 59,
+        "general surgery": 1,
+        "withdrawn": 1
+      },
+      "case_outcome_counts": {
+        "Administrative Overturn": 3,
+        "Ineligible": 477,
+        "Insurer Overturn": 47,
+        "Overturned Denial": 565,
+        "Overturned denial": 1,
+        "Partial Overturn": 19,
+        "Upheld Denial": 1055,
+        "Withdrawn": 61,
+        "ineligible": 1,
+        "withdrawn": 1
+      },
+      "review_type_counts": {
+        "Expedited - 3 Day": 78,
+        "Expedited - 3 day": 26,
+        "Standard - 30 Day": 1800,
+        "Standard - 30 day": 326
+      }
+    },
+    "columns": 9,
+    "data_rows": 2230,
+    "dimension": "A1:K2234",
+    "distinct_counts": {
+      "Case Category": 17,
+      "Case Outcome": 10,
+      "Date Division Received External Review Request from Insurer": 970,
+      "Decision Date ": 1005,
+      "External Review Case Number": 2230,
+      "Full Procedure/ Service/ Treatment Name": 1561,
+      "IRO Company": 7,
+      "Insurer": 25,
+      "Type of External Review Requested": 4
+    },
+    "field_definitions_sheet_present": true,
+    "header_row": 4,
+    "headers": [
+      "External Review Case Number",
+      "Date Division Received External Review Request from Insurer",
+      "Insurer",
+      "Type of External Review Requested",
+      "IRO Company",
+      "Decision Date ",
+      "Case Outcome",
+      "Case Category",
+      "Full Procedure/ Service/ Treatment Name"
+    ],
+    "narrative_or_free_text_fields_present": true,
+    "workbook_sheets": [
+      "Introduction",
+      "Case Detail Report",
+      "Field Definitions"
+    ]
+  },
+  "privacy_scan": {
+    "candidate_counts": {},
+    "distinct_values_scanned": 5068,
+    "scope": "Distinct non-empty values in the Case Detail Report only; no values are emitted.",
+    "status": "technical_pattern_scan_only_human_review_required"
+  },
+  "recorded_at": "2026-08-27T19:13:49.151205Z",
+  "schema_version": "0.1",
+  "status": "manual_local_candidate_blocked_pending_reuse_and_synopsis_review",
+  "terms": {
+    "derived_public_dataset_created": false,
+    "public_download_link_observed": true,
+    "raw_artifact_committed": false,
+    "redacted_synopses_available_on_request": true,
+    "reuse_status": "not_established_pending_written_confirmation",
+    "synopsis_request_contact": "Exreview.Ins@dcbs.oregon.gov"
+  }
+}

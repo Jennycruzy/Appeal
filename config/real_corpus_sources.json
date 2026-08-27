@@ -51,6 +51,22 @@
       "case_level_schema_observed": true,
       "central_case_level_dataset": false,
       "reuse_status": "local_candidate_pending_privacy_and_terms_review"
+    },
+    {
+      "id": "oregon_dfr_iro_case_detail_report",
+      "kind": "regulator_external_reviews",
+      "publisher": "Oregon Division of Financial Regulation",
+      "source_page_url": "https://dfr.oregon.gov/insure/health/understand/coverage/Pages/iro-decision-report.aspx",
+      "archive_url": "https://dfr.oregon.gov/insure/health/understand/coverage/Documents/iro-case-detail-report.xlsx",
+      "synopsis_request_contact": "Exreview.Ins@dcbs.oregon.gov",
+      "reported_coverage": "Completed Oregon external-review cases in a rolling four-year report, updated quarterly; the downloaded report states coverage through June 30, 2025.",
+      "case_level_schema_observed": true,
+      "case_level_outcome_field_observed": true,
+      "case_level_ground_truth_verified": false,
+      "central_case_level_dataset": false,
+      "redacted_synopsis_available_on_request": true,
+      "fetch_method": "Official direct Excel download; preserve the workbook unchanged and request redacted synopses through the Oregon review staff before any case-level use.",
+      "reuse_status": "local_candidate_pending_written_reuse_and_privacy_review"
     }
   ]
 }

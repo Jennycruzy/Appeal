@@ -10,8 +10,10 @@ NY_DFS_INPUT ?= ../Downloads/peasadata.xlsx
 NY_DFS_PRIVACY_REVIEW ?= ../Downloads/ny-dfs-privacy-review.json
 NY_DFS_PRIVACY_DECISIONS ?= ../Downloads/ny-dfs-privacy-decisions.json
 NY_DFS_ACCEPTANCE_MANIFEST ?= evidence/ny-dfs-acceptance.json
+OREGON_IRO_INPUT ?= ../Downloads/oregon-iro-case-detail-report.xlsx
+OREGON_IRO_REPORT ?= evidence/oregon-iro-acquisition.json
 
-.PHONY: verify-ledger test typecheck load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready
+.PHONY: verify-ledger test typecheck load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-oregon-iro
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -42,3 +44,6 @@ validate-ny-dfs:
 
 require-ny-dfs-ready:
 	$(PYTHON) scripts/validate_ny_dfs_acceptance.py --manifest "$(NY_DFS_ACCEPTANCE_MANIFEST)" --xlsx "$(NY_DFS_INPUT)" --require-ready
+
+inspect-oregon-iro:
+	$(PYTHON) scripts/inspect_oregon_iro.py --xlsx "$(OREGON_IRO_INPUT)" --output "$(OREGON_IRO_REPORT)"
