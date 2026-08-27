@@ -44,16 +44,18 @@ export `peasadata.xlsx`, and Oregon's IRO Case Detail Report
 inspections, privacy-scan results, and terms decisions are recorded in
 `evidence/manual-review-acquisition.json`,
 `evidence/ny-dfs-export-acquisition.json`, and
-`evidence/oregon-iro-acquisition.json`. None of the raw artifacts is in the
+`evidence/oregon-iro-acquisition.json`; the Oregon local-use decision is in
+`evidence/oregon-acceptance.json`. None of the raw artifacts is in the
 repository. The Michigan file is a regulator order that quotes the insurer's
 denial rationale, not the original denial letter. The NY workbook contains
 61,606 all-years case-summary rows and outcome fields, but its privacy scan found
 unreviewed identifier-shaped candidates and its reuse licence is not
 established. The Oregon workbook contains 2,230 case-detail rows and an
-explicit `Case Outcome` field, but synopsis access, human privacy review, and
-written reuse permission remain unresolved. All three remain local-only pending
-review. No real regulator case has been run through Appeal, and there are still
-zero regulator-ground-truth comparison results.
+explicit `Case Outcome` field. Under the project owner's direction, all 1,640
+completed-review outcome rows are accepted for local-only external-review
+evaluation; this does not label them as prior authorization or authorize
+redistribution. No real regulator case has been run through Appeal, and there
+are still zero regulator-ground-truth comparison results.
 
 ## Done and verified
 
@@ -92,8 +94,10 @@ zero regulator-ground-truth comparison results.
   inspected with `scripts/inspect_oregon_iro.py`. It has 2,230 rows, nine
   observed fields, and an explicit `Case Outcome` field. The raw workbook
   remains outside the repository; `evidence/oregon-iro-acquisition.json` is
-  metadata-only, and `docs/oregon-iro-review-request.md` requests redacted
-  synopses and written reuse confirmation.
+  metadata-only. `evidence/oregon-acceptance.json` records the project-owner
+  decision to use 1,640 completed-review rows locally, while
+  `docs/oregon-iro-review-request.md` remains an optional request for redacted
+  synopses and written confirmation.
 
 - Synthea v4.0.0, the JAR digest, both seeds, fixed dates, California geography,
   and a one-thread bounded invocation are now pinned. The corrected fixed-end
@@ -154,8 +158,9 @@ The repository now has a fail-closed review workflow for this gate:
 - `make review-ny-dfs-privacy` presents those candidates to an authorized human
   reviewer in the terminal and saves only hashed decisions outside the
   repository. A partial or unresolved review does not clear the privacy gate.
-- `docs/ny-dfs-review-request.md` is the draft request for official schema and
-  reuse confirmation. Do not attach the workbook or case narratives.
+- `docs/ny-dfs-review-request.md` records the request sent to NY DFS for
+  official schema and reuse confirmation. Do not attach the workbook or case
+  narratives; record any reply when it arrives.
 - `evidence/ny-dfs-acceptance.json` is the metadata-only decision manifest.
   `make validate-ny-dfs` checks its shape; `make require-ny-dfs-ready` must fail
   until mapping, privacy, reuse, and prior-authorization review are explicitly
@@ -166,9 +171,9 @@ The repository now has a fail-closed review workflow for this gate:
 Oregon is the strongest immediate alternative while the NY DFS response is
 pending. Its official report already exposes a case-level `Case Outcome` and
 does not require guessing whether `Denial Reason` means `Appeal Type`. The
-report is still not an accepted corpus: its treatment column is free text, the
-report alone is not a written reuse grant, and no redacted synopsis has been
-received.
+project owner has accepted the 1,640 completed-review outcome rows for local
+only evaluation. This does not claim prior-authorization eligibility, written
+regulator permission, or redistribution rights.
 
 The local candidate is represented by:
 
@@ -176,17 +181,19 @@ The local candidate is represented by:
   workbook, local-only, SHA-256 recorded in `evidence/oregon-iro-acquisition.json`;
 - `scripts/inspect_oregon_iro.py` — aggregate-only inspection; it does not emit
   case numbers, treatment values, or narrative text;
-- `evidence/oregon-iro-acquisition.json` — schema, hash, aggregate counts, and
-  blocked status;
-- `docs/oregon-iro-review-request.md` — draft request to
+- `evidence/oregon-iro-acquisition.json` — schema, hash, and aggregate counts;
+- `evidence/oregon-acceptance.json` — operator decision, scope, field mapping,
+  and local-only gates;
+- `/Users/user/Downloads/oregon-iro-local-evaluation.json` — generated local
+  input with 1,640 selected records; contains free text and stays outside Git;
+- `docs/oregon-iro-review-request.md` — optional follow-up to
   `Exreview.Ins@dcbs.oregon.gov`.
 
-When the Oregon office responds, record the response hash and exact permitted
-use in a dedicated acceptance decision before copying any synopsis text into
-the repository. If it confirms only local research, keep the raw workbook and
-synopses outside Git and derive only the minimum redacted evaluation rows. If
-it denies reuse or does not answer, leave Oregon blocked and continue with the
-NY, DMHC, CDI, and Washington retrieval paths.
+When the Oregon office responds, record the response hash and any additional
+conditions. The current run uses only the public workbook under the project
+owner's local-only decision; raw workbook, case numbers, and free-text rows stay
+outside Git. If the office denies reuse, stop local narrative processing and
+retain only the aggregate evidence already committed.
 
 To reproduce the metadata inspection:
 
@@ -194,6 +201,19 @@ To reproduce the metadata inspection:
 make inspect-oregon-iro \
   OREGON_IRO_INPUT=../Downloads/oregon-iro-case-detail-report.xlsx
 ```
+
+To prepare the accepted local-only input for the Appeal adapter:
+
+```text
+make prepare-oregon-local-evaluation \
+  OREGON_IRO_INPUT=../Downloads/oregon-iro-case-detail-report.xlsx \
+  OREGON_IRO_LOCAL_OUTPUT=../Downloads/oregon-iro-local-evaluation.json
+```
+
+The command verifies the workbook hash, selects all 1,640 completed-review
+outcomes, and writes treatment text only to the outside-repository output path.
+It does not run Appeal or produce an evaluation score; the next implementation
+step is the local Appeal adapter and outcome-comparison recorder.
 
 ### Reproducibility investigation
 
@@ -251,14 +271,14 @@ server survives restart.
    date-of-birth/member-ID labels, and unresolved reuse position must be
    reviewed before any row is accepted. Its `Denial Reason` field must not be
    called `Appeal Type` until the source mapping is verified; see the resume
-   instructions above. Oregon is a second local candidate with 2,230 rows and
-   explicit outcomes, but its redacted synopsis and written-reuse gates remain
-   open. Continue with both review requests, the separate California Department
-   of Insurance and DMHC databases, and the Washington OIC search path; all
-   findings and URLs are documented in `docs/audits/precredit-imr.md`. Do not
-   claim real regulator evaluation until Appeal has run against an accepted
-   case corpus and the comparison is recorded. Pennsylvania, CMS, and similar
-   aggregate reports remain calibration inputs only.
+   instructions above. Oregon is now accepted for a local-only external-review
+   outcome run: 1,640 completed-review rows, with prior-authorization eligibility
+   explicitly unclaimed. Use `make prepare-oregon-local-evaluation` to create
+   the input outside Git. Continue the NY, California, and Washington searches
+   in parallel; all findings and URLs are documented in
+   `docs/audits/precredit-imr.md`. Do not claim a completed Appeal evaluation or
+   regulator comparison until the run and comparison are recorded. Pennsylvania,
+   CMS, and similar aggregate reports remain calibration inputs only.
 2. Complete policy terms review and ingest only permitted, ETag-backed policy
    documents. Extract traceable criterion trees and perform human validation.
 3. Complete quota and residency probes and authenticated managed-component
@@ -268,7 +288,9 @@ server survives restart.
    identities/tools, event spine, Memory Bank, governance boundary, Gemma,
    observability, console, evaluation, and seeded demo.
 5. The Phase 9 real-denial run and mandatory human-choice stop have not happened.
-   The stop cannot begin until an accepted regulator case corpus exists.
+   The Oregon source gate is ready for a local-only outcome run; the stop still
+   requires the Appeal adapter, policy mapping, and recorded regulator-outcome
+   comparison to be completed first.
 
 ## Resume checkpoint — after the PC is charged
 
@@ -290,8 +312,9 @@ Google Cloud project `onyx-yeti-506606-i9` (`835653516606`) and region
 
    This performs discovery/list checks only. It must not call `generateContent`,
    deploy anything, create a resource, or enable another API. The expected
-   current result is a passing Gemini metadata check, with four remaining
-   policy/corpus blockers.
+   current result is a passing Gemini metadata check, with the four blockers
+   recorded in that point-in-time artifact. The later Oregon local-only
+   acceptance is separate and does not alter `docs/preflight.json`.
 3. Run the local verification before continuing data-plane work:
 
    ```text
@@ -307,10 +330,11 @@ Google Cloud project `onyx-yeti-506606-i9` (`835653516606`) and region
    `HAPI_START_INDEX=N` only while that same server process retains a
    reconciled partial load, because the source transaction entries use POST and
    are not safe to replay against a populated database or after a restart.
-5. Keep Phase 1 and any Gemini generation stopped until the four blockers and
-   the component, quota, and residency checks are resolved. If the Prepay
-   transaction is still absent after 24 hours, capture the AI Studio Billing
-   status for review instead of paying again.
+5. Keep cloud-dependent Phase 1 work and any Gemini generation stopped until
+   the remaining policy, component, quota, and residency checks are resolved.
+   The Oregon local-only outcome preparation may continue without Gemini. If
+   the Prepay transaction is still absent after 24 hours, capture the AI Studio
+   Billing status for review instead of paying again.
 
 ## Push status
 
@@ -336,6 +360,6 @@ git status --short
 ```
 
 Then check the running HAPI container and preserve only aggregate reports. The
-cloud-dependent build remains gated by the four policy/corpus blockers and the
-unresolved component/quota/residency checks; do not generate content or enable
-additional services just to advance the preflight.
+cloud-dependent build remains gated by the blockers recorded in the current
+preflight snapshot and the unresolved component/quota/residency checks; do not
+generate content or enable additional services just to advance the preflight.

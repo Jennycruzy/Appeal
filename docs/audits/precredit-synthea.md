@@ -135,7 +135,9 @@ satisfied.
   The current project state is recorded in the 2026-08-27 addendum in
   `docs/audits/phase-0.md`.
 - The official DMHC IMR data endpoints returned HTTP 403 to the fail-closed
-  fetcher. No real denial/outcome corpus has been accepted.
+  fetcher. A separate Oregon external-review outcome subset is accepted for
+  local-only use, but it has not yet been evaluated by Appeal and is not a
+  prior-authorization corpus.
 
 ## Reproducible HAPI verification
 

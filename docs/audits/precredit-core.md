@@ -49,8 +49,9 @@ does not claim that Phase 1 has started or that Phase 0 is complete.
 - The exact appeal clocks are program-specific and have not been verified from
   a selected governing program. The state machine intentionally refuses to
   calculate them instead of using a remembered number.
-- Phase 0 billing/model discovery and real-corpus access remain blocked in
-  `docs/audits/phase-0.md`.
+- Phase 0 cloud/model discovery, policy-source review, and statutory-clock work
+  remain incomplete in `docs/audits/phase-0.md`. Oregon has a local-only
+  external-review outcome input prepared, but no Appeal evaluation has run.
 
 ## Exit status
 

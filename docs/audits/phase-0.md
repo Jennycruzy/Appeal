@@ -231,3 +231,11 @@ Prepay balance/transaction details, and the optional Cloud Billing REST API is
 disabled, so the artifact marks that billing-link check as a warning rather
 than enabling another API. No model prompt, deployment, or other
 credit-consuming operation has been performed.
+
+The preflight artifact is a point-in-time cloud and source-discovery snapshot;
+it was generated before the Oregon workbook was manually downloaded. The later
+Oregon local-only acceptance is recorded separately in
+`evidence/oregon-acceptance.json` and does not rewrite the historical HTTP
+results in `docs/preflight.json`, turn the Oregon source into an automated
+preflight pass, or clear the remaining cloud, policy, component, quota, or
+residency gates.

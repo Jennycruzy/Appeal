@@ -1,10 +1,12 @@
-# NY DFS external-appeal review request (draft)
+# NY DFS external-appeal review request (sent; response pending)
 
 Use the official NY DFS external-appeal questions route,
 `externalappealquestions@dfs.ny.gov`, listed on the [NY State External Appeal
 page](https://www.dfs.ny.gov/complaints/file_external_appeal). Do not attach
 `peasadata.xlsx` or any case narrative. The request is for schema and reuse
 clarification, not for a case-level disclosure.
+
+Status: sent by the project owner; written response pending as of 2026-08-27.
 
 ## Questions to send
 

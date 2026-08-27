@@ -1,10 +1,11 @@
-# Oregon IRO case-detail review request (draft)
+# Oregon IRO case-detail review request (optional follow-up)
 
 The Oregon Division of Financial Regulation publishes an official IRO Case
 Detail Report and states that redacted case synopsis reports are available to
-the public upon request. Use `Exreview.Ins@dcbs.oregon.gov` for the request.
-Do not send the downloaded workbook or any case text until the permitted-use
-scope is confirmed.
+the public upon request. Use `Exreview.Ins@dcbs.oregon.gov` for the request if
+written confirmation or redacted synopses are useful later. The project is
+already using the public workbook for local-only evaluation under the project
+owner's direction. Do not attach the downloaded workbook or any case text.
 
 Suggested subject: `Request for redacted IRO synopses and permitted research use`
 
@@ -43,4 +44,5 @@ Thank you.
 
 Record the response date, office/responder, URL or message reference, and a
 local SHA-256 hash of the response. Keep the raw workbook and any synopsis
-files outside the repository until the reuse decision is explicit.
+files outside the repository regardless; the current local-only acceptance does
+not authorize redistribution.
