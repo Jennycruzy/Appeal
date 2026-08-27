@@ -59,6 +59,17 @@ state machine for all 1,640 rows and recorded 1,640 explicit abstentions before
 denial parsing. No real regulator case has completed Appeal, and there are
 still zero regulator-ground-truth comparison results.
 
+The next real-source target is the official California DMHC IMR determinations
+dataset. Its current state Open Data record reports coverage from 2001 to the
+present and a Creative Commons Attribution licence, but the downloadable
+payload still resolves to a Cloudflare-protected host and no DMHC rows have
+been accepted. `scripts/inspect_dmhc_imr.py` is ready for the first authorized
+CSV download and emits aggregate schema, outcome, hash, and privacy-pattern
+evidence only. A published third-party case example is a lead, not an
+accepted official record. California DWC was investigated and rejected as a
+primary source because it is workers' compensation and does not expose the
+complete denial packet needed by this benchmark.
+
 ## Done and verified
 
 - Live discovery scaffolding and the current preflight artifact for
@@ -171,10 +182,44 @@ The repository now has a fail-closed review workflow for this gate:
   until mapping, privacy, reuse, and prior-authorization review are explicitly
   recorded.
 
+### DMHC primary real-source path — resume here
+
+DMHC is the primary retrieval path because it is directly about health-plan
+denials and its official description says the IMR database contains decisions
+since January 1, 2001. The source is not yet a complete accepted corpus: the
+case-level file has not been downloaded, its schema has not been inspected, and
+prior-authorization scope, privacy, and reuse still require explicit review.
+Do not treat the CC BY metadata or the third-party `MN22-37709` write-up as a
+substitute for inspecting the official file.
+
+Use the current official catalog record:
+
+```text
+https://lab.data.ca.gov/dataset/independent-medical-review-imr-determinations-trend
+```
+
+If an authorized browser or network can download the CSV, save it unchanged
+outside the repository, then run:
+
+```text
+make inspect-dmhc-imr \
+  DMHC_IMR_INPUT=../Downloads/independent-medical-review-determinations-trends.csv \
+  DMHC_IMR_REPORT=evidence/dmhc-imr-acquisition.json
+```
+
+The inspector does not print case numbers, treatment text, findings, or other
+cell values. Review its aggregate report before creating a DMHC acceptance
+manifest. Acceptance requires, at minimum, an observed regulator outcome,
+denial basis, requested service, clinical/findings field, a defensible
+prior-authorization scope decision, a technical privacy review, and a
+source-specific reuse decision. Until those checks pass, keep the CSV local,
+keep `appeal_type` nullable unless officially established, and keep Appeal
+evaluation and regulator comparisons at zero.
+
 ### Oregon IRO case-detail fallback
 
-Oregon is the strongest immediate alternative while the NY DFS response is
-pending. Its official report already exposes a case-level `Case Outcome` and
+Oregon is an outcome-only fallback while the DMHC path is pending. Its official
+report already exposes a case-level `Case Outcome` and
 does not require guessing whether `Denial Reason` means `Appeal Type`. The
 project owner has accepted the 1,640 completed-review outcome rows for local
 only evaluation. This does not claim prior-authorization eligibility, written
@@ -282,21 +327,23 @@ server survives restart.
 
 ## Still outstanding
 
-1. Resolve the real-denial source. The Michigan PRIRA order is a manually
-   acquired, local-only candidate with its bytes, schema, omission review,
-   terms, and hash recorded; it has not been evaluated. The NY DFS export is a
-   larger local candidate, but its 140 physical-address-shaped summary values,
-   date-of-birth/member-ID labels, and unresolved reuse position must be
-   reviewed before any row is accepted. Its `Denial Reason` field must not be
-   called `Appeal Type` until the source mapping is verified; see the resume
-   instructions above. Oregon is now accepted for a local-only external-review
-   outcome run: 1,640 completed-review rows, with prior-authorization eligibility
-   explicitly unclaimed. Use `make prepare-oregon-local-evaluation` to create
-   the input outside Git. Continue the NY, California, and Washington searches
-   in parallel; all findings and URLs are documented in
-   `docs/audits/precredit-imr.md`. Do not claim a completed Appeal evaluation or
-   regulator comparison until the run and comparison are recorded. Pennsylvania,
-   CMS, and similar aggregate reports remain calibration inputs only.
+1. Resolve the real-denial source. Retrieve and inspect the official DMHC
+   case-level resource first, using the DMHC path above. If it remains
+   inaccessible, try the separate California CDI and Washington OIC case-level
+   paths. The Michigan PRIRA order is a manually acquired, local-only candidate
+   with its bytes, schema, omission review, terms, and hash recorded; it has not
+   been evaluated. The NY DFS export is a larger local candidate, but its 140
+   physical-address-shaped summary values, date-of-birth/member-ID labels, and
+   unresolved reuse position must be reviewed before any row is accepted. Its
+   `Denial Reason` field must not be called `Appeal Type` until the source
+   mapping is verified; see the resume instructions above. Oregon is accepted
+   only for a local-only external-review outcome run: 1,640 completed-review
+   rows, with prior-authorization eligibility explicitly unclaimed. Use
+   `make prepare-oregon-local-evaluation` to create the input outside Git. All
+   findings and URLs are documented in `docs/audits/precredit-imr.md`. Do not
+   claim a completed Appeal evaluation or regulator comparison until the run
+   and comparison are recorded. Pennsylvania, CMS, and similar aggregate
+   reports remain calibration inputs only. DWC is not an equivalent source.
 2. Complete policy terms review and ingest only permitted, ETag-backed policy
    documents. Extract traceable criterion trees and perform human validation.
 3. Complete quota and residency probes and authenticated managed-component

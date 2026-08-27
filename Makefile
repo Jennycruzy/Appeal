@@ -15,8 +15,10 @@ OREGON_IRO_REPORT ?= evidence/oregon-iro-acquisition.json
 OREGON_IRO_ACCEPTANCE_MANIFEST ?= evidence/oregon-acceptance.json
 OREGON_IRO_LOCAL_OUTPUT ?= ../Downloads/oregon-iro-local-evaluation.json
 OREGON_IRO_EVALUATION_REPORT ?= evidence/oregon-evaluation.json
+DMHC_IMR_INPUT ?= ../Downloads/independent-medical-review-determinations-trends.csv
+DMHC_IMR_REPORT ?= evidence/dmhc-imr-acquisition.json
 
-.PHONY: verify-ledger test typecheck load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -47,6 +49,9 @@ validate-ny-dfs:
 
 require-ny-dfs-ready:
 	$(PYTHON) scripts/validate_ny_dfs_acceptance.py --manifest "$(NY_DFS_ACCEPTANCE_MANIFEST)" --xlsx "$(NY_DFS_INPUT)" --require-ready
+
+inspect-dmhc-imr:
+	$(PYTHON) scripts/inspect_dmhc_imr.py --csv "$(DMHC_IMR_INPUT)" --output "$(DMHC_IMR_REPORT)"
 
 inspect-oregon-iro:
 	$(PYTHON) scripts/inspect_oregon_iro.py --xlsx "$(OREGON_IRO_INPUT)" --output "$(OREGON_IRO_REPORT)"

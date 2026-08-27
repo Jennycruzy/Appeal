@@ -6,8 +6,15 @@ human-signature, deadline, and audit controls.
 ## Reviewer status
 
 The repository does **not** claim a completed real-case evaluation. The active
-release gate is acceptance of a real regulator-denial corpus. Two primary
-official regulator candidates are now tracked:
+release gate is acceptance of a real regulator-denial corpus. The primary
+real-source target is the official California Department of Managed Health
+Care (DMHC) Independent Medical Review (IMR) determinations dataset. Its
+official metadata says it contains DMHC IMR decisions since January 1, 2001
+and declares a Creative Commons Attribution licence, but the case-level
+payload has not been retrieved or accepted. See the [real-corpus audit](docs/audits/precredit-imr.md#source-decision)
+for the current retrieval decision.
+
+Two manually acquired regulator candidates are also tracked locally:
 
 - The NY DFS all-years export is preserved unchanged and local-only.
 - It contains 61,606 observed rows, an `Appeal Decision` outcome, and a
@@ -26,6 +33,11 @@ official regulator candidates are now tracked:
   parsing because the source does not provide denial text, policy references,
   or clinical evidence. Full Appeal evaluations and regulator-ground-truth
   comparisons remain **zero**.
+- A published DMHC case example is a discovery lead only; it is not an official
+  payload import, accepted corpus row, or evaluation result. California DWC was
+  investigated separately and rejected as a primary benchmark because it is a
+  workers' compensation source and its public index does not provide the
+  complete denial packet needed here.
 
 Start with the [NY DFS handoff](docs/HANDOFF.md#ny-dfs-schema-mismatch--resume-here),
 the [Oregon fallback](docs/HANDOFF.md#oregon-iro-case-detail-fallback), the
@@ -54,6 +66,8 @@ case numbers, treatment strings, or narrative values.
 make test
 make typecheck
 make validate-ny-dfs
+make inspect-dmhc-imr \
+  DMHC_IMR_INPUT=../Downloads/independent-medical-review-determinations-trends.csv
 make inspect-oregon-iro \
   OREGON_IRO_INPUT=../Downloads/oregon-iro-case-detail-report.xlsx
 make prepare-oregon-local-evaluation \

@@ -21,9 +21,12 @@ Health Care's Independent Medical Review (IMR) material:
 
 The catalogue metadata declares the source public and identifies a CC BY
 licence. DMHC states that its IMR decision database contains decisions since
-January 1, 2001. Those statements establish provenance and a licence lead; they
-do not yet prove that the downloadable `Trend` resource contains the case-level
-denial rationale and determination fields required by Phase 1D.
+January 1, 2001. The current [CA Open Data record](https://lab.data.ca.gov/dataset/independent-medical-review-imr-determinations-trend)
+was also reachable on 2026-08-27 and reported a 2001--current timeframe and a
+2026-08-24 update. Those statements establish provenance and a licence lead;
+they do not yet prove that the downloadable `Trend` resource contains every
+case-level denial, policy, clinical, and determination field required by
+Phase 1D.
 
 ## Retrieval result
 
@@ -52,7 +55,7 @@ not yet a cached benchmark artifact.
 
 The 403 is being treated as an access problem to resolve, not as evidence that
 the DMHC corpus is unavailable. The following official routes were tested on
-2026-08-26:
+2026-08-26 and 2026-08-27:
 
 - A plain GET of the official CSV returned HTTP 403.
 - A GET with a current Safari User-Agent, Referer, Accept headers, and a 1 KB
@@ -61,6 +64,10 @@ the DMHC corpus is unavailable. The following official routes were tested on
 - The official Data.gov catalogue was inspected. Its harvested metadata exposes
   the same CSV, ZIP, and dictionary URLs on `data.chhs.ca.gov`; it does not
   provide a separate data mirror.
+- The newer CA Open Data record at `lab.data.ca.gov` was reachable and exposed
+  the official CSV preview/download links, but those links still resolve to
+  `data.chhs.ca.gov`. No case rows were exposed by the retrieval client and no
+  payload was saved.
 - The DMHC searchable IMR database at `https://wpso.dmhc.ca.gov/imr/` returned
   HTTP 403 from the command-line client and timed out through the web retrieval
   client.
@@ -80,6 +87,12 @@ an official response from the DMHC Open Data contact at
 `opendata@dmhc.ca.gov`. If a file is obtained, it must be kept unmodified,
 hashed, and recorded with the original URL, retrieval date, and licence before
 any analysis. Until then, the case-level corpus remains pending.
+
+The published third-party [DMHC case example](https://meritsappeals.com/research/anatomy-of-an-appeal-that-won)
+for case `MN22-37709` is useful as a field-shape and retrieval lead: it reports
+a denial basis, treatment, clinical findings, and an overturned determination.
+It is not an official payload, it has not been independently reconciled to the
+DMHC export, and it is not accepted as a corpus row or evaluation result.
 
 ## Alternative regulator sources investigated
 
@@ -316,6 +329,20 @@ also describes case-detail access and redacted public decisions. The current
 search endpoint and an export path were not verified from this environment, so
 this is a candidate only.
 
+### California Division of Workers' Compensation — rejected for this benchmark
+
+The [DWC IMR search](https://www.dir.ca.gov/dwc/imr/imrdecisionsearch.asp)
+publishes workers' compensation IMR index fields and links case numbers to
+Final Determination Letters. The [DWC IMR decisions page](https://dir.ca.gov/DWC/IMR/IMR-Decisions/IMR_Decisions.asp)
+states that those letters contain the rationale for each requested treatment.
+This is a real regulator source, but it is workers' compensation rather than a
+commercial-health prior-authorization corpus. The public index does not expose
+the underlying denial packet, policy criteria, or complete clinical submission,
+and no reproducible bulk case-level export or standalone FDL was verified here.
+It is therefore excluded from the primary benchmark. A DWC letter may still be
+useful for parser testing if a separately authorized, local-only document is
+obtained; it must not be presented as equivalent to the DMHC health-plan source.
+
 ### Texas and Pennsylvania — useful but not primary equivalents
 
 The [Texas Department of Insurance IRO page](https://www.tdi.texas.gov/hmo/mcqa/iro_decisions.html)
@@ -330,19 +357,24 @@ in the material reviewed, so it is aggregate calibration evidence only.
 
 ### Source decision
 
-The ranked retrieval order is now: (1) supply the missing denial, policy, and
-clinical inputs for the accepted Oregon local external-review outcome input
-and run the full Appeal adapter, (2) continue the NY
-DFS privacy/reuse review while waiting for the written mapping response, (3)
-try the separate California CDI and DMHC databases, and (4) verify the
-Washington OIC search/export path. Pennsylvania and CMS remain aggregate
-calibration sources. The project currently has **zero real denial cases
-evaluated and zero regulator-ground-truth comparisons**. It has three
-metadata-only source artifacts plus a local-only Oregon evaluation input. The
-Oregon adapter preflight is recorded, but it abstained on every row and did not
-produce an Appeal score. No README, evaluation file, demo case, or metric may
-claim an Appeal evaluation until a full adapter run and comparison are
-recorded.
+No source is currently verified as complete end-to-end. For this project,
+"complete" means a public, provenance-preserving case record with a denial
+basis, requested service, usable clinical rationale, regulator outcome, and a
+defensible prior-authorization scope decision. The ranked retrieval order is
+now: (1) obtain and inspect the official DMHC case-level resource or an
+official DMHC searchable record; (2) if that remains inaccessible, try the
+California CDI and Washington OIC case-level paths; (3) continue NY DFS only
+through its explicit mapping, privacy, reuse, and prior-authorization gates;
+and (4) treat Oregon as outcome-only until a denial packet or redacted synopsis
+supplies the missing inputs. Pennsylvania and CMS remain aggregate calibration
+sources. DWC is excluded for scope and completeness reasons.
+
+The project currently has **zero real denial cases evaluated and zero
+regulator-ground-truth comparisons**. It has three metadata-only source
+artifacts plus a local-only Oregon evaluation input. The Oregon adapter
+preflight is recorded, but it abstained on every row and did not produce an
+Appeal score. No README, evaluation file, demo case, or metric may claim an
+Appeal evaluation until a full adapter run and comparison are recorded.
 
 The two-corpus boundary remains explicit: regulator records can test denial
 language, criterion-location reasoning, and externally recorded outcomes;
@@ -368,9 +400,11 @@ they are used to calibrate the reference payer.
 
 ## Gaps
 
-- The DMHC resource name indicates a trend dataset, but its case-level schema
-  has not been inspected because every tested official access route is behind
-  the same Cloudflare restriction.
+- The DMHC resource is officially catalogued as covering all IMR decisions
+  since 2001 and is declared CC BY, but its case-level schema has not been
+  inspected because the downloadable payload and datastore remain behind the
+  same Cloudflare-protected host. The lab catalog is a metadata route, not a
+  second data copy.
 - One official Michigan regulator order has been inspected locally; no raw real
   document or derived public case dataset has been accepted into the
   repository.
@@ -399,9 +433,9 @@ they are used to calibrate the reference payer.
   1,640 rows abstained before a full Appeal evaluation. It cannot claim
   prior-authorization eligibility or public corpus redistribution. One Michigan
   order remains local-only and unevaluated. The NY DFS export remains blocked
-  by its mapping, privacy, and reuse decisions. DMHC, CDI, Washington, and the
-  NY source remain parallel alternatives for a broader or more directly
-  prior-authorization aligned corpus.
+  by its mapping, privacy, and reuse decisions. DMHC is the primary retrieval
+  target; CDI and Washington are the next case-level alternatives. DWC is not
+  an equivalent health-plan benchmark.
 - Phase 2 payer calibration cannot claim a target distribution until actual
   public 2025 reports are collected and hashed.
 - The overall build remains stopped at the Phase 0 billing/model-discovery
@@ -411,7 +445,9 @@ they are used to calibrate the reference payer.
 
 Pre-credit source discovery has identified three manually acquired regulator
 artifacts: one Michigan order, one NY DFS export, and one Oregon IRO workbook.
-Oregon is accepted for local-only external-review outcome handling, and its
-adapter preflight is recorded as 1,640 explicit abstentions. No full Appeal
-evaluation or regulator-ground-truth comparison has been completed. The
-project must not claim performance until those results are recorded.
+The official DMHC dataset is the primary next retrieval target, but no DMHC
+payload has been accepted. Oregon is accepted for local-only external-review
+outcome handling, and its adapter preflight is recorded as 1,640 explicit
+abstentions. No full Appeal evaluation or regulator-ground-truth comparison
+has been completed. The project must not claim performance until those results
+are recorded.

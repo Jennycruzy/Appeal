@@ -14,6 +14,11 @@
       "datastore_api_url": "https://data.ca.gov/api/action/datastore_search?resource_id=1e9714f7-ad88-4d73-adb3-72bd65c8aa77&limit=0",
       "declared_license_url": "http://www.opendefinition.org/licenses/cc-by",
       "reported_coverage": "DMHC states that its IMR decision database contains decisions since January 1, 2001.",
+      "official_metadata_refresh_url": "https://lab.data.ca.gov/dataset/independent-medical-review-imr-determinations-trend",
+      "contact_email": "opendata@dmhc.ca.gov",
+      "candidate_priority": "primary_real_source_target",
+      "last_checked": "2026-08-27",
+      "retrieval_status": "official_metadata_verified_payload_not_retrieved",
       "fetch_method": "HEAD/GET with ETag capture; do not modify or redistribute a transformed copy; fail closed on access or licence uncertainty.",
       "case_level_ground_truth_verified": false
     },
