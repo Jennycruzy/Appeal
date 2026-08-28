@@ -1,0 +1,49 @@
+{
+  "gemma_run": true,
+  "implementation": "gemini_enterprise_agent_platform_maas",
+  "location": "global",
+  "measurement": {
+    "by_surface": {
+      "egress_to_zone_c": {
+        "case_count": 2,
+        "expected_blocked": 1,
+        "inconclusive_scans": 0,
+        "provider_blocked": 1,
+        "successful_scans": 2
+      },
+      "inbound_document": {
+        "case_count": 2,
+        "expected_blocked": 1,
+        "inconclusive_scans": 0,
+        "provider_blocked": 1,
+        "successful_scans": 2
+      },
+      "memory_bank": {
+        "case_count": 3,
+        "expected_blocked": 2,
+        "inconclusive_scans": 0,
+        "provider_blocked": 2,
+        "successful_scans": 3
+      }
+    },
+    "case_count": 7,
+    "false_negative": 0,
+    "false_positive": 0,
+    "false_positive_rate": 0.0,
+    "fixture_content_persisted": false,
+    "inconclusive_scans": 0,
+    "precision": 1.0,
+    "provider_errors": 0,
+    "recall": 1.0,
+    "successful_scans": 7,
+    "true_negative": 3,
+    "true_positive": 4
+  },
+  "model": "google/gemma-4-26b-a4b-it-maas",
+  "model_armor_or_gemma_run": true,
+  "model_armor_run": false,
+  "project": "onyx-yeti-506606-i9",
+  "provider": "google_gemma_maas",
+  "schema_version": "0.1",
+  "scope": "synthetic local fixtures submitted to Gemma MaaS; content omitted"
+}

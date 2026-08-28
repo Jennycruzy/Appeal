@@ -75,10 +75,15 @@ complete.
   seven synthetic scans completed with precision `1.0`, recall `0.75`, and
   false-positive rate `0.0`. It is a separate provider probe and is not yet
   the default workflow boundary.
-- A Gemma tripwire measurement is not yet available. Direct publisher
-  inference was unavailable, and serving Gemma requires a Vertex endpoint;
-  the smallest checked option uses a billable GPU. Deployment and ongoing
-  cost therefore remain pending explicit authorization.
+- A separate serverless Gemma MaaS tripwire measurement is available in
+  [`evidence/gemma-tripwire-measurement.json`](../evidence/gemma-tripwire-measurement.json):
+  seven synthetic scans completed with precision `1.0`, recall `1.0`, and
+  false-positive rate `0.0`, with zero provider errors or inconclusive scans.
+  It is not yet wired into the default workflow boundary and is not a
+  clinical decision. The attempted temporary GPU deployment was rejected
+  before resource creation because the selected region had zero L4 quota; no
+  GPU endpoint remains. MaaS is serverless/pay-as-you-go, so there is no
+  project endpoint or model resource to delete after the measurement.
 - `make measure-local-security` measures the local deterministic fallback on
   synthetic labeled fixtures and writes aggregate counts only. Those results
   must not be described as Model Armor or Gemma measurements.

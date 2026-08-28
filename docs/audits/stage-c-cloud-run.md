@@ -25,6 +25,9 @@ claim a production deployment: the service is intentionally unauthenticated,
 uses process-local in-memory state, accepts no real case data, and exposes the
 deterministic API facade. Agent Runtime, Agent Registry, Agent Identity,
 Firestore, Pub/Sub, managed Memory Bank, Agent Gateway, Firebase Auth, and a
-live Model Armor/Gemma workflow boundary remain separate implementation work.
+live default Model Armor/Gemma workflow boundary remain separate
+implementation work. Separate synthetic provider measurements are recorded in
+`evidence/model-armor-measurement.json` and
+`evidence/gemma-tripwire-measurement.json`.
 
 No raw denial, clinical, member, payer, or other real-case data was uploaded.

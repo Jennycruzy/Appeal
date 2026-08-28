@@ -2,10 +2,10 @@
 
 The repository currently executes the local deterministic path and exposes the
 same API facade through a synthetic-only Cloud Run deployment. A synthetic
-seven-agent ADK/Gemini smoke and a separate managed Model Armor measurement
-are recorded as provider probes; Agent Runtime, persistent Google Cloud
-services, Gemma, and the external payer remain future adapters and are marked
-as such below.
+seven-agent ADK/Gemini smoke and separate managed Model Armor and serverless
+Gemma MaaS measurements are recorded as provider probes; Agent Runtime,
+persistent Google Cloud services, the default security boundary, and the
+external payer remain future adapters and are marked as such below.
 
 The local executor runs the role adapters in deterministic graph order and
 publishes reference-only event records through `LocalEventSpine`. Subscriber-
@@ -15,7 +15,7 @@ current local implementation.
 ```mermaid
 flowchart LR
     D[Denial PDF or scan] --> A[Zone A: Intake]
-    A --> MA[Model Armor + Gemma tripwire\nModel Armor probe; Gemma pending]
+    A --> MA[Model Armor + Gemma MaaS tripwire\nSeparate provider probes; not default boundary]
     MA -->|clear| E[Reference-only event spine\nlocal adapter / future Pub/Sub]
     MA -->|blocked| Q[QUARANTINED\nhuman release required]
 
@@ -71,6 +71,6 @@ flowchart LR
 | Event delivery | `LocalEventSpine` | Pub/Sub topics and idempotent subscribers |
 | Memory | `ScopedMemoryBank` | Per-case Memory Bank revisions |
 | Payer | `PayerAdjudicator` with a private criterion copy | Separate Cloud Run service/account |
-| Security | Local fallback + managed Model Armor probe | Model Armor and Gemma in series at the workflow boundary |
+| Security | Local fallback + managed Model Armor and Gemma MaaS probes | Model Armor and Gemma in series at the workflow boundary |
 | Human action | Local `approve()` resume step | Firebase-authenticated console co-signature |
 | External action | Local receipt-only mutation representation | Deterministic payer submission API |

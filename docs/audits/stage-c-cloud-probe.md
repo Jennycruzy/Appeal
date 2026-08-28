@@ -16,12 +16,14 @@ is recorded in `evidence/adk-workflow-smoke.json`. A managed Model Armor
 template was configured and measured in a separate probe. The deterministic
 HTTP facade is now deployed to Cloud Run; its deployment and synthetic
 lifecycle are recorded in `evidence/cloud-run-deployment.json` and
-`docs/audits/stage-c-cloud-run.md`. Agent Runtime, Firestore, Pub/Sub, Gemma
-endpoint, and external payer deployment remain unclaimed.
+`docs/audits/stage-c-cloud-run.md`. Agent Runtime, Firestore, Pub/Sub,
+dedicated Gemma GPU endpoint, and external payer deployment remain unclaimed.
+A separate serverless Gemma MaaS synthetic measurement is recorded in
+`evidence/gemma-tripwire-measurement.json`.
 
 The local exit remains runnable through `make run-local-runtime`. Its platform
 interfaces identify the future seams for case storage, event delivery,
 case-scoped memory, payer separation, security inspection, and reversibility.
-The next managed-service step is to wire the measured Model Armor boundary
-into the workflow and decide whether to incur the cost of serving Gemma. The
-scoring handoff remains deferred and uncommitted.
+The next managed-service step is to wire the measured Model Armor and Gemma
+provider boundaries into the workflow. The scoring handoff remains deferred
+and uncommitted.

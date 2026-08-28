@@ -22,9 +22,20 @@ wired into the default local workflow boundary. The local boundary remains
 fail-closed and its fallback measurement remains separately labeled.
 
 A synthetic Vertex AI smoke request to Gemini `3.7-flash` succeeded at the
-global endpoint. Direct publisher inference for `gemma-3-1b-it` was not
-available. Gemma therefore still needs a served Vertex endpoint before its
-tripwire can be measured; no GPU endpoint was deployed because that creates an
-ongoing billable resource and requires explicit authorization.
+global endpoint. The attempted dedicated Gemma `3-1b-it` GPU deployment was
+rejected before resource creation because the selected `us-central1` project
+quota for L4 serving GPUs is zero. A filtered endpoint inventory confirmed
+that no `appeal-gemma-tripwire` endpoint was created.
+
+To obtain the authorized synthetic provider measurement without leaving a
+billable GPU running, `make measure-gemma` used Google's serverless Gemma MaaS
+model `google/gemma-4-26b-a4b-it-maas` at the global OpenAI-compatible endpoint.
+All seven labeled fixtures succeeded: true positives `4`, true negatives `3`,
+false positives `0`, false negatives `0`, precision `1.0`, recall `1.0`, and
+false-positive rate `0.0`. The aggregate report is
+[`evidence/gemma-tripwire-measurement.json`](../../evidence/gemma-tripwire-measurement.json);
+fixture content and model responses are omitted. MaaS created no project
+endpoint or deployed-model resource, so there was no Gemma resource to delete
+after the run.
 
 No real patient data or case identifiers were sent in these probes.

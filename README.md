@@ -136,7 +136,8 @@ with the audit narrative in
 This is a synthetic-only, unauthenticated demonstration endpoint with
 process-local state; no real case data was uploaded. It proves the Google
 Cloud backend deployment but does not claim that the managed Agent Runtime,
-Firestore, Pub/Sub, Firebase Auth, or the Model Armor/Gemma boundary is live.
+Firestore, Pub/Sub, Firebase Auth, or the Model Armor/Gemma boundary is wired
+into the default workflow.
 See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
 
 ## Local product path
@@ -200,9 +201,19 @@ make measure-model-armor
 ```
 
 That report contains aggregate counts only and is recorded in
-`evidence/model-armor-measurement.json`. Gemma is not yet measured because it
-requires a served Vertex endpoint; serving the smallest checked variant
-creates a billable GPU resource.
+`evidence/model-armor-measurement.json`. Measure the separate serverless Gemma
+tripwire probe with:
+
+```text
+make measure-gemma
+```
+
+Its seven synthetic scans are recorded in
+`evidence/gemma-tripwire-measurement.json` as aggregate counts only. This is a
+provider measurement, not the default workflow boundary or a clinical
+decision. The temporary GPU deployment path was rejected by zero regional
+quota before creating an endpoint; the measurement therefore uses Google's
+serverless Gemma MaaS route and leaves no GPU resource to delete.
 
 The default metadata report and receipt ledger are written outside the
 repository under `../Downloads/`. Add `--approve` to simulate the clinician

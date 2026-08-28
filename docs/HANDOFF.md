@@ -24,14 +24,16 @@ exposed by this repository's metadata-only preflight, so the console's
 Billing/Transactions view remains the authoritative confirmation of the
 payment landing.
 
-The live preflight now confirms `aiplatform.googleapis.com` is enabled for
-`onyx-yeti-506606-i9`. Its regional custom-model list is reachable but empty;
+The live preflight confirmed `aiplatform.googleapis.com` is enabled for
+`onyx-yeti-506606-i9`. Its regional custom-model list was reachable but empty;
 the read-only `gcloud ai model-garden models list` fallback found 28 Gemini
-publisher entries and selected a qualifying GA publisher model. The artifact
-records `model_invocation_performed: false`; no prompt, deployment, or paid
-model call has been made. Cloud Billing API metadata is currently a warning
-because that optional API is disabled; it was not enabled solely for this
-check.
+publisher entries and selected a qualifying GA publisher model. That preflight
+artifact records `model_invocation_performed: false`; subsequent synthetic
+provider probes are recorded separately in
+`evidence/adk-workflow-smoke.json`, `evidence/model-armor-measurement.json`,
+and `evidence/gemma-tripwire-measurement.json`. Cloud Billing API metadata is
+currently a warning because that optional API is disabled; it was not enabled
+solely for this check.
 
 No real PHI, payer credential, member ID, or service-account key was used or
 added to the repository. Raw synthetic FHIR output is kept only in the ignored
@@ -88,12 +90,13 @@ memory, an independent payer adjudicator, and a reversibility journal.
 
 This is an executable local fallback, and the same deterministic HTTP facade
 is now deployed as a synthetic-only Cloud Run service. It is not a deployed
-ADK application, Gemma endpoint, or managed Agent Runtime workflow. A
+ADK application, dedicated Gemma GPU endpoint, or managed Agent Runtime workflow. A
 synthetic seven-agent ADK smoke run has completed and is recorded in
 `evidence/adk-workflow-smoke.json`; it is not a full appeal case evaluation. A
 separate managed Model Armor synthetic measurement has run and is recorded in
-`evidence/model-armor-measurement.json`, but it is not yet the default workflow
-boundary. The current limitations are recorded in
+`evidence/model-armor-measurement.json`, and a serverless Gemma MaaS synthetic
+measurement is recorded in `evidence/gemma-tripwire-measurement.json`; neither
+is yet the default workflow boundary. The current limitations are recorded in
 [`docs/LIMITATIONS.md`](LIMITATIONS.md). The local synthetic smoke command is:
 
 ```text
@@ -194,7 +197,7 @@ The Cloud Run service is intentionally unauthenticated, synthetic-only, and
 process-local. No real case data was uploaded. It establishes the hosted
 Google Cloud backend for the demo path, but it does not establish Agent
 Runtime, Agent Registry, Agent Identity, Firestore, Pub/Sub, Memory Bank,
-Gateway, Firebase Auth, Gemma, or a live Model Armor workflow boundary.
+Gateway, Firebase Auth, or a live default Model Armor/Gemma workflow boundary.
 
 Before any real-data upload or managed-service expansion, run a live inventory
 against the approved project and record the results:
