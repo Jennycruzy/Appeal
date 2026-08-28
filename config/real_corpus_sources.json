@@ -15,7 +15,7 @@
       "declared_license_url": "https://www.usa.gov/publicdomain/label/1.0/",
       "reported_coverage": "Public Part C and Part D Qualified Independent Contractor decision summaries; the live API reported 901471 Part C records and 240958 Part D records on 2026-08-28.",
       "api_authentication": "Public ACA query parameter exposed by the CMS QIC page; no secret is stored in this repository.",
-      "fetch_method": "Use the official catalog and offset/limit datastore API. Do not download the multi-gigabyte CSV for inspection; page any authorized local extraction outside the repository.",
+      "fetch_method": "Prefer the official catalog and offset/limit datastore API. If the API credential is unavailable, a dated official CSV may be preserved unchanged outside the repository after a disk check and inspected only with the streaming bulk inspector; page any authorized local extraction outside the repository.",
       "case_level_schema_observed": true,
       "case_level_outcome_field_observed": true,
       "regulator_summary_fields_observed": true,
@@ -24,6 +24,8 @@
       "case_level_ground_truth_verified": false,
       "retrieval_status": "official_api_inspected_summary_track_accepted",
       "acceptance_evidence": "evidence/cms-qic-decision-search.json",
+      "bulk_acceptance_evidence": "evidence/cms-qic-part-d-bulk-acceptance.json",
+      "bulk_local_evaluation_status": "accepted_pinned_part_d_subset_240916_rows_with_42_conservative_exclusions",
       "reuse_status": "official_catalog_public_domain_label_observed_metadata_and_aggregate_evidence_only",
       "privacy_status": "CMS-declared-privacy-reduced-summaries; bounded technical scan recorded; no legal determination claimed"
     },

@@ -1,0 +1,5116 @@
+{
+  "acceptance": {
+    "accepted_for_local_evaluation": false,
+    "accepted_record_count": 0,
+    "full_appeal_evaluation_allowed": false,
+    "narrative_rows_committed": false
+  },
+  "artifact": {
+    "bytes": 894397692,
+    "file_name": "cms-qic-partd-2026-08-25.csv",
+    "preserved_unchanged": true,
+    "sha256": "e32b4f10eb51df1882fc3b9084807e448d4924c0605518afd71a7e85ebb9759f"
+  },
+  "candidate_locators": [
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 96,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "edfaa359f7d1cb06d19187b8b96887464241d856bf90c3553fefd3a9d08eec1d",
+      "value_length": 2239,
+      "value_sha256": "ba0fbe0b6fdb20096050478f79d626d1ef4045c07aaec417f7b3ba5a6a146820"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 641,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5baf09de515710f22ee0eeb14e3f4661fa43eeb72e0efedb6a2e1dcae1683f72",
+      "value_length": 2090,
+      "value_sha256": "3567146edabeb95d6a33e5347d3a732c08dc2927deed062812d8d7a7d0290e82"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 1258,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b88db83a4d1b81e749b001717646d3f9b7e26643aa7b57064d40dbcf3a292864",
+      "value_length": 1724,
+      "value_sha256": "ab181fca99259e871f2ec171a0581ad5f5a3cb6373a3d9668168e6900a75e125"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 2428,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4b8e582b69e4e04a9ba3708684006b0c455eb8cfe8da73ff6006eb26cfc11df8",
+      "value_length": 2177,
+      "value_sha256": "a1f9adb6402767584a287f408b0caf220237656715f3e6d9a8c45d3ea00b3bac"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 3659,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "6782729d7ae953bb2efd0efe3a6253120ae765ad3ca9a9a8b89bd22e8832999c",
+      "value_length": 1815,
+      "value_sha256": "021a4613ddde1d3bbeb5cacf8cb28eaa6f62936d5418063a44420b016bb75f5a"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 3666,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7a311118efb77ddd1ed8ddd4fb896bdaa769e9c3d24a3c2d352927081df2d925",
+      "value_length": 1233,
+      "value_sha256": "6dc6a65087d11a4a27786d7776836a43cd65a81041afcc16fe926426c6cdd796"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 3846,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a5251ec49266699b6b16de41c644a342cf1eda3cee5f73aecf84c2fde15472d1",
+      "value_length": 2514,
+      "value_sha256": "677ac6bc6970f3cef1f35d0a3efc106fcab626ef62b0b9f2afbe332a8e2a960b"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 3901,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "31aadcfa8568820336ff531477ac98aed429e99ef8df8c7bce87bb93a12448ec",
+      "value_length": 2993,
+      "value_sha256": "b9bf39475e9e9cc6d117765ce8f41af4924338bec416f7f33f9c803a65031064"
+    },
+    {
+      "categories": [
+        "phone_shape"
+      ],
+      "csv_data_row": 4652,
+      "field": "Condition",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "2207ad83641e212e432422e0bcf09c9796447c139d6e7ddbc0f63b02dea0af60",
+      "value_length": 12,
+      "value_sha256": "b08e6a6c587a7f5bf2bb4ade3cb7fd25aa48cd3c258ef5535f185446cd4fda4d"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 4768,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7856cd0c4f653f0a83450456144bbc4d79bea932521e61a8f9199d345f41f63b",
+      "value_length": 1628,
+      "value_sha256": "76fdc29d7652eb035d4d2a863c23c41367885916f950a90e697d5fc2e2e05fc6"
+    },
+    {
+      "categories": [
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 5185,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "13fc91d768182aaa3c9499975ca25418827c7efcde719f525a1e7901170f421b",
+      "value_length": 2047,
+      "value_sha256": "7e036387f7a7e53f0e3943d8813074f0cba4b4d16f51861a18e7f4ab9db4d5d7"
+    },
+    {
+      "categories": [
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 5423,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "16096be1389a3894e0b2ca4155c3930ae3b3b7ba3ad214ae745d362eaeb697e0",
+      "value_length": 2133,
+      "value_sha256": "7b2557fa35fcf8e89d470b40418cd8c2cc8c490469720802478d26e8285f5f44"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 6426,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f0b0a38e10b8d1541897d081c10710862d74f443bc074d9bfef8a7162b52eeb3",
+      "value_length": 1382,
+      "value_sha256": "f86bcd98912a81af369c65f62399e92557abc9eb2fe1dd4dd64242e286dc0a7f"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 6431,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "999aef7c1fdc6587f81ebc15033f1657b8799854c747845309313acf20f8af0a",
+      "value_length": 1768,
+      "value_sha256": "8430617b898c4996ce90089ec0e96491755cfa794f12bbe7484ca18938e79f8d"
+    },
+    {
+      "categories": [
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 6710,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "333463f6631e0fd35cf4b838ff554991ece772aa255d3a2ff1c76a1738ede9f0",
+      "value_length": 2068,
+      "value_sha256": "d6623ee9f15e10f681ab4a0f9f27ccdb104b974fcc3603ed052d4c5734c35e9d"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 7295,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "2bd9949b470f1d01b175676363aafb2b3a057a41259f7825c607781ab9d3fa99",
+      "value_length": 1567,
+      "value_sha256": "504877cbb429d104a396929283585a24f5e288ac0334b99676d32c9e4c4705f0"
+    },
+    {
+      "categories": [
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 7604,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4451d5299fa6519e996e13c4849055b9d326d9c2a504a505aae03780c6f48ec2",
+      "value_length": 2221,
+      "value_sha256": "e9ab4d5cec28740e7e267c4964e2d655031fee3dd9e52e6d204e40d320494d7f"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 7710,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "6c618a26413001d7ae769ff4e1b88d96432c0a65ff251873321598d4c85f3f7b",
+      "value_length": 2072,
+      "value_sha256": "4d14d563c9fd29cba3d7ff62c6df460a2927919c527958eb905ce5e5e36fed34"
+    },
+    {
+      "categories": [
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 8974,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5a83d3ee095b0a8010850c67c1a3d15fbeddcc593204669d882b5732fbacada3",
+      "value_length": 3839,
+      "value_sha256": "47b0ac364153f771a8f3d66ad157e7a2c1e4ff3c15c7cc1950e64d90800fd1fe"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 9393,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "da6bfa2cb94c1d5c7ad87ff6499b0c03c0d891da374c57450c9d0876957c43f4",
+      "value_length": 3512,
+      "value_sha256": "44139c848a4c402452977408aeaa1d80f7fa25f5ab4ba23a394496b4d7f1ad83"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 10046,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b7f231c17a1bcceded81c46e06472f2c51162f5b13ea33517f0e78f323eb5661",
+      "value_length": 1544,
+      "value_sha256": "ea680472104beb4db4f13fa315716768a1c39040a17e9de350bbba70d0fce21c"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 10158,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "bf932dd368a9ed86873c400b0a911334a0903c1ea7b40ac2b11a12beb4ad06cf",
+      "value_length": 2158,
+      "value_sha256": "0b38bc2619829a8ad77dbe56be74ae88760d4f92cb69f75ba1a0451e53ed9736"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 10235,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0d7efc29c07ff9489b6cbefc0d55889ad2651a9923da89bc9df26542c3ae1372",
+      "value_length": 1324,
+      "value_sha256": "5d18c9769df17d602e882397e6693d4d74a703fa0adb504013e286ae3b34adb7"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 10896,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "48812d100c3fa90c9a1ef7219a608c4791e4518cba3cc8cdf99563b7fbe01415",
+      "value_length": 2917,
+      "value_sha256": "ed48b94cbce53d0429b7d7de1c2bb5a448a170a821ec7f5db54bc5a4870f2fc7"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 10978,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b30d5369c2fba38c18e5cbf13422798c498268d682dd312d5be470fc24d297ce",
+      "value_length": 1488,
+      "value_sha256": "c63254baf464337fe6de70747aacaa9592221c9074c819c70cec1ec7d14ab902"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 11350,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "782c7cf86174b19d8527372f655cae4a1a0a90fffc19616fe16ed79d42a62840",
+      "value_length": 2121,
+      "value_sha256": "ee5e99a80a153700aefc50543006f1abc03fcd8c13ed344b0afbcf5002e36aa0"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 11625,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3fe5d1a3721f5f019bc0b2f6ed0dd47f8028bd98cee0881527e850d3cca4eb59",
+      "value_length": 1726,
+      "value_sha256": "3a0ad6ce8d7fa8d0ed5e43418ed9438e3784a103963ab804419dd04b287b5e03"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 12327,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "6d56897b4ed49d93849927486ca968e0404348229b77d71f2dc1a20043bb813c",
+      "value_length": 1850,
+      "value_sha256": "7d2a5d1bef60eca3f55944cf9e0ccadcf0fb1bd3b082e6e6e1b7a6cf489039e0"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 12523,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "51fc565cc0806f5bcbdd125943c7dc8d425df815a9b9998f525342fe4bd127df",
+      "value_length": 3033,
+      "value_sha256": "d854532e1479aaa8ad8f2adf5617c31e886e89c23bc8f5bc744d8aea874f70ec"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 12846,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0d098fffd87e703b5a121b3eb114b0e23115cbd6fdd5e759047d547dcd1407fe",
+      "value_length": 1827,
+      "value_sha256": "e7fc4157dbe39045c9005a1bb888af666ff5298c3a31c1753dc4dbdc70624eae"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 13163,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "07b47a3deccdcf6600333eb5b14c5e9a06efa6d5974cc6d0c9e77561b0da3829",
+      "value_length": 1331,
+      "value_sha256": "ec46209cedf393c2484506798d64f42e3042d9105af1f0026fdcc5f1e87445b7"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 14018,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "9c67ce4b0186b6305f5a189c5adbc6d62b44fb14ee3042cdcfcdf57442683c08",
+      "value_length": 2209,
+      "value_sha256": "6c6c2e0b8f585587826abda70ed81ebc02f2293e3457cb13a9a84698de86b7b1"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 14339,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8271b2a7b2b5830cbd4dde171326f771b200ceb4e3970b441b7410374aae6334",
+      "value_length": 4840,
+      "value_sha256": "3adec3236c829581a350bc6450be98134e1caed9b7d8bd599663b91f1b79b9b1"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 14705,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "33e5e721131011c21832321822ce40b3037d7b1e77499d0c43ae8200d1e20383",
+      "value_length": 2247,
+      "value_sha256": "3b8bb6b76b65d4e2735ebbf7365c5a666657027e521bb7191a9fba2d63505597"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 14898,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8fac78989415798ff28d815f52ab8520e1d6dc7014715953d946beec7c5f3b03",
+      "value_length": 1794,
+      "value_sha256": "52b0abd48c6543c33aa3119712fe03a082e79298eaeeb4401b8358c0b849c99b"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 15235,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c353fb47ecd68d4e6e1011bb597a31c83d5d71a10130483f0525552e5163dde0",
+      "value_length": 2094,
+      "value_sha256": "680908549665e0137b10d35027e1ebcd3efd7cb9324cb1ef2b742266398893af"
+    },
+    {
+      "categories": [
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 15327,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "96d63c97a6282119a20045c9fa5ab78d27df28aa58d5cdeac791bc92b75316df",
+      "value_length": 2114,
+      "value_sha256": "eab483014e7e3c9085a41813564ce41cf6f84ed8453bea87124456f03b6c8d28"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 15583,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "26a0859d3a667674aa3ec44af8f8206d6ab1eaceb30410802186789451b4186f",
+      "value_length": 3524,
+      "value_sha256": "5fd21912f4c3a56c164d48d96f0eb402f5b3881211265a9d25d025abde624182"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 16010,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "78078894ee9a45f184ad3cad97260c0e09b388502768f80a92438d2eab19b55c",
+      "value_length": 4659,
+      "value_sha256": "612b2f1abc51e4b8b66608003483cf432713c5447ae3cae2de8f8f42f4602527"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 16528,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "20b9b9c8e11ea5eee03f33ae8ed744f410e53723f1658856dad3866b09e29fa9",
+      "value_length": 2791,
+      "value_sha256": "c9a45f51705aec8adf0623511c6d25f92593fa2f3ed4a457eec140df3cd46fe9"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 16795,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5b76d4572a9b796a88031874bada8f2508e2c64771baa15e4e938cae0cbe3952",
+      "value_length": 1530,
+      "value_sha256": "23366bd3b58c47ec1cbab68a068e05d855ea19642affa6ebbe6b52099a2274cc"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 17294,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "061ee150b5486761700423fa5d13108c22f87992e4984a53eb0bdf6032019769",
+      "value_length": 3295,
+      "value_sha256": "a6dd219b573d5570fe013bc659a082f177933edf3298802995cc85043eed3d79"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 19293,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b17c7ab31bfae39f889308e47ff4eaa68fa1cc3260710b0126709c91129b5896",
+      "value_length": 2265,
+      "value_sha256": "61970011b7f6c39d96127eee172b43fbd30fb77353d4f2e6f4118feb6aaadfc0"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 19350,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "724746ed758e0ce1dec18468bd1e44b3f93d4e030a97e5c3b8e68ebc47d5d897",
+      "value_length": 1728,
+      "value_sha256": "02f0d06b1afda799708b74d52746d847f25a9719c1ac98156b506eaadfae0c4b"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 19954,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b25f18f85fd2aac18333cd9d3a1aa6d0f899bc13043da5f757ba48b5532f8b8e",
+      "value_length": 4101,
+      "value_sha256": "9da03b71e182aea9d6b731e44f2e1284f64597b721feb5e6fa2897fa95d4bc58"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 20339,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "21d467b31336f178c640b0d0232ab6f5e0fd7e5cc075f47bcc223e819dfc7823",
+      "value_length": 2966,
+      "value_sha256": "a5147463a2f046e467c85aef69a54e763283a753cff5507a7b48029372858b82"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 20364,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5ba895f6777f837acdea6138b7d422c3787b34cb1b257863ab090de0489904ef",
+      "value_length": 2352,
+      "value_sha256": "1af555079372df9046acb73f35d5ad46154957ebc6a08a21d913bf24e2d0bccd"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 20844,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "cf29d4419226bb6f6446517b178ad2200336f75076cfe2acf7946349b5c5bd23",
+      "value_length": 3301,
+      "value_sha256": "c1371da808ac0f6aa3bb1e57e4e423ce9b1ef4447b0d9f3689ac74e26c249a2e"
+    },
+    {
+      "categories": [
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 20892,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "95c22fb9ac4ae83052d9b373fcfc0c926692decee878b7eacaf011cd3a2cb5cd",
+      "value_length": 3363,
+      "value_sha256": "dd3c7c1bd5729dd8a6f44e051c16c573d682193180cb43ac2916f821c54c79d0"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 21522,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f52edbe848a456591c60d18d33e6d7bc4074c4d68b8d27fac11b67ac7ec9cb6a",
+      "value_length": 2485,
+      "value_sha256": "8c3fc676ebe329c2e4917b14fec4ccb583ca58bf582b672e08ff82056f2b21ff"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 21788,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "124d86b7617e7ee70da8f3fe263437ebfbf11ba897af185f96657c35ef1636d7",
+      "value_length": 1997,
+      "value_sha256": "498f0da73fc482de9a7bd73149e18f9631892bda987653e4af849e3d145a14d2"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 22276,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "26ecf3ffa14345b943b3c8ef95cc89bcb6ef1c4330635a4f5f6a0ea17bfd666c",
+      "value_length": 1658,
+      "value_sha256": "4dbb6cc68c72b65ee5d8937071dffd05b1bb800542f9a77fdb576ef1f99d94a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 22373,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "bf0f0688d22c57e84d5da1f51d35847fbdd0e286da4a4a3b97819c98d0c10740",
+      "value_length": 1813,
+      "value_sha256": "fd335dce91a9ff9c341302b2a48c5fb5a17432b3e24387d6f550701c34a93759"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 22781,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b69ca8cfd330c470aa7a19f72a1876c66150a1eb99b6bae22f09beef2f845c98",
+      "value_length": 2084,
+      "value_sha256": "a796abd4b335499e6b14b4a9b0202ae6f30456e5465254e106a8bdab915836ba"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 22809,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "47a9f175c9e25e8b1058d8d8e35a97581de156581a047fddc5aee0d9702805d2",
+      "value_length": 1337,
+      "value_sha256": "91d1d5b496be4c006d2837ee086649b1dd455da3b55dfca56de4cfb13d0f7862"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 22872,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "47c4b47f46bcd19b23b3907371eb0bb7b4e97a011896367b808ef1adbd0815d1",
+      "value_length": 1906,
+      "value_sha256": "7a9574f244e7c59d7c484f3e984b75d2ed40e8cc78f3b94094c630f3173e8a37"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 23361,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8eeb2fbc1118138e4e72441844441913c11c182a8a2ed67bef135c9b214ac45f",
+      "value_length": 1448,
+      "value_sha256": "69fe867c497dbe7366f230a69710a9d5402e87b5a2eca4d813580db89be51df5"
+    },
+    {
+      "categories": [
+        "phone_shape"
+      ],
+      "csv_data_row": 23685,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "85481823c362c36660f46be602994b3b70ad8722e46469278835e616d2044b83",
+      "value_length": 2203,
+      "value_sha256": "2e8c3496bf12356c2f63e80a52fb233980485033b24577d006863a340569890e"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 23887,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "db776743d1fadf0c79ee9b09a03307f9d822e35104a696106b036e50f66e1c83",
+      "value_length": 1812,
+      "value_sha256": "3e1364254a353c9f263a15933ade2cf1531c69e00be5dfff28c00cc804ba0e61"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 24882,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f038479eaebbd9b3d9550afd3b4543d56bbb8ce02b48eb5366b6089c4bb2bf05",
+      "value_length": 802,
+      "value_sha256": "e6ccdf8e6b331ef097835215dfe4b49607fad7a0f368d4b3c8d9572870aa770b"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 25883,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0383124368acc6bed81c30839c41aa29e7d282ad9257cd23628848e556ea6846",
+      "value_length": 647,
+      "value_sha256": "769f7047586fdcaa54fb072c56877495eca9ad0a858679202887aa6cc7a7b91d"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 26276,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "00ec906d278adbdb029eeda630aec298256fff19f5c08afca5c3587b78a84e11",
+      "value_length": 1282,
+      "value_sha256": "96c1c795026aa3c69ef6057f433e42ed8a383ba32d4e2efb29f6dbc0c4ab318b"
+    },
+    {
+      "categories": [
+        "member_id_label",
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 27333,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1b09eb93bf1c12645c2a867ac3480d775e83af7525d136bab374ca95350a177c",
+      "value_length": 1158,
+      "value_sha256": "29231777ca3650128de549ba26fc3ec5fd5f04cc887005a79565e293c00847f5"
+    },
+    {
+      "categories": [
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 27336,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "838a0546dc390826ec28aa8eae917cc1455366112465f35c70b2ae91f3ebf201",
+      "value_length": 1191,
+      "value_sha256": "cce2901a684178c46c95c3cfacb2584843a104bb24dac7bf0de760812be3a292"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 27647,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b784f7abe3cb46ae007c6ac2050e730f5f8aea34af553d2c545579de48446b1e",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 27648,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "79edde7533d3ee532412f39d42ca90e7ce13bf70676694ffec11cb30da762674",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 27649,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "07e8c4b6b1cc3b7e805b730e3a564d0fb1b4815f53132518b73361fd42a48143",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 27650,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b6419dae03347596c9e67042734a2143497fd6cc882fd0fd88ace70d216100a6",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 27658,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e604103cdc733cb4b442ce489d84c78892c1874ca5fc7070ab4668a632d32db7",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 27673,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "24f7d093d88830636904bf80b9931ccf72af1d0cf52ee8a2a8955f03fb1f179a",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 27676,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0317a9d65fa426cc4ba34d23e6b9d75add0857b48217d8a9375de157eb75e32a",
+      "value_length": 941,
+      "value_sha256": "ef3e841c00fd1abf3f3049dd5d3231a120b2cc6c8eb2509ba775d9082ccef4f8"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 28013,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a957886cf7aa2df916c82d1159f06f06a02b7f204954c4cd26e4d47f9143bb1f",
+      "value_length": 965,
+      "value_sha256": "0d530efcc9997029ee40644d232ad0af55fbb7fed51dd092ca20556a1f6bb2fb"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 28034,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a7c6e0e2d02902f73090b6bf738e5a49939ecd23e9bedd3527fab62e9db333df",
+      "value_length": 882,
+      "value_sha256": "33c08c07ab97ffe185010e3aafb95916adbe48a66fec6c3a03b0da929be993ae"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 29023,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8ded9b71fcc2fb57e784d9c6ecf841f4c894158dbb7d41a3a01748f218020da7",
+      "value_length": 825,
+      "value_sha256": "c7996f42363433a76c51ae806f684c0bfd53264b397457bed25f708c797694d5"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 29094,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a0f57183bd31d81b281f435c7932e745bdf5bd6efd298754cfebf815c0d50778",
+      "value_length": 886,
+      "value_sha256": "eba1f00e43492e83abfedb092f9c5cabd5e9e003bed486823fab183efb491ff0"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 29554,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7f42a8e9aec5c882065aa16e2108f4d633975dfaa15c7690bac9a23ff3a91786",
+      "value_length": 610,
+      "value_sha256": "de018ce34c77c863b99401220c91067f9419e3d6e4a612a8820fd4742ada93e3"
+    },
+    {
+      "categories": [
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 29630,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7f54205047f00b2ab96ea08a2225359ff6e646c70d1d52c2741840fd47f67637",
+      "value_length": 716,
+      "value_sha256": "47a5f76ca5f0187c29bbca341dac994af136db9f85f692c2e7b10fd62fc1d8be"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 31469,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "188a83cf173868403590763b39c92ba43c5b9caa6023f70657ad0504f76ab33c",
+      "value_length": 595,
+      "value_sha256": "9f99c1b63b0ea5369eda408d94dccaead5b2a8d5391df7be794aaac41ace3fc1"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 32056,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "15a3bc88fddf2e42af311689307bf41403dcd9cc7bb8c9fb8cd0d96a6cb3ddbe",
+      "value_length": 738,
+      "value_sha256": "3c926033812566230d6df06fe972b71e49584dc1f15f8d98f6cf1b61ea769126"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 32461,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0980e541762b1965be19e3bb42de6c8296a3d6aa96d4c667eaee4f345ecedf49",
+      "value_length": 667,
+      "value_sha256": "423a0331b1ffaa9d31ef6e5b8591071167dd8a954eb1330fda12190ad8ec1d1f"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 32700,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ab0971987528d4ea49f8afc3b383ab28927b4eeddb855d8318fa8ef4381aac10",
+      "value_length": 662,
+      "value_sha256": "5cda6f2ebaa5d19a6348f9cb17cad44bfb9b5aa8c210082804211940c3c9d564"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 34339,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d5e1da804f14903598abd91da1db6786d9e02bdf1ed4766c8d76d956ec24799d",
+      "value_length": 885,
+      "value_sha256": "502d9f41e6b3978d49b0d2f1bc92695e5e4b2e4b579988c59d06e7d925ab2fba"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 34804,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1946127374b1888e890000f3814e785e01e59e7c2d54d49b80f3ef563b473759",
+      "value_length": 1145,
+      "value_sha256": "6a343e7c37177423791c4e7b6d6b7e1840764b575d00207b2b5d2f4d852e71de"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 35429,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "79210d6a09d3f252bbbe8118d2b4ba716b40950923260bb382fe39239aee8835",
+      "value_length": 793,
+      "value_sha256": "cc9aeed131fae7018e0575d3893841ff3c5dad573e345bbdfd6e1d8fa4a8bcf6"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 35490,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "00b9b5af12f40efcfc9b03fc19963aec4dbf6a0ce162aabf377c862af98cba2b",
+      "value_length": 734,
+      "value_sha256": "c34484dd4f5e1d19a65d6063e5ae75025949eaea620d82820a2d147611c74f5b"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 35936,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "43e8f18ab6d58ef5e89777118e1f8ef36a9767c0953ea4c6b5b4e5c955b875d6",
+      "value_length": 783,
+      "value_sha256": "12c3adddf9b11be165555f7d2213b7f5af3845f11a401b025207e0ae78c8b89e"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 36788,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "61748b68c9017830520c16ea0ae8281c17628c7073242d39d4232c86aa35c9f1",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 39005,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d3e2d9f4417db05d56023eb0a915fdb3db74c1a93ae557fe80b68374493227f9",
+      "value_length": 1264,
+      "value_sha256": "f5320cfc98ffd1f70fb48cd5d5235dad9927a2b48e3878be48708125f17482ac"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 39414,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c72e07bdd8ccd0aeb0381c6fe43ed5a3cff9c896ce71b4794eb6b4357294c8f7",
+      "value_length": 1165,
+      "value_sha256": "4c394616f80dba1f33212403bf9e27d99e30f262ad2577aafebc6cf639fdabe6"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 40002,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "bdf554984c9df9504d5f92e90476e053fb9ac2a181a8f2d21a54c7d1cf4cf0c0",
+      "value_length": 722,
+      "value_sha256": "554b76e18825527e7b5da94c8ad8048157ca73151885264b7215260dc8df1510"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 40257,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b21dedfd2fe5f64d5548c0c57f64c37b31f78ac1949dd10ca3b4a23ddf72fdd5",
+      "value_length": 1299,
+      "value_sha256": "43d5426b052f22c1d6e3d823beb7efeea2dae5fee5a4a1568d4eb716753a6eb9"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 40340,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a50a875987aa6ff68aaab0c495c8fbaccf85224fd768361ea9f32028a0216d35",
+      "value_length": 1324,
+      "value_sha256": "ad4fdaa57daef79fc16c86d52979c05708c923ac253e911dee1cb7c02fade4b5"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 40868,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "9080d93a52036fb97c7c94aa9f613f369b934500102b6719e095f627417d85cf",
+      "value_length": 878,
+      "value_sha256": "73b1b25cae0f76b78471336d0eaabd7b1f2e9de1f2c2b18a8e7c5281b4ab184e"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 40872,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "80063349f1ad0c24f86a01153c719fb244087cb790004cb2c9b3b78170c7395c",
+      "value_length": 641,
+      "value_sha256": "34732fe356aca29fcc40adc1c547227f2214cd7e36dc210bd29b60380d0e025b"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 41106,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "074c9e9cef12c61a084def5af28e6e23d15f6d348d8adaeeae6830cb826eee23",
+      "value_length": 1023,
+      "value_sha256": "bb20fe0752a5af8b82ca25dced46706991d008f5e8327f3da30ae0f7e45043d7"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 41693,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "62c9f4f4da305c91e0895d3e127fc9d1948906c4539eeabc67fd913ca8649548",
+      "value_length": 830,
+      "value_sha256": "458926a235e92d2504ef8d4e53df6c54f0f5de1de6b1b6ff77155a6f11a581e5"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 42468,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3b7167947903af8df552d5b85c65b4df231bc94e09db4f2c83cab2b9436d5921",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 42684,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b903bae4f7e2f382a1ba3d5e1a0fb2497c219c3d5ad02fc5635e57e9d11d9686",
+      "value_length": 1224,
+      "value_sha256": "c39e05dc33aedf45de04bd2599fcc3e43787c40a0a73efee56e4613d0129109a"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 42703,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "eea3ce8e2a4c7110547bc89610d273ea1cdcc3e8f7b874788a2f5e7943122070",
+      "value_length": 693,
+      "value_sha256": "3904001342a0d7868aa194389a1224c16399f843bb5c79a5f3d047c8769d5530"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 43568,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "563a8343c9036ce5bd1434c2008ee42085527c1e9042718611bf4e19a43cd000",
+      "value_length": 990,
+      "value_sha256": "26257749600466338abfbdc76f7c027199c97e40fc40724423f6dd7c409cca3e"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 44583,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ff2f590a70fdab6723abbf66853693f43e55e549d4bfe9e5517cc71fff18ab01",
+      "value_length": 1267,
+      "value_sha256": "4d30b86a1d5b22ffcb77f0a8e7a12042ccd68fa0b62957a5251fbbad1992a137"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 44659,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "9f77dcea8d82dae995abbd4f8d8864f1e131e5dfeac30c85e12709b0729663a2",
+      "value_length": 1149,
+      "value_sha256": "893894e570962779d4ea4b7068b1df4fc06231faccf825638a71062f78693839"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 45055,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0611f55ae690d71f33b1637e707cf573a097bc5025fc0393bba8ab92ebe32fae",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 48553,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "709e806bb39a066ed7d52fd02d8d82f3639b169672e634f1372f7d08f33606bf",
+      "value_length": 1036,
+      "value_sha256": "240de88fc58bbd0a4a827f41e5882a56e5c2b0606e5abdd85f78caaf0e7fcb0c"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 49737,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "88ac3b515448824cbaaa48cf9411f319d3547d44dde74e78e28ebc0ce71dc915",
+      "value_length": 866,
+      "value_sha256": "e2034fb274bb457736fa2fe85420f04248cb7b14ad07488b660294c169033bc8"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 52045,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "563c1079c1f2662f9840da86d4c04391d7ab686a35b1f1d6495e353166cdd4ac",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 52046,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8e1bb547202e82ed3135cd12ae40dcf98c15dae98b9986691a3b123cb3ba34fb",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 52047,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "42f52f19186a865aa4314c73154a74a247179f37c107b76844fd8e7b98d19128",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 52048,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3452b66083e0f345c283616904ea79a4b24cc9646e09afd53960133f32b86033",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 52557,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "61111a35f36a4860e8a4318c19c47781085681e99aa2d437d98121c8d022b2d2",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 52868,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3ae3841f2527a52b4e3d39b494983410ddcc92be2c3fe85001ead4cf87e94760",
+      "value_length": 1268,
+      "value_sha256": "a14e2b43e74e1bd5971874d2990a8494f7dc981626373a6489874019db7e228e"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 56126,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c5d39531186bc1ccaa49d1f28fce9016c72efa7a1e2eb65e7cc01bf1aaff073c",
+      "value_length": 742,
+      "value_sha256": "1cc1f157f11a1af785fb4d2a979a5c535b3d932b4c3301829e3f8d69d05026de"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 61572,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "999280c80c6e1b2bd3e079765ad9df5a89d7770120f79d6b95960ec9e4a4e186",
+      "value_length": 1384,
+      "value_sha256": "ee18079aa7f00d355e6dd8030383a37a90264c9aa87b17e9b1cb7c3a751cc85d"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 62998,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e6a5a15a0e2ac99ca337da344f21b650420fd3b83437ce053140fcb56079aba4",
+      "value_length": 789,
+      "value_sha256": "0418ee3eb9824932f12269dce70aca17f244d6aed393d2e43a208b017d7f7c19"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 63035,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "eeaa6c2754abc6847b1be340890da6f7de10e8dccfd8b3bbc2e17d7752b1ba1e",
+      "value_length": 1042,
+      "value_sha256": "7dc9aea24e1f61a76f6dc71cfa007e57f8de11273c98c1977c3589a02aed14e6"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 63965,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d6dbc40d48be355eb28d6dbba084573ad114a9338b687e4ddc1826966a202ca1",
+      "value_length": 1411,
+      "value_sha256": "33afc4e0ca38e68b1960396a51d64a803130e3048b8176867e5a1e2f066a318a"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 67926,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "25a87527abcd1957cbd19432352b6008b051252df6f68d01af3c2b3ca2af9b6b",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 71360,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a5fb3568c7144e9682ca8f8e58a480631fb45de6d64f582ce69ee32c2b671f81",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75026,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "33dd234c5a69cd93d8f39cbec5f53fb04f0a2dd2a619917b4264a9841379c54f",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75027,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b7a05a92e0fca9230ea3cb0d835f0a3a15ec65caa944d7da84afa7bc81aa291f",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75028,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "be9d5fb65b410839531818cd3ef48c76cb524322f5cfdc4b92d76fa7a010b929",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75029,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e0f247fec791e51b4e648320ca6145ca75ae1148fba5d4aad1069430a9ef0898",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75170,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ccc9144ad37290322c3cfbc606dcb9029bcdc527566184ecfbb10d12e305ea04",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75508,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e98a0ba4dccee211d0871ac83e007ad3a614b2db6172b7224c705916d2179bfe",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75509,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ba9e434f8a7f245f80e10fd44e49785bbc280fe60be48fad3f53355a1a5b166d",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75511,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f979eea8d50131af34a3644b806523e2ecf1dcdc9dc7a7b7775e8644eb73595f",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75512,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4504ff5e3beb6bba06e77f98b8165c4b4864f949beb2f87412997c97ad13d13e",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75513,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "784ab6d3e2ded29f3ea1e10b6ec025d1b1118b8a90c763113810847041296870",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75514,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c1d6a7b3fa11ee20c66487150d6e5b2a8b8cb789489977f442daa9010ca6d0aa",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75515,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "29ba048ee7c9997410ef8081198ca11fbd997cf7258b3acea3e4679f42badf3e",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 75668,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "aca4c3e9b717ee38b85357f62b30ccfa1e684e594333d9684ec9c510b5a388bf",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 76517,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "05d833bc473ce56504878b11de84f453c395422470fc7d420da9cf7f81f9bf55",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 76766,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e9b82ca0cfccf8774c67f8af04fc2c4d196e2164c9aecd265e40da56ca43aa4e",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77226,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "af352f572fcb692e5d0160bb71a48c4afddbb948cddfff50fe972bff1d33ecfa",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77227,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "28059233c59d66416ab005d9a73995d06d41ca864df30635d70a46855b59c31e",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77228,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "65d27dad0e6e950c89db13c69c6a3a7c445184ac12a49642b56d185b2dab1f52",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77229,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "871d649f3a3c86312a5c2d49c3ac6dffad8482a5caffb79d56c52a90f0411c59",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77230,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "664102cb03e6f9edbbfd1d39dddf3dc788f253ed4fb9ccd9b7628233ea2b00d2",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77231,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3cdcff9e7fef0539fd1ad0f690b5aa29e12a8c86ae59a7eda1ec931618ec7337",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77232,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "983bb2dc8319a0bfe8dc498d9c0c8dcf4734065dfdaea892ec54fb8994135780",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77233,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "23278551e6b899caef43c26742e023d6afea84c76610127a85489af3f9f98cfe",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77234,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a7a1291c0cd4d56a5dfd8443ba4f888a616f9a4a6bc17f0d236468ae16bb72d2",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77235,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0a27473af3746bd4bd0afc3d95b9262588f22982c6649968b1e7e2adb7dedc2d",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77236,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ea8ccfeb2f502d66617018665762f96a109669c0df4b830365395436f419a7b0",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77239,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f2de233bf1a356a4bf6c2d274e758ec77d92fd5c7aa1bdbc8401f463114b5c1c",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77240,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0dc05f813d2819f606c18297c7fd955eed1ab233102665de26f091e48625a8b9",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77241,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c7e9687f78964013996c2d4d568e4ddfcf07c136503e707b2f3ff3e89af718b1",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77591,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a6b6e4dc42deff75eb9672544bd246c1e0a70dca0f6ad829ea7eafd8c69ec761",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 77816,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "36c3453ba4d98dcadaac72da7a10eb2915521133e2ae9a331adbd784ecaa8cc0",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 78635,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "991be83a9f6dae5e8f059f4947c783d07ac01791feb27c32ff172d363d31bbbe",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 79465,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "74998607da2939ed00bbdb2a3c3f5a5bf10b8486db4890e3059383317a759086",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 79610,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "aadb3c000ac8bc5bd1e27017be2c827c8e8def2191259259f7029ebd8f67fa19",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 80136,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "824dc2a4a011e66783b8367dadc16202a4214c522d98298e1abe7f2e02dbc48f",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 80137,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "caaffad844840ddd2d6825f919f5748cef709a704cf7961deaebdcc882cd2c95",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 80345,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a37150ae8a566a0e37f1eedd4aa2a8371d865f9eeb818739e427eb59ddf04d96",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 81212,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "eed619970f49f9cf2ed3cb826612bd6acb84f4500a14c00bd9eb064152502fb2",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 81811,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "faaadfb4987e3e47ce3020a1a9df2c6c7e040e16d5f5acdc83d8f4827c118bb1",
+      "value_length": 1348,
+      "value_sha256": "37098cee973fb168e718029ad3dbc6bade836aba8c8ffe33925ed43bb4d6a1de"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 83131,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "54d3e50563b87d8f341f9d64217304dde7fcad36b2e09eadf6e4142257c2340b",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 83179,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "354437178a2788704598fc17dd111e9d2cde153467ed144c76639af49aa3b615",
+      "value_length": 503,
+      "value_sha256": "d165789c1781f06bb0160b56adfe1a57a051fcfd90f4313808a08a4e2899e34c"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 83684,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "19572da6068f308128aceedf723b594523cac37aa1cfd86ab0fcd9ac841829a9",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 83685,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "176b5bdb3a28226d01ed3b649da3450ddbb8787548a374a286aa5fbe8bdda1d6",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 83686,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7641caf5b0546b0b3ab89650828a576a2072aceb0fd639e6c4ca30af73730aac",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 83687,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f1a06dbce97960e0c7fb27fc810d48ed943d5f0125c5a11bb8906a9ab6c22aea",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 83688,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8aaaf290a063c46207c7089c00bd4b716a32ca2d8c974beb0f9337d77926d190",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 83689,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8026642eeb55091c4e15a2c108567a840e69eb92ac36c654a8bd60ba9ed170c7",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 83690,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e7a35bf0f5a68c689e399f14d78abff3ad253342710e4912ca17ab8d5b3e3f5e",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 83691,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0ed1661b309e1668dcee0021cabfafd7d640ccde9853ddf8e9ac307f1aab75a7",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 85708,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8af34269776b6996ee0fe48a898a0fdc4e2b0d2859690da392a526de3c3ab3f4",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 86831,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "25cd88edcf69fdad4c6226893223c9ba6668c70b569d319837d9784f0f20dff0",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87184,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "11a260e71927211de2ff67d2f30ca1270957bf26a6e592f1210dd319aa0db546",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87381,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "944a8e09802dfffb7e1e4192830a99cd90fa745bef037ef3a7ab89cbccd5cb77",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87542,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c2513e2e6f7ebae732fa3432c66b3395358bea8c4cdb79fb7a05e11a698ac0e9",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87543,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "97e98949eed26097e38ca60f8a44428496153960bcdf374cbd1fbd7978d8a334",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87544,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7c54e95fe1d232957fd465fac6251290634f21e57655764176a169e2aaf87cda",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87545,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f9707f481a443b9dc1f5ab7588891759fd3c78c4c116ea587bbaf8024cb70fe8",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87546,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "24c4825a96d28fc55e3d01ab8573104fc2f868c599e23046e1543b48bdd0a48a",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87547,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5b8fef26605d092258f4217a212bd6ec4901c95d2493284c176fc19e647280bd",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87548,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "63b73d52b29a80f8be797d6a91f0803f1af21085f54c913fce8a6411157746a5",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87549,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ff283908032b766267bd9ac41541d90771db23d5e4649ed57acb73ad7650164f",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87550,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d8be8405c4c0be64b38a8256a0cbd4758eddae4227861ee7216ac3f492b69350",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87551,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "32b5de1ccebf198b28ca67a7cb2cb1bb643fcd5018c09fd04123b1bb04626738",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87552,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "274f9647b426132b9bc715fae391eeb177a6eaff0c39148369fc12701bfb2221",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87553,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "50cf9f50be2dddaafd37142e2efc2d12c0a49c8a50e24c1531d992b080450354",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87554,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ac49715d14f8c03b9c57d411f9da0cc110f4ac71674c7761256b7deb245390e9",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87555,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e1073c4b7d894977fd08e17994b7aa4cf61850cf7600be0cf75013856ec60694",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87556,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3db3943cd00ac01bff09658f30e912fca99c843876639747c50ceb5d0f7f7d9b",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87557,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8e7e3c04de1869d225ea6b20c8d646beb395cc27e6ad567783ace94dcec5beaf",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87558,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a45c36f77e43290a8dce31047550dd3bd39e64b381b9a8847456a283cfb731d7",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87559,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "afb5b05ca2337f0c11a8ea218f3d8bd2760a890a0d532b699b1b73dc2395fdcb",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87560,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f28120f7561719ccfd51b1f586bb8ce10371097c55d2ce0b15427462304febfb",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87561,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a54f3994917248d8e8548af17dc23547adb9a9a634e93327c26fc96779bba599",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 87673,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c948932e284132df892d9a37a37d305979004ad3fc1f847082c98cf60b6572de",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 89440,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8ef64bb8c6221e1176c25598ae89a7041cad64f7c1b5616198fca0e8dc087ac2",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 89732,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "32d10e3fd67c78cd8c59398858bd0de5a341f5dacdf723f8d31c4a3069a29053",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 90706,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "fd3b99649df73ed454d4d4836e99a581bef5f96cfcfbded251ede89a6ee75fe6",
+      "value_length": 1253,
+      "value_sha256": "14ac61874e8bd692098c61f85e14ff56bb09910bcf3f1998ec3870283aa0839c"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 90922,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4a1a247045e40e7c54eeb9c3959c4469559d27c41706324931a25db8211da1fe",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 90923,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3f34e50f05cef4bd10d496d52126f075e8101b1a4cf05b52374a3272ceac5a0c",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 90946,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7618b784cf132137dbc4dec90bfaf60928dba36d928a9931d1f2460003471e12",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 91625,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "9deb62c668d053677e391abe0afd48beefa7adbfe20357da56bba4951de68862",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 92000,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1ab69cb1a4c9a0f3574ba5e5142710d197934020a5e3303582a78737b72526e8",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 92005,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "2098413aca4b96a941d461695f2d4dac2a228bff172cfd0861ef01de45653e5f",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 92851,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4fec69f44d2a91980697930c8affbd9f3118b32e0e1bbb294590370d54c3bef4",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 92852,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "2c9626e912ac5cb8e56b01375652375a9dcd026aa6b2a7cc5222882ec3bf135c",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 92853,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "548d49f6a92def67026033d1aadd2e1662911d622fe5646df07cf66258567a83",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 92854,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "44ff65f2c97503df23f69f90d1cc05e7ce1087e422921d34f6bee677d5f5d08e",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 92855,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "956b29f6ca1eba2c00aa25c9bf63b8be6ff82fa64ba94ba59d8c2a09a5d712e5",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 92856,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "86b05da3a04ee97e28a960929e570e503de1983d34f3130fd45c0311b102a68a",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 92857,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d214d4f4c43ec32529854e5ad8f9d27d17023fb43663b5894a7711cd1f78b425",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 92858,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "551ce7d2b16531b1867534368bdaac2ab3b493c099d7faf41f34b992374f56a5",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 92859,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4b9133af31a7f805b6e707620abe37bd4961e3d315b5df912c6fbc50d6daaa6d",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 93386,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "50f5bb2507920f78beb88f45c6e6eb660015fa916691406daffe6f736c96d8a0",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 93387,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0380fe91b7ee59b2e8202d8c0d8206eb69720fa6fa6677dcec943e82bfe8173f",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 93388,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "06298a39717860e67fed6979551c500895bfdc6a9a7010a2d6b1aa64134b52a5",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 93389,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "65feda29fc2365a9342b5e7d9689c5667b4fadf2631778d34c6b54e6b0e5f1cb",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 93390,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0c38cf8fa03c11099535d5566cc4dff68a3321a874c93a4655bb9ad23333b6bb",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 93391,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ae4aa3ae28a27bdec3462611fe987bec5b7bf21d07884b9f0fe961281091a00b",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 93527,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f42fd34dbf514fbfcd46896a5f3f61ce117039fddd211ba853c65f0ea0951913",
+      "value_length": 675,
+      "value_sha256": "d3195e5f3016989ae310f9d500864a0887c03a41719c0bc0b8c68ccd9650c380"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 94365,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "cfccc69eaed3a4fdba97beb3280561c7ea2a7a3bca22fdab610a40e21759cbaa",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 94369,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1c08a4c0b102bd7290fa95dfd140c4bb0459994d2e29fd522cf7056683616aa5",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 94372,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "bfecf6ee08ef3cb8dcddd93f8c993b4693828f90a055ad8c514217f566fc00d5",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 94373,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "188f78f408e0960f1467ad49b2bbe5404d2b114e3471496ae68cd94abdab4da3",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 95991,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5f04c21221ddb335076eb25b12d8386f4a1efdff616c53f2b0ee32a608762787",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 96571,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "cad8c3a9c8b4da3062be510f72aed471aa24557086f49ff9c201893e0a21d419",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 98267,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5e00308149def65582d99af3bcd764a357687b9a44d494fcaa73ef39a3f22d82",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 99761,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1252d46cea6908303bd19b451c511ed22d17b57569b90612b5d962a08203cc2d",
+      "value_length": 957,
+      "value_sha256": "4fd2e98c6623c668b9010509ffd221fadfbd5679d1099ceb9d349f7b5bf8f228"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 99854,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "93629e4c56f09a78a2223b052294092c21d79e39930ef2a862a0883e6e281b0c",
+      "value_length": 982,
+      "value_sha256": "150584d64c631b224d93bf1e6a9af99d6bc483b0f0217fe44f4a5cc270c113cb"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 100381,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "37acd8f742e3e98e632b1863e577c4d1d4cafe2d812042e680f7bdd4f90045b8",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 100442,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f3daa0361c7a2ccabdc23ee0d96582d22b390e9b6c080060fce4d2af52c0019e",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 100927,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5ebd00a3177f97bb79d78ad288c45c583648e07a71943f2c74fad555b9ba21d2",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 100928,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "30c056f4f7552e46aea10bd97c6682758fda1ec2f3f36bdd980988c1e27741c0",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 100929,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "fa1a25672dbce848e5809ece29d76141c73fb32a15b1d24b8978f2f0dce2de13",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 100930,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1dc8d543e83b57d1f3028d4d09e656e631e8cab24e6ee3ec66cc9090aa96202b",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 100931,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "94d8f79f1f9b4fa41624f398bb1f78b1f3de0eb9f8bef627fca21c1294560433",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 100932,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "2a5f9ab63d23d7cb5d52b43456235459c112545f2bccdc5b9c3a941fe94df6a5",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 100934,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "045abce5299dfc94cac9a0ebd48a1ba579960395db5555f667ccfc7805157eef",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 100935,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "6a43b6499652fadfa800b470db04c781951063b38637e517725017b2d04e9039",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 100936,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1607810797b20a6a1095ef445f5a498492a9f652a8a4c401e13c6edc308b4888",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 100937,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "04840041bd26fdf8ad8990cf5f23b314291a516cd1a893ae9ac623c1a88a748a",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101298,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0996d3c7eabdec8f2ac88b288f4aa4fd63cd46913d995766d11d02d52f449f78",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101299,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "82ffeb9785bd7516b53d917a02a49e7a49e51e2a0c7756677cc07dd7ef124e74",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101300,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "216c36ab0700270115c220c8a7c0dcf500a627a46da9991a6dfd973f1999fc9b",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101301,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d785edb698560bf59717c09fb0e128f785e0966fc9a5090205cf52a78ad1d9c0",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101302,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "069e95eb3f46e1558f11cdca45d18f4f53e02e04beae7008c4a56cefa900ba80",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101303,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d7ed18e93f90eceadad0460da0c3a5edb376d14623b4e01a6d9c838f82f30183",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101304,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7d6f65f9f4c249485abeaae630421233272509dd5032c99513627c3a95940776",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101385,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8d5b2cca6cbce51f615a39f63b0d01eb3eff1f9e0cdc29fe8ef30d2fc22c9e28",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101386,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3e05f353609c30f6d1c712bab036a97a03ab94f724440a96f0bc25056b026960",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101387,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ad65197f8caafadb3238cefb1ec4bfaac3088eee7c93d833abe2f2d071203743",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101388,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e27d45915d2e86327249315e0b66797936712451c01fbf511ac0a72920c5c21b",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101389,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "bd1ed18296210cf5a0e008f617a37450a301a4d2eebd54a037bff8f16f52b730",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101390,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "cac7a556b980be5a067fb4bcd603d4399b0cd95d5db221c762f19451aa1f966f",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101391,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "bfa0a1950cb6889aaf3d60f6276d75e7332438905d7991526527632fa5ef731d",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101392,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3cbe02cd97109a27ef00810081089c4ac510a30f510814864919d4be454b80b4",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101393,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c1712a154fd1762cafc1bb52e45f6a130963ee30e09a3d3a03f793c369cd6cc1",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101394,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f1ed70f3e06cf9997349e6268ce13b29501d295f15cb20b5003a07861dc523b7",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101395,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a1d0ee5d62b0da56f7aca85e2b1125d0f2b099a2cd3c93594e6702ff3b6cebf3",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101397,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7cde0866d8887f4918ada10e61bda45e7f850ecd1b40de6ed0b5bece4eb88839",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101398,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "707e745dc0639c080acd8e953703a3572dc4f70e0577439e34b0a080f6f98966",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101413,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "2bbaea6d500ce0a316b7304eefb2c74c8012d774312fa9dd9607b4a199f1ce2a",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101414,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7ae115b4f96a2b544b5208dab433abae7e02068517b8702cf4b552bda9488ad1",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101415,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "6ef4f9bded65b6df2c16a14fd018755bbb3e9faa0ac994d25191fcf44f65f9cc",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101416,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1ca9b78000304440d930295322b8e3af0591f4f00e406755ee022f0e0878c151",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101417,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c1712a154fd1762cafc1bb52e45f6a130963ee30e09a3d3a03f793c369cd6cc1",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 101418,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ada3b9e9e83a679be5030f70de63c11b327c86412a7de48dda75cc0cdefdba2e",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 102687,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "839bd0ce7ddd6f4f4599cd5c972c15611d6b116b73e3716a25b688a8f89f9134",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 102688,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "adec6c526c7052d50e4f11477beb8c18f5ed104aa7ac70fb9fdf28dcffe64faa",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 102689,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4afd66c20da92956185906cf159f670bd5b1c61905922b6d0d9e389068de5631",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 102691,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8cb84188f0044bdf9ebc955eff50aeb2c33804c34da873def6088b75b418bcfd",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 102692,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7f56305699753f7a381749f313e0251b6095dc5f02c0992242c8ef1c5e6c8476",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 102819,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "61a9b470811d421fadd24599fd1d3bdb1f7b2c46267dc1de133f379b4963f32c",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 102820,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "2fa0b76cc2e6a1df45c2e8d9c9c5f84151b77d1e9282f8bb38bf285569dbf6a0",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103063,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3a56cea2e1868fd3aba7625ccbacac87626786f403bf8c2e57bf908438bc5b5f",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103064,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "fad3e07e7e5df124eb386bf99a58a18b18e69652324bac3a08e3b106ca52ec60",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103065,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "703634f2dc21d1c4178b7a8b4533599bf254a2a832de7dcbbbccc2691401400c",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103066,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "48366dc29d7be88d55b28797e03f4b1acc665c3d176dff70cfeec3d156dc04e8",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103067,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e2901994e53098c406d313987718e5e0e67721871971cf62de24771191a78440",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103068,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3ac3094e4eaf4ba165c963d23d7b0ec77c801f8e3d636fecb3e8fcefe1f75069",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103069,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "681b3001ebf792b19acbb021ba9302c69b30aa6a404eb08c34787b9b3ffd03ef",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103070,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e466ab943f9305f6514c3299e46a9f569f36d5381a03b6bc2aaf65465f39e3c7",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103228,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8b2d949fcbcf93e2ce0e41c55ed60b9b500fa2a4b8d49f09ae427e72633a0181",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103557,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a2f17610e65cf1c52c778a8fd4726886a97e489eb4f72348813577fedaba2810",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103558,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b41bb05b9488ebc2ddc7d76a3dad916ac5b357afb19e2cc02dba9882fb8bf26e",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103559,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a967af4c95e1a34ebdaa8e20b3e8ab48958675275dc3303e7b1259b66ef05e8b",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103560,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3fc2f2d0b4bcb2072754fa1e88ca84a895c1504aa714430fb19b1cbbd0938b85",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103568,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7048dcdfc4f9fa3d84937f2a8e53d6a67d7e4564afdf2980824e4db3940ca679",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103569,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "484d71b7539d43bfc4e01205c13c436588342ed585b39bafd975d18729aee2e1",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103570,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c48eb8025d15f60f711beb1786631d6dcecac0ebc673f42ab2abd9d915575344",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103571,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ffdb57e4dffa5ebacf26aac9a21d0a4d421eb773e65ebfaf064b26660f185e76",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103572,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e145e4042aca93b07cf1400ef7a780882f3cacfc0bd73fd3a8b8e519af95a863",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103573,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f056004d7ec54248dede1f0db2010becfc8d99722bb0804660811da6bb5adc24",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103574,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "fcf9570d69a2db75b80ff280ded3d64cc80e388f3d943819440b3d37a7d0b6b9",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103575,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "9fef8cf3a831ff3893ff9bd745c57c454ab8fc2d08cec0860e61776232e67570",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103576,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b94515752995696719df913cd4ef8fa1b11f41f843a4f48b1de78400e8612f8d",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103577,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "07be7b2af6d0e2ca33c628f68745fc33ca8fc41ca9ff222c37eb588629f89693",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103761,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "2a7b1ee2c039df994d27e5a7d0c22a5594726109ed772eb48dbd9423a4899bcc",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103762,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0916bcf6848674721d5ea990d11cf4ab790e59de6050792998031acd208efdb7",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103763,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "dcb23e2845369f8e50db51eb1220a19d324b5b1f0566936a5bae0e2f8388eb57",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103764,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8b9f0ef1815499bd0464983c25e33334fd1981dff51f531ec01977cf90afbe65",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103765,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "6864a10dc0f5f35f8b2d01393f250afaa6edae213cf2415176e825db42608b4d",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103766,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "fd9b5f25f063367c099a09243e686a09816d18c3fd66097838ad2debca203038",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103767,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "9523ef758cbd4f05b706e0dde8f8f476eeeb0d3e199b830c3a738c8b1df1e7ea",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103768,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a4ca9102e646d48151888ca7bd78eb2fd53d2583ddaef07a5a47a2b6976c2069",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103769,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f0ae0a32dd55356bdb61d8707f589bee38fdecf041db48f27004ed58611beeca",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103773,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f6dcd83b00be22bd4b029f2fcd263f1bee401c473d40ab90e1377fe3613ac027",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 103774,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5c7a68886b83355cb5d31e3828dc89c2272c5ec65f73178a66770abf249daae1",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 105115,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8745dd398303c838d74f76a820d1ec78eba92a33a311a627588bb439ffd59dfb",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 105625,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "56c4968c097061a7ee28ea3bf140ab251deb25fca2ad8566f26a0b1fe7cc87ba",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 105628,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "78aa06b068066f9ad3bd6b32bd2e632047128364a51bba03d8cf7cbf116de403",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 105727,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4bdf15795be711ae3ad234d2e7f0bb9f7d3dfbc790a9418d0c04f3a6101b9a8d",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 105729,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3970df29fdb394a7a2b3e9d09530eb0a27cb5ac3367076ade1f3dc790c7d5d5b",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 105992,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e4fdd99ce0688e7169e23050d26bdf545c56f635e9ca745de7cb3254c2df83d7",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 105993,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "41643305efca130b82ce85027debaada12f1a3ba15679f356d2401b099850a40",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 106633,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7aa1848381e68aca2aef34bd958f5fb646066417fa00ca50b5b28ed2de8bf04f",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 106634,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ec8cfab3df1c5c17c9c42232dc9425d70934293bd8362d7ddf774b6d51a17ba7",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 106635,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "099df178ef3cae936755998a2e163c39efc32f3b7918128ce0ac491da37361e7",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 106636,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d86cf96e8713b8d8ba2aded94ebb0342d86aff21fc81adc594b4d297991a92ce",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 108414,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8e29e03bbf4ea6aba54e96a78a72fa4609d5f70466825b2484ce29a3f861a9eb",
+      "value_length": 1170,
+      "value_sha256": "055f104f73cc1ed3f958f3846f6c2bb8158342d94290a5aefbe325703717a48d"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 109065,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "9a354ab268b28b7379b9e64b8068e30d1f1aa0fee14615927296d729afc7ee3e",
+      "value_length": 1106,
+      "value_sha256": "16d2490f8e44394756d9d5bc71ec5837edcf3985f2f7a7cd9df6e1854aa365db"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 109932,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "796beb5720c3f382266719faeefb1dcb11e5210feb418e88399e32223ba98d7e",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 111248,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3e5bb6deeea66e921a5e4451bf46e6f57d7692041313f84f1cd1241e01ac4649",
+      "value_length": 875,
+      "value_sha256": "28100a69f04ebfdafdb556e74a622342439be785e5957be11f2f4e7b5b4c8554"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 113018,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "54225ffae059056e5be7f1425b8c7eadcbfb2756e63a3ea38b8ca6fe03952313",
+      "value_length": 1503,
+      "value_sha256": "dade2382d4f9ebe7bbfaaa463008376e05aae21bdeac0fede34bb9dacf26a6c2"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 114084,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e1e83215f03171cbf5eb3a69ecd4b6626790136f487768ec864ffa82841f1d6a",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 114173,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e33781bd6ef4845f201c3f105e0ca336947d0378085adffcd76d07ad3eb4c6f2",
+      "value_length": 731,
+      "value_sha256": "8ce3d2b63f280940d0a1421416530c7fea444391be0b984c9de521da6d969b34"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 114252,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "33a0f61a5dcc25c3582cacd34b7bebc9b5531290f1e6d940dc9221defc5ef858",
+      "value_length": 1128,
+      "value_sha256": "313056be2b0c31189feef6dd12623ffb4d06b2fa55df5d35771c531faf12414d"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 114779,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1ca7f2c5765490809a07908a7a277c345e88388543761fb4e581a9cd77888446",
+      "value_length": 1435,
+      "value_sha256": "766ce8ae870d017aca4dd2c9003d370d1226795ff2edf0f565098f5cdb3c479e"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 115588,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c1e95e42266dd5f0645a4694ab74972355d0756487b0b3795fdbccceaba233a7",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 115709,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "531967529be9d587c68ab39ce777f23a4ff11f81f51a0511aaa9eb5900ed7fe5",
+      "value_length": 906,
+      "value_sha256": "8a83b6d5c85f577cab216fff139ba351e78d1ebcd874f36845639f52d8f87872"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 115872,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "846f0c1f04e55edea95124086b8b3e469f174ded0acf638423391ec53b4ed7c5",
+      "value_length": 911,
+      "value_sha256": "4e32ce068034806d8ae963aca4beba98ab7da1b487c6920286869ff702b0f496"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 117227,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "08f116a0ec8fb3296e141e0374ecaf196b09ce732d352800a75a116520628fb2",
+      "value_length": 755,
+      "value_sha256": "73e61eb8d0d68c508776ee8a394c37062011d3f5f5a02eaffe10611cacfbe118"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 117861,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "6e6f0870efb1160c10299199cbec08abe4750fc667702956b61869add193f744",
+      "value_length": 906,
+      "value_sha256": "acfb05b6d113a54a7cccbc87d964035f433955dd12968745ab6aaa137d0d5007"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 118126,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8edbed1ccdff02f1f6c38f0c8827e4bbc1a514b88229b360b2dfec7bb924d8fc",
+      "value_length": 1127,
+      "value_sha256": "b1c0ec954a5d3ced0dfebde9f740e588f432d01ff34195161a96648b9578aeb6"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 118228,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5b7ec1eacee4bbcc2e282219f886c5a93e635048b517d020f97b352a53cb5737",
+      "value_length": 791,
+      "value_sha256": "249cd3b17be080e196e1b1801135b8d62913588e7b4ac2fa995b6102fc0b5c34"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 120130,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "bc9d3e028ddab2ff45433f4db54072094394fe27bc37f7c5c63977d36150883f",
+      "value_length": 768,
+      "value_sha256": "cdeec0dd95b0a2c2072a08b91d0d1cae6a115bedef281de65948464b997e0263"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 120701,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a5b6a1cbc8e4672a20a66fa688fc7870d1f53b4e3b109cc2929654e088d16c7b",
+      "value_length": 904,
+      "value_sha256": "db0c9f35bcc1620fdd5a6f3958935a614c325a37392829cd860697ecf59a66db"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 121184,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "de4fecc7f701237e6d5c2c5da961308755303e27934792c4135721b969432fdb",
+      "value_length": 1083,
+      "value_sha256": "8bff022d2cb7160f52bb5b69dfd030b7bdc01c3d4fecd6d9eb75ebb1ec6d7a41"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 123002,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "17886459d1d8dc290093af6549e8adb63a36980cd2bda94eb1ee3bfd73852dd9",
+      "value_length": 667,
+      "value_sha256": "3e65ca769ff5b6e83ec94447a88c7a018225c60404e3a942e4d100ff2b0952aa"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 123456,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "19c5e6ca04c4c370cf5fe1bafa7675a252b8fd6683825f0b9af7796e9273957a",
+      "value_length": 872,
+      "value_sha256": "c1c0e6ca20dd5ea4c73eafd602adf4975f84aef48829e048faa9b41cd5a32f5e"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 124523,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "6b85617a2c2e694666b52931b62827dbf80b4fb49d7f83443a3baec1ab56f704",
+      "value_length": 1146,
+      "value_sha256": "d941ba1dbd821ddf920e5d5bdfaaf9e803159bfdc2633d63af1883836214dcd1"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 126754,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "220b3c3b1351548dae856bed9f7885ca0e755e018220a4c14186bb0f13e4914d",
+      "value_length": 997,
+      "value_sha256": "8037820974cc85e1615bd965824928bb841771be021fbd9e31db906567bc4a85"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 126879,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0575cd050ea456a3abda91a66ac4ed598358e7ec4c03dde22e57fbda3dc873d7",
+      "value_length": 848,
+      "value_sha256": "61a891fef1b90cbab5774a61710bfabb87a065fa1b7426d268a483480331a8c3"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 126904,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b18e4d6309a5fe3b182240e0f04fe58a5048732cbecec69243567c8c608d6c48",
+      "value_length": 977,
+      "value_sha256": "82d6e3c99a61b06b24d0235012583a68c90713070317942c5494a7d74c3d8838"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 127781,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e3a57ae7fbf1acc0e444be7aa674a4860994e7d78b5bb3cece939a7a63db052c",
+      "value_length": 877,
+      "value_sha256": "a223c1d9caad50e0ad4580ba4a7477f5ae92e1137449d09f6068ef15fa7fad1c"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 127796,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "2f7efc1a37b311b6e6f0a4e7e1db8b414214fc9af8f6880e7af8223efff93c25",
+      "value_length": 769,
+      "value_sha256": "06ce792830fb70ffd844a4eea56331c04cf613f7572436268f7b91db428a5620"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 129522,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5a506d4adc347d75b85694ed3dba11520f9b8ff27d61ac72e6b743e9e5ca9c50",
+      "value_length": 741,
+      "value_sha256": "765cf533d5541cec1b63f29cedd365262696229bf77f105b7789381dcf922919"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 133425,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ad073562810138034bae7de455bea973824b927b766018cd0456920a3852770a",
+      "value_length": 704,
+      "value_sha256": "a16110f0a1cf6ad4a2ba65ae1364aa4ba1c7454f6de1070cbaba28359a79f844"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 133500,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3ce5fa1cd5c5affcf7f9d98bad90583ce334ae48318d6234efbf3491ba467688",
+      "value_length": 661,
+      "value_sha256": "4e3c9d8eb440310578387f19bf4f3ad476a578b1bb69e1023acc6fcea648c1e3"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 137011,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ccffc460c5e48b32f8b33837afe29b5fdb418acde09cd0296339c67c5a2ac8ec",
+      "value_length": 788,
+      "value_sha256": "8db7f73deebf5d19b294f251e6f6ea45e13d28188042e683c2dd31cacd1add89"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 137651,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "331878da63e5f0114dd9168d79f4aa76f419c52a3527ad182b37f719546a46d5",
+      "value_length": 754,
+      "value_sha256": "7fcbd500c03166fa95f0b8c5f7bc0b30ec409df6f668260682998508800b1f39"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 142624,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "25da059daa60b8267b8640ba40dba8cb267a4758e9548aab862f7ae2dd2930f8",
+      "value_length": 867,
+      "value_sha256": "06e0a04b4253b7c9402f2dfbf101db4da9905a55ad65b5bf481d9ebee9f85a2b"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 143027,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7c5034bd400bc79d2f65bb6e0740757703d4784c118eae0535ff0db6ce2471db",
+      "value_length": 834,
+      "value_sha256": "3d6e299dbff51c4cd5f50e1954d793fc6649fe05bcc21c9a13a1517aa6de636e"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 143516,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4489919e55af745950168c3dbc411799dcc0c72a6c612199ae64902199877eb4",
+      "value_length": 1108,
+      "value_sha256": "734b0bdd7a8dbd3995e844db95e520d1c8dc435fcedeb6290154cc958f779dc4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 143721,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7c0891104768f2048352d69d23cbeb4440ad7aeb1ac84354493a89354024acad",
+      "value_length": 759,
+      "value_sha256": "e006fc1a24c070e73f833512ff25091f3b8b496fb169b22a14b3630fc0ef95cf"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 144075,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f60dfa832f3511ab33c35d9668ce67fc218562e6da174eb735a20d1df5056293",
+      "value_length": 1162,
+      "value_sha256": "dc39934e8fc09d3a5d10ae43146ec6eca190d0cd74019419141142d25a9a19c8"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 146018,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "32411c642156a890b3ae7ac9c23bec6fc301abfddb9cca51e81310af45f0c7e6",
+      "value_length": 674,
+      "value_sha256": "9d0d49a7dc37d0a0ff3b97053a1ad013ebf4bb4edd7dfe95cb7fbdfcf32b8d8c"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 146545,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ceea5ae83e2247b7b29b496a37a334c46c8132c363b765c9dc034242e1696f53",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 147813,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f09259bd3bc4d44cf618f5ac85669ca264620c1a27ff509adf5f67fb3842c26d",
+      "value_length": 869,
+      "value_sha256": "64314c00b239c87193b941adb81aa4bf378c5d4c5837c9f1f666ddf0d9942efb"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 148584,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1621bcb4c09b38307dad62b583766f1bdd937da6c639df3e6ac24d2f20394f40",
+      "value_length": 858,
+      "value_sha256": "8ff9aba77a144ee6bd17d15b40e48f0a2889dbf960c020cce89f53d24c59c717"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149310,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "80e479b132ab06b7ad20ee5c3a7db3904539fafd22bf91abdc2f09130858712d",
+      "value_length": 616,
+      "value_sha256": "66032a5dd1629e02066dcd03bd048ef44b0068f2a0a10d16b69fb6d27105ddbe"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149311,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "cf7f9f68b41e21f5f2cb557848a9d811f7fba4bdc05544ada519b7437442fb7e",
+      "value_length": 628,
+      "value_sha256": "eedfa000cc252c66bbaafe7abbcbfc2c1eedd0a1152211c59f597f5bbed5d0ad"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149312,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "74f89c93ad732407f64f5e0c1945e2cf48c70a6eca14ea53d205c4477691d3e5",
+      "value_length": 633,
+      "value_sha256": "637fa247988b0560461fe774da62265f3ab5d8422caf16cd34faa6e1abf47b17"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149313,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4b31c43d9756d7518d6edbc7346d33fcdb6cdaa4deb683bf4245945931d05f55",
+      "value_length": 642,
+      "value_sha256": "7fb653a3005c7902b4228f3d1cd1c84d792a28db2f0d7aa3aa46818b3adfa278"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149314,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "dc53d5aad57f91a40fd63391b7a412f8bc7641f61f8febd6a5b1053eb1562306",
+      "value_length": 622,
+      "value_sha256": "4059315f24084a3d32adc055ad21086c77eee07aa1de3c576d364a65578c509d"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149315,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "724ce78de056853f162e3bdbb49a8113c1a8094fb51a76b26208531fe0563291",
+      "value_length": 617,
+      "value_sha256": "e04f1a34dee5bb2454b06bfc5748aa50d71469e35901c0e44835c707faa4b96f"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149316,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d43ecc9ace77a040c4bf1aee297f1ce565aa0774ee5ab0c68075508886f72cbe",
+      "value_length": 617,
+      "value_sha256": "710fd9b9a7276f1031f63228fc1fc548e6402f65dee6ab83b1613dbf7d2862a3"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149317,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c4e1f596113604a4278ab65d4a149eb48752bdd57ad06766b330f7253fb75c99",
+      "value_length": 621,
+      "value_sha256": "62ebd1200aaf7333a2947e57a60880f4052dfdef0491feb2016495403309190a"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149318,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d1b67997bf8442fcb3cffa762f541e49501fba74e4b6f022799709ab5aa41d0d",
+      "value_length": 652,
+      "value_sha256": "7676bf7f92b08472b4bac6513a01b173396e0df77d048f215fc87a6568c7674c"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149319,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "79584044054fa1ccd5de5e34ff9e30357825ee240fce6dfd602aa71479e87508",
+      "value_length": 617,
+      "value_sha256": "4b6493c0199fa0dabcf2ddc04dfa24ea310de567b7d23db96a5272ab7f0794da"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149320,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1036723e978a06da32cd19cbf4a5f800e378f50ccb4986ea5ed7a2543509949d",
+      "value_length": 615,
+      "value_sha256": "2e42bbe3ce24196030f9ae98c05b3aa81d08a6360e5a5d9757d1b7f6aeed864c"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149321,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "361431c680e7e670f99d71727482d29f7cd1ec29e805d8a1fad7f6236965eeb1",
+      "value_length": 643,
+      "value_sha256": "a874590de9f726fe9a6c032f6d8cb099f419ec21b13517584976522aaddb9ae2"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149322,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "61cea126d9e4b4f6e9ccb1ac5b9b0a93ebc7d59e378b5b2709cb369f77f37a00",
+      "value_length": 632,
+      "value_sha256": "78b049daf49530301544a1f56b591e065dffade53466bedfb46759a6b888af26"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149323,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3afa94549b17cbfd018a478eed5bb369a6476dd5ab4b3ce7c4e3ed6777605de5",
+      "value_length": 637,
+      "value_sha256": "eb9e3f1f2db765d1859de1aab25c215c6e86610cef72a6aff8457f8a45ea927f"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149324,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "2430f58c6887b135d1134e9733ba275e711a9efac42d0f45e32e0e481cc305d4",
+      "value_length": 641,
+      "value_sha256": "759575a1d1f3bea5bb823ed3a55830e0340238f492e60b0ca35fafa1158b4fb0"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149325,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "77c87eeef4272e959f55615dae45ac6bc175c403efc9a1a1f8255249f51481ae",
+      "value_length": 623,
+      "value_sha256": "8ee6a7080c00a3d23f715b4e7f0300f6a0c04ab7e8933517d842b465f0584966"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149326,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "40d864cead925307d02bdc83b0bcf1d95bb2efd4eab1f4cff75f558e1ef516ed",
+      "value_length": 616,
+      "value_sha256": "66032a5dd1629e02066dcd03bd048ef44b0068f2a0a10d16b69fb6d27105ddbe"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 149327,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ad0f86f8a97daae6b35d7fc43d05278b0d0ba517745ac41872583045a706d7c3",
+      "value_length": 631,
+      "value_sha256": "8a17209e8a833120ef2da295c844daeec7bab7a9b1118c0e23424a5affb8d9f5"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 150178,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "47993cfddc2abf083c5af3b5728b183a67530aafa520145fbc6828c79a362977",
+      "value_length": 894,
+      "value_sha256": "5b4945cb02ff7270d0f89a94cbc3e2e37a1d17003dabc254647ca8d6fa93e218"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 150596,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4daff5a4a8da0457b3e9e45b98b12fd7a2f035d8bde796d7b511db65c0227a84",
+      "value_length": 1132,
+      "value_sha256": "99b8054339914423dd5d756e33b053989d95c93203ac55af805c1352b62209b9"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 151887,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c260b49e3e7fb7c74ef6accffe0366e5e505b09761b29a3076f01fc55d34497d",
+      "value_length": 922,
+      "value_sha256": "93fb6bd4affe97c910683891bdfdd5abde872069977a87f5c2f1d46c1ca9dc52"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 152483,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d10960f80c55f381b7d2798aedfbb704a8fec950e26c875ffa5026e895e516ea",
+      "value_length": 900,
+      "value_sha256": "eb7cb625d6f88a9733f6f5bbf8b06ee7a038373ca3c9e6f16b7bd4f3511c7b0e"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 152507,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "debe3454b05ffb964eab7db6fc584833cbd1cf71127eb65f9e6b519eccced12d",
+      "value_length": 884,
+      "value_sha256": "2388dd7d089a2b39b32965f49dbfcc455289eccd68c5cce06700f044f2d77c7e"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 152971,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a4bee39ee781d3757bf072307518824fb5622e8decb5eddce63d1b5c4d825af3",
+      "value_length": 784,
+      "value_sha256": "5453d0e98fd16211b17e7f9ca347a58332802d7eb4820c81cbe2461e90be811c"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 153436,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e46218fb6e41c62762203a7cc542f28f7d3237999d1eef76254ba662b20e4752",
+      "value_length": 842,
+      "value_sha256": "36133ae843d0cccf6925cd402277d2aab4dfa2244bf832a633e22978750bade9"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 153603,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "77ce44e93eab1198749c469db2312690e60ef2f2d2253e670d6f9233ab003d5f",
+      "value_length": 887,
+      "value_sha256": "eb3d3eb40af4bb3ddc8bf31a3b33036ff08b4a53a0ac53de323d2bfb50d1e0d9"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 154918,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1c7145beedf0e5fc7001f7bb0b7f0ecb331ce883ac245fbe655390a47a3e7fe2",
+      "value_length": 901,
+      "value_sha256": "a1dfbd9525ce0181b82ce7e650962a4162fd84e20f6013ad22c87fb49e05ae81"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 155417,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "767197069bec82b30cb8770c77c9eea1aac6591ad7acc57a4b420c25e859dafb",
+      "value_length": 1147,
+      "value_sha256": "693ea0e21579e3f71a374575991914c4d1a4c0251bdbe50e6505403e5374f1b9"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 155511,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "6afa33fef2f1a592bff95cdf0fbfb44e44a609d45fe29b6711808766a0566869",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 155874,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1db3850da7bd8f43e67c990af5e189a0429a779b072c309368ca33a8be774f64",
+      "value_length": 1002,
+      "value_sha256": "fee830520151c0fd7eaca4e392277fa4976d340e1baa56ffa4a2c75f605cb889"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 155973,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "bc109a199152d326242e72c23ee4c3a743ada8ef8e96acf2f01afbf1a8311723",
+      "value_length": 1200,
+      "value_sha256": "7be9bcfdc586132cc49ccfa3149eab35335fcfc167cc0aa2ae522b6115e0bee2"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 156558,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a5cec87a48c01a3b29230cb80fd8ba639d7bf534040552ae4f242e1fe6f27df4",
+      "value_length": 894,
+      "value_sha256": "d0c0ecc8ad5beb45b7097ac7aee24b7c1568495591535ee92dad453dbe0574d0"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 157725,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "0d14517f1479c7d2055ce8eda6109adb5ba3b113b15bc9577b8756b280007111",
+      "value_length": 1058,
+      "value_sha256": "0c7fec84e1cc1635216e60bccd54b3653a4599b46382fdb4dd1d086678a05261"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 160470,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e5e4cd0b56879bbb3422009cd8b39372a0e9f7a37f0139a927496d3d559dc82b",
+      "value_length": 863,
+      "value_sha256": "98e2ea80aa051a93e4fb91bdfb021a2ad8027fbf4f667847bfd7b3d4ed75420b"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 160511,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4174bc98da736f5ccd590e4042da9ef7dcb61ba4ab0260544e1db21a1c26e4f9",
+      "value_length": 890,
+      "value_sha256": "0e1ef72bcc001519f106b95586c8ccde09e6374a5e18da1bbef74692f05196da"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 160776,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "016e7fe61a34da90b8adcd4c755c05a82844573402c33517bdea6b6ae450cb06",
+      "value_length": 1665,
+      "value_sha256": "bec50cb3fff6eeed17b22458c43cf96386eb63f80ba68bb73b7013c8163a0891"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 169356,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "aaf1dd520b73e14b88572bf64b2bc647113537b96f7a832a417f9c4ceb5ecdd1",
+      "value_length": 1263,
+      "value_sha256": "4454386ef533069acc22bd3fb2bddda0c5c437c98d7d628cd356aaa76cf1729f"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 172498,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "75a696106984cd0e44bf1a2e8c3bf78fc6f9750764c99471e52b4a89470471a5",
+      "value_length": 1108,
+      "value_sha256": "734b0bdd7a8dbd3995e844db95e520d1c8dc435fcedeb6290154cc958f779dc4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 172768,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3463c0272627f23d9fac07c9c47f9f0df92baad8ab7a231b1e2df8cc79e41b0d",
+      "value_length": 889,
+      "value_sha256": "bfc6882b4c775a094794c2b5d8189ff0d9eb1d3d64691a3cff526b2e56f72090"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 173852,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "963b0f7960edd627c886a6382c359c4d767cf3781fdde68e8bd00f966de94e71",
+      "value_length": 739,
+      "value_sha256": "85628d046c0d3c561d97ed4603e5c1bd28430c8d8b45d098f8fc785171b47a76"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 176223,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1360f7d382c1902a07b62f9cdc83d627c13b153dba259f1c56f298d8b9966d75",
+      "value_length": 1103,
+      "value_sha256": "2fbf1896e7315142948fc0b34856feb4cedfce5a75bd827a8ae0a726182d6e2b"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 176234,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "53fa03d3559f7119d8b7d67dc9387c701b88d52b10d21e3b752eae91313d39d3",
+      "value_length": 857,
+      "value_sha256": "b898879619f7918a1f5ab41f1dcab9bf128ce1f881ea88f3a9e0689e1d1c9419"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 177163,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5c4be891d46cd68a7ee9dbb591bab60eee8e8abcc79fa576b2e78ea471482fe2",
+      "value_length": 1012,
+      "value_sha256": "87bbf222383ce023611cbe92cef4bb5c3ea81ef102d578584fe378ec7c8db0fe"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 177521,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b76e18578d7bac537ed611e53720db1d4cebfc8a93f8be4e03e3441f581d393e",
+      "value_length": 1291,
+      "value_sha256": "74d58c8427ff2597392b205ff7aa7f3158c71308d3a673a48493dc390a3622a9"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 178744,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3da642617621c5e51db4e0648c521b2dbb1969af0eb3f4870f0c10e9139741c7",
+      "value_length": 925,
+      "value_sha256": "ea901e57e6b17f023d4b7b0aa667bca0979dbaeba4527a9ff6753323c4c5531d"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 180256,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "11f2e5e73755c8e3e06bbfe8a5cb9d2a82e170c3068bb481c1f7bd9d2b772e95",
+      "value_length": 779,
+      "value_sha256": "880fe9269abfba01d587ee290aaa584393b09ffc59ef403bb589461440768426"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 180257,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1d4883d3761bf29455cdafea1da475a6b0458ee57087df080e5194903e8a5d80",
+      "value_length": 800,
+      "value_sha256": "f2039ea09ad6df1aa929f9780114f86e7eedbdd522d5d6b0f6c4f344916e30f4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 180258,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "fda0541dba69827ab99eb1f2418fb6bc9fa63045c5bb062101f3ae7a716100c7",
+      "value_length": 778,
+      "value_sha256": "84edfa4be71d1da507a1d5f580d0b4c7262bdcab04742bd88d568ed905d010ac"
+    },
+    {
+      "categories": [
+        "member_id_label",
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 181354,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "cb006d367538dbb10ccaee712c554368894d3592922c81556be44af6a4392d70",
+      "value_length": 1144,
+      "value_sha256": "8db1d652b1eef5d19d98ad42912023b882cbe866a4334fb89782569cc5bf72f9"
+    },
+    {
+      "categories": [
+        "member_id_label",
+        "date_of_birth_label"
+      ],
+      "csv_data_row": 181355,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "33136b13ae85a02959e228adc1ae5ca1e075ea38d4f5a18d605677f78b674ee2",
+      "value_length": 1125,
+      "value_sha256": "ed39d85cfa233730f2d0f689e8f9f1f1caf20e5d3a1dd1218e0ff8a2b0c6aad1"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 181518,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f28cd8033bf3ed4d25a8d3368eea73aea356adb6ae24f1e4aba0b7520cd29a9a",
+      "value_length": 1093,
+      "value_sha256": "c13a2b779f729fad7d7d65d3e2a58935bfd550c2094428a38d92a5665e46fd40"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 181728,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5c93ccffe8e294f45430914c1c8936862d55533bca1d3e29f68ef3812cd9b367",
+      "value_length": 925,
+      "value_sha256": "3f90230af2c4115ce81ee8624677b35ba09149f9a2bc6997c4b642cf81b1a4ab"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 182489,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7c17bb4f8d136a7035b358e63d1bacd657a2ec6f3bb7be25f66049994ad33576",
+      "value_length": 845,
+      "value_sha256": "451c239d8d754ce8bdfa9f7f82e02ccd905fa63ab26e4e403956278da06d6380"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 185808,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a4f64e7169563bd15259baf36ca4c9e87425904b03c85c3fae71f6759a980c2d",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 185820,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c9c2fda34e36c977d4d0f0ff06f6ee73cb20933bbf86e2c62fa36b8690a28834",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 185821,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "639aa9808d3e8621bf70e203b1b95d59a818285d8737a18907dc71de48b812da",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 186073,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "e1d053847fffc47de4dc4efa336edcbbb2c34b8a50b07c5cbc4befa30c756b40",
+      "value_length": 1159,
+      "value_sha256": "113be7d785b1574c15c3b7ca7d534af960c43fff48ea7084e372db84a797ee60"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 186201,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1f80f0c9de977a6495125803fa7af3a5b9f0dc28875dfbe6ffb4b738cd9636e1",
+      "value_length": 1108,
+      "value_sha256": "734b0bdd7a8dbd3995e844db95e520d1c8dc435fcedeb6290154cc958f779dc4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 188583,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1ee59e1c391b9a670d40a6b315a47e29c1ffa04bb9543ffb29dcdf70d6e77761",
+      "value_length": 938,
+      "value_sha256": "14884ef1471ff763905d74a82b5e73a8b9390a09f8a6138a99f5c72d3b7abb30"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 190903,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "677d472cc9548e54004f369f2c670a92fe8c6bb641449bc796b294c322e3c16f",
+      "value_length": 868,
+      "value_sha256": "fae7e280326cc1cb53f0e28357ee1649d91174836dac00cb4ffc07defeb46147"
+    },
+    {
+      "categories": [
+        "member_id_label"
+      ],
+      "csv_data_row": 192250,
+      "field": "Coverage_Rules",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "840a496099d35e19c9acdffc608b0116d880bfc4a39a42fd45f63c85311b4471",
+      "value_length": 4863,
+      "value_sha256": "c6b3cf432d37f2d779b42b2da4c18d780658bd2d5f4285a73bba9b9ab48f86a4"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 192747,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "caee8ca3ade029ebb380acaa997a9ac925706635d3647866e50d5e499154afe8",
+      "value_length": 719,
+      "value_sha256": "1206af3b5af5080698e1be2841eb17adfe7f7c08f5eeb324fde21873bd9e3432"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 193541,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5bf0bbcf74d3e134af1ab81740a73e445963469a930ad23ca42bb1315679cf01",
+      "value_length": 853,
+      "value_sha256": "e5fd38966bc262f1e38b1221311b723d7e5c8b5a6a405a3cef07a2f5eccf8370"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 193838,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a276c0e21eed480913c807889a3787fccfcb1e4de4b0c551b821469e229c32e4",
+      "value_length": 712,
+      "value_sha256": "4f344738e37467cf6a179822e00331ceb0601f297ecdf711927a9c769e3d2f58"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 194785,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "238baa8e2b7bb20a8118305e814fb21def1c485c0ed87d6944cfa76fb5bbf425",
+      "value_length": 711,
+      "value_sha256": "730fbc524acc9d4263a23e08bfe00822df62b9b41eea8e7eb238d2c59195ca8a"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 196104,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a1c98f39438bd5921789c97dfdc1345d43b7eae84a324c61ae9623c5c44534ab",
+      "value_length": 724,
+      "value_sha256": "4f545f86ac52998a3a10c3143638091d6803db4ecaf5f78042fdf1f40c4ad2eb"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 197263,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4d1ea6da471bdb4932713ca40f5e8ff16217fd633d56e7485bf7f3f1e71df7f7",
+      "value_length": 681,
+      "value_sha256": "234a70fb928f9e63210468042e400fd14253890ee0699380fce9517ae6aeaed3"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 197642,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "8bcf8c349eb9745cc62032ca6859aab36ab1ad9622025aa6b9867da3ec683125",
+      "value_length": 742,
+      "value_sha256": "3d2393520d27587d85a720a20583554bce69d9711ce7acb7aeaf0ceaddb1457c"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 199261,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "3f33309b76a92e30213d9a56890f3bb9f49ad11105f980b98a77371fabd86c69",
+      "value_length": 803,
+      "value_sha256": "80ad6028b52629f53238c07063d904ccb0639d09fa20e5ea01e1bdd2ba275570"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 200824,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b7c55c351bb58e790611db7313ce2795caad46dec4d425cb3dd75374fdbc455c",
+      "value_length": 1184,
+      "value_sha256": "c9fb9e039439314559a8868e918758d40588745be40d78b7c5bc512221556f0f"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 201957,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "c861eec0337e065a778786de94336854a673cbaaefd53ee81b3c61d0293da221",
+      "value_length": 1057,
+      "value_sha256": "5df5ceb5e568d42d427c648d6b244cf41f09887770313143d284dbf873d47866"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 206017,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "806bf8b7743238dfe2d922655d6c4f063b5b4b758bb0191d86fff2d141360d6e",
+      "value_length": 971,
+      "value_sha256": "7d94e8d44bec65748d98143f034cc8b6e2754122ac7558a3ba3db3cd25c48c05"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 208251,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "bd5968fb1643828b44fdb27358b7ffd8ef9893189f19ec255f50f2dadc84ada5",
+      "value_length": 919,
+      "value_sha256": "e992ad0f15b9d5fa2f269cc4692e661021ab97c954f2572bea6ccab5870804fd"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 208252,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b171738876196b6bfb133136394f1c695a7663ed6d843fa7a3043576310f2700",
+      "value_length": 921,
+      "value_sha256": "1b79cb1eb1855075947a5e0b9eb78f34218bb36411f41b0846f5f2f0d952abba"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 208253,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "93b44164247c010d8db1c89546bebce03794a89ae4cdb99d25263577459b1f74",
+      "value_length": 920,
+      "value_sha256": "fc37daf3d2ce514f46e416de955f3725cc6bbff500be8c610976f148407074aa"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 208254,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "091a74bebb1490067c8a8f84d8befc43b75634eb9d42bfdce51660db725be90f",
+      "value_length": 918,
+      "value_sha256": "c6688f007c4ffc75f4f73c0e26549c367dc5a562a8c482835f08a93ae67fa517"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 208255,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "b5fb7b5a82b15f4c972daa5f2f57f11453d0904519d239b8c50acf2ce678e304",
+      "value_length": 920,
+      "value_sha256": "7ddb2b889c366fd2b2988831814e4dd35f20cfb43429e75b72e3489d5b83dbf2"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 211579,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "65ae06eeeb0b623bb88dadf8617f663900a829588721dcbac3a78c6eb8980be4",
+      "value_length": 904,
+      "value_sha256": "cecff5fb24d9e6e36c1b22ddb84fc48e9da8e4ef55ea4a560400471f9dee7926"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 212224,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "4484e2f49f058b20433aa822196864e28ad7529f06c9685f738c3308cc067d55",
+      "value_length": 974,
+      "value_sha256": "36689337e2ec7139b70bbb17d5d2491b9e85e7cbaca2b219cbc0980471905fe2"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 217523,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d37b4767b272001772640a3d125559a9b45a2e69e91b46ebb1b16e56c9f47adf",
+      "value_length": 880,
+      "value_sha256": "2dbd652f9d01f1aef7079e090287416d06c6e9585c4498fca9f09668ddaccfa7"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 218291,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "eeb6b7334b889f50dca00f37e37d3b2183405a68c127953fab23b5dbc65b2774",
+      "value_length": 860,
+      "value_sha256": "600eea59da25f53de8ac92f24485391d7cc39a9433a40e18ce11d401ecba3e27"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 218296,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "95e36c2b803645abacbe5b7b039fc450937a501d09b3fdbfbac846d8375c7579",
+      "value_length": 894,
+      "value_sha256": "4f144ad93821f21f2f034b2d1f5ba2a2cd53ef3254a0a64c52a07da508a3b1ed"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 220246,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "00dbf8434bc03c26ff60afadd6e35785ae432e4b314f6c9330f6e6077bbdaf3b",
+      "value_length": 877,
+      "value_sha256": "c87b2204ad7ec09532a3c39b9495c42d8e09617337a446b6c55172380edbdf4b"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 222591,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "1665b98e95b97fa3b6f03b4f82ad237011d2449a3a0955407d6cc27764ac745e",
+      "value_length": 1097,
+      "value_sha256": "dbc55cb2eb3422540eee143de2dbf02d92dd20b6d78ef81542618e8c76d439ed"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 224578,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "291973b9c22adc93de3281d50836df5d5bb64075400dd092505f9da01f02a3b1",
+      "value_length": 1352,
+      "value_sha256": "a2165b689c0854ded5547023eb9ce3b07ca180fa279d58fec4a06fafe0ed1d15"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 224924,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "f81a048649becbc35230d9d160e28d164d2d6569a6b8a6040d6b53d6106a6886",
+      "value_length": 779,
+      "value_sha256": "7b334c66fd3d0fc2967dc4a18551e50a5e39a88174cf1c7f08a3f2fc25f2aabf"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 225128,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "480a08d9fa504338cc93721b7122583177a59ed25cb494b8afdbbebd41ee90bb",
+      "value_length": 1121,
+      "value_sha256": "76dce3e3f785fed7ee221e600bc12e8bf070742f992be6377494c8eccebf4eb9"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 226674,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "eda3bac3166eb0384314dc3bdae970603d40e704aaa8a0bb7489379adf15c269",
+      "value_length": 888,
+      "value_sha256": "9a18ac49e3be61868566b8ed751d15e97e0feaf997940557a231672df6591e3e"
+    },
+    {
+      "categories": [
+        "email_shape"
+      ],
+      "csv_data_row": 229886,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "a14f2cd660b5886413e6a1eb161242fc6631182c1ac76cc5d15dd68e6dbfe9d2",
+      "value_length": 1311,
+      "value_sha256": "128b52e1559a8f3a26dd7093e0c410a468a5a817e0930afac6eae70018ffeb12"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 231530,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "d0786508f362ed3d14d6bab299f3816c8d2630e48c757861955bdb6423d066c2",
+      "value_length": 680,
+      "value_sha256": "b88e4de9f8253280feb6bdbb3ba8cdc82b81574027ada7c55962921cabb71de9"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 231915,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "ff88b17c7c24ca7f6d8b098e0bdd7f153b56f27c044e3c9b346af5422bad8ae6",
+      "value_length": 823,
+      "value_sha256": "fb1b3e87bad85be1dc82ca2fa4ba6422a66e0f55cade3d086642be32b4a3418e"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 233371,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "7dc0db47c376f30083855372a795adef51102d2c80b040501960ade6f67e749c",
+      "value_length": 753,
+      "value_sha256": "6259ac41fb4a185a9a71eeeee9a7dd9b4c1008f3dcdad941b4e510f36a02c05a"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 234077,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "61b1a8bbc3df4ee101b0fa222f887595365f7b207c4eff8bfe20e7ef514f86df",
+      "value_length": 1153,
+      "value_sha256": "2b675675e370920330eb1a8c286363a4d8b09f486c08d7ed57370f3641605b92"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 236663,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "45c4cd485696f47a7846a85256f423d1153e6b44390e81ea8133dfefb177212d",
+      "value_length": 934,
+      "value_sha256": "bf2146393d1dbd19f28f3dacd2b7f2ec180a0337f64023fa4083f7740dbce862"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 239690,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "5662d72c0d57f1f8fcba9f67917ea4f6c1645cb1130919d062eea866e7bf013f",
+      "value_length": 874,
+      "value_sha256": "b3b5b3f316557a868cbeee2dc44883cbceb7f6740ce4daaaa4322ceea5b943a7"
+    },
+    {
+      "categories": [
+        "physical_address_shape"
+      ],
+      "csv_data_row": 240800,
+      "field": "Decision_Rationale",
+      "source_record_ref_sha256": null,
+      "source_row_sha256": "983e6624072280dd60533503f3dea30713d64ef6b31da73ee45d827280ed4db1",
+      "value_length": 1135,
+      "value_sha256": "54d45afdb43bb0f86949d30c4549d4bffdbc5b30dc10c55a192e75109a6e4b8f"
+    }
+  ],
+  "evaluation": {
+    "full_appeal_cases_evaluated": 0,
+    "regulator_ground_truth_comparisons": 0,
+    "summary_cases_evaluated": 0
+  },
+  "gates": {
+    "prior_authorization": "not_verified",
+    "privacy": "human_review_required",
+    "reuse": "source_metadata_only_pending_source_specific_review",
+    "schema": "blocked"
+  },
+  "human_review": {
+    "decision_file": "outside_repository_only",
+    "raw_values_in_report": false,
+    "required_before_full_extraction_acceptance": true,
+    "review_status": "pending",
+    "reviewer_identity": null
+  },
+  "inspection": {
+    "csv_headers": [
+      "Part",
+      "Decision_Date",
+      "Decision_Date_Sortable",
+      "Decision",
+      "Appeal_Type",
+      "Condition",
+      "Drug",
+      "Decision_Rationale",
+      "Coverage_Rules"
+    ],
+    "expected_fields": [
+      "_condition",
+      "appeal_type",
+      "coverage_rules",
+      "decision",
+      "decision_date",
+      "decision_date_sortable",
+      "decision_rationale",
+      "drug",
+      "part",
+      "record_number"
+    ],
+    "expected_record_count": 240958,
+    "field_mapping": {
+      "Appeal_Type": "appeal_type",
+      "Condition": "_condition",
+      "Coverage_Rules": "coverage_rules",
+      "Decision": "decision",
+      "Decision_Date": "decision_date",
+      "Decision_Date_Sortable": "decision_date_sortable",
+      "Decision_Rationale": "decision_rationale",
+      "Drug": "drug",
+      "Part": "part"
+    },
+    "malformed_rows": 0,
+    "missing_expected_fields": [
+      "record_number"
+    ],
+    "nonempty_field_counts": {
+      "Appeal_Type": 240958,
+      "Condition": 240958,
+      "Coverage_Rules": 240958,
+      "Decision": 240958,
+      "Decision_Date": 240958,
+      "Decision_Date_Sortable": 240958,
+      "Decision_Rationale": 240944,
+      "Drug": 240958,
+      "Part": 240958
+    },
+    "record_count_matches_expected": true,
+    "rows_scanned": 240958,
+    "schema_valid": false,
+    "unexpected_fields": [],
+    "well_formed_rows": 240958
+  },
+  "privacy_scan": {
+    "candidate_counts": {
+      "date_of_birth_label": 14,
+      "email_shape": 13,
+      "member_id_label": 246,
+      "phone_shape": 2,
+      "physical_address_shape": 181
+    },
+    "candidate_counts_by_field": {
+      "Condition": {
+        "phone_shape": 1
+      },
+      "Coverage_Rules": {
+        "member_id_label": 217
+      },
+      "Decision_Rationale": {
+        "date_of_birth_label": 14,
+        "email_shape": 13,
+        "member_id_label": 29,
+        "phone_shape": 1,
+        "physical_address_shape": 181
+      }
+    },
+    "candidate_locator_count": 453,
+    "legal_determination_claimed": false,
+    "technical_pattern_scan_only": true
+  },
+  "recorded_at": "2026-08-28T08:32:51.285387Z",
+  "schema_version": "0.1",
+  "source": {
+    "dataset_id": "8152455d-179d-4455-9d09-e5dfc516be10",
+    "etag": "\"2406fbbfd602c0039af42290b182044b:1787700725.760048\"",
+    "part": "part_d",
+    "raw_artifact_location": "outside_repository_only",
+    "raw_rows_written": false,
+    "source_url": "https://downloads.cms.gov/qic-decision-search/partd-2026-08-25.csv"
+  },
+  "source_id": "cms_qic_decision_summaries",
+  "status": "bulk_inspection_blocked_schema_or_count"
+}

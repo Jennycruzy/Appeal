@@ -24,8 +24,16 @@ CMS_QIC_LOCAL_OUTPUT ?= ../Downloads/cms-qic-$(CMS_QIC_PART)-summary.jsonl
 CMS_QIC_LOCAL_MANIFEST ?= ../Downloads/cms-qic-$(CMS_QIC_PART)-summary.manifest.json
 CMS_QIC_EVALUATION_REPORT ?= evidence/cms-qic-summary-evaluation.json
 CMS_QIC_PRIVACY_SCAN_REPORT ?= evidence/cms-qic-$(CMS_QIC_PART)-privacy-scan.json
+CMS_QIC_BULK_INPUT ?= ../Downloads/cms-qic-partd-2026-08-25.csv
+CMS_QIC_BULK_REPORT ?= evidence/cms-qic-part-d-bulk-inspection.json
+CMS_QIC_BULK_SOURCE_URL ?= https://downloads.cms.gov/qic-decision-search/partd-2026-08-25.csv
+CMS_QIC_BULK_SOURCE_ETAG ?=
+CMS_QIC_BULK_EXPECTED_COUNT ?= 240958
+CMS_QIC_BULK_PRIVACY_DECISIONS ?= ../Downloads/cms-qic-partd-privacy-decisions.json
+CMS_QIC_BULK_PRIVACY_PROPOSAL ?= ../Downloads/cms-qic-partd-privacy-decisions-agent-proposed.json
+CMS_QIC_BULK_ACCEPTANCE_MANIFEST ?= evidence/cms-qic-part-d-bulk-acceptance.json
 
-.PHONY: verify-ledger test typecheck load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -71,6 +79,18 @@ run-cms-qic-summary:
 
 scan-cms-qic-privacy:
 	APPEAL_CMS_QIC_ACA="$(CMS_QIC_ACA)" PYTHONPATH=scripts $(PYTHON) scripts/scan_cms_qic_privacy.py --part "$(CMS_QIC_PART)" --output "$(CMS_QIC_PRIVACY_SCAN_REPORT)"
+
+inspect-cms-qic-bulk:
+	PYTHONPATH=scripts $(PYTHON) scripts/inspect_cms_qic_bulk.py --part "$(CMS_QIC_PART)" --csv "$(CMS_QIC_BULK_INPUT)" --output "$(CMS_QIC_BULK_REPORT)" --source-url "$(CMS_QIC_BULK_SOURCE_URL)" --source-etag "$(CMS_QIC_BULK_SOURCE_ETAG)" --expected-record-count "$(CMS_QIC_BULK_EXPECTED_COUNT)"
+
+review-cms-qic-bulk:
+	PYTHONPATH=scripts $(PYTHON) scripts/review_cms_qic_bulk_privacy.py --csv "$(CMS_QIC_BULK_INPUT)" --report "$(CMS_QIC_BULK_REPORT)" --output "$(CMS_QIC_BULK_PRIVACY_DECISIONS)"
+
+propose-cms-qic-bulk:
+	PYTHONPATH=scripts $(PYTHON) scripts/propose_cms_qic_bulk_privacy.py --csv "$(CMS_QIC_BULK_INPUT)" --report "$(CMS_QIC_BULK_REPORT)" --output "$(CMS_QIC_BULK_PRIVACY_PROPOSAL)"
+
+accept-cms-qic-bulk:
+	PYTHONPATH=scripts $(PYTHON) scripts/accept_cms_qic_bulk.py --csv "$(CMS_QIC_BULK_INPUT)" --report "$(CMS_QIC_BULK_REPORT)" --proposal "$(CMS_QIC_BULK_PRIVACY_PROPOSAL)" --output "$(CMS_QIC_BULK_ACCEPTANCE_MANIFEST)"
 
 inspect-oregon-iro:
 	$(PYTHON) scripts/inspect_oregon_iro.py --xlsx "$(OREGON_IRO_INPUT)" --output "$(OREGON_IRO_REPORT)"

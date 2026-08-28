@@ -75,6 +75,27 @@ clinical evidence, internal appeal package, or original plan-policy version.
 The project therefore has a real public source for the outcome/rationale lane,
 while full Appeal evaluations remain zero until a complete package exists.
 
+The dated official Part D bulk CSV fallback was downloaded unchanged outside
+the repository after confirming local disk space. Its 240,958 rows, 894,397,692
+bytes, ETag, and SHA-256 are recorded in
+`evidence/cms-qic-part-d-bulk-inspection.json`. The streaming inspector mapped
+the title-cased bulk headers to the API schema, found no malformed rows, and
+found that the bulk file omits `record_number`. Its technical privacy scan
+found 453 hashed candidate locators: 14 date-of-birth labels, 13 email-shaped
+values, 246 member-ID labels, two phone-shaped values, and 181 physical-
+address-shaped values. Privacy, stable-identity, reuse, and acceptance gates
+for the full file remain closed; no raw bulk rows were committed. Under the
+explicit workspace-owner decision recorded in
+`evidence/cms-qic-part-d-bulk-acceptance.json`, all 192 `f` candidate groups
+were included and all 42 `b`/`l` groups were excluded, yielding 240,916 rows
+accepted for local regulator-summary evaluation only. The source-native
+`record_number` remains absent; the manifest documents pinned-file content
+identity using file SHA-256 plus row SHA-256 and occurrence disambiguation for
+duplicate content rows.
+The assistant-delegated proposal at
+`/Users/user/Downloads/cms-qic-partd-privacy-decisions-agent-proposed.json`
+is preserved as the metadata-only decision input.
+
 The official DMHC IMR download and API remain Cloudflare-protected. A public
 Kaggle mirror was downloaded outside the repository and inspected as a blocked
 fallback candidate: 19,245 rows and 11 columns, with `Reference ID`,
@@ -179,7 +200,7 @@ deletion, and audit controls.
   in `src/appeal_core/criteria.py`. The Argument Builder cannot be represented
   as having clinical evidence unless an Evidence Miner observation supplies a
   FHIR reference.
-- The local test suite has 35 passing tests, and strict mypy has passed for the
+- The local test suite has 46 passing tests, and strict mypy has passed for the
   core package. Re-run both after any changes.
 - One official Michigan PRIRA order was manually downloaded and inspected. The
   result is in `evidence/manual-review-acquisition.json`; it counts as one
@@ -226,6 +247,38 @@ deletion, and audit controls.
   reports per-resource patient coverage, coded/value-bearing counts, and
   statuses without emitting identifiers or narrative text. It does not claim
   policy-criterion sufficiency or real-denial ground truth.
+- The CMS summary adapter preflight is implemented in
+  `scripts/run_cms_qic_summary_evaluation.py` and has processed three live Part
+  D rows. Its aggregate report is `evidence/cms-qic-summary-evaluation.json`:
+  three explicit regulator outcomes were observed, three rows abstained before
+  full Appeal inputs, and zero Appeal evaluations or comparisons were claimed.
+- The CMS full-scope privacy gate is implemented in
+  `scripts/scan_cms_qic_privacy.py`. A full Part D extraction stopped on a
+  privacy-shaped value before acceptance and retained no partial output. The
+  scanner was then started but not completed; therefore
+  `evidence/cms-qic-part-d-privacy-scan.json` does not exist yet. The API
+  accepted 1,000-row pages but rejected 5,000- and 10,000-row pages with HTTP
+  400. The official bulk CSV endpoint returned HTTP 200 with an ETag during a
+  header check; the subsequent full bulk fallback inspection is recorded
+  separately below.
+- The bulk fallback is implemented in `scripts/inspect_cms_qic_bulk.py` and
+  its terminal-only human review helper is
+  `scripts/review_cms_qic_bulk_privacy.py`. The unchanged Part D CSV was
+  scanned in full and the aggregate report is
+  `evidence/cms-qic-part-d-bulk-inspection.json`; it is blocked because the
+  source omits `record_number` and has 453 technical privacy candidates. The
+  full artifact remains blocked as-is, while
+  `evidence/cms-qic-part-d-bulk-acceptance.json` records the accepted
+  240,916-row local-summary subset and its 42-row exclusion.
+- `scripts/propose_cms_qic_bulk_privacy.py` provides an assistant-delegated,
+  conservative technical triage of those candidates. The workspace-owner
+  decision records all 192 `f` groups as included and all 42 `b`/`l` groups as
+  excluded without individual review; the proposal remains outside the
+  repository and contains no raw values.
+- `scripts/accept_cms_qic_bulk.py` validates that decision against the pinned
+  CSV and writes the metadata-only acceptance manifest. It uses file SHA-256
+  plus row SHA-256 as pinned-file content identity, with occurrence order only
+  to disambiguate duplicate content rows; it does not invent `record_number`.
 
 ### NY DFS schema mismatch — resume here
 
@@ -287,6 +340,7 @@ The source record and field-level boundary are:
 - `scripts/inspect_cms_qic.py` — metadata-only catalog/API inspector;
 - `scripts/fetch_cms_qic_summary.py` — atomic, paginated, local-only
   normalized extractor;
+- `scripts/scan_cms_qic_privacy.py` — full-scope, row-free privacy scanner;
 - `config/real_corpus_sources.json` — allow-listed source metadata.
 
 To refresh the aggregate evidence, supply the public ACA value shown by the CMS
@@ -500,15 +554,18 @@ server survives restart.
 
 ## Still outstanding
 
-1. Run the full-scope CMS QIC privacy scanner before retrying the complete
-   extraction. Review any hashed candidate locators, then expand the CMS QIC
-   summary adapter preflight from the three-row smoke run to an explicitly
-   selected outside-repository scope. Preserve `appeal_type` and `decision`
-   from the source, keep `denial_reason` and `prior_authorization` nullable
-   unless row-level evidence exists, and abstain when the Evidence Floor needs
-   clinical or original-denial inputs that the summary does not contain. The
-   source reports 1,142,429 available records; no summary case has yet been
-   evaluated.
+1. Expand the CMS QIC summary adapter preflight from the three-row smoke run
+   to an explicitly selected outside-repository scope. The pinned bulk
+   acceptance manifest records 240,916 retained rows and 42 conservative
+   exclusions. Its source-native `record_number` remains unresolved by
+   deliberate policy; use the documented file-SHA-plus-row-SHA identity only
+   for this pinned local scope. If the public ACA value becomes available, run
+   the API scanner as a separate cross-check. Preserve `appeal_type` and
+   `decision` from the source, keep `denial_reason` and `prior_authorization`
+   nullable unless row-level evidence exists, and abstain when the Evidence
+   Floor needs clinical or original-denial inputs that the summary does not
+   contain. The source reports 1,142,429 available records; no summary case has
+   yet been evaluated.
 2. Keep the official DMHC path, the 140 NY address-shaped values, the eight DOB
    labels, the nine member-ID labels, and NY's unresolved reuse/mapping decision
    as secondary candidates. The NY export's `Denial Reason` must not be called
@@ -536,9 +593,45 @@ server survives restart.
    cannot claim a full Appeal evaluation without the original denial, policy,
    and clinical inputs.
 
+## Data-acquisition resume checkpoint — 2026-08-28
+
+The bulk choice from the previous checkpoint has been completed. The official
+Part D CSV is preserved unchanged at
+`/Users/user/Downloads/cms-qic-partd-2026-08-25.csv`, with 894,397,692 bytes and
+SHA-256
+`e32b4f10eb51df1882fc3b9084807e448d4924c0605518afd71a7e85ebb9759f`.
+`scripts/inspect_cms_qic_bulk.py` scanned all 240,958 rows and wrote the
+aggregate-only report `evidence/cms-qic-part-d-bulk-inspection.json`. It found
+453 hashed privacy candidates and a missing `record_number`. The explicit
+owner policy is recorded in
+`evidence/cms-qic-part-d-bulk-acceptance.json`: 240,916 rows retained, 42
+rows excluded, and the source-native identifier intentionally unresolved.
+
+The assistant-delegated technical triage is in
+`/Users/user/Downloads/cms-qic-partd-privacy-decisions-agent-proposed.json`.
+It records the 234 metadata-only proposals that supplied the explicit policy
+decision (7 block, 192 false positive, 35 legal review). Its SHA-256 is
+`ce964941ff7a32d19dfe4564b34b6937a55a284601c14f81fa7b71d018a4d497`.
+
+The bulk acceptance step is complete. The terminal-only reviewer remains
+available only if the exclusion policy is later changed:
+
+```text
+make review-cms-qic-bulk \
+  CMS_QIC_BULK_INPUT=../Downloads/cms-qic-partd-2026-08-25.csv \
+  CMS_QIC_BULK_REPORT=evidence/cms-qic-part-d-bulk-inspection.json \
+  CMS_QIC_BULK_PRIVACY_DECISIONS=../Downloads/cms-qic-partd-privacy-decisions.json
+```
+
+The reviewer shows candidate values only in the terminal and writes hashed
+decisions outside the repository. The accepted scope is local regulator-summary
+evaluation only; it is not a full Appeal case corpus. Do not upload the raw CSV
+or normalized narrative rows to Google Cloud or GitHub.
+
 ## Resume checkpoint — after the PC is charged
 
-Last verified: 2026-08-27. Resume from `/Users/user/appeal` with the active
+Last verified: 2026-08-28 for the acquisition work; the cloud sub-checkpoint
+remains 2026-08-27. Resume from `/Users/user/appeal` with the active
 Google Cloud project `onyx-yeti-506606-i9` (`835653516606`) and region
 `europe-west2`. Do not switch back to `appeal-fleet-2026-0825`.
 

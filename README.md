@@ -34,6 +34,23 @@ internal appeal, and original plan-policy version are not exposed in the API.
 The project therefore accepts it for regulator-summary benchmarking while
 keeping full-case Appeal evaluations at zero.
 
+The dated official Part D bulk CSV was also preserved unchanged outside the
+repository as a fallback inspection artifact. Its streaming inspection covered
+240,958 rows and recorded the file hash in
+[`evidence/cms-qic-part-d-bulk-inspection.json`](evidence/cms-qic-part-d-bulk-inspection.json).
+The bulk headers map mechanically to the API fields but omit `record_number`,
+and its technical scan found 453 hashed privacy candidate locators. The bulk
+artifact is not accepted wholesale. Under the explicit workspace-owner
+decision recorded in
+[`evidence/cms-qic-part-d-bulk-acceptance.json`](evidence/cms-qic-part-d-bulk-acceptance.json),
+all 192 `f` candidate groups are included and the 42 `b`/`l` groups are
+excluded, removing 42 rows. The retained 240,916-row subset is accepted for
+local regulator-summary evaluation only. The source-native `record_number`
+remains absent; the manifest uses the pinned file SHA-256 plus row SHA-256 as
+content identity and records occurrence disambiguation for duplicate rows.
+The assistant-delegated proposal remains preserved outside the repository as
+the decision input; no raw values are committed.
+
 The official DMHC download and API are currently returning Cloudflare 403
 responses, so DMHC remains a secondary candidate rather than the current
 benchmark source.
@@ -97,7 +114,10 @@ the raw NY DFS and Oregon files, and the DMHC mirror
 are not committed. The local Oregon evaluation input and DMHC mirror CSV stay
 outside the repository; repository evidence contains metadata and aggregate
 counts only—not case numbers, treatment strings, or narrative values. The CMS
-inspector likewise writes no source row values.
+inspectors likewise write no source row values. The bulk fallback has a
+terminal-only reviewer for its technical candidates; for this pinned local
+subset, the explicit owner policy is recorded in the bulk acceptance manifest
+and its decision input stays outside the repository.
 
 ## Google Cloud status
 
@@ -121,6 +141,23 @@ make run-cms-qic-summary \
 make scan-cms-qic-privacy \
   CMS_QIC_PART=part_d \
   CMS_QIC_PRIVACY_SCAN_REPORT=evidence/cms-qic-part-d-privacy-scan.json
+make inspect-cms-qic-bulk \
+  CMS_QIC_BULK_INPUT=../Downloads/cms-qic-partd-2026-08-25.csv \
+  CMS_QIC_BULK_SOURCE_ETAG='<captured official ETag>' \
+  CMS_QIC_BULK_REPORT=evidence/cms-qic-part-d-bulk-inspection.json
+make review-cms-qic-bulk \
+  CMS_QIC_BULK_INPUT=../Downloads/cms-qic-partd-2026-08-25.csv \
+  CMS_QIC_BULK_REPORT=evidence/cms-qic-part-d-bulk-inspection.json \
+  CMS_QIC_BULK_PRIVACY_DECISIONS=../Downloads/cms-qic-partd-privacy-decisions.json
+make propose-cms-qic-bulk \
+  CMS_QIC_BULK_INPUT=../Downloads/cms-qic-partd-2026-08-25.csv \
+  CMS_QIC_BULK_REPORT=evidence/cms-qic-part-d-bulk-inspection.json \
+  CMS_QIC_BULK_PRIVACY_PROPOSAL=../Downloads/cms-qic-partd-privacy-decisions-agent-proposed.json
+make accept-cms-qic-bulk \
+  CMS_QIC_BULK_INPUT=../Downloads/cms-qic-partd-2026-08-25.csv \
+  CMS_QIC_BULK_REPORT=evidence/cms-qic-part-d-bulk-inspection.json \
+  CMS_QIC_BULK_PRIVACY_PROPOSAL=../Downloads/cms-qic-partd-privacy-decisions-agent-proposed.json \
+  CMS_QIC_BULK_ACCEPTANCE_MANIFEST=evidence/cms-qic-part-d-bulk-acceptance.json
 make inspect-dmhc-imr \
   DMHC_IMR_INPUT=../Downloads/independent-medical-review-determinations-trends.csv
 make inspect-oregon-iro \
@@ -131,6 +168,11 @@ make prepare-oregon-local-evaluation \
 make run-oregon-local-evaluation \
   OREGON_IRO_LOCAL_OUTPUT=../Downloads/oregon-iro-local-evaluation.json
 ```
+
+The proposal command is a conservative technical triage aid. The current
+acceptance manifest records the explicit owner policy to include all `f`
+groups and exclude all `b`/`l` groups; the 42 excluded rows are not individually
+reviewed.
 
 The Oregon run writes aggregate-only evidence to
 `evidence/oregon-evaluation.json`. Its current result is an adapter preflight

@@ -52,6 +52,14 @@ and aggregate evaluation evidence. Raw API rows and derived narrative rows
 remain outside Git. A local extraction must be explicitly selected, stored
 outside the repository, and hashed without copying its values into a report.
 
+The API is the preferred extraction route. If the public ACA value is not
+available, the dated official CSV distribution may be preserved unchanged
+outside the repository after confirming local disk space. Before accepting the
+bulk artifact, run `scripts/inspect_cms_qic_bulk.py`; it streams the file and
+records only schema/count metadata plus hashed privacy locators. The current
+Part D bulk file omits `record_number`, so it cannot silently replace the API
+extractor or establish stable source case identity.
+
 Run the metadata inspection with the public ACA value shown by the CMS page:
 
 ```text
@@ -100,9 +108,9 @@ boundary against current source data; it is not an artificial corpus limit.
 Use `--all` with the extractor when the complete current Part C or Part D
 summary scope is selected for local processing.
 
-The full Part D extraction attempt stopped on a privacy-shaped value before
+The full Part D API extraction attempt stopped on a privacy-shaped value before
 acceptance. To locate every technical candidate without writing source rows,
-run the full-scope scanner first:
+run the full-scope API scanner first when the ACA value is available:
 
 ```text
 make scan-cms-qic-privacy \
@@ -118,6 +126,21 @@ That override is never implicit and does not itself clear privacy or reuse.
 The live API accepted 1,000-row pages during the source check but rejected
 larger 5,000- and 10,000-row requests with HTTP 400. Keep the page size at
 1,000 unless a later API check establishes a new server limit.
+
+The current bulk fallback inspection is recorded separately in
+`evidence/cms-qic-part-d-bulk-inspection.json`. It scanned 240,958 rows from
+the unchanged dated CSV, found 453 technical privacy candidate locators, and
+found that the file has no `record_number`. The explicit local-summary subset
+decision is recorded in
+`evidence/cms-qic-part-d-bulk-acceptance.json`: include all 192 `f` candidate
+groups and exclude all 42 `b`/`l` groups, yielding 240,916 retained rows. The
+source-native identifier is not invented; the manifest uses file SHA-256 plus
+row SHA-256 as pinned-file content identity and records occurrence
+disambiguation for duplicate content rows. The full raw artifact remains
+blocked as-is, and the accepted subset does not unlock full Appeal evaluation.
+Use `scripts/review_cms_qic_bulk_privacy.py` only if this exclusion policy is
+later changed. The proposal from `scripts/propose_cms_qic_bulk_privacy.py` is
+the metadata-only decision input and contains no raw values.
 
 ## What this unlocks
 

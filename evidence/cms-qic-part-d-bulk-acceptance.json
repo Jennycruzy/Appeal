@@ -1,0 +1,593 @@
+{
+  "acceptance": {
+    "accepted_for_local_evaluation": true,
+    "accepted_for_repository": false,
+    "accepted_record_count": 240916,
+    "decision": "accepted_for_local_regulator_summary_evaluation_only",
+    "excluded_record_count": 42,
+    "full_appeal_evaluation_allowed": false,
+    "narrative_rows_committed": false,
+    "raw_artifacts_committed": false,
+    "scope_limit": "pinned official Part D bulk artifact after explicit non-f exclusion; not a full Appeal case corpus"
+  },
+  "evaluation": {
+    "full_appeal_cases_evaluated": 0,
+    "regulator_ground_truth_comparisons": 0,
+    "summary_cases_evaluated": 0
+  },
+  "gates": {
+    "prior_authorization": "not_verified_not_required_for_regulator_summary_track",
+    "privacy": "pass_with_explicit_conservative_exclusions",
+    "reuse": "pass_for_local_summary_benchmark_only_under_official_public_source_metadata",
+    "schema": "accepted_for_local_summary_scope_with_missing_source_record_number_documented",
+    "source_integrity": "pass",
+    "stable_identity": "pass_for_pinned_file_local_scope"
+  },
+  "identity": {
+    "accepted_unique_content_identities": 239794,
+    "content_identity_sha256": "SHA-256(file_sha256 + ':' + row_sha256)",
+    "excluded_unique_content_identities": 42,
+    "file_sha256": "e32b4f10eb51df1882fc3b9084807e448d4924c0605518afd71a7e85ebb9759f",
+    "row_hash_duplicate_extra_rows": 1122,
+    "row_hash_duplicate_groups": 839,
+    "row_hash_unique_count": 239836,
+    "row_sha256": "SHA-256 of canonical UTF-8 JSON for the complete CSV row with sorted source headers",
+    "source_record_number": "missing_in_bulk_export_not_resolved_or_invented",
+    "stable_identity": "sha256(file_sha256 + ':' + row_sha256); occurrence order only disambiguates duplicate content rows in this pinned file",
+    "status": "pass_for_pinned_file_local_scope"
+  },
+  "privacy_review": {
+    "approved_false_positive_group_count": 192,
+    "candidate_group_count": 234,
+    "decision_counts": {
+      "b": 7,
+      "f": 192,
+      "l": 35
+    },
+    "decision_record": {
+      "file_name": "cms-qic-partd-privacy-decisions-agent-proposed.json",
+      "raw_values_in_decision_file": false,
+      "sha256": "ce964941ff7a32d19dfe4564b34b6937a55a284601c14f81fa7b71d018a4d497"
+    },
+    "decision_source": "explicit_user_direction_in_workspace",
+    "excluded_locator_count": 42,
+    "excluded_non_false_positive_group_count": 42,
+    "individual_candidate_review": false,
+    "policy": "include every candidate classified f; exclude every candidate classified b or l",
+    "reviewer": "workspace-owner-explicit-direction",
+    "status": "pass_by_explicit_user_conservative_exclusion_policy"
+  },
+  "recorded_at": "2026-08-28T09:39:05.994538Z",
+  "schema_version": "0.2",
+  "selection": {
+    "accepted_occurrence_selection_fingerprint_sha256": "a043c8291faf18969b8b072cc47817e7d3a0dad21c695b16dc44c30889ac4cc0",
+    "accepted_row_count": 240916,
+    "excluded_occurrence_selection_fingerprint_sha256": "d6a9b87019090559e9155fd4c85517a61a83060136a12f66ca286673705c4999",
+    "excluded_row_count": 42,
+    "excluded_rows": [
+      {
+        "content_identity_sha256": "e758073ee5f77c559d236820bf6a8c1f684410efb3e2f7ff2c635019eed16933",
+        "csv_data_row": 3901,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "c6c9d8bb0b3f35d702eccb2aeffee1a7797f149e8230e1c9ce1854aed776f6c6",
+        "row_sha256": "31aadcfa8568820336ff531477ac98aed429e99ef8df8c7bce87bb93a12448ec",
+        "value_hashes": [
+          "b9bf39475e9e9cc6d117765ce8f41af4924338bec416f7f33f9c803a65031064"
+        ]
+      },
+      {
+        "content_identity_sha256": "3fcced38f930785ac67125598fb0fe524a741ce3e1829c768a9f0bac80a1c842",
+        "csv_data_row": 4652,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "031c9201caec375abfdc1853669ce4b5f2e1e7e428fd767075dca158baac7de8",
+        "row_sha256": "2207ad83641e212e432422e0bcf09c9796447c139d6e7ddbc0f63b02dea0af60",
+        "value_hashes": [
+          "b08e6a6c587a7f5bf2bb4ade3cb7fd25aa48cd3c258ef5535f185446cd4fda4d"
+        ]
+      },
+      {
+        "content_identity_sha256": "58d24889f2be124fa38f03764e6918b5524599e8f620ba32864db73c9cd92e4d",
+        "csv_data_row": 5185,
+        "decision_groups": [
+          "b"
+        ],
+        "occurrence_identity_sha256": "5054d9595a0819918e9fd350ce601d33bd2e03d545e045dc1252dc252371ece7",
+        "row_sha256": "13fc91d768182aaa3c9499975ca25418827c7efcde719f525a1e7901170f421b",
+        "value_hashes": [
+          "7e036387f7a7e53f0e3943d8813074f0cba4b4d16f51861a18e7f4ab9db4d5d7"
+        ]
+      },
+      {
+        "content_identity_sha256": "076005ca191aa7b4c0d1192b1e235d0bfd4936518bb8a015d6c90cbf1d01f133",
+        "csv_data_row": 6710,
+        "decision_groups": [
+          "b"
+        ],
+        "occurrence_identity_sha256": "8c413757fb50aa4e85e50507c8e759da0c9a1c9b0238c42fd8641fda1d23d560",
+        "row_sha256": "333463f6631e0fd35cf4b838ff554991ece772aa255d3a2ff1c76a1738ede9f0",
+        "value_hashes": [
+          "d6623ee9f15e10f681ab4a0f9f27ccdb104b974fcc3603ed052d4c5734c35e9d"
+        ]
+      },
+      {
+        "content_identity_sha256": "bfb2e1f4bbde949198bcc943e1a92c9ac3e622014865a53c51983574c7ac82a1",
+        "csv_data_row": 7604,
+        "decision_groups": [
+          "b"
+        ],
+        "occurrence_identity_sha256": "e136577c7a791480b49ec3f4d6ba5b79657127295d96c59ab47035566255262b",
+        "row_sha256": "4451d5299fa6519e996e13c4849055b9d326d9c2a504a505aae03780c6f48ec2",
+        "value_hashes": [
+          "e9ab4d5cec28740e7e267c4964e2d655031fee3dd9e52e6d204e40d320494d7f"
+        ]
+      },
+      {
+        "content_identity_sha256": "f67d75ef0988c7cc62cf43deb8d829c1c6076c5f4f0b76e5b67b9b5c68e8dc00",
+        "csv_data_row": 8974,
+        "decision_groups": [
+          "b"
+        ],
+        "occurrence_identity_sha256": "f616f8372132f5d742cd43d2a764b1eeef7f59cd3ced41aff9562416c18f6aec",
+        "row_sha256": "5a83d3ee095b0a8010850c67c1a3d15fbeddcc593204669d882b5732fbacada3",
+        "value_hashes": [
+          "47b0ac364153f771a8f3d66ad157e7a2c1e4ff3c15c7cc1950e64d90800fd1fe"
+        ]
+      },
+      {
+        "content_identity_sha256": "33abcab9e2053efb0813378ab2297605fa3328aaa7bd8d6f8a24f8bb110da3e5",
+        "csv_data_row": 9393,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "506390c2619e69f0810e9b9809a1bd2f65c27c2e4311c6c386011196f953ab58",
+        "row_sha256": "da6bfa2cb94c1d5c7ad87ff6499b0c03c0d891da374c57450c9d0876957c43f4",
+        "value_hashes": [
+          "44139c848a4c402452977408aeaa1d80f7fa25f5ab4ba23a394496b4d7f1ad83"
+        ]
+      },
+      {
+        "content_identity_sha256": "03a486816046d66b4e309b26f64fe07973a19e896ff32d28e8e2f0d24329a724",
+        "csv_data_row": 12523,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "279763571134c64307207f5af6389f43b3df447257ac63457965fc99841ada7e",
+        "row_sha256": "51fc565cc0806f5bcbdd125943c7dc8d425df815a9b9998f525342fe4bd127df",
+        "value_hashes": [
+          "d854532e1479aaa8ad8f2adf5617c31e886e89c23bc8f5bc744d8aea874f70ec"
+        ]
+      },
+      {
+        "content_identity_sha256": "824613aa4b38feae4b54437da94554872ffdfe20f66c892990f95fe0c58f86a9",
+        "csv_data_row": 14018,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "b94bffe685c49622b823aace220a63b1bf60bd2ced7eec349bc270adbe868464",
+        "row_sha256": "9c67ce4b0186b6305f5a189c5adbc6d62b44fb14ee3042cdcfcdf57442683c08",
+        "value_hashes": [
+          "6c6c2e0b8f585587826abda70ed81ebc02f2293e3457cb13a9a84698de86b7b1"
+        ]
+      },
+      {
+        "content_identity_sha256": "570d3e9534c9dbe7a0ea36a298db622db61e4701bb4ecb3f8ec127913fdfbed3",
+        "csv_data_row": 15327,
+        "decision_groups": [
+          "b"
+        ],
+        "occurrence_identity_sha256": "26435ebd36eaba18c2c07636236693082a8c0b99c350aa7f5c661264b950b8d3",
+        "row_sha256": "96d63c97a6282119a20045c9fa5ab78d27df28aa58d5cdeac791bc92b75316df",
+        "value_hashes": [
+          "eab483014e7e3c9085a41813564ce41cf6f84ed8453bea87124456f03b6c8d28"
+        ]
+      },
+      {
+        "content_identity_sha256": "1ac93eb534c919b97d40e3cdc19c11c868f12d269a38d5151088be0bfe7e2eb3",
+        "csv_data_row": 16010,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "f85ec8fcc2af836d34e5644184b276037cee5d72d791e2ac8bf81b5dbd9cdf5d",
+        "row_sha256": "78078894ee9a45f184ad3cad97260c0e09b388502768f80a92438d2eab19b55c",
+        "value_hashes": [
+          "612b2f1abc51e4b8b66608003483cf432713c5447ae3cae2de8f8f42f4602527"
+        ]
+      },
+      {
+        "content_identity_sha256": "e42ddc9be76068604d3dc823111bdc7a4986a458adfa4b672cec730728d0cec4",
+        "csv_data_row": 17294,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "ddd5b1fc0ce62d74e632321500a6549bb0746fa4190613a74cea4940fbb99e16",
+        "row_sha256": "061ee150b5486761700423fa5d13108c22f87992e4984a53eb0bdf6032019769",
+        "value_hashes": [
+          "a6dd219b573d5570fe013bc659a082f177933edf3298802995cc85043eed3d79"
+        ]
+      },
+      {
+        "content_identity_sha256": "63780cd750b234680a72bd9e85aaf911756afb82893012bc96345af5f8dd27e7",
+        "csv_data_row": 20364,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "fdc73d163433dde50e6d713131b398881b226d30582fdda04f842ed9a662cd53",
+        "row_sha256": "5ba895f6777f837acdea6138b7d422c3787b34cb1b257863ab090de0489904ef",
+        "value_hashes": [
+          "1af555079372df9046acb73f35d5ad46154957ebc6a08a21d913bf24e2d0bccd"
+        ]
+      },
+      {
+        "content_identity_sha256": "4238c276f929878c3227175b1b4e64302250ab15cebd9ebceaebf93f15e786e1",
+        "csv_data_row": 20892,
+        "decision_groups": [
+          "b"
+        ],
+        "occurrence_identity_sha256": "c7ddca301095452dc7375d92f4f8ff78bcd9a84d1cddc5c2d83b2f7aa59a0302",
+        "row_sha256": "95c22fb9ac4ae83052d9b373fcfc0c926692decee878b7eacaf011cd3a2cb5cd",
+        "value_hashes": [
+          "dd3c7c1bd5729dd8a6f44e051c16c573d682193180cb43ac2916f821c54c79d0"
+        ]
+      },
+      {
+        "content_identity_sha256": "bf8424c00b097dd5deb6a2994bd02389295a5808ac52e6737d4504acae41a00f",
+        "csv_data_row": 22809,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "6673b0f879d6539a60a0c4a6607d17143a094c4df6f7e43a8966943477d56a3e",
+        "row_sha256": "47a9f175c9e25e8b1058d8d8e35a97581de156581a047fddc5aee0d9702805d2",
+        "value_hashes": [
+          "91d1d5b496be4c006d2837ee086649b1dd455da3b55dfca56de4cfb13d0f7862"
+        ]
+      },
+      {
+        "content_identity_sha256": "76dca379e4b1af14e2e8e2e560233a8ddde125cc7b3c9afed00b94d9ecd484ff",
+        "csv_data_row": 23685,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "10aef9440688531ace20a8b3569a4c7ce273a048edad63f6893f77a89ac11ff8",
+        "row_sha256": "85481823c362c36660f46be602994b3b70ad8722e46469278835e616d2044b83",
+        "value_hashes": [
+          "2e8c3496bf12356c2f63e80a52fb233980485033b24577d006863a340569890e"
+        ]
+      },
+      {
+        "content_identity_sha256": "501fee3bc5343cc7e41bb21ad88d101b312323bf597405436c10561c2dcbb800",
+        "csv_data_row": 26276,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "82cc18dc0448111926920cf7c1eafca83817146f9e0d99c47ec61b75e8399b89",
+        "row_sha256": "00ec906d278adbdb029eeda630aec298256fff19f5c08afca5c3587b78a84e11",
+        "value_hashes": [
+          "96c1c795026aa3c69ef6057f433e42ed8a383ba32d4e2efb29f6dbc0c4ab318b"
+        ]
+      },
+      {
+        "content_identity_sha256": "318128ce18aa095dfbdef8b86de6181f0c148f0c461b70a0c030f001cd9b7595",
+        "csv_data_row": 28034,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "f5b0e6609e156851b0c21c541d7488b0d038344bc448782354b5487b248977c8",
+        "row_sha256": "a7c6e0e2d02902f73090b6bf738e5a49939ecd23e9bedd3527fab62e9db333df",
+        "value_hashes": [
+          "33c08c07ab97ffe185010e3aafb95916adbe48a66fec6c3a03b0da929be993ae"
+        ]
+      },
+      {
+        "content_identity_sha256": "1637c1a0db6e9133a22ae49c8d6194e6c24e7e2d8085040afbd06c873553a81a",
+        "csv_data_row": 40340,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "db51cb5a2f7238e1e3ccab87d8978e3b13a161a7227ddb85196b3f883dfd2386",
+        "row_sha256": "a50a875987aa6ff68aaab0c495c8fbaccf85224fd768361ea9f32028a0216d35",
+        "value_hashes": [
+          "ad4fdaa57daef79fc16c86d52979c05708c923ac253e911dee1cb7c02fade4b5"
+        ]
+      },
+      {
+        "content_identity_sha256": "4c25525cf6d7e1bb70dfe947bbc4619dc18890abae77be4abbc49a052c92c129",
+        "csv_data_row": 40868,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "edfc8edab795d9c1f6d376d23706a682b607325dac7d96e233c14027353b6c28",
+        "row_sha256": "9080d93a52036fb97c7c94aa9f613f369b934500102b6719e095f627417d85cf",
+        "value_hashes": [
+          "73b1b25cae0f76b78471336d0eaabd7b1f2e9de1f2c2b18a8e7c5281b4ab184e"
+        ]
+      },
+      {
+        "content_identity_sha256": "7923789e174ac1849e31da4931ffd511d1d4be28104b75620172fc48bb69a416",
+        "csv_data_row": 41106,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "7d392df0d8647c0d5d03a63cd92d6a5d3df2a90bd946551c9d498de096d36892",
+        "row_sha256": "074c9e9cef12c61a084def5af28e6e23d15f6d348d8adaeeae6830cb826eee23",
+        "value_hashes": [
+          "bb20fe0752a5af8b82ca25dced46706991d008f5e8327f3da30ae0f7e45043d7"
+        ]
+      },
+      {
+        "content_identity_sha256": "4a87fae3f2d2601618050993eb97c4e45419dcde400b9db31391b339f52673ee",
+        "csv_data_row": 44583,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "f6952b709ea3c8379fd23be376688e36f872a11c0fa6f460f67a47ded8bf91bc",
+        "row_sha256": "ff2f590a70fdab6723abbf66853693f43e55e549d4bfe9e5517cc71fff18ab01",
+        "value_hashes": [
+          "4d30b86a1d5b22ffcb77f0a8e7a12042ccd68fa0b62957a5251fbbad1992a137"
+        ]
+      },
+      {
+        "content_identity_sha256": "5842908735ffffff997abfe43e7b0b1631173dff64c07a82f09d4d83c87cbd3d",
+        "csv_data_row": 44659,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "11419729adf4b81c7385be706664c09fbccd8217586cd11f98ba6eb8fd84d55e",
+        "row_sha256": "9f77dcea8d82dae995abbd4f8d8864f1e131e5dfeac30c85e12709b0729663a2",
+        "value_hashes": [
+          "893894e570962779d4ea4b7068b1df4fc06231faccf825638a71062f78693839"
+        ]
+      },
+      {
+        "content_identity_sha256": "e5123ff7e3a368751612ad0efff0e6896340a52a7bc7372031567f45bae2fa1d",
+        "csv_data_row": 48553,
+        "decision_groups": [
+          "b"
+        ],
+        "occurrence_identity_sha256": "4d1b0be71c209d703fe37605a7741c30d06f21de09e328b51488c0f57d26c75f",
+        "row_sha256": "709e806bb39a066ed7d52fd02d8d82f3639b169672e634f1372f7d08f33606bf",
+        "value_hashes": [
+          "240de88fc58bbd0a4a827f41e5882a56e5c2b0606e5abdd85f78caaf0e7fcb0c"
+        ]
+      },
+      {
+        "content_identity_sha256": "cf07a7cb821534a57b91407ea5619c7f91b32bc61ff164a0ec8ffd656f724673",
+        "csv_data_row": 49737,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "8f0396695e4931258353600298b783d2d17c96b913c19c975e763e8db4eaf894",
+        "row_sha256": "88ac3b515448824cbaaa48cf9411f319d3547d44dde74e78e28ebc0ce71dc915",
+        "value_hashes": [
+          "e2034fb274bb457736fa2fe85420f04248cb7b14ad07488b660294c169033bc8"
+        ]
+      },
+      {
+        "content_identity_sha256": "084363b3a2d84ddca56a3600bf9e13e046ad560222eb5a812f66378eb9a7a2b5",
+        "csv_data_row": 61572,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "3914ad790d5e142bb1a523d9b9f39cf411d03bcf01789bae48610a9710b103b5",
+        "row_sha256": "999280c80c6e1b2bd3e079765ad9df5a89d7770120f79d6b95960ec9e4a4e186",
+        "value_hashes": [
+          "ee18079aa7f00d355e6dd8030383a37a90264c9aa87b17e9b1cb7c3a751cc85d"
+        ]
+      },
+      {
+        "content_identity_sha256": "529cb10bef0ff6f5aeef7800e4ac8aa3a5260031904f44057a01137463b89ab8",
+        "csv_data_row": 63035,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "2e83b8b0354643f1c186d427b30befb41e594fcb8c9d774f2da1825f8524c092",
+        "row_sha256": "eeaa6c2754abc6847b1be340890da6f7de10e8dccfd8b3bbc2e17d7752b1ba1e",
+        "value_hashes": [
+          "7dc9aea24e1f61a76f6dc71cfa007e57f8de11273c98c1977c3589a02aed14e6"
+        ]
+      },
+      {
+        "content_identity_sha256": "17672d8de8ef1bbe5b87a6fbd9da963e658931cc9478cac97b4c09d4779b5bac",
+        "csv_data_row": 63965,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "c6e46dd116524a7d38d3b76b6e04172465bd6c724dbdbe8a8fe6835c3c0b1ac3",
+        "row_sha256": "d6dbc40d48be355eb28d6dbba084573ad114a9338b687e4ddc1826966a202ca1",
+        "value_hashes": [
+          "33afc4e0ca38e68b1960396a51d64a803130e3048b8176867e5a1e2f066a318a"
+        ]
+      },
+      {
+        "content_identity_sha256": "749307ef524b99493a6d92bcb54949ae4b4d7c6d5aafb7fc41333b52a73643a3",
+        "csv_data_row": 81811,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "da6d158a80e961071cf35376fdfafbd3b9e5f389a08ef35d22e5045fb33c108d",
+        "row_sha256": "faaadfb4987e3e47ce3020a1a9df2c6c7e040e16d5f5acdc83d8f4827c118bb1",
+        "value_hashes": [
+          "37098cee973fb168e718029ad3dbc6bade836aba8c8ffe33925ed43bb4d6a1de"
+        ]
+      },
+      {
+        "content_identity_sha256": "0b91be583cfd0658c9aad9d684df7694976b36227772e60fcd3f6ef634f24fad",
+        "csv_data_row": 99854,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "647deaab84f85629bedae2d8b11159542dcb44c44c8a3fa6d65a3393ba6f24da",
+        "row_sha256": "93629e4c56f09a78a2223b052294092c21d79e39930ef2a862a0883e6e281b0c",
+        "value_hashes": [
+          "150584d64c631b224d93bf1e6a9af99d6bc483b0f0217fe44f4a5cc270c113cb"
+        ]
+      },
+      {
+        "content_identity_sha256": "ae51c06723358702c8f4fa3ddc7520172a2c3ec6d61fc8d40cbc07316ffb9e17",
+        "csv_data_row": 111248,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "806d1f846682bca2af54de1f1fb864187a9baa39eac8d712a84ee17c897234dc",
+        "row_sha256": "3e5bb6deeea66e921a5e4451bf46e6f57d7692041313f84f1cd1241e01ac4649",
+        "value_hashes": [
+          "28100a69f04ebfdafdb556e74a622342439be785e5957be11f2f4e7b5b4c8554"
+        ]
+      },
+      {
+        "content_identity_sha256": "9ca54193c6b8549dc60b49d720927396d8d9c5d84f1f04833348e0fb498cd86d",
+        "csv_data_row": 129522,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "dd416256ce34c7a8b79a7cd6441f0406a638225c59f81faa8ea2d372a74542ee",
+        "row_sha256": "5a506d4adc347d75b85694ed3dba11520f9b8ff27d61ac72e6b743e9e5ca9c50",
+        "value_hashes": [
+          "765cf533d5541cec1b63f29cedd365262696229bf77f105b7789381dcf922919"
+        ]
+      },
+      {
+        "content_identity_sha256": "744dcff9f7d0aa11709079bf961574e73bb216cc0ac20820119868edbf2e9945",
+        "csv_data_row": 177521,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "11c3164dfd2f3d9c72492082d48abd179002b957288332060f45104d3f2871c4",
+        "row_sha256": "b76e18578d7bac537ed611e53720db1d4cebfc8a93f8be4e03e3441f581d393e",
+        "value_hashes": [
+          "74d58c8427ff2597392b205ff7aa7f3158c71308d3a673a48493dc390a3622a9"
+        ]
+      },
+      {
+        "content_identity_sha256": "1227de21b8dcb2abb03c91ce1725ce0079aac31969a254e08595a5c5a70ddad7",
+        "csv_data_row": 181728,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "93c9362b80fbc9829715386906238f7a52f20ba419f693412cd58db7d02308b6",
+        "row_sha256": "5c93ccffe8e294f45430914c1c8936862d55533bca1d3e29f68ef3812cd9b367",
+        "value_hashes": [
+          "3f90230af2c4115ce81ee8624677b35ba09149f9a2bc6997c4b642cf81b1a4ab"
+        ]
+      },
+      {
+        "content_identity_sha256": "7f977cda817771a299809cbc908880085ced270ca8457db19d748c09c4078df8",
+        "csv_data_row": 193541,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "0a0376e8b968acc2efd80dcec8a5aa5ba08403d944af9df132deece34ee2b6fb",
+        "row_sha256": "5bf0bbcf74d3e134af1ab81740a73e445963469a930ad23ca42bb1315679cf01",
+        "value_hashes": [
+          "e5fd38966bc262f1e38b1221311b723d7e5c8b5a6a405a3cef07a2f5eccf8370"
+        ]
+      },
+      {
+        "content_identity_sha256": "9db90d90d9ba3ea5c580c2af61f74a0ae54d40d1a7a5057e2e101686cce2f065",
+        "csv_data_row": 208251,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "7b9645fc76d771211c400591e13c5c935785ce00bf1632d9f481ba861be67532",
+        "row_sha256": "bd5968fb1643828b44fdb27358b7ffd8ef9893189f19ec255f50f2dadc84ada5",
+        "value_hashes": [
+          "e992ad0f15b9d5fa2f269cc4692e661021ab97c954f2572bea6ccab5870804fd"
+        ]
+      },
+      {
+        "content_identity_sha256": "73986d0cf5f570aceb1526c6bb71f945bca79b6b75090fc251366b05c366c352",
+        "csv_data_row": 208252,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "8d4e0e5558bae9236a8b3a7ea92660276861ef3959c49cd09caaebee0eee2b8f",
+        "row_sha256": "b171738876196b6bfb133136394f1c695a7663ed6d843fa7a3043576310f2700",
+        "value_hashes": [
+          "1b79cb1eb1855075947a5e0b9eb78f34218bb36411f41b0846f5f2f0d952abba"
+        ]
+      },
+      {
+        "content_identity_sha256": "54a65a24d6e8af63693f11e51d3b94a43b3b34c40fcc6fbc5ad7542a3e7e21c6",
+        "csv_data_row": 208253,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "bab9f4a391d972e168b8c5b19d96ab9cbf729fc5025bf9bdd06c2a1f15c9a33c",
+        "row_sha256": "93b44164247c010d8db1c89546bebce03794a89ae4cdb99d25263577459b1f74",
+        "value_hashes": [
+          "fc37daf3d2ce514f46e416de955f3725cc6bbff500be8c610976f148407074aa"
+        ]
+      },
+      {
+        "content_identity_sha256": "0238c0033062fef612cc78dc884ba25588a0296320f26e29fec619c0689d1713",
+        "csv_data_row": 208254,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "36a8efb4c096422affaadccee34ee5598673955475d08f8b776457ebf4205cc5",
+        "row_sha256": "091a74bebb1490067c8a8f84d8befc43b75634eb9d42bfdce51660db725be90f",
+        "value_hashes": [
+          "c6688f007c4ffc75f4f73c0e26549c367dc5a562a8c482835f08a93ae67fa517"
+        ]
+      },
+      {
+        "content_identity_sha256": "6f43a969ff0eea5d9407113b107ed40e14493bab65b70011695e05d554e6aa8a",
+        "csv_data_row": 208255,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "48b08c372ab025675d819e9469de40eeab6b7adb984606ea0553be3e626aad09",
+        "row_sha256": "b5fb7b5a82b15f4c972daa5f2f57f11453d0904519d239b8c50acf2ce678e304",
+        "value_hashes": [
+          "7ddb2b889c366fd2b2988831814e4dd35f20cfb43429e75b72e3489d5b83dbf2"
+        ]
+      },
+      {
+        "content_identity_sha256": "b337c22faa7adecce4a70e252989ec77d2a33fce2cf8bbeaddc67e18240d75a2",
+        "csv_data_row": 229886,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "3842479a30b604308586afc41b8b055f440799b867a10a6d12fea920fa619997",
+        "row_sha256": "a14f2cd660b5886413e6a1eb161242fc6631182c1ac76cc5d15dd68e6dbfe9d2",
+        "value_hashes": [
+          "128b52e1559a8f3a26dd7093e0c410a468a5a817e0930afac6eae70018ffeb12"
+        ]
+      },
+      {
+        "content_identity_sha256": "4ad5c958d93ffa234d8d998f8d9c9c26f8caa729aa3499dac5da19b851446f75",
+        "csv_data_row": 234077,
+        "decision_groups": [
+          "l"
+        ],
+        "occurrence_identity_sha256": "65528646f0e926bf8546534832b0468b8048e7051ce72265928c5c418df2bec2",
+        "row_sha256": "61b1a8bbc3df4ee101b0fa222f887595365f7b207c4eff8bfe20e7ef514f86df",
+        "value_hashes": [
+          "2b675675e370920330eb1a8c286363a4d8b09f486c08d7ed57370f3641605b92"
+        ]
+      }
+    ],
+    "excluded_rows_by_decision": {
+      "b": 7,
+      "l": 35
+    },
+    "total_source_rows": 240958
+  },
+  "source": {
+    "bytes": 894397692,
+    "dataset_id": "8152455d-179d-4455-9d09-e5dfc516be10",
+    "etag": "\"2406fbbfd602c0039af42290b182044b:1787700725.760048\"",
+    "file_name": "cms-qic-partd-2026-08-25.csv",
+    "inspection_report": "cms-qic-part-d-bulk-inspection.json",
+    "part": "part_d",
+    "raw_artifact_location": "outside_repository_only",
+    "raw_rows_committed": false,
+    "sha256": "e32b4f10eb51df1882fc3b9084807e448d4924c0605518afd71a7e85ebb9759f",
+    "source_url": "https://downloads.cms.gov/qic-decision-search/partd-2026-08-25.csv"
+  },
+  "source_id": "cms_qic_decision_summaries",
+  "status": "accepted_for_local_summary_evaluation_with_conservative_exclusions"
+}
