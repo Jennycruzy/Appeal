@@ -358,6 +358,15 @@ also describes case-detail access and redacted public decisions. The current
 search endpoint and an export path were not verified from this environment, so
 this is a candidate only.
 
+The 2026-08-28 source check confirmed that the OIC still advertises the public
+IRO search on its [online-services page](https://www.insurance.wa.gov/online-services)
+and [appeal guidance](https://www.insurance.wa.gov/insurance-resources/health-insurance/appealing-health-insurance-denial/how-appeal-health-insurance-denial).
+The legacy URL printed in an older guide currently renders a producer, agency,
+and company lookup page rather than IRO decisions, so no scraper is being built
+against it. The current IRO endpoint or export remains unresolved. This finding
+is recorded without claiming that any Washington case rows were acquired in
+[`evidence/wa-oic-iro-search.json`](../../evidence/wa-oic-iro-search.json).
+
 ### California Division of Workers' Compensation — rejected for this benchmark
 
 The [DWC IMR search](https://www.dir.ca.gov/dwc/imr/imrdecisionsearch.asp)

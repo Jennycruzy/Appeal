@@ -107,6 +107,28 @@ The real-data release is intentionally split into two tracks:
   and the acquisition brief is
   [`docs/full-appeal-corpus-acquisition.md`](full-appeal-corpus-acquisition.md).
 
+### Smart real-denial path — current execution order
+
+The project now follows the executable two-lane plan in
+[`docs/real-denial-smart-path.md`](real-denial-smart-path.md):
+
+1. Use the accepted CMS QIC API for the immediate regulator-summary benchmark
+   and keep its paginated extraction outside the repository.
+2. Resolve the current Washington OIC IRO search endpoint and inspect one
+   bounded result or export. Washington is a verified public-source lead, not
+   an acquired corpus; its metadata-only discovery record is
+   [`evidence/wa-oic-iro-search.json`](../evidence/wa-oic-iro-search.json).
+3. Obtain the complete Appeal package from an authorized payer/IRO/TPA/
+   academic/quality-improvement partner or from patient-consented case
+   packets. This route is controlled by a written data-use or consent and
+   redaction decision, not by an unanswered public-agency email.
+
+The old Washington URL printed in an agency guide currently renders a
+producer/agency/company lookup page. Do not build a scraper against that stale
+URL or claim that Washington rows were acquired. No public source has yet been
+verified as a complete denial-to-outcome package, so the full-case acceptance
+manifest remains blocked.
+
 The CMS summary API, DMHC mirror, NY DFS export, Oregon report, and Michigan
 order are not silently promoted into the full-case track. Synthea remains an
 integration fixture only. Until a full-case package is accepted, full Appeal
@@ -157,7 +179,7 @@ deletion, and audit controls.
   in `src/appeal_core/criteria.py`. The Argument Builder cannot be represented
   as having clinical evidence unless an Evidence Miner observation supplies a
   FHIR reference.
-- The local test suite has 19 passing tests, and strict mypy has passed for the
+- The local test suite has 33 passing tests, and strict mypy has passed for the
   core package. Re-run both after any changes.
 - One official Michigan PRIRA order was manually downloaded and inspected. The
   result is in `evidence/manual-review-acquisition.json`; it counts as one
@@ -291,6 +313,22 @@ This source is ready for the summary adapter, but no summary adapter or Appeal
 comparison has run yet. Current counts are therefore 1,142,429 available
 summary records, zero summary cases evaluated, zero full Appeal cases, and zero
 regulator-ground-truth comparisons.
+
+### Washington OIC public IRO search — next public-source check
+
+The official Washington OIC currently advertises a public independent-review
+decision search by company, diagnosis, treatment, decision, and reason for
+appeal. The official entry points and the stale-link observation are recorded
+in [`evidence/wa-oic-iro-search.json`](../evidence/wa-oic-iro-search.json).
+The current search endpoint or export has not been resolved from this
+workspace, so no Washington rows, schema, privacy result, or reuse permission
+is claimed. Resolve the current link first, then capture one bounded result or
+export outside the repository and run a source-specific inspection before
+acceptance.
+
+This is a parallel public-summary check and does not delay the CMS summary
+adapter. It also cannot satisfy the full-case track without the original
+denial, clinical evidence, policy version, and appeal package.
 
 ### DMHC secondary real-source path
 
@@ -465,19 +503,22 @@ server survives restart.
    only for local-only external-review outcomes; its 1,640-row adapter
    preflight abstained before denial parsing. Michigan remains local-only and
    unevaluated. These candidates must not be mixed with the CMS source.
-3. The CMS source does not satisfy the full-case package. Obtain that package
-   only through an authorized source with the requirements in
+3. Resolve the Washington OIC public IRO search endpoint and inspect a bounded
+   result or export without treating the stale legacy URL as live data.
+4. The CMS source does not satisfy the full-case package. Obtain that package
+   through an authorized source or patient-consented collection with the
+   requirements in
    `docs/full-appeal-corpus-acquisition.md`; do not block summary benchmarking
    on a reply-dependent request.
-4. Complete policy terms review and ingest only permitted, ETag-backed policy
+5. Complete policy terms review and ingest only permitted, ETag-backed policy
    documents. Extract traceable criterion trees and perform human validation.
-5. Complete quota and residency probes and authenticated managed-component
+6. Complete quota and residency probes and authenticated managed-component
    checks. The model metadata gate now passes, but the selected region and
    managed Agent Platform components are not yet fully verified.
-6. Only after preflight exit: build the independent PAS payer, then the agent
+7. Only after preflight exit: build the independent PAS payer, then the agent
    identities/tools, event spine, Memory Bank, governance boundary, Gemma,
    observability, console, evaluation, and seeded demo.
-7. The Phase 9 real-denial run and mandatory human-choice stop have not
+8. The Phase 9 real-denial run and mandatory human-choice stop have not
    happened. A summary adapter may produce a documented abstention, but it
    cannot claim a full Appeal evaluation without the original denial, policy,
    and clinical inputs.

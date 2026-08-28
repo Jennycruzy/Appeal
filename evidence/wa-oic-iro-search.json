@@ -1,0 +1,86 @@
+{
+  "schema_version": "0.1",
+  "recorded_at": "2026-08-28",
+  "track_id": "regulator_outcome_benchmark",
+  "source_id": "washington_oic_iro_decisions",
+  "status": "discovery_candidate_not_acquired",
+  "source": {
+    "publisher": "Washington State Office of the Insurance Commissioner",
+    "official_entrypoint_url": "https://www.insurance.wa.gov/online-services",
+    "official_appeal_guidance_url": "https://www.insurance.wa.gov/insurance-resources/health-insurance/appealing-health-insurance-denial/how-appeal-health-insurance-denial",
+    "official_iro_process_url": "https://www.insurance.wa.gov/insurers-regulated-entities/independent-review-organization-process",
+    "legacy_search_url_from_official_guide": "https://fortress.wa.gov/oic/consumertoolkit/Search.aspx",
+    "legacy_search_observation": "The legacy URL currently renders a producer, agency, and company lookup page; it is not accepted as the current IRO decision endpoint.",
+    "officially_advertised_search_fields": [
+      "company",
+      "diagnosis",
+      "treatment",
+      "decision",
+      "reason"
+    ],
+    "official_source_claim": "The OIC describes a public searchable database of independent-review decisions.",
+    "case_rows_acquired": 0,
+    "raw_artifact_location": "outside_repository_only",
+    "raw_rows_written": false
+  },
+  "field_policy": {
+    "regulator_outcome": {
+      "source_field": null,
+      "status": "expected_from_public_search_but_not_yet_observed"
+    },
+    "denial_reason": {
+      "source_field": null,
+      "status": "unverified_keep_nullable"
+    },
+    "appeal_type": {
+      "source_field": null,
+      "status": "unverified_keep_nullable"
+    },
+    "clinical_evidence": {
+      "source_field": null,
+      "status": "unverified_keep_unavailable"
+    },
+    "prior_authorization": {
+      "source_field": null,
+      "status": "not_verified"
+    }
+  },
+  "gates": {
+    "provenance": {
+      "status": "pass_for_source_discovery",
+      "basis": "Official OIC pages describe the public IRO decision search and process."
+    },
+    "access": {
+      "status": "pending_current_endpoint_resolution",
+      "decision": "Do not automate against the stale legacy URL or claim that search results were acquired."
+    },
+    "schema": {
+      "status": "pending_live_result_or_export"
+    },
+    "privacy": {
+      "status": "pending_no_rows_acquired",
+      "legal_determination_claimed": false
+    },
+    "reuse": {
+      "status": "pending_source_specific_terms_review",
+      "decision": "Public visibility is not treated as permission to redistribute or publish derived narrative rows."
+    },
+    "prior_authorization": {
+      "status": "not_verified",
+      "decision": "Do not label a row as prior authorization without row-level evidence."
+    }
+  },
+  "acceptance": {
+    "decision": "not_accepted_discovery_only",
+    "accepted_for_local_evaluation": false,
+    "accepted_for_repository": false,
+    "accepted_record_count": 0,
+    "accepted_narrative_record_count": 0,
+    "next_action": "Resolve the current OIC IRO search endpoint, capture one bounded result or export, inspect its schema and terms, then create a source-specific acceptance decision."
+  },
+  "evaluation": {
+    "regulator_summary_cases_evaluated": 0,
+    "full_appeal_cases_evaluated": 0,
+    "regulator_ground_truth_comparisons": 0
+  }
+}

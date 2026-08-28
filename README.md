@@ -73,6 +73,7 @@ Two other manually acquired regulator candidates are also tracked locally:
 
 Start with the [release-track handoff](docs/HANDOFF.md#release-tracks-2026-08-28),
 the [CMS QIC benchmark record](docs/cms-qic-decision-benchmark.md),
+and the [real-denial smart acquisition path](docs/real-denial-smart-path.md),
 then the [NY DFS handoff](docs/HANDOFF.md#ny-dfs-schema-mismatch--resume-here),
 the [Oregon fallback](docs/HANDOFF.md#oregon-iro-case-detail-fallback), the
 [NY acceptance manifest](evidence/ny-dfs-acceptance.json), the [Oregon

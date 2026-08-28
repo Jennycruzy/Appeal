@@ -37,13 +37,36 @@ Raw case material stays outside Git. It must not be uploaded to Google Cloud,
 the repository, or a third-party dataset host until the data owner permits that
 storage location and the project records the applicable controls.
 
+## Acquisition routes
+
+The complete-case track has two practical routes:
+
+1. An authorized payer, independent review organization, third-party
+   administrator, academic medical center, or quality-improvement program
+   supplies a de-identified batch under a written data-use agreement or an
+   equivalent written authorization.
+2. A patient or authorized representative supplies a case packet under written
+   consent, followed by documented redaction and human privacy review.
+
+Public regulator searches and unanswered agency outreach are not prerequisites
+for either route. They remain useful for the separate regulator-summary lane,
+but public visibility alone does not establish permission to reuse narrative
+case material.
+
 ## Suitable acquisition partners
 
-Prioritize an authorized health plan, independent review organization, third-
-party administrator, academic medical center, or quality-improvement program
-that can provide de-identified cases under a written agreement. Public
-regulator pages and published case examples are useful seed fixtures, but they
-are not substitutes for this package.
+Prioritize a partner that controls the original denial and appeal record and can
+provide a de-identified batch under the controls above. The delivery may be
+secure-file-transfer or an approved portal; it must not be sent through GitHub,
+committed to the repository, or uploaded to Google Cloud before the acceptance
+manifest approves that storage location.
+
+The requested batch has no artificial row limit. The first delivery should be
+large enough to expose field missingness and label variation; the evaluation
+sample size is chosen after the data owner confirms the population and label
+quality. A small pilot is acceptable only as an intake validation and does not
+unlock the full-case claim until the required fields are present for the
+accepted cases.
 
 ## Acceptance boundary
 

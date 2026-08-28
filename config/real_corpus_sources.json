@@ -51,6 +51,28 @@
       "case_level_ground_truth_verified": false
     },
     {
+      "id": "washington_oic_iro_decisions",
+      "track": "regulator_outcome_benchmark",
+      "kind": "official_state_iro_public_search",
+      "publisher": "Washington State Office of the Insurance Commissioner",
+      "official_entrypoint_url": "https://www.insurance.wa.gov/online-services",
+      "official_appeal_guidance_url": "https://www.insurance.wa.gov/insurance-resources/health-insurance/appealing-health-insurance-denial/how-appeal-health-insurance-denial",
+      "official_iro_process_url": "https://www.insurance.wa.gov/insurers-regulated-entities/independent-review-organization-process",
+      "legacy_search_url": "https://fortress.wa.gov/oic/consumertoolkit/Search.aspx",
+      "reported_coverage": "Washington health-care independent-review decisions; the OIC advertises public search by company, diagnosis, treatment, decision, and reason for appeal.",
+      "current_endpoint_verified": false,
+      "case_level_schema_observed": false,
+      "case_level_outcome_field_observed": false,
+      "central_case_level_dataset": false,
+      "full_case_package": false,
+      "case_level_ground_truth_verified": false,
+      "retrieval_status": "official_public_search_advertised_current_endpoint_unresolved",
+      "acceptance_evidence": "evidence/wa-oic-iro-search.json",
+      "fetch_method": "Resolve the current official search link, capture a bounded result or export outside the repository, then inspect schema, privacy, provenance, and reuse terms before acceptance.",
+      "reuse_status": "pending_source_specific_terms_review",
+      "privacy_status": "no_rows_acquired_pending_technical_and_human_review"
+    },
+    {
       "id": "cms_0057_f_prior_authorization_metrics",
       "track": "regulatory_metric_definition",
       "kind": "regulatory_benchmark_definition",
