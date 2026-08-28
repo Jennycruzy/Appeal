@@ -38,6 +38,8 @@ class LocalHttpApi:
                 }
             if method == "POST" and segments == ("api", "demo", "cases"):
                 return 201, self.service.open_demo_case(at=now).to_public_json()
+            if method == "POST" and segments == ("api", "sentinel", "tick"):
+                return 200, self.service.sentinel_tick(at=now).to_public_json()
             if len(segments) == 3 and segments[:2] == ("api", "cases") and method == "GET":
                 board = self.service.board(segments[2])
                 return 200, {"cases": list(board), "tenant_id": segments[2]}

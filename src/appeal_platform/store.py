@@ -66,6 +66,9 @@ class CaseStore:
     def count(self) -> int:
         return len(self._cases)
 
+    def list_all(self) -> tuple[Case, ...]:
+        return tuple(sorted(self._cases.values(), key=lambda item: (item.tenant_id, item.case_id)))
+
 
 class _DocumentSnapshot(Protocol):
     @property
@@ -252,6 +255,21 @@ class FirestoreCaseStore(CaseStore):
 
     def count(self) -> int:
         return sum(1 for _ in self._client.collection_group("cases").stream())
+
+    def list_all(self) -> tuple[Case, ...]:
+        cases: list[Case] = []
+        for snapshot in self._client.collection_group("cases").stream():
+            document = snapshot.to_dict()
+            if document is None:
+                raise ValueError("Firestore case document is empty")
+            tenant_id = document.get("tenant_id")
+            case_id = document.get("case_id")
+            if not isinstance(tenant_id, str) or not isinstance(case_id, str):
+                raise ValueError("Firestore case document is missing its identity")
+            case = self._read(snapshot, tenant_id=tenant_id, case_id=case_id)
+            if case is not None:
+                cases.append(case)
+        return tuple(sorted(cases, key=lambda item: (item.tenant_id, item.case_id)))
 
 
 def _case_id_from_snapshot(snapshot: _DocumentSnapshot) -> str:

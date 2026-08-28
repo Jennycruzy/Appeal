@@ -9,7 +9,7 @@ from collections.abc import Mapping
 from appeal_agents import AppealInput, AppealWorkflow
 from appeal_agents.demo import demo_input
 from appeal_core import Case, CaseState, CaseStateMachine, DeadlineCatalog
-from appeal_platform import LocalCaseRuntime, PayerAdjudicator, RuntimeResult
+from appeal_platform import LocalCaseRuntime, PayerAdjudicator, RuntimeResult, SentinelTickResult
 
 
 class CaseNotFound(KeyError):
@@ -96,6 +96,12 @@ class LocalAppealService:
         )
         self._results[(tenant_id, case_id)] = result
         return result
+
+    def sentinel_tick(self, *, at: datetime | None = None) -> SentinelTickResult:
+        report = self.runtime.sentinel_tick(at=_now(at))
+        for key in report.updated_cases:
+            self._results.pop(key, None)
+        return report
 
     def get(self, tenant_id: str, case_id: str) -> RuntimeResult | PersistedCaseView:
         current = self._results.get((tenant_id, case_id))

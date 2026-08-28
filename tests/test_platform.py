@@ -10,7 +10,7 @@ from appeal_agents import default_local_security_cases, measure_security_boundar
 from appeal_agents import AgentPolicyRegistry, CapabilityDenied
 from appeal_agents.security import LocalSecurityBoundary
 from appeal_agents.workflow import AppealWorkflow
-from appeal_core import CaseStateMachine, DeadlineCatalog
+from appeal_core import Actor, ActorKind, CaseState, CaseStateMachine, DecisionSource, DeadlineCatalog, EvidenceRef
 from appeal_platform import (
     DomainEvent,
     LocalCaseRuntime,
@@ -171,6 +171,66 @@ class PlatformTests(unittest.TestCase):
         self.assertEqual(approved.workflow.mutation_count, 1)
         self.assertEqual(runtime.store.require("tenant-demo", "case-demo-001").state.value, "AWAITING_DETERMINATION")
 
+    def test_deadline_sentinel_abandons_only_expired_executable_cases(self) -> None:
+        runtime = LocalCaseRuntime(workflow())
+        machine = runtime.workflow.machine
+        case = machine.create(
+            "case-expired",
+            "tenant-a",
+            NOW - timedelta(days=10),
+            Actor("seed-agent", ActorKind.AGENT),
+            DecisionSource("deterministic", "seed", "1"),
+        )
+        for state, key in [
+            (CaseState.DENIAL_PARSED, "parse"),
+            (CaseState.POLICY_LOCATED, "policy"),
+            (CaseState.CRITERION_IDENTIFIED, "criterion"),
+            (CaseState.EVIDENCE_ASSEMBLED, "evidence"),
+            (CaseState.DRAFT_READY, "draft"),
+            (CaseState.AWAITING_CLINICIAN, "review"),
+        ]:
+            case = machine.transition(
+                case,
+                state,
+                NOW - timedelta(days=10),
+                Actor("workflow-agent", ActorKind.AGENT),
+                DecisionSource("deterministic", "seed", "1"),
+                "synthetic sentinel fixture",
+                (),
+                f"case-expired:{key}",
+            )
+        signature = EvidenceRef("ClinicianSignature", "signature://case-expired/1", "a" * 64)
+        case = machine.transition(
+            case,
+            CaseState.SUBMITTED_LEVEL_1,
+            NOW - timedelta(days=10),
+            Actor("clinician", ActorKind.HUMAN),
+            DecisionSource("human", "clinician", "1"),
+            "synthetic sentinel fixture",
+            (),
+            "case-expired:submit",
+            signature,
+        )
+        case = machine.transition(
+            case,
+            CaseState.AWAITING_DETERMINATION,
+            NOW - timedelta(days=10),
+            Actor("submission-gate", ActorKind.SYSTEM),
+            DecisionSource("deterministic", "seed", "1"),
+            "synthetic sentinel fixture",
+            (),
+            "case-expired:await",
+        )
+        runtime.store.save(case)
+
+        report = runtime.sentinel_tick(at=NOW)
+        self.assertEqual(report.inspected_count, 1)
+        self.assertEqual(report.expired_count, 1)
+        self.assertEqual(report.abandoned_count, 1)
+        self.assertEqual(report.conflict_count, 0)
+        self.assertEqual(runtime.store.require("tenant-a", "case-expired").state, CaseState.CLOSED_ABANDONED_DEADLINE)
+        self.assertEqual(runtime.sentinel_tick(at=NOW).abandoned_count, 0)
+
     def test_case_service_exposes_board_and_later_adjudication(self) -> None:
         service = LocalAppealService(workflow_runtime())
         waiting = service.open_demo_case(at=NOW)
@@ -217,6 +277,10 @@ class PlatformTests(unittest.TestCase):
         board_status, board = api.handle("GET", "/api/cases/tenant-demo", at=NOW)
         self.assertEqual(board_status, 200)
         self.assertEqual(len(board["cases"]), 1)  # type: ignore[arg-type]
+
+        tick_status, tick = api.handle("POST", "/api/sentinel/tick", at=NOW)
+        self.assertEqual(tick_status, 200)
+        self.assertEqual(tick["abandoned_count"], 0)
 
 
 def workflow_runtime() -> LocalCaseRuntime:

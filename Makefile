@@ -56,8 +56,13 @@ ADK_LOCATION ?= global
 ADK_MODEL ?= gemini-3.7-flash
 ADK_OUTPUT ?= evidence/adk-stage-b-case-exit.json
 ADK_LEDGER ?= ../Downloads/appeal-adk-stage-b-receipts.jsonl
+SENTINEL_PROJECT ?= onyx-yeti-506606-i9
+SENTINEL_TENANT ?= tenant-sentinel-demo
+SENTINEL_CASE ?= case-sentinel-expired-001
+SENTINEL_ENTERED_AT ?= 2026-08-18T12:00:00Z
+SENTINEL_SEED_OUTPUT ?= evidence/sentinel-seed.json
 
-.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime measure-local-security measure-model-armor measure-gemma run-adk-case run-local-api deploy-cloud-run load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime measure-local-security measure-model-armor measure-gemma run-adk-case run-local-api deploy-cloud-run seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -91,6 +96,9 @@ run-local-api:
 
 deploy-cloud-run:
 	gcloud run deploy "$(CLOUD_RUN_SERVICE)" --source . --project "$(CLOUD_RUN_PROJECT)" --region "$(CLOUD_RUN_REGION)" --service-account "$(CLOUD_RUN_SERVICE_ACCOUNT)" --set-env-vars "APPEAL_DEPLOYMENT=cloud_run,APPEAL_STORAGE=$(CLOUD_RUN_STORAGE),GOOGLE_CLOUD_PROJECT=$(CLOUD_RUN_PROJECT),APPEAL_FIRESTORE_DATABASE=$(CLOUD_RUN_FIRESTORE_DATABASE)" --allow-unauthenticated --min 0 --max 1 --memory 512Mi --cpu 1 --timeout 300 --quiet
+
+seed-sentinel-case:
+	GOOGLE_CLOUD_PROJECT="$(SENTINEL_PROJECT)" PYTHONPATH=src .venv/bin/python scripts/seed_sentinel_case.py --project "$(SENTINEL_PROJECT)" --tenant-id "$(SENTINEL_TENANT)" --case-id "$(SENTINEL_CASE)" --entered-at "$(SENTINEL_ENTERED_AT)" --output "$(SENTINEL_SEED_OUTPUT)"
 
 load-hapi:
 	PYTHONPATH=src $(PYTHON) scripts/load_synthea_corpus.py --input-dir "$(SYNTHETIC_INPUT_DIR)" --report "$(HAPI_LOAD_REPORT)" --timeout "$(HAPI_TIMEOUT)" --start-index "$(HAPI_START_INDEX)"

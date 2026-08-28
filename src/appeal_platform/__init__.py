@@ -19,7 +19,7 @@ from .memory import (
     ScopedMemoryBank,
 )
 from .payer import PayerAdjudicator, PayerDecision, PayerDecisionStatus
-from .runtime import LocalCaseRuntime, RuntimeResult
+from .runtime import LocalCaseRuntime, RuntimeResult, SentinelTickResult
 from .store import CaseStore, CaseStoreConflict, CaseStoreScopeError, FirestoreCaseStore
 from .reversibility import (
     ActionStatus,
@@ -53,5 +53,6 @@ __all__ = [
     "ReversibilityLedger",
     "ReversibilityVerification",
     "RuntimeResult",
+    "SentinelTickResult",
     "ScopedMemoryBank",
 ]

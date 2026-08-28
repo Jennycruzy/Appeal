@@ -6,13 +6,14 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 
 from appeal_agents import AppealInput, AppealWorkflow, WorkflowOutcome, WorkflowResult
-from appeal_core import CaseState
+from appeal_core import Actor, ActorKind, CaseState, DecisionSource, ReceiptDraft
+from appeal_agents.models import AGENT_IDENTITIES
 
 from .events import DomainEvent, LocalEventSpine
 from .memory import ScopedMemoryBank
 from .payer import PayerAdjudicator, PayerDecision, PayerDecisionStatus
 from .reversibility import ReversibleAction, ReversibilityLedger
-from .store import CaseStore
+from .store import CaseStore, CaseStoreConflict
 
 
 @dataclass(frozen=True)
@@ -25,6 +26,25 @@ class RuntimeResult:
         if self.payer_decision is not None:
             result["payer_decision"] = self.payer_decision.to_json()
         return result
+
+
+@dataclass(frozen=True)
+class SentinelTickResult:
+    inspected_count: int
+    expired_count: int
+    abandoned_count: int
+    skipped_non_executable_count: int
+    conflict_count: int
+    updated_cases: tuple[tuple[str, str], ...] = ()
+
+    def to_public_json(self) -> dict[str, object]:
+        return {
+            "inspected_count": self.inspected_count,
+            "expired_count": self.expired_count,
+            "abandoned_count": self.abandoned_count,
+            "skipped_non_executable_count": self.skipped_non_executable_count,
+            "conflict_count": self.conflict_count,
+        }
 
 
 class LocalCaseRuntime:
@@ -111,6 +131,89 @@ class LocalCaseRuntime:
         approved = self.workflow.approve(result.workflow, at=at)
         self._persist(approved, expected_fingerprint=result.workflow.case.fingerprint())
         return RuntimeResult(approved)
+
+    def sentinel_tick(self, *, at: datetime | None = None) -> SentinelTickResult:
+        """Process expired persisted cases without requiring workflow content."""
+
+        now = (at or datetime.now(UTC)).astimezone(UTC)
+        inspected = 0
+        expired = 0
+        abandoned = 0
+        skipped_non_executable = 0
+        conflicts = 0
+        updated_cases: list[tuple[str, str]] = []
+        actor = Actor(AGENT_IDENTITIES["deadline_sentinel"], ActorKind.SCHEDULER)
+        source = DecisionSource("deterministic", "deadline-sentinel", "0.1")
+
+        for case in self.store.list_all():
+            inspected += 1
+            clock = self.workflow.machine.statutory_clock(case)
+            if clock.status.value != "verified":
+                skipped_non_executable += 1
+                continue
+            if not clock.is_expired(now):
+                continue
+            expired += 1
+            if case.state not in {
+                CaseState.AWAITING_DETERMINATION,
+                CaseState.ESCALATION_ELIGIBLE,
+                CaseState.PEER_TO_PEER_REQUESTED,
+                CaseState.EXTERNAL_REVIEW_FILED,
+            }:
+                continue
+            reason = "statutory clock expired; case abandoned without a late action"
+            idempotency_key = f"{case.case_id}:deadline-expired:{case.deadline_key}"
+            updated = self.workflow.machine.transition(
+                case,
+                CaseState.CLOSED_ABANDONED_DEADLINE,
+                now,
+                actor,
+                source,
+                reason,
+                case.last_transition.evidence_refs,
+                idempotency_key,
+            )
+            try:
+                self.store.save(updated, expected_fingerprint=case.fingerprint())
+            except CaseStoreConflict:
+                conflicts += 1
+                continue
+            abandoned += 1
+            updated_cases.append((case.tenant_id, case.case_id))
+            if self.workflow.ledger is not None:
+                self.workflow.ledger.append(
+                    ReceiptDraft(
+                        receipt_id=idempotency_key,
+                        recorded_at=now,
+                        tenant_id=case.tenant_id,
+                        case_id=case.case_id,
+                        actor=actor,
+                        action="deadline_expiration",
+                        decision_source=source,
+                        evidence_refs=case.last_transition.evidence_refs,
+                        outcome="allowed",
+                        reason=reason,
+                        idempotency_key=idempotency_key,
+                    )
+                )
+            self.spine.publish(
+                DomainEvent.create(
+                    case.tenant_id,
+                    case.case_id,
+                    "deadline.sentinel.expired",
+                    idempotency_key,
+                    now,
+                    {"from_state": case.state.value, "to_state": updated.state.value},
+                )
+            )
+        return SentinelTickResult(
+            inspected,
+            expired,
+            abandoned,
+            skipped_non_executable,
+            conflicts,
+            tuple(updated_cases),
+        )
 
     def _persist(self, result: WorkflowResult, *, expected_fingerprint: str | None = None) -> None:
         self.store.save(result.case, expected_fingerprint=expected_fingerprint)
