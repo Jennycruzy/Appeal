@@ -96,7 +96,12 @@ synthetic seven-agent ADK smoke run has completed and is recorded in
 separate managed Model Armor synthetic measurement has run and is recorded in
 `evidence/model-armor-measurement.json`, and a serverless Gemma MaaS synthetic
 measurement is recorded in `evidence/gemma-tripwire-measurement.json`; neither
-is yet the default workflow boundary. A real synthetic ADK case exit using an
+was the default workflow boundary in the deployed revision. Commit `ac7ef24`
+now adds a managed Model Armor -> Gemma boundary to the workflow and a local
+synthetic case has passed the inbound, egress, and memory checks through that
+boundary. The current Cloud Run revision predates that commit, so the managed
+boundary still needs one hosted deployment and verification. A real synthetic
+ADK case exit using an
 image-only PDF is recorded in `evidence/adk-stage-b-case-exit.json`; it still
 does not claim a managed Agent Runtime deployment or a full Appeal evaluation.
 The current limitations are recorded in
@@ -190,7 +195,9 @@ The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `appeal-backend-00008-dkd`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. The `/api/healthz` endpoint
-returned `status: ok` with `storage: firestore`. A synthetic case completed
+returned `status: ok` with `storage: firestore`; this revision predates commit
+`ac7ef24` and therefore still uses the earlier local security boundary. A
+synthetic case completed
 creation, clinician approval, one submission mutation, and payer adjudication
 to `CLOSED_WON`; a subsequent board request read the persisted case.
 The aggregate-only deployment record is
@@ -204,7 +211,9 @@ process/container-local; a restart can rehydrate board metadata but cannot
 resume approval or adjudication yet. This establishes the hosted Google Cloud
 backend and Firestore write path, but it does not establish Agent Runtime,
 Agent Registry, Agent Identity, Pub/Sub, Memory Bank, Gateway, Firebase Auth,
-or a live default Model Armor/Gemma workflow boundary.
+or a live managed Model Armor/Gemma workflow boundary. The managed boundary is
+implemented and locally exercised on synthetic content, but its hosted
+deployment and permission check are still outstanding.
 
 Cloud Scheduler job `appeal-deadline-sentinel` is enabled in `europe-west2`
 with an hourly UTC cadence and an OIDC token for
@@ -248,7 +257,7 @@ deletion, and audit controls.
   in `src/appeal_core/criteria.py`. The Argument Builder cannot be represented
   as having clinical evidence unless an Evidence Miner observation supplies a
   FHIR reference.
-- The local test suite has 46 passing tests, and strict mypy has passed for the
+- The local test suite has 74 passing tests, and strict mypy has passed for the
   core package. Re-run both after any changes.
 - One official Michigan PRIRA order was manually downloaded and inspected. The
   result is in `evidence/manual-review-acquisition.json`; it counts as one
@@ -328,7 +337,7 @@ deletion, and audit controls.
   plus row SHA-256 as pinned-file content identity, with occurrence order only
   to disambiguate duplicate content rows; it does not invent `record_number`.
 
-### NY DFS schema mismatch — resume here
+### NY DFS schema mismatch — frozen historical record
 
 The NY DFS website displays an `Appeal Type` filter, but the downloaded workbook
 contains `Denial Reason` instead and does not contain an `Appeal Type` column.
@@ -336,7 +345,9 @@ The category counts also differ between the rendered page and the workbook, so
 the two fields must not be treated as equivalent from naming alone. Do not add a
 guessed column or rename `Denial Reason` to `Appeal Type`.
 
-When resuming, use this order:
+This section is retained as historical evidence only. It is not current work;
+do not resume the NY investigation while the data-acquisition freeze is in
+effect. If the owner later reopens it, use this order:
 
 1. Keep `peasadata.xlsx` unchanged in Downloads and keep its recorded hash.
 2. Obtain official confirmation or documentation explaining whether the export's
@@ -427,7 +438,7 @@ categories; any candidate still requires human review. The API rejected
 10,000- and 5,000-row requests with HTTP 400; use the validated 1,000-row
 page size unless a future source check confirms a different limit.
 
-### Washington OIC public IRO search — next public-source check
+### Washington OIC public IRO search — frozen historical record
 
 The official Washington OIC currently advertises a public independent-review
 decision search by company, diagnosis, treatment, decision, and reason for
@@ -439,11 +450,12 @@ is claimed. Resolve the current link first, then capture one bounded result or
 export outside the repository and run a source-specific inspection before
 acceptance.
 
-This is a parallel public-summary check and does not delay the CMS summary
-adapter. It also cannot satisfy the full-case track without the original
-denial, clinical evidence, policy version, and appeal package.
+This was a parallel public-summary check, but it is frozen for this build and
+does not delay the product work. It also cannot satisfy the full-case track
+without the original denial, clinical evidence, policy version, and appeal
+package.
 
-### DMHC secondary real-source path
+### DMHC secondary real-source path — frozen historical record
 
 DMHC remains a secondary retrieval path because it is directly about health-plan
 denials and its official description says the IMR database contains decisions
@@ -602,46 +614,48 @@ server survives restart.
 
 ## Still outstanding
 
-1. Expand the CMS QIC summary adapter preflight from the three-row smoke run
-   to an explicitly selected outside-repository scope. The pinned bulk
-   acceptance manifest records 240,916 retained rows and 42 conservative
-   exclusions. Its source-native `record_number` remains unresolved by
-   deliberate policy; use the documented file-SHA-plus-row-SHA identity only
-   for this pinned local scope. If the public ACA value becomes available, run
-   the API scanner as a separate cross-check. Preserve `appeal_type` and
-   `decision` from the source, keep `denial_reason` and `prior_authorization`
-   nullable unless row-level evidence exists, and abstain when the Evidence
-   Floor needs clinical or original-denial inputs that the summary does not
-   contain. The source reports 1,142,429 available records; no summary case has
-   yet been evaluated.
-2. Keep the official DMHC path, the 140 NY address-shaped values, the eight DOB
-   labels, the nine member-ID labels, and NY's unresolved reuse/mapping decision
-   as secondary candidates. The NY export's `Denial Reason` must not be called
-   `Appeal Type` until its source mapping is verified. Oregon remains accepted
-   only for local-only external-review outcomes; its 1,640-row adapter
-   preflight abstained before denial parsing. Michigan remains local-only and
-   unevaluated. These candidates must not be mixed with the CMS source.
-3. Resolve the Washington OIC public IRO search endpoint and inspect a bounded
-   result or export without treating the stale legacy URL as live data.
-4. The CMS source does not satisfy the full-case package. Obtain that package
-   through an authorized source or patient-consented collection with the
-   requirements in
-   `docs/full-appeal-corpus-acquisition.md`; do not block summary benchmarking
-   on a reply-dependent request.
-5. Complete policy terms review and ingest only permitted, ETag-backed policy
-   documents. Extract traceable criterion trees and perform human validation.
-6. Complete quota and residency probes and authenticated managed-component
-   checks. The model metadata gate now passes, but the selected region and
-   managed Agent Platform components are not yet fully verified.
-7. Only after preflight exit: build the independent PAS payer, then the agent
-   identities/tools, event spine, Memory Bank, governance boundary, Gemma,
-   observability, console, evaluation, and seeded demo.
-8. The Phase 9 real-denial run and mandatory human-choice stop have not
-   happened. A summary adapter may produce a documented abstention, but it
-   cannot claim a full Appeal evaluation without the original denial, policy,
-   and clinical inputs.
+The source-acquisition track is closed. The remaining work is product
+construction and verification, in this order:
 
-## Data-acquisition resume checkpoint — 2026-08-28
+1. Deploy and verify commit `ac7ef24` on Cloud Run with the managed
+   Model Armor -> Gemma boundary. Confirm that the runtime service account has
+   the required Vertex AI and Model Armor permissions, check that `/api/healthz`
+   reports `security: managed_model_armor_gemma`, run a synthetic clean case,
+   and exercise the blocked-input/quarantine path. Update the aggregate cloud
+   evidence only after the hosted checks pass. Do not upload real case data.
+2. Move the workflow context and hash-chained receipts out of process memory.
+   Firestore currently persists case state and safe metadata, but restart
+   recovery cannot yet resume approval or adjudication. Add durable context,
+   receipt persistence, and idempotent replay behavior.
+3. Replace the in-process event reference with the Pub/Sub event spine. Keep
+   the Deadline Sentinel on its real hourly Cloud Scheduler cadence and extend
+   the receipt trail across transitions.
+4. Deploy the seven-role workflow through the managed Google agent platform:
+   ADK execution, Agent Registry, Agent Identity, Gateway, Policies, Memory
+   Bank, and Observability. Probe each approved service once; if a component
+   is unavailable, record the limitation and continue with the smallest
+   truthful implementation.
+5. Separate the payer adjudicator into its own Cloud Run service and service
+   account, validate the PAS behavior at the level actually implemented, and
+   retain the deterministic Veto Combinator and single-mutation gate.
+6. Build the hosted console: Firebase Auth, live statutory clock, contradiction
+   view, clinician co-signature, case timeline, reasoning chain, quarantine
+   display, and the asynchronous escalation path.
+7. Create traceable criterion trees from the already-selected permitted payer
+   policy corpus, hand-validate a sample, and record the agreement rate. This
+   does not authorize a new policy-source investigation.
+8. Only after the workflow is complete, resume the uncommitted local scoring
+   handoff in `docs/SCORING_HANDOFF_LOCAL.md`: deterministic tree grading,
+   random-criterion and generic-template controls, policy/evidence ablations,
+   model-versus-tree adjudication, failure reporting, and the named-catch
+   human stop. Until then, full Appeal evaluations remain zero and no scoring
+   artifact should be committed.
+9. Finish the demo tenant, architecture/judging documentation, video, and
+   submission checks from the continuation specification. Every claimed
+   number must point to committed evidence, and every missing capability must
+   remain in `docs/LIMITATIONS.md`.
+
+## Data-acquisition record — completed decision (not current work)
 
 The bulk choice from the previous checkpoint has been completed. The official
 Part D CSV is preserved unchanged at
@@ -676,50 +690,50 @@ decisions outside the repository. The accepted scope is local regulator-summary
 evaluation only; it is not a full Appeal case corpus. Do not upload the raw CSV
 or normalized narrative rows to Google Cloud or GitHub.
 
-## Resume checkpoint — after the PC is charged
+## Resume checkpoint — when the PC is charged
 
-Last verified: 2026-08-28 for the acquisition work; the cloud sub-checkpoint
-remains 2026-08-27. Resume from `/Users/user/appeal` with the active
+Last verified: 2026-08-28. Resume from `/Users/user/appeal` with the active
 Google Cloud project `onyx-yeti-506606-i9` (`835653516606`) and region
-`europe-west2`. Do not switch back to `appeal-fleet-2026-0825`.
+`europe-west2`. Do not switch back to `appeal-fleet-2026-0825`. ADC is already
+working; do not run `gcloud auth application-default login` again.
 
-1. In AI Studio, open Billing for the active project and check the existing
-   Cloud Prepay transaction/balance. The console already reported the $10
-   payment successful and said the transaction may take up to 24 hours. Do not
-   make a second payment. The separate $300 Cloud trial balance is not to be
-   counted as Gemini API credit.
-2. Refresh the safe cloud metadata artifact:
+The first continuation is the hosted deployment of commit `ac7ef24`, which is
+already pushed but not yet running on Cloud Run. Run:
 
-   ```text
-   cd /Users/user/appeal
-   APPEAL_GCP_REGION=europe-west2 python3.12 scripts/preflight.py
-   ```
+```text
+cd /Users/user/appeal
+git pull --ff-only origin main
+make test
+make typecheck
+make deploy-cloud-run
+```
 
-   This performs discovery/list checks only. It must not call `generateContent`,
-   deploy anything, create a resource, or enable another API. The expected
-   current result is a passing Gemini metadata check, with the four blockers
-   recorded in that point-in-time artifact. The later Oregon local-only
-   acceptance is separate and does not alter `docs/preflight.json`.
-3. Run the local verification before continuing data-plane work:
+Then verify the deployed health response and revision:
 
-   ```text
-   make test
-   make typecheck
-   python3.12 -m py_compile scripts/preflight.py scripts/record_synthea_corpus.py
-   ```
+```text
+curl -sS https://appeal-backend-hhcjpefk2q-nw.a.run.app/api/healthz
+gcloud run revisions list \
+  --service=appeal-backend \
+  --region=europe-west2 \
+  --project=onyx-yeti-506606-i9 \
+  --limit=3
+```
 
-4. The synthetic HAPI milestone is complete for the verified session. The authoritative reports are
-   `evidence/hapi-load-full.json`, `evidence/hapi-verify.json`, and
-   `evidence/synthea-distribution.json`. If recreating the load, use an empty
-   fresh in-memory HAPI database and `HAPI_TIMEOUT=1800`; use
-   `HAPI_START_INDEX=N` only while that same server process retains a
-   reconciled partial load, because the source transaction entries use POST and
-   are not safe to replay against a populated database or after a restart.
-5. Keep cloud-dependent Phase 1 work and any Gemini generation stopped until
-   the remaining policy, component, quota, and residency checks are resolved.
-   The Oregon local-only outcome preparation may continue without Gemini. If
-   the Prepay transaction is still absent after 24 hours, capture the AI Studio
-   Billing status for review instead of paying again.
+Expected hosted health includes `status: ok`, `storage: firestore`, and
+`security: managed_model_armor_gemma`. If the deployment or synthetic request
+fails, check the Cloud Run service account's Vertex AI and Model Armor access,
+record the exact error, and update `docs/LIMITATIONS.md`; do not substitute a
+local result for a hosted result.
+
+After the managed boundary is verified, continue with durable workflow context
+and receipts, Pub/Sub transitions, managed agent-platform components, the
+separate payer service, and the hosted console. The ordered backlog is in
+`## Still outstanding` above. Keep all inputs synthetic and aggregate-only.
+
+Do not resume the CMS, NY, Washington, DMHC, Oregon, or full-case acquisition
+work. Do not run the scoring handoff yet. `docs/SCORING_HANDOFF_LOCAL.md` is a
+future, uncommitted work plan; full Appeal evaluations remain zero until the
+workflow and required inputs genuinely exist.
 
 ## Push status
 
@@ -736,15 +750,16 @@ history. A GitHub CLI or browser-authenticated remote is preferred.
 
 ## Safe continuation order
 
+The authoritative continuation commands are in the checkpoint above. For a
+local verification-only check, use:
+
 ```text
 cd /Users/user/appeal
 make test
 make typecheck
-python3.12 -m py_compile scripts/preflight.py scripts/record_synthea_corpus.py
 git status --short
 ```
 
-Then check the running HAPI container and preserve only aggregate reports. The
-cloud-dependent build remains gated by the blockers recorded in the current
-preflight snapshot and the unresolved component/quota/residency checks; do not
-generate content or enable additional services just to advance the preflight.
+Do not regenerate the HAPI corpus or refresh source preflight merely to resume
+the product build. Preserve aggregate-only evidence and keep the deployment
+synthetic-only until the required controls and permissions are verified.
