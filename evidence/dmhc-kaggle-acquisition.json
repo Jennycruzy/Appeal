@@ -159,5 +159,7 @@
   },
   "recorded_at": "2026-08-27T23:35:49.365954Z",
   "schema_version": "0.1",
+  "track_id": "regulator_outcome_benchmark",
+  "scope_note": "Candidate regulator-summary benchmark only; this third-party mirror is not a complete denial-to-appeal case corpus.",
   "status": "blocked_third_party_mirror_pending_provenance_privacy_reuse_review"
 }

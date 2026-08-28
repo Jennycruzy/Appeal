@@ -1,6 +1,6 @@
 # APPEAL build handoff
 
-Updated: 2026-08-27
+Updated: 2026-08-28
 
 ## Current state
 
@@ -72,6 +72,54 @@ metadata-only acquisition record is
 is a lead, not an official payload. California DWC was investigated and
 rejected as a primary source because it is workers' compensation and does not
 expose the complete denial packet needed by this benchmark.
+
+## Release tracks (2026-08-28)
+
+The real-data release is intentionally split into two tracks:
+
+- `regulator_outcome_benchmark` — real regulator determinations and summary
+  findings. This can support outcome/rationale benchmarking when the selected
+  source's provenance, reuse, privacy, and field semantics are accepted. It
+  does not claim to contain the original denial letter, internal appeal, raw
+  clinical evidence, policy version, or prior-authorization proof. Its
+  metadata-only acceptance record is
+  [`evidence/dmhc-regulator-benchmark-acceptance.json`](../evidence/dmhc-regulator-benchmark-acceptance.json).
+- `full_appeal_case_corpus` — complete de-identified case packages containing
+  the denial, policy context, clinical evidence, internal appeal, external
+  review, and final outcome. This requires an authorized data partner and a
+  written reuse/privacy decision. Its acceptance record is
+  [`evidence/full-appeal-case-corpus-acceptance.json`](../evidence/full-appeal-case-corpus-acceptance.json),
+  and the acquisition brief is
+  [`docs/full-appeal-corpus-acquisition.md`](full-appeal-corpus-acquisition.md).
+
+The DMHC mirror, NY DFS export, Oregon report, and Michigan order are not
+silently promoted into the full-case track. Synthea remains an integration
+fixture only. Until a full-case package is accepted, full Appeal evaluations
+and end-to-end regulator comparisons remain zero.
+
+## Google Cloud hosting status
+
+No application workload has been hosted as of the latest workspace evidence.
+The project registration and API setup are real, but no Cloud Run service,
+Cloud Storage bucket, database, Artifact Registry image, or real-case upload is
+recorded. The historical preflight explicitly records that no application
+data, database, Cloud Run service, or service-account key was created. The
+current local `gcloud` profile has no active account or project, so it should be
+treated as unconfigured until a fresh authenticated inventory is run.
+
+Before any deployment or real-data upload, run a live inventory against the
+approved project and record the results:
+
+```text
+gcloud run services list --project=onyx-yeti-506606-i9
+gcloud storage buckets list --project=onyx-yeti-506606-i9
+gcloud artifacts repositories list --project=onyx-yeti-506606-i9
+gcloud sql instances list --project=onyx-yeti-506606-i9
+```
+
+Do not upload raw case material to Google Cloud until the full-case acceptance
+manifest names the permitted storage location and records access, retention,
+deletion, and audit controls.
 
 ## Done and verified
 

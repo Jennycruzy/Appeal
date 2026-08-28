@@ -1,0 +1,80 @@
+{
+  "schema_version": "0.1",
+  "recorded_at": "2026-08-28",
+  "track_id": "full_appeal_case_corpus",
+  "status": "acquisition_required",
+  "purpose": "Evaluate Appeal end to end against real cases with a denial, appeal evidence, policy context, and an adjudicated outcome.",
+  "source": {
+    "source_id": null,
+    "source_class": "authorized_payer_iro_tpa_academic_or_quality_improvement_partner",
+    "raw_artifact_location": "outside_repository_only_until_storage_and_access_controls_are_approved"
+  },
+  "required_case_package": [
+    {
+      "field": "case_id",
+      "required": true,
+      "minimum": "stable de-identified identifier"
+    },
+    {
+      "field": "original_denial",
+      "required": true,
+      "minimum": "denial letter or structured equivalent with date, service, and explicit denial reason"
+    },
+    {
+      "field": "policy_context",
+      "required": true,
+      "minimum": "policy or medical-necessity criteria version used for the decision"
+    },
+    {
+      "field": "clinical_evidence",
+      "required": true,
+      "minimum": "de-identified evidence actually available to the appeal reviewer"
+    },
+    {
+      "field": "internal_appeal",
+      "required": true,
+      "minimum": "appeal submission, decision, dates, and disposition"
+    },
+    {
+      "field": "external_review",
+      "required": true,
+      "minimum": "review rationale, final outcome, and outcome date when available"
+    },
+    {
+      "field": "prior_authorization",
+      "required": false,
+      "minimum": "explicit status or documented not_applicable value"
+    }
+  ],
+  "required_release_evidence": [
+    "source provenance and acquisition timestamp",
+    "written reuse permission or applicable data-use agreement",
+    "de-identification or redaction attestation from the data owner",
+    "privacy review decision and reviewer identity",
+    "field-level mapping and missingness report",
+    "artifact hashes without publishing raw case material",
+    "access, retention, and deletion controls for the local copy"
+  ],
+  "not_satisfied_by": [
+    "DMHC public summary rows alone",
+    "the NY DFS export alone",
+    "the Oregon IRO aggregate case-detail report alone",
+    "the Michigan PRIRA order alone",
+    "a third-party mirror without source reconciliation",
+    "Synthea or any other synthetic patient record"
+  ],
+  "acceptance": {
+    "decision": "not_accepted_acquisition_required",
+    "accepted_for_local_evaluation": false,
+    "accepted_for_repository": false,
+    "accepted_record_count": 0,
+    "accepted_narrative_record_count": 0,
+    "raw_artifacts_committed": false,
+    "unlock_condition": "A data owner supplies the complete package and a human reviewer records provenance, reuse, privacy, schema, and access decisions."
+  },
+  "evaluation": {
+    "appeal_cases_evaluated": 0,
+    "regulator_ground_truth_comparisons": 0,
+    "full_appeal_evaluation_allowed": false
+  }
+}

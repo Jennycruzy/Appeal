@@ -2,6 +2,7 @@
   "sources": [
     {
       "id": "california_dmhc_imr_determinations",
+      "track": "regulator_outcome_benchmark",
       "kind": "regulator_determinations",
       "publisher": "California Department of Managed Health Care",
       "catalog_url": "https://catalog.data.gov/dataset/independent-medical-review-imr-determinations-trend",
@@ -24,6 +25,7 @@
     },
     {
       "id": "cms_0057_f_prior_authorization_metrics",
+      "track": "regulatory_metric_definition",
       "kind": "regulatory_benchmark_definition",
       "publisher": "Centers for Medicare & Medicaid Services",
       "faq_url": "https://www.cms.gov/initiatives/burden-reduction/overview/interoperability/frequently-asked-questions/prior-authorization-api",
@@ -44,6 +46,7 @@
     },
     {
       "id": "ny_dfs_external_appeal_archive",
+      "track": "regulator_outcome_benchmark",
       "kind": "regulator_external_appeals",
       "publisher": "New York State Department of Financial Services",
       "archive_url": "https://www.dfs.ny.gov/public-appeal/search",
@@ -59,6 +62,7 @@
     },
     {
       "id": "oregon_dfr_iro_case_detail_report",
+      "track": "regulator_outcome_benchmark",
       "kind": "regulator_external_reviews",
       "publisher": "Oregon Division of Financial Regulation",
       "source_page_url": "https://dfr.oregon.gov/insure/health/understand/coverage/Pages/iro-decision-report.aspx",

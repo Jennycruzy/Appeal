@@ -1,0 +1,93 @@
+{
+  "schema_version": "0.1",
+  "recorded_at": "2026-08-28",
+  "track_id": "regulator_outcome_benchmark",
+  "status": "candidate_pending_source_acceptance",
+  "purpose": "Evaluate regulator-facing determination and rationale summaries from a real public IMR source. This track is intentionally separate from end-to-end denial and appeal reconstruction.",
+  "source": {
+    "preferred_source_id": "california_dmhc_imr_determinations",
+    "observed_fallback_source_id": "california_dmhc_imr_kaggle_mirror",
+    "official_catalog_url": "https://lab.data.ca.gov/dataset/independent-medical-review-imr-determinations-trend",
+    "fallback_evidence": "evidence/dmhc-kaggle-acquisition.json",
+    "raw_artifact_location": "outside_repository_only"
+  },
+  "scope": {
+    "supports": [
+      "case-level regulator determination when an accepted source exposes it",
+      "regulator-authored findings or rationale summaries when an accepted source exposes them",
+      "treatment and diagnosis category analysis",
+      "regulator-outcome comparisons after source acceptance and local evaluation"
+    ],
+    "does_not_support": [
+      "the original denial letter",
+      "a verified denial_reason unless the source explicitly defines one",
+      "the internal appeal submission or decision",
+      "the complete clinical chart or evidence packet",
+      "the policy version and criteria applied to the denial",
+      "prior-authorization eligibility unless explicitly documented"
+    ]
+  },
+  "field_policy": {
+    "regulator_outcome": {
+      "application_field": "regulator_outcome",
+      "observed_source_fields": ["Determination", "Case Outcome", "Appeal Decision"],
+      "status": "source_specific_explicit_outcome_only"
+    },
+    "findings": {
+      "application_field": "findings",
+      "status": "regulator_summary_only; keep local when narrative reuse is not cleared"
+    },
+    "denial_reason": {
+      "application_field": "denial_reason",
+      "status": "nullable; use only when the selected source explicitly defines the field"
+    },
+    "appeal_type": {
+      "application_field": "appeal_type",
+      "status": "nullable_unverified; never infer from a similar filter or count"
+    },
+    "prior_authorization": {
+      "application_field": "prior_authorization",
+      "status": "nullable_unverified; do not label every external review as prior authorization"
+    }
+  },
+  "gates": {
+    "provenance": {
+      "status": "pending_official_payload_reconciliation",
+      "evidence_refs": [
+        "evidence/dmhc-kaggle-acquisition.json",
+        "config/real_corpus_sources.json"
+      ]
+    },
+    "reuse": {
+      "status": "pending_source_specific_review",
+      "decision": null,
+      "evidence_refs": []
+    },
+    "privacy": {
+      "status": "technical_scan_recorded_human_release_decision_required",
+      "decision": null,
+      "evidence_refs": ["evidence/dmhc-kaggle-acquisition.json"]
+    },
+    "schema": {
+      "status": "summary_schema_observed; semantic mappings remain field-specific",
+      "decision": null,
+      "evidence_refs": ["evidence/dmhc-kaggle-acquisition.json"]
+    },
+    "prior_authorization": {
+      "status": "not_verified",
+      "decision": "do_not_claim_prior_authorization_eligibility"
+    }
+  },
+  "acceptance": {
+    "decision": "not_yet_accepted",
+    "accepted_for_local_evaluation": false,
+    "accepted_for_repository": false,
+    "accepted_record_count": 0,
+    "unlock_condition": "A human owner records the selected source, provenance reconciliation, reuse decision, technical privacy disposition, and explicit field mappings in this manifest."
+  },
+  "evaluation": {
+    "appeal_cases_evaluated": 0,
+    "regulator_ground_truth_comparisons": 0,
+    "full_appeal_evaluation_allowed": false
+  }
+}

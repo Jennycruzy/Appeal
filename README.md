@@ -5,13 +5,25 @@ human-signature, deadline, and audit controls.
 
 ## Reviewer status
 
-The repository does **not** claim a completed real-case evaluation. The active
-release gate is acceptance of a real regulator-denial corpus. The primary
-real-source target is the official California Department of Managed Health
-Care (DMHC) Independent Medical Review (IMR) determinations dataset. Its
-official metadata says it contains DMHC IMR decisions since January 1, 2001
-and declares a Creative Commons Attribution licence, but the case-level
-payload has not been retrieved or accepted. See the [real-corpus audit](docs/audits/precredit-imr.md#source-decision)
+The project has two separate real-data release tracks. The repository does
+**not** claim a completed full-case Appeal evaluation.
+
+1. The **regulator-outcome benchmark** measures against real regulator
+   determinations and regulator-authored summary findings. Its authoritative
+   acceptance record is
+   [`evidence/dmhc-regulator-benchmark-acceptance.json`](evidence/dmhc-regulator-benchmark-acceptance.json).
+2. The **full Appeal case corpus** requires the original denial, policy
+   criteria, clinical evidence, internal appeal, external-review rationale,
+   and final outcome in one de-identified case package. Its acquisition and
+   acceptance boundary are recorded in
+   [`docs/full-appeal-corpus-acquisition.md`](docs/full-appeal-corpus-acquisition.md)
+   and [`evidence/full-appeal-case-corpus-acceptance.json`](evidence/full-appeal-case-corpus-acceptance.json).
+
+The primary public benchmark target is the official California Department of
+Managed Health Care (DMHC) Independent Medical Review (IMR) determinations
+dataset. Its official metadata says it contains DMHC IMR decisions since
+January 1, 2001 and declares a Creative Commons Attribution licence, but the
+case-level payload has not been accepted. See the [real-corpus audit](docs/audits/precredit-imr.md#source-decision)
 for the current retrieval decision.
 
 The official download and API are currently returning Cloudflare 403 responses.
@@ -19,8 +31,9 @@ A public Kaggle mirror was therefore downloaded outside the repository and
 inspected as a fallback candidate: 19,245 rows, 11 columns, `Determination`,
 `Findings`, treatment categories, and `Reference ID`. It has no explicit
 `Denial Reason` field and its technical scan found 22 physical-address-shaped
-values; it remains blocked pending provenance, privacy, reuse, and
-prior-authorization review. The metadata-only record is
+values. It is a candidate for the regulator-outcome track only and remains
+pending provenance, privacy, reuse, and prior-authorization review. The
+metadata-only record is
 [`evidence/dmhc-kaggle-acquisition.json`](evidence/dmhc-kaggle-acquisition.json).
 
 Two other manually acquired regulator candidates are also tracked locally:
@@ -48,7 +61,8 @@ Two other manually acquired regulator candidates are also tracked locally:
   workers' compensation source and its public index does not provide the
   complete denial packet needed here.
 
-Start with the [NY DFS handoff](docs/HANDOFF.md#ny-dfs-schema-mismatch--resume-here),
+Start with the [release-track handoff](docs/HANDOFF.md#release-tracks-2026-08-28),
+then the [NY DFS handoff](docs/HANDOFF.md#ny-dfs-schema-mismatch--resume-here),
 the [Oregon fallback](docs/HANDOFF.md#oregon-iro-case-detail-fallback), the
 [NY acceptance manifest](evidence/ny-dfs-acceptance.json), the [Oregon
 acceptance manifest](evidence/oregon-acceptance.json), and the review-request
@@ -64,10 +78,20 @@ local-only adapter preflight and outcome-label inventory; it does not yet
 support a full denial appeal evaluation. The NY source remains separately
 blocked.
 
-All corpus gates are fail-closed. The raw NY DFS, Oregon, and DMHC mirror files
+All corpus gates are fail-closed within their respective tracks. The raw NY
+DFS, Oregon, and DMHC mirror files
 are not committed. The local Oregon evaluation input and DMHC mirror CSV stay
 outside the repository; repository evidence contains metadata and aggregate
 counts only—not case numbers, treatment strings, or narrative values.
+
+## Google Cloud status
+
+The workspace has Google Cloud project and API-registration evidence, but no
+application has been deployed. There is no repository evidence of a Cloud Run
+service, Cloud Storage bucket, database, Artifact Registry image, or uploaded
+real-case data. The local `gcloud` profile currently has no active project or
+account; the prior ADC and preflight records are configuration evidence, not a
+hosted application. See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
 
 ## Verification
 
