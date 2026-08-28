@@ -84,7 +84,10 @@ class LocalHttpApi:
             return True
         if not self.scheduler_service_account or not self.scheduler_audience:
             return False
-        authorization = headers.get("Authorization", "")
+        authorization = next(
+            (value for key, value in headers.items() if key.lower() == "authorization"),
+            "",
+        )
         if not authorization.startswith("Bearer "):
             return False
         token = authorization.removeprefix("Bearer ").strip()
@@ -100,4 +103,4 @@ class LocalHttpApi:
             return False
         if not isinstance(claims, Mapping):
             return False
-        return claims.get("email") == self.scheduler_service_account and claims.get("email_verified") is True
+        return claims.get("email") == self.scheduler_service_account
