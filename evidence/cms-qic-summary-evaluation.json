@@ -1,0 +1,75 @@
+{
+  "adapter_preflight": {
+    "anchor_is_case_date": false,
+    "blocking_reasons": {
+      "missing_clinical_evidence": 3,
+      "missing_original_denial": 3,
+      "missing_original_denial_reason": 3,
+      "missing_original_policy_version": 3,
+      "prior_authorization_unverified": 3
+    },
+    "cases_abstained": 3,
+    "cases_ready_for_full_appeal": 0,
+    "cases_seen": 3,
+    "decision_source": "cms-qic-summary-adapter",
+    "implemented": true,
+    "state_machine_anchor": "2026-08-28T00:00:00Z",
+    "state_machine_exercised": true,
+    "terminal_state_counts": {
+      "PARSE_FAILED_HUMAN_REVIEW": 3
+    },
+    "version": "0.1"
+  },
+  "appeal_types": {
+    "counts": {
+      "Prescription Drug": 3
+    },
+    "field": "appeal_type",
+    "interpretation": "explicit_CMS_source_field; not inferred from denial_reason"
+  },
+  "comparison": {
+    "compared_cases": 0,
+    "matches": 0,
+    "mismatches": 0,
+    "reason": "No Appeal outcome exists because every summary row abstained before full Appeal inputs were available.",
+    "status": "not_run"
+  },
+  "evaluation": {
+    "adapter_preflight_completed": true,
+    "full_appeal_cases_evaluated": 0,
+    "full_appeal_evaluation_completed": false,
+    "phase_9_hard_stop_started": false,
+    "regulator_ground_truth_comparisons": 0,
+    "summary_cases_evaluated": 0
+  },
+  "recorded_at": "2026-08-28",
+  "regulator_outcomes": {
+    "counts": {
+      "Unfavorable": 3
+    },
+    "field": "decision",
+    "interpretation": "explicit_CMS_QIC_regulator_summary_outcome"
+  },
+  "schema_version": "0.1",
+  "source": {
+    "extraction_manifest": "outside_repository_only",
+    "input_file_name": "part-d.jsonl",
+    "input_location": "local_only_outside_repository",
+    "input_sha256": "2b28b82b36541e52eb4b73b762ffae890490e30f0b5f198bb56d6f1bfc6655f1",
+    "narrative_emitted_to_report": false,
+    "part": "part_d",
+    "record_count": 3
+  },
+  "source_id": "cms_qic_decision_summaries",
+  "status": "adapter_preflight_blocked",
+  "summary_fields": {
+    "interpretation": "aggregate_presence_only; narrative values remain outside the repository",
+    "nonempty_counts": {
+      "appeal_type": 3,
+      "condition": 3,
+      "decision_rationale": 3,
+      "policy_context": 3,
+      "requested_item_or_drug": 3
+    }
+  }
+}

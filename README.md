@@ -115,6 +115,9 @@ make test
 make typecheck
 make validate-ny-dfs
 APPEAL_CMS_QIC_ACA='<public ACA value>' make inspect-cms-qic
+make run-cms-qic-summary \
+  CMS_QIC_LOCAL_OUTPUT=../Downloads/cms-qic-part-d-summary.jsonl \
+  CMS_QIC_LOCAL_MANIFEST=../Downloads/cms-qic-part-d-summary.manifest.json
 make inspect-dmhc-imr \
   DMHC_IMR_INPUT=../Downloads/independent-medical-review-determinations-trends.csv
 make inspect-oregon-iro \

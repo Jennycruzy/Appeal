@@ -81,6 +81,25 @@ unless `--allow-privacy-shaped-values` is explicitly selected and a separate
 human review is recorded. A bounded test can use `--max-records` directly with
 `scripts/fetch_cms_qic_summary.py`; `--all` has no artificial corpus limit.
 
+After an outside-repository extraction, run the summary adapter preflight:
+
+```text
+make run-cms-qic-summary \
+  CMS_QIC_LOCAL_OUTPUT=../Downloads/cms-qic-part-d-summary.jsonl \
+  CMS_QIC_LOCAL_MANIFEST=../Downloads/cms-qic-part-d-summary.manifest.json
+```
+
+The aggregate report is `evidence/cms-qic-summary-evaluation.json`. It counts
+explicit source outcomes and appeal types, exercises the real case state
+machine, and records an abstention for each row because the CMS summary does
+not contain the original plan denial, complete clinical evidence, or original
+plan-policy version. It must not be read as a full Appeal score.
+
+The checked-in report is a three-row live smoke run. It proves the adapter
+boundary against current source data; it is not an artificial corpus limit.
+Use `--all` with the extractor when the complete current Part C or Part D
+summary scope is selected for local processing.
+
 ## What this unlocks
 
 This source is accepted for local regulator-summary benchmarking. It supports

@@ -309,10 +309,14 @@ context and not the original plan policy version; and clinical evidence and
 prior-authorization status remain nullable. No CMS summary row may be joined
 to a Synthea patient.
 
-This source is ready for the summary adapter, but no summary adapter or Appeal
-comparison has run yet. Current counts are therefore 1,142,429 available
-summary records, zero summary cases evaluated, zero full Appeal cases, and zero
-regulator-ground-truth comparisons.
+This source is ready for the summary adapter. The adapter preflight has now
+processed three real Part D rows from an outside-repository extraction; all
+three had explicit source outcomes and all three abstained before full Appeal
+inputs. The aggregate report is
+`evidence/cms-qic-summary-evaluation.json`. No summary-level comparison or
+full Appeal evaluation has run. Current counts are therefore 1,142,429
+available summary records, three preflight rows processed, zero summary cases
+evaluated, zero full Appeal cases, and zero regulator-ground-truth comparisons.
 
 ### Washington OIC public IRO search — next public-source check
 
@@ -489,13 +493,14 @@ server survives restart.
 
 ## Still outstanding
 
-1. Build and run the CMS QIC summary adapter against an explicitly selected,
-   outside-repository page range. Preserve `appeal_type` and `decision` from
-   the source, keep `denial_reason` and `prior_authorization` nullable unless
-   row-level evidence exists, and record summary-level comparisons separately.
-   The source reports 1,142,429 available records, but no summary case has yet
-   been evaluated. The state machine must abstain when the Evidence Floor needs
-   clinical or original-denial inputs that the summary does not contain.
+1. Expand the CMS QIC summary adapter preflight from the three-row smoke run to
+   an explicitly selected outside-repository scope, then define and record any
+   summary-level comparisons separately. Preserve `appeal_type` and `decision`
+   from the source, keep `denial_reason` and `prior_authorization` nullable
+   unless row-level evidence exists, and abstain when the Evidence Floor needs
+   clinical or original-denial inputs that the summary does not contain. The
+   source reports 1,142,429 available records; no summary case has yet been
+   evaluated.
 2. Keep the official DMHC path, the 140 NY address-shaped values, the eight DOB
    labels, the nine member-ID labels, and NY's unresolved reuse/mapping decision
    as secondary candidates. The NY export's `Denial Reason` must not be called

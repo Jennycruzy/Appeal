@@ -143,7 +143,15 @@
     "full_appeal_cases_evaluated": 0,
     "regulator_ground_truth_comparisons": 0,
     "regulator_summary_cases_evaluated": 0,
-    "summary_records_available": 1142429
+    "summary_records_available": 1142429,
+    "summary_adapter_preflight": {
+      "status": "completed_live_smoke",
+      "report": "evidence/cms-qic-summary-evaluation.json",
+      "part": "part_d",
+      "records_seen": 3,
+      "cases_abstained": 3,
+      "summary_cases_evaluated": 0
+    }
   },
   "field_policy": {
     "appeal_type": {
