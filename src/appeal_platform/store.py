@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping
+import importlib
 from typing import Protocol, cast
 
 from appeal_core import Case
@@ -90,6 +91,10 @@ class _CollectionReference(Protocol):
 
 
 class _Transaction(Protocol):
+    def set(self, document_ref: _DocumentReference, document_data: Mapping[str, object]) -> object: ...
+
+    def begin(self) -> object: ...
+
     def commit(self) -> object: ...
 
 
@@ -99,6 +104,14 @@ class _FirestoreClient(Protocol):
     def collection_group(self, collection_id: str) -> _CollectionReference: ...
 
     def transaction(self) -> _Transaction: ...
+
+
+class _FirestoreFactory(Protocol):
+    def __call__(self, *, project: str | None, database: str) -> object: ...
+
+
+class _TransactionalFactory(Protocol):
+    def __call__(self, function: Callable[..., object]) -> Callable[..., object]: ...
 
 
 def _firestore_id(value: str, label: str) -> str:
@@ -141,15 +154,19 @@ class FirestoreCaseStore(CaseStore):
         root_collection: str = "appeal_tenants",
         client: object | None = None,
     ) -> None:
+        transactional: _TransactionalFactory | None = None
         if client is None:
             try:
-                from google.cloud import firestore  # type: ignore[import-untyped]
+                firestore = importlib.import_module("google.cloud.firestore")
             except ImportError as error:
                 raise RuntimeError(
                     "Firestore storage requires the google-cloud-firestore package"
                 ) from error
-            client = firestore.Client(project=project, database=database)
+            factory = cast(_FirestoreFactory, getattr(firestore, "Client"))
+            client = factory(project=project, database=database)
+            transactional = cast(_TransactionalFactory, getattr(firestore, "transactional"))
         self._client = cast(_FirestoreClient, client)
+        self._transactional = transactional
         self._root_collection = _firestore_id(root_collection, "Firestore root collection")
 
     def _case_ref(self, tenant_id: str, case_id: str) -> _DocumentReference:
@@ -184,22 +201,35 @@ class FirestoreCaseStore(CaseStore):
 
     def save(self, case: Case, *, expected_fingerprint: str | None = None) -> Case:
         ref = self._case_ref(case.tenant_id, case.case_id)
+
+        def write(transaction: _Transaction) -> tuple[Case, bool]:
+            existing = self._read(
+                ref.get(transaction=transaction),
+                tenant_id=case.tenant_id,
+                case_id=case.case_id,
+            )
+            if existing is None:
+                if expected_fingerprint is not None:
+                    raise CaseStoreConflict("cannot compare an expected version for a new case")
+            elif existing.fingerprint() == case.fingerprint():
+                return existing, False
+            elif expected_fingerprint is None or existing.fingerprint() != expected_fingerprint:
+                raise CaseStoreConflict("case version changed or expected_fingerprint was omitted")
+            transaction.set(ref, self._document(case))
+            return case, True
+
+        if self._transactional is not None:
+            transaction = self._client.transaction()
+            wrapped = self._transactional(write)
+            saved, _ = cast(Callable[[_Transaction], tuple[Case, bool]], wrapped)(transaction)
+            return saved
+
         transaction = self._client.transaction()
-        existing = self._read(
-            ref.get(transaction=transaction),
-            tenant_id=case.tenant_id,
-            case_id=case.case_id,
-        )
-        if existing is None:
-            if expected_fingerprint is not None:
-                raise CaseStoreConflict("cannot compare an expected version for a new case")
-        elif existing.fingerprint() == case.fingerprint():
-            return existing
-        elif expected_fingerprint is None or existing.fingerprint() != expected_fingerprint:
-            raise CaseStoreConflict("case version changed or expected_fingerprint was omitted")
-        ref.set(self._document(case), transaction=transaction)
-        transaction.commit()
-        return case
+        transaction.begin()
+        saved, changed = write(transaction)
+        if changed:
+            transaction.commit()
+        return saved
 
     def get(self, tenant_id: str, case_id: str) -> Case | None:
         tenant_id = _require(tenant_id, "tenant ID")

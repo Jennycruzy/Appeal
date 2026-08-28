@@ -28,6 +28,12 @@ class FakeTransaction:
         self.client = client
         self.pending: dict[tuple[str, ...], Mapping[str, object]] = {}
 
+    def begin(self) -> None:
+        return
+
+    def set(self, document_ref: FakeDocument, document_data: Mapping[str, object]) -> None:
+        self.pending[document_ref.path] = dict(document_data)
+
     def commit(self) -> None:
         self.client.documents.update(self.pending)
 
