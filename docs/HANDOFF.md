@@ -75,6 +75,45 @@ clinical evidence, internal appeal package, or original plan-policy version.
 The project therefore has a real public source for the outcome/rationale lane,
 while full Appeal evaluations remain zero until a complete package exists.
 
+## Local product path — current
+
+The data track is now frozen. The repository has started the product layer with
+a local deterministic seven-role graph: Intake, Denial Parser, Policy Analyst,
+Evidence Miner, Argument Builder, Deadline Sentinel, and Escalation Strategist.
+The graph is wrapped by the four-veto combinator and the single-mutation
+submission gate. It supports quarantine, the Evidence Floor, clinician
+co-signature, a case-bound statutory clock, and hash-chained local receipts.
+The local runtime also exposes reference-only event delivery, case-scoped
+memory, an independent payer adjudicator, and a reversibility journal.
+
+This is an executable local fallback, not a deployed ADK application, Gemma
+endpoint, or Google Cloud workload. A synthetic seven-agent ADK smoke run has
+completed and is recorded in `evidence/adk-workflow-smoke.json`; it is not a
+full appeal case evaluation. A separate managed Model Armor synthetic
+measurement has run and is recorded in
+`evidence/model-armor-measurement.json`, but it is not yet the default
+workflow boundary. The current limitations are recorded in
+[`docs/LIMITATIONS.md`](LIMITATIONS.md). The local synthetic smoke command is:
+
+```text
+make run-local-workflow
+```
+
+The full local runtime path, including a synthetic payer determination, is:
+
+```text
+make run-local-runtime
+```
+
+For loopback HTTP integration testing, use `make run-local-api`; it is
+explicitly unauthenticated and is not a public deployment.
+
+Use `scripts/run_local_workflow.py --approve` for the co-signed path,
+`--inject` for the quarantine path, and `--missing-evidence` for the
+Evidence Floor abstention path. Reports and receipts default outside the
+repository. Scoring remains intentionally deferred until the agent workflow
+is complete; see the local-only scoring handoff in the workspace.
+
 The dated official Part D bulk CSV fallback was downloaded unchanged outside
 the repository after confirming local disk space. Its 240,958 rows, 894,397,692
 bytes, ETag, and SHA-256 are recorded in
@@ -128,32 +167,14 @@ The real-data release is intentionally split into two tracks:
   and the acquisition brief is
   [`docs/full-appeal-corpus-acquisition.md`](full-appeal-corpus-acquisition.md).
 
-### Smart real-denial path — current execution order
+### Data track closure
 
-The project now follows the executable two-lane plan in
-[`docs/real-denial-smart-path.md`](real-denial-smart-path.md):
-
-1. Use the accepted CMS QIC API for the immediate regulator-summary benchmark
-   and keep its paginated extraction outside the repository.
-2. Resolve the current Washington OIC IRO search endpoint and inspect one
-   bounded result or export. Washington is a verified public-source lead, not
-   an acquired corpus; its metadata-only discovery record is
-   [`evidence/wa-oic-iro-search.json`](../evidence/wa-oic-iro-search.json).
-3. Obtain the complete Appeal package from an authorized payer/IRO/TPA/
-   academic/quality-improvement partner or from patient-consented case
-   packets. This route is controlled by a written data-use or consent and
-   redaction decision, not by an unanswered public-agency email.
-
-The old Washington URL printed in an agency guide currently renders a
-producer/agency/company lookup page. Do not build a scraper against that stale
-URL or claim that Washington rows were acquired. No public source has yet been
-verified as a complete denial-to-outcome package, so the full-case acceptance
-manifest remains blocked.
-
-The CMS summary API, DMHC mirror, NY DFS export, Oregon report, and Michigan
-order are not silently promoted into the full-case track. Synthea remains an
-integration fixture only. Until a full-case package is accepted, full Appeal
-evaluations and end-to-end regulator comparisons remain zero.
+The source investigation is complete for this build. Do not open a new
+Washington, NY DFS, Oregon, DMHC, Kaggle, or full-case acquisition
+investigation. The CMS summary subset, payer-policy registry, Synthea/HAPI
+fixture, and CMS-0057-F clock configuration are the frozen inputs. Unresolved
+source questions remain recorded in [`docs/DATA_PROVENANCE.md`](DATA_PROVENANCE.md)
+and [`docs/LIMITATIONS.md`](LIMITATIONS.md); they are no longer work items.
 
 ## Google Cloud hosting status
 
@@ -162,8 +183,16 @@ The project registration and API setup are real, but no Cloud Run service,
 Cloud Storage bucket, database, Artifact Registry image, or real-case upload is
 recorded. The historical preflight explicitly records that no application
 data, database, Cloud Run service, or service-account key was created. The
-current local `gcloud` profile has no active account or project, so it should be
-treated as unconfigured until a fresh authenticated inventory is run.
+current local `gcloud` profile has the documented target project selected but
+no interactive account selected. However, an attached authorized-user ADC
+credential was verified on 2026-08-28: it
+refreshed successfully and passed a read-only Resource Manager check for
+`appeal-fleet-2026-0825` (`APPEAL Fleet 2026`, ACTIVE); the same credential
+also passed a read-only check for the documented target
+`onyx-yeti-506606-i9` (`My Project 27960`, ACTIVE). This confirms
+credential/project access but does not establish a hosted workload or change
+the current deployment target; run a fresh inventory against the approved
+target before deployment.
 
 Before any deployment or real-data upload, run a live inventory against the
 approved project and record the results:

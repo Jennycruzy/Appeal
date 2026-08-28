@@ -124,9 +124,78 @@ and its decision input stays outside the repository.
 The workspace has Google Cloud project and API-registration evidence, but no
 application has been deployed. There is no repository evidence of a Cloud Run
 service, Cloud Storage bucket, database, Artifact Registry image, or uploaded
-real-case data. The local `gcloud` profile currently has no active project or
-account; the prior ADC and preflight records are configuration evidence, not a
-hosted application. See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
+real-case data. An attached ADC credential was verified against
+`appeal-fleet-2026-0825`; the local `gcloud` profile has the documented target
+project selected but still has no interactive account selected. This is
+credential/project access evidence, not a hosted application. See the
+[cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
+
+## Local product path
+
+The repository now contains a runnable local seven-role workflow around the
+deterministic Appeal core. It includes Intake, Denial Parser, Policy Analyst,
+Evidence Miner, Argument Builder, Deadline Sentinel, and Escalation Strategist,
+plus the four-veto combinator, quarantine state, Evidence Floor, clinician
+co-signature, single-mutation submission gate, statutory clock, and hash-chained
+receipts. The local platform runtime adds reference-only event delivery,
+tenant/case-scoped memory, an independent payer adjudicator, and a
+compensating-action journal. It is a local deterministic implementation and is
+not a claim of a live Gemini, ADK, or Google Cloud deployment. The scoring
+handoff is deferred until this workflow is complete; completed full Appeal
+evaluations remain zero.
+
+Run the synthetic vertical slice with:
+
+```text
+make run-local-workflow
+```
+
+The control-plane boundaries are mapped in
+[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
+Run the local platform runtime, including a synthetic payer determination,
+with:
+
+```text
+make run-local-runtime
+```
+
+The service lifecycle is also covered by tests as separate open, clinician
+approval, and payer-determination operations; it remains process-local until
+the Cloud Run/Firestore layer is available.
+
+For local HTTP integration testing only, run:
+
+```text
+make run-local-api
+```
+
+It binds to loopback and exposes `/healthz`, `POST /api/demo/cases`,
+`GET /api/cases/tenant-demo`, and the approval/adjudication routes. It is not
+authenticated or suitable for public use.
+
+Measure the local deterministic security fallback with:
+
+```text
+make measure-local-security
+```
+
+Measure the configured managed Model Armor template with:
+
+```text
+make measure-model-armor
+```
+
+That report contains aggregate counts only and is recorded in
+`evidence/model-armor-measurement.json`. Gemma is not yet measured because it
+requires a served Vertex endpoint; serving the smallest checked variant
+creates a billable GPU resource.
+
+The default metadata report and receipt ledger are written outside the
+repository under `../Downloads/`. Add `--approve` to simulate the clinician
+co-signature, `--inject` to exercise quarantine, or `--missing-evidence` to
+exercise fail-closed abstention by invoking
+`scripts/run_local_workflow.py` directly.
 
 ## Verification
 

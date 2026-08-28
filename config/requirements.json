@@ -8,6 +8,13 @@
     "minimum_minor": 5,
     "required_generation_method": "generateContent"
   },
+  "adk": {
+    "package": "google-adk[gcp]",
+    "version_range": ">=2.0.0,<3.0.0",
+    "installed_version": "2.8.0",
+    "status": "installed_in_project_venv",
+    "workflow_boundary": "src/appeal_agents/adk_workflow.py"
+  },
   "google_cloud": {
     "default_project_id": "onyx-yeti-506606-i9",
     "project_env_vars": [

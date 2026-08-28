@@ -1,0 +1,21 @@
+{
+  "authors": [
+    "argument_builder",
+    "deadline_sentinel",
+    "denial_parser",
+    "escalation_strategist",
+    "evidence_miner",
+    "intake",
+    "policy_analyst"
+  ],
+  "error_count": 0,
+  "event_count": 7,
+  "fixture_content_persisted": false,
+  "location": "global",
+  "model": "gemini-3.7-flash",
+  "project": "onyx-yeti-506606-i9",
+  "provider": "vertex_ai",
+  "schema_version": "0.1",
+  "scope": "synthetic seven-agent ADK smoke; response content omitted",
+  "workflow": "appeal_agent_fleet"
+}

@@ -38,7 +38,7 @@
       "fallback": "Configure ADC with a user or workload identity; never commit a service-account key.",
       "name": "Application Default Credentials",
       "status": "pass",
-      "summary": "ADC available through the gcloud CLI"
+      "summary": "ADC available"
     },
     {
       "evidence": {
@@ -87,7 +87,7 @@
         "publisher_catalog": {
           "billing_project": "onyx-yeti-506606-i9",
           "error": "",
-          "listed_model_count": 28,
+          "listed_model_count": 29,
           "metadata_only": true,
           "model_filter": "gemini",
           "source": "gcloud ai model-garden models list"
@@ -592,7 +592,7 @@
         "license_spdx_id": "Apache-2.0",
         "license_status": 200,
         "releases_api_url": "https://api.github.com/repos/synthetichealth/synthea/releases?per_page=50",
-        "releases_etag": "W/\"a2fc47225cff414ce0719d270c3ec7632cfe79d0e4e2fc6d19c82ce7a38af056\"",
+        "releases_etag": "W/\"60b7afab8f8d0a7215604e78cd7827c2de993d89c51148f35050fab6ea39ad32\"",
         "releases_status": 200,
         "repository_url": "https://github.com/synthetichealth/synthea",
         "required_asset_name": "synthea-with-dependencies.jar",
@@ -669,11 +669,11 @@
         "payer": "UnitedHealthcare",
         "policy_fetch_performed": false,
         "robots_allows_index": true,
-        "robots_etag": "\"150-6547cd97c256b\"",
+        "robots_etag": "\"9b1-65a113b213195\"",
         "robots_status": 200,
         "robots_url": "https://www.uhcprovider.com/robots.txt",
         "source_id": "uhc_clinical_policy",
-        "terms_etag": "\"1dbf-65a029af00b1e\"",
+        "terms_etag": "\"1e53-65a1a0f1e834a\"",
         "terms_interpretation": "manual legal/terms review required; preflight does not infer permission from HTTP success",
         "terms_status": 200,
         "terms_url": "https://www.uhcprovider.com/en/legal/terms-of-use.html"
@@ -693,7 +693,7 @@
         "payer": "Centers for Medicare & Medicaid Services",
         "policy_fetch_performed": false,
         "robots_allows_index": true,
-        "robots_etag": "\"1787777309\"",
+        "robots_etag": "\"1787859321\"",
         "robots_status": 200,
         "robots_url": "https://www.cms.gov/robots.txt",
         "source_id": "cms_mcd_ncd",
@@ -709,6 +709,37 @@
     },
     {
       "evidence": {
+        "case_level_ground_truth_verified": false,
+        "case_level_outcome_field_observed": true,
+        "central_case_level_dataset": true,
+        "declared_license_url": "https://www.usa.gov/publicdomain/label/1.0/",
+        "fetch_method": "Prefer the official catalog and offset/limit datastore API. If the API credential is unavailable, a dated official CSV may be preserved unchanged outside the repository after a disk check and inspected only with the streaming bulk inspector; page any authorized local extraction outside the repository.",
+        "inaccessible_urls": [
+          "final_rule_fact_sheet_url",
+          "template_url",
+          "faq_url"
+        ],
+        "kind": "official_regulator_decision_summary_api",
+        "publisher": "Centers for Medicare & Medicaid Services",
+        "reported_coverage": "Public Part C and Part D Qualified Independent Contractor decision summaries; the live API reported 901471 Part C records and 240958 Part D records on 2026-08-28.",
+        "source_id": "cms_qic_decision_summaries",
+        "url_results": {
+          "catalog_url": {
+            "content_type": "text/html",
+            "error": "HTTP Error 403: Forbidden",
+            "etag": "",
+            "status": 403,
+            "url": "https://qic.cms.gov/api/1/metastore/schemas/dataset/items"
+          }
+        }
+      },
+      "fallback": "Resolve official CMS access before calibrating the payer or reporting a benchmark.",
+      "name": "Real benchmark definition: cms_qic_decision_summaries",
+      "status": "blocked",
+      "summary": "The official CMS benchmark definition could not be retrieved from every required endpoint."
+    },
+    {
+      "evidence": {
         "case_level_data_fetched": false,
         "case_level_ground_truth_verified": false,
         "case_level_outcome_field_observed": false,
@@ -717,9 +748,9 @@
         "declared_license_url": "http://www.opendefinition.org/licenses/cc-by",
         "fetch_method": "HEAD/GET with ETag capture; do not modify or redistribute a transformed copy; fail closed on access or licence uncertainty.",
         "inaccessible_data_urls": [
-          "datastore_api_url",
           "csv_url",
           "data_dictionary_url",
+          "datastore_api_url",
           "archive_url"
         ],
         "kind": "regulator_determinations",
@@ -796,6 +827,29 @@
         "case_level_outcome_field_observed": false,
         "central_case_level_dataset": false,
         "declared_license_url": "",
+        "fetch_method": "Resolve the current official search link, capture a bounded result or export outside the repository, then inspect schema, privacy, provenance, and reuse terms before acceptance.",
+        "inaccessible_urls": [
+          "final_rule_fact_sheet_url",
+          "template_url",
+          "faq_url"
+        ],
+        "kind": "official_state_iro_public_search",
+        "publisher": "Washington State Office of the Insurance Commissioner",
+        "reported_coverage": "Washington health-care independent-review decisions; the OIC advertises public search by company, diagnosis, treatment, decision, and reason for appeal.",
+        "source_id": "washington_oic_iro_decisions",
+        "url_results": {}
+      },
+      "fallback": "Resolve official CMS access before calibrating the payer or reporting a benchmark.",
+      "name": "Real benchmark definition: washington_oic_iro_decisions",
+      "status": "blocked",
+      "summary": "The official CMS benchmark definition could not be retrieved from every required endpoint."
+    },
+    {
+      "evidence": {
+        "case_level_ground_truth_verified": false,
+        "case_level_outcome_field_observed": false,
+        "central_case_level_dataset": false,
+        "declared_license_url": "",
         "fetch_method": "Fetch CMS definitions and template; collect actual 2025 reports from each payer or program's public website with URL, timestamp, ETag, and content hash.",
         "inaccessible_urls": [],
         "kind": "regulatory_benchmark_definition",
@@ -806,14 +860,14 @@
           "faq_url": {
             "content_type": "text/html; charset=utf-8",
             "error": "",
-            "etag": "\"1787777378-gzip\"",
+            "etag": "\"1787868245-gzip\"",
             "status": 200,
             "url": "https://www.cms.gov/initiatives/burden-reduction/overview/interoperability/frequently-asked-questions/prior-authorization-api"
           },
           "final_rule_fact_sheet_url": {
             "content_type": "text/html; charset=utf-8",
             "error": "",
-            "etag": "\"1787777410-gzip\"",
+            "etag": "\"1787878203-gzip\"",
             "status": 200,
             "url": "https://www.cms.gov/newsroom/fact-sheets/cms-interoperability-prior-authorization-final-rule-cms-0057-f"
           },
@@ -861,22 +915,56 @@
       "name": "Real corpus source: ny_dfs_external_appeal_archive",
       "status": "blocked",
       "summary": "The official external-appeal archive was discovered, but its archive endpoint is not currently retrievable by this client."
+    },
+    {
+      "evidence": {
+        "case_level_ground_truth_verified": false,
+        "case_level_outcome_field_observed": true,
+        "central_case_level_dataset": false,
+        "declared_license_url": "",
+        "fetch_method": "Official direct Excel download; preserve the workbook unchanged; local-only case-level evaluation is authorized by evidence/oregon-acceptance.json; request redacted synopses if needed and do not redistribute.",
+        "inaccessible_urls": [
+          "final_rule_fact_sheet_url",
+          "template_url",
+          "faq_url"
+        ],
+        "kind": "regulator_external_reviews",
+        "publisher": "Oregon Division of Financial Regulation",
+        "reported_coverage": "Completed Oregon external-review cases in a rolling four-year report, updated quarterly; the downloaded report states coverage through June 30, 2025.",
+        "source_id": "oregon_dfr_iro_case_detail_report",
+        "url_results": {
+          "archive_url": {
+            "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "error": "",
+            "etag": "\"{A5D2C5BA-6C56-4E09-9A0E-C4FBEE84749F},45\"",
+            "status": 200,
+            "url": "https://dfr.oregon.gov/insure/health/understand/coverage/Documents/iro-case-detail-report.xlsx"
+          }
+        }
+      },
+      "fallback": "Resolve official CMS access before calibrating the payer or reporting a benchmark.",
+      "name": "Real benchmark definition: oregon_dfr_iro_case_detail_report",
+      "status": "blocked",
+      "summary": "The official CMS benchmark definition could not be retrieved from every required endpoint."
     }
   ],
-  "generated_at": "2026-08-27T08:00:44.204386Z",
-  "git_commit": "unknown",
+  "generated_at": "2026-08-28T11:57:52.917858Z",
+  "git_commit": "working-tree",
   "policy_fetch_policy": "No payer policy document was fetched by Phase 0; robots and terms were checked before any future fetch.",
   "project": "onyx-yeti-506606-i9",
   "region": "europe-west2",
   "schema_version": "0.1",
   "security_note": "No credential, access token, private key, or secret is written to this artifact.",
   "summary": {
-    "blocker_count": 4,
+    "blocker_count": 7,
     "blockers": [
       "Policy source: aetna_cpb",
       "Policy source: cigna_policy",
+      "Real benchmark definition: cms_qic_decision_summaries",
       "Real corpus source: california_dmhc_imr_determinations",
-      "Real corpus source: ny_dfs_external_appeal_archive"
+      "Real benchmark definition: washington_oic_iro_decisions",
+      "Real corpus source: ny_dfs_external_appeal_archive",
+      "Real benchmark definition: oregon_dfr_iro_case_detail_report"
     ],
     "pass_count": 10,
     "warning_count": 16,
