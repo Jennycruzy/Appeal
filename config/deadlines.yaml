@@ -7,39 +7,52 @@
       "duration_seconds": null,
       "unit": "unknown",
       "citation_url": "",
-      "note": "Intake handling is operational, not a CMS-0057-F statutory clock. A service-level target must be selected separately."
+      "note": "Intake handling is operational, not a CMS-0057-F statutory clock. A service-level target must be selected separately.",
+      "regulation": "operational",
+      "expiry_action": "hold for human review"
     },
     "standard_prior_authorization": {
       "status": "verified",
       "duration_seconds": 604800,
       "unit": "calendar_days",
       "citation_url": "https://www.cms.gov/initiatives/burden-reduction/overview/interoperability/frequently-asked-questions/prior-authorization-api",
-      "note": "CMS-0057-F standard prior authorization decision timeframe: seven calendar days for applicable impacted payers."
+      "note": "CMS-0057-F standard prior authorization decision timeframe: seven calendar days for applicable impacted payers.",
+      "regulation": "CMS-0057-F",
+      "expiry_action": "route to statutory deadline handling",
+      "escalation_state": "CLOSED_ABANDONED_DEADLINE"
     },
     "expedited_prior_authorization": {
       "status": "verified",
       "duration_seconds": 259200,
       "unit": "hours",
       "citation_url": "https://www.cms.gov/initiatives/burden-reduction/overview/interoperability/frequently-asked-questions/prior-authorization-api",
-      "note": "CMS-0057-F expedited prior authorization decision timeframe: 72 hours for applicable impacted payers."
+      "note": "CMS-0057-F expedited prior authorization decision timeframe: 72 hours for applicable impacted payers.",
+      "regulation": "CMS-0057-F",
+      "expiry_action": "route to statutory deadline handling",
+      "escalation_state": "CLOSED_ABANDONED_DEADLINE"
     },
     "appeal_program_specific": {
       "status": "unverified",
       "duration_seconds": null,
       "unit": "unknown",
       "citation_url": "https://www.cms.gov/initiatives/burden-reduction/overview/interoperability/frequently-asked-questions/prior-authorization-api",
-      "note": "CMS says the definition of an appeal varies by payer program; this artifact does not invent an appeal filing deadline."
+      "note": "CMS says the definition of an appeal varies by payer program; this artifact does not invent an appeal filing deadline.",
+      "regulation": "program-specific",
+      "expiry_action": "hold for verified program deadline"
     },
     "terminal_no_deadline": {
       "status": "not_applicable",
       "duration_seconds": null,
       "unit": "none",
       "citation_url": "",
-      "note": "Terminal case state."
+      "note": "Terminal case state.",
+      "regulation": "none",
+      "expiry_action": "none"
     }
   },
   "state_deadlines": {
     "INTAKE_RECEIVED": "intake_unverified",
+    "QUARANTINED": "terminal_no_deadline",
     "DENIAL_PARSED": "standard_prior_authorization",
     "PARSE_FAILED_HUMAN_REVIEW": "intake_unverified",
     "POLICY_LOCATED": "standard_prior_authorization",

@@ -13,6 +13,7 @@ from appeal_core import (
     DecisionSource,
     DeadlineCatalog,
     EvidenceRef,
+    HumanReleaseRequired,
     IdempotencyConflict,
     InvalidTransition,
     SignatureRequired,
@@ -107,6 +108,25 @@ class StateMachineTests(unittest.TestCase):
         case = move(case, CaseState.ESCALATION_ELIGIBLE, key="case-007:eligible")
         with self.assertRaises(UnverifiedDeadline):
             MACHINE.deadline_at(case)
+
+    def test_case_clock_is_first_class_and_quarantine_release_is_human_only(self) -> None:
+        case = MACHINE.create("case-009", "tenant-a", TIME, AGENT, DETERMINISTIC)
+        clock = MACHINE.statutory_clock(case)
+        self.assertEqual(clock.deadline_key, "intake_unverified")
+        self.assertIsNone(clock.to_json()["expires_at"])
+        with self.assertRaises(UnverifiedDeadline):
+            clock.remaining_seconds(TIME)
+        with self.assertRaises(HumanReleaseRequired):
+            MACHINE.transition(
+                MACHINE.transition(case, CaseState.QUARANTINED, TIME, AGENT, DETERMINISTIC, "blocked", (), "case-009:quarantine"),
+                CaseState.INTAKE_RECEIVED,
+                TIME,
+                AGENT,
+                DETERMINISTIC,
+                "release",
+                (),
+                "case-009:release",
+            )
 
     def test_fingerprint_is_byte_stable_for_same_state(self) -> None:
         left = MACHINE.create("case-008", "tenant-a", TIME, AGENT, DETERMINISTIC)
