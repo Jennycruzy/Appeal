@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import cast
@@ -24,7 +25,10 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
         CaseStateMachine(deadlines),
         ledger=ReceiptLedger(ledger_path),
     )
-    return LocalHttpApi(LocalAppealService(LocalCaseRuntime(workflow)))
+    return LocalHttpApi(
+        LocalAppealService(LocalCaseRuntime(workflow)),
+        deployment=os.getenv("APPEAL_DEPLOYMENT", "local"),
+    )
 
 
 def serve(host: str, port: int, ledger_path: Path) -> None:

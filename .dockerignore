@@ -1,0 +1,14 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+docs
+evidence
+tests
+*.csv
+*.jsonl
+*.xlsx
+*.jar
+.cache
+Downloads

@@ -41,8 +41,12 @@ MODEL_ARMOR_PROJECT ?= onyx-yeti-506606-i9
 MODEL_ARMOR_LOCATION ?= europe-west2
 MODEL_ARMOR_TEMPLATE ?= appeal-tripwire-v1
 MODEL_ARMOR_OUTPUT ?= evidence/model-armor-measurement.json
+CLOUD_RUN_PROJECT ?= onyx-yeti-506606-i9
+CLOUD_RUN_REGION ?= europe-west2
+CLOUD_RUN_SERVICE ?= appeal-backend
+CLOUD_RUN_SERVICE_ACCOUNT ?= appeal-backend@onyx-yeti-506606-i9.iam.gserviceaccount.com
 
-.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime measure-local-security measure-model-armor run-local-api load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime measure-local-security measure-model-armor run-local-api deploy-cloud-run load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -67,6 +71,9 @@ measure-model-armor:
 
 run-local-api:
 	PYTHONPATH=src $(PYTHON) scripts/run_local_api.py --ledger "$(LOCAL_API_LEDGER)"
+
+deploy-cloud-run:
+	gcloud run deploy "$(CLOUD_RUN_SERVICE)" --source . --project "$(CLOUD_RUN_PROJECT)" --region "$(CLOUD_RUN_REGION)" --service-account "$(CLOUD_RUN_SERVICE_ACCOUNT)" --set-env-vars "APPEAL_DEPLOYMENT=cloud_run" --allow-unauthenticated --min 0 --max 1 --memory 512Mi --cpu 1 --timeout 300 --quiet
 
 load-hapi:
 	PYTHONPATH=src $(PYTHON) scripts/load_synthea_corpus.py --input-dir "$(SYNTHETIC_INPUT_DIR)" --report "$(HAPI_LOAD_REPORT)" --timeout "$(HAPI_TIMEOUT)" --start-index "$(HAPI_START_INDEX)"

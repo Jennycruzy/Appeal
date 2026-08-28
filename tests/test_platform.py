@@ -191,6 +191,7 @@ class PlatformTests(unittest.TestCase):
         api = LocalHttpApi(service)
         health_status, health = api.handle("GET", "/healthz", at=NOW)
         self.assertEqual(health_status, 200)
+        self.assertEqual(health["deployment"], "local")
         self.assertFalse(health["authenticated"])
         created_status, created = api.handle("POST", "/api/demo/cases", at=NOW)
         self.assertEqual(created_status, 201)
