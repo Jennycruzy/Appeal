@@ -49,6 +49,8 @@ CLOUD_RUN_PROJECT ?= onyx-yeti-506606-i9
 CLOUD_RUN_REGION ?= europe-west2
 CLOUD_RUN_SERVICE ?= appeal-backend
 CLOUD_RUN_SERVICE_ACCOUNT ?= appeal-backend@onyx-yeti-506606-i9.iam.gserviceaccount.com
+CLOUD_RUN_STORAGE ?= firestore
+CLOUD_RUN_FIRESTORE_DATABASE ?= (default)
 ADK_PROJECT ?= onyx-yeti-506606-i9
 ADK_LOCATION ?= global
 ADK_MODEL ?= gemini-3.7-flash
@@ -88,7 +90,7 @@ run-local-api:
 	PYTHONPATH=src $(PYTHON) scripts/run_local_api.py --ledger "$(LOCAL_API_LEDGER)"
 
 deploy-cloud-run:
-	gcloud run deploy "$(CLOUD_RUN_SERVICE)" --source . --project "$(CLOUD_RUN_PROJECT)" --region "$(CLOUD_RUN_REGION)" --service-account "$(CLOUD_RUN_SERVICE_ACCOUNT)" --set-env-vars "APPEAL_DEPLOYMENT=cloud_run" --allow-unauthenticated --min 0 --max 1 --memory 512Mi --cpu 1 --timeout 300 --quiet
+	gcloud run deploy "$(CLOUD_RUN_SERVICE)" --source . --project "$(CLOUD_RUN_PROJECT)" --region "$(CLOUD_RUN_REGION)" --service-account "$(CLOUD_RUN_SERVICE_ACCOUNT)" --set-env-vars "APPEAL_DEPLOYMENT=cloud_run,APPEAL_STORAGE=$(CLOUD_RUN_STORAGE),GOOGLE_CLOUD_PROJECT=$(CLOUD_RUN_PROJECT),APPEAL_FIRESTORE_DATABASE=$(CLOUD_RUN_FIRESTORE_DATABASE)" --allow-unauthenticated --min 0 --max 1 --memory 512Mi --cpu 1 --timeout 300 --quiet
 
 load-hapi:
 	PYTHONPATH=src $(PYTHON) scripts/load_synthea_corpus.py --input-dir "$(SYNTHETIC_INPUT_DIR)" --report "$(HAPI_LOAD_REPORT)" --timeout "$(HAPI_TIMEOUT)" --start-index "$(HAPI_START_INDEX)"

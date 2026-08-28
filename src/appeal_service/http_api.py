@@ -12,9 +12,10 @@ from .service import CaseNotFound, LocalAppealService
 class LocalHttpApi:
     """Small HTTP contract used by the local console and future Cloud Run API."""
 
-    def __init__(self, service: LocalAppealService, *, deployment: str = "local") -> None:
+    def __init__(self, service: LocalAppealService, *, deployment: str = "local", storage: str = "local") -> None:
         self.service = service
         self.deployment = deployment
+        self.storage = storage
 
     def handle(
         self,
@@ -32,6 +33,7 @@ class LocalHttpApi:
                 return 200, {
                     "status": "ok",
                     "deployment": self.deployment,
+                    "storage": self.storage,
                     "authenticated": False,
                 }
             if method == "POST" and segments == ("api", "demo", "cases"):

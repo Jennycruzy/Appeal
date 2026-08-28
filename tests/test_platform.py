@@ -192,6 +192,7 @@ class PlatformTests(unittest.TestCase):
         health_status, health = api.handle("GET", "/healthz", at=NOW)
         self.assertEqual(health_status, 200)
         self.assertEqual(health["deployment"], "local")
+        self.assertEqual(health["storage"], "local")
         self.assertFalse(health["authenticated"])
         api_health_status, api_health = api.handle("GET", "/api/healthz", at=NOW)
         self.assertEqual(api_health_status, 200)

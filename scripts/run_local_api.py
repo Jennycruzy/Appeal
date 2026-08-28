@@ -11,12 +11,27 @@ from typing import cast
 
 from appeal_agents.workflow import AppealWorkflow
 from appeal_core import CaseStateMachine, DeadlineCatalog, ReceiptLedger
-from appeal_platform import LocalCaseRuntime
+from appeal_platform import CaseStore, FirestoreCaseStore, LocalCaseRuntime
 from appeal_service import LocalAppealService, LocalHttpApi
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LEDGER = ROOT.parent / "Downloads" / "appeal-local-api-receipts.jsonl"
+
+
+def build_store() -> tuple[CaseStore, str]:
+    storage = os.getenv("APPEAL_STORAGE", "local").strip().lower()
+    if storage == "local":
+        return CaseStore(), storage
+    if storage == "firestore":
+        return (
+            FirestoreCaseStore(
+                project=os.getenv("GOOGLE_CLOUD_PROJECT"),
+                database=os.getenv("APPEAL_FIRESTORE_DATABASE", "(default)"),
+            ),
+            storage,
+        )
+    raise ValueError(f"unsupported APPEAL_STORAGE value: {storage!r}")
 
 
 def build_api(ledger_path: Path) -> LocalHttpApi:
@@ -25,9 +40,11 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
         CaseStateMachine(deadlines),
         ledger=ReceiptLedger(ledger_path),
     )
+    store, storage = build_store()
     return LocalHttpApi(
-        LocalAppealService(LocalCaseRuntime(workflow)),
+        LocalAppealService(LocalCaseRuntime(workflow, store=store)),
         deployment=os.getenv("APPEAL_DEPLOYMENT", "local"),
+        storage=storage,
     )
 
 
