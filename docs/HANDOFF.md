@@ -187,20 +187,24 @@ and [`docs/LIMITATIONS.md`](LIMITATIONS.md); they are no longer work items.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00002-d24`, with 100% traffic on that revision. The verified
+`appeal-backend-00005-968`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. The `/api/healthz` endpoint
-returned `status: ok`. A synthetic case completed creation, clinician
-approval, one submission mutation, and payer adjudication to `CLOSED_WON`.
+returned `status: ok` with `storage: firestore`. A synthetic case completed
+creation, clinician approval, one submission mutation, and payer adjudication
+to `CLOSED_WON`; a subsequent board request read the persisted case.
 The aggregate-only deployment record is
 `evidence/cloud-run-deployment.json`; the narrative audit is
-`docs/audits/stage-c-cloud-run.md`.
+`docs/audits/cloud-persistence.md`.
 
-The Cloud Run service is intentionally unauthenticated, synthetic-only, and
-process-local. No real case data was uploaded. It establishes the hosted
-Google Cloud backend for the demo path, but it does not establish Agent
-Runtime, Agent Registry, Agent Identity, Firestore, Pub/Sub, Memory Bank,
-Gateway, Firebase Auth, or a live default Model Armor/Gemma workflow boundary.
+The Cloud Run service is intentionally unauthenticated and synthetic-only. No
+real case data was uploaded. Firestore now persists the immutable case state
+and safe references, but workflow context and the receipt ledger remain
+process/container-local; a restart can rehydrate board metadata but cannot
+resume approval or adjudication yet. This establishes the hosted Google Cloud
+backend and Firestore write path, but it does not establish Agent Runtime,
+Agent Registry, Agent Identity, Pub/Sub, Memory Bank, Gateway, Firebase Auth,
+or a live default Model Armor/Gemma workflow boundary.
 
 Before any real-data upload or managed-service expansion, run a live inventory
 against the approved project and record the results:

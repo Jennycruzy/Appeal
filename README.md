@@ -123,21 +123,26 @@ and its decision input stays outside the repository.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00002-d24`, with 100% traffic on that revision. The verified
+`appeal-backend-00005-968`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. Its `/api/healthz` endpoint
-returned `status: ok`, and a synthetic case completed creation, clinician
-approval, one submission mutation, and payer adjudication to `CLOSED_WON`.
+returned `status: ok` with `storage: firestore`, and a synthetic case
+completed creation, clinician approval, one submission mutation, and payer
+adjudication to `CLOSED_WON`. The board then returned the persisted synthetic
+case from Firestore.
 The aggregate deployment record is
 [`evidence/cloud-run-deployment.json`](evidence/cloud-run-deployment.json),
-with the audit narrative in
-[`docs/audits/stage-c-cloud-run.md`](docs/audits/stage-c-cloud-run.md).
+with the persistence audit in
+[`docs/audits/cloud-persistence.md`](docs/audits/cloud-persistence.md).
 
 This is a synthetic-only, unauthenticated demonstration endpoint with
-process-local state; no real case data was uploaded. It proves the Google
-Cloud backend deployment but does not claim that the managed Agent Runtime,
-Firestore, Pub/Sub, Firebase Auth, or the Model Armor/Gemma boundary is wired
-into the default workflow.
+no real case data uploaded. Firestore persists the immutable case state and
+safe references, while workflow context and the receipt ledger remain local to
+the container; a restart can rehydrate board metadata but cannot resume an
+approval or adjudication yet. It proves the Google Cloud backend deployment
+and Firestore write path but does not claim that the managed Agent Runtime,
+Pub/Sub, Firebase Auth, or the Model Armor/Gemma boundary is wired into the
+default workflow.
 See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
 
 ## Local product path
@@ -174,8 +179,8 @@ make run-local-runtime
 
 The service lifecycle is also covered by tests as separate open, clinician
 approval, and payer-determination operations. The deployed Cloud Run demo uses
-the same process-local state, so it is not a substitute for the future
-Firestore layer.
+Firestore for case metadata and state; workflow context is still process-local
+and remains an explicit limitation.
 
 Run the synthetic Stage B case through the real ADK `Runner` and Gemini vision
 path with:

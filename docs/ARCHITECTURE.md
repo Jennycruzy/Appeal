@@ -1,12 +1,13 @@
 # Appeal architecture
 
 The repository currently executes the local deterministic path and exposes the
-same API facade through a synthetic-only Cloud Run deployment. A synthetic
+same API facade through a synthetic-only Cloud Run deployment with Firestore
+case metadata persistence. A synthetic
 seven-agent ADK/Gemini smoke, a multimodal ADK case exit, and separate managed
 Model Armor and serverless Gemma MaaS measurements are recorded as provider
-probes; Agent Runtime,
-persistent Google Cloud services, the default security boundary, and the
-external payer remain future adapters and are marked as such below.
+probes; Agent Runtime, the remaining persistent workflow services, the default
+security boundary, and the external payer remain future adapters and are
+marked as such below.
 
 The local executor runs the role adapters in deterministic graph order and
 publishes reference-only event records through `LocalEventSpine`. Subscriber-
@@ -41,7 +42,7 @@ flowchart LR
     C --> R[Determination / escalation]
     R --> E
 
-    E --> S[Case store]
+    E --> S[Case store\nlocal fallback / Firestore metadata]
     E --> M[Case-scoped Memory Bank]
     G --> L[Receipt + reversibility ledger]
 ```
@@ -67,8 +68,8 @@ flowchart LR
 | Boundary | Current local implementation | Future managed target |
 |---|---|---|
 | Agent graph | Deterministic seven-role graph + synthetic ADK smoke | ADK 2.x workflow on Agent Runtime |
-| HTTP backend | Synthetic deterministic facade on Cloud Run | Authenticated case API with managed workflow services |
-| Case state | Immutable state machine + local store | Firestore with IAM conditions |
+| HTTP backend | Synthetic deterministic facade on Cloud Run with Firestore case metadata | Authenticated case API with managed workflow services |
+| Case state | Immutable state machine + local fallback or Firestore adapter | Durable workflow sessions and IAM conditions |
 | Event delivery | `LocalEventSpine` | Pub/Sub topics and idempotent subscribers |
 | Memory | `ScopedMemoryBank` | Per-case Memory Bank revisions |
 | Payer | `PayerAdjudicator` with a private criterion copy | Separate Cloud Run service/account |

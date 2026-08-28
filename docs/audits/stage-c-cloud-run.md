@@ -1,8 +1,10 @@
-# Stage C — Cloud Run backend deployment
+# Historical Cloud Run backend deployment
 
 **Recorded:** 2026-08-28
 
-The Appeal HTTP backend is deployed to Google Cloud Run in project
+This is the original pre-persistence Cloud Run deployment record. The current
+deployment supersedes it and is recorded in
+[`cloud-persistence.md`](cloud-persistence.md). At that time, the Appeal HTTP backend was deployed to Google Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`.
 
 | Field | Verified value |

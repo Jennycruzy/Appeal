@@ -6,14 +6,24 @@
   "project_display_name": "Appeal",
   "region": "europe-west2",
   "service": "appeal-backend",
-  "revision": "appeal-backend-00002-d24",
+  "revision": "appeal-backend-00005-968",
   "traffic_percent": 100,
   "service_url": "https://appeal-backend-hhcjpefk2q-nw.a.run.app",
+  "regional_service_url": "https://appeal-backend-835653516606.europe-west2.run.app",
   "service_account": "appeal-backend@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+  "firestore": {
+    "database": "(default)",
+    "location": "europe-west2",
+    "type": "FIRESTORE_NATIVE",
+    "concurrency_mode": "OPTIMISTIC",
+    "delete_protection": "DELETE_PROTECTION_ENABLED",
+    "runtime_role": "roles/datastore.user"
+  },
   "health_check": {
     "path": "/api/healthz",
     "status": "ok",
-    "authenticated": false
+    "authenticated": false,
+    "storage": "firestore"
   },
   "synthetic_lifecycle": {
     "case_created": true,
@@ -21,9 +31,12 @@
     "submitted": true,
     "external_mutation_count": 1,
     "final_case_state": "CLOSED_WON",
-    "final_outcome": "closed_won"
+    "final_outcome": "closed_won",
+    "board_persisted_case_count": 1
   },
-  "state_store": "process_local_in_memory",
+  "state_store": "firestore_case_metadata",
+  "workflow_context_store": "process_local_in_memory",
+  "receipt_ledger": "container_local_jsonl",
   "real_case_data_uploaded": false,
-  "source_commit": "924b69f"
+  "source_commit": "7d33348"
 }

@@ -16,11 +16,12 @@ complete.
   `src/appeal_agents/adk_workflow.py`.
 - A synthetic-only Cloud Run service is deployed in project
   `onyx-yeti-506606-i9`, region `europe-west2`, revision
-  `appeal-backend-00002-d24`. Its health endpoint and one synthetic case
-  lifecycle were verified; the aggregate record is
+  `appeal-backend-00005-968`. Its health endpoint, Firestore-backed state,
+  and one synthetic case lifecycle were verified; the aggregate record is
   [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json).
-  The service is unauthenticated and process-local, accepts no real case data,
-  and is not a production API.
+  The service is unauthenticated and synthetic-only, accepts no real case
+  data, and is not a production API. Workflow context and receipts remain
+  process/container-local.
 - A real synthetic ADK `Runner` execution completed through all seven named
   roles using an image-only PDF input and Gemini `3.7-flash`. Its aggregate
   Stage B exit is recorded in
@@ -29,16 +30,21 @@ complete.
   synthetic case; the Cloud Run service is still a deterministic facade, and
   managed Agent Runtime execution is not yet deployed.
 - Agent Runtime, Agent Registry, Agent Identity, managed Memory Bank, Agent
-  Gateway, Agent Policies, Firebase Auth, Firestore, Pub/Sub, and managed Cloud
-  Observability are not yet deployed from this repository. A managed Model
-  Armor template has been configured and measured separately; it is not yet
-  the default workflow boundary. Local fallback seams for event delivery,
-  case storage, scoped memory, payer adjudication, and reversibility are
-  present under `src/appeal_platform/`.
+  Gateway, Agent Policies, Firebase Auth, Pub/Sub, and managed Cloud
+  Observability are not yet deployed from this repository. Native Firestore
+  case-metadata persistence is deployed for the Cloud Run service; the
+  aggregate proof is in
+  [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json)
+  and the audit is in [`docs/audits/cloud-persistence.md`](audits/cloud-persistence.md).
+  A managed Model Armor template has been configured and measured separately;
+  it is not yet the default workflow boundary. Local fallback seams for event
+  delivery, scoped memory, payer adjudication, and reversibility are present
+  under `src/appeal_platform/`.
 - The current seven-agent implementation demonstrates the role boundaries and
   governance contracts. The ADK case exit is a synthetic provider exercise;
-  the deployed Cloud Run container exposes the deterministic API facade, not
-  a complete real-case Gemini-backed appeal evaluation.
+  the deployed Cloud Run container exposes the deterministic API facade with
+  Firestore case metadata, not a complete real-case Gemini-backed appeal
+  evaluation.
 
 ## Data and evaluation
 
@@ -55,9 +61,10 @@ complete.
 ## Operational features
 
 - The repository does not yet provide a web console, Firebase authentication,
-  Cloud Scheduler, managed Pub/Sub, or persistent multi-tenant storage. The
-  Cloud Run HTTP facade is synthetic-only and process-local; it is intentionally
-  not a production deployment.
+  Cloud Scheduler, managed Pub/Sub, or durable workflow-session persistence.
+  Cloud Run case state and safe references are persisted in Firestore, but the
+  workflow context and receipt ledger remain process/container-local. The
+  endpoint is synthetic-only and intentionally not a production deployment.
 - The local event spine records and deduplicates workflow events, but the
   deterministic workflow still invokes role adapters in-process; subscriber-
   driven agent execution is not yet implemented.

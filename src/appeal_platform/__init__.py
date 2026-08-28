@@ -1,8 +1,9 @@
 """Local platform boundaries for the Appeal workflow.
 
-These adapters model the seams that will later be backed by Pub/Sub,
-Firestore, Memory Bank, and a separately deployed payer service. They keep
-the local path runnable without claiming that a cloud deployment exists.
+These adapters keep the local path runnable while exposing the managed seams
+for Pub/Sub, Firestore, Memory Bank, and a separately deployed payer service.
+The Firestore case-metadata adapter is used by the Cloud Run deployment; the
+remaining managed boundaries are still explicit future targets.
 """
 
 from .events import (
