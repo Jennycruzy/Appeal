@@ -170,7 +170,8 @@ For local HTTP integration testing only, run:
 make run-local-api
 ```
 
-It binds to loopback and exposes `/healthz`, `POST /api/demo/cases`,
+It binds to loopback and exposes `/healthz` (and `/api/healthz` for Cloud Run),
+`POST /api/demo/cases`,
 `GET /api/cases/tenant-demo`, and the approval/adjudication routes. It is not
 authenticated or suitable for public use.
 

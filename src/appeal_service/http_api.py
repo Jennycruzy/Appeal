@@ -28,7 +28,7 @@ class LocalHttpApi:
         segments = tuple(unquote(segment) for segment in path.split("/") if segment)
         now = (at or datetime.now(UTC)).astimezone(UTC)
         try:
-            if method == "GET" and segments == ("healthz",):
+            if method == "GET" and segments in {("healthz",), ("api", "healthz")}:
                 return 200, {
                     "status": "ok",
                     "deployment": self.deployment,

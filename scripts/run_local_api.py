@@ -69,7 +69,7 @@ def serve(host: str, port: int, ledger_path: Path) -> None:
     ledger_path.parent.mkdir(parents=True, exist_ok=True)
     server = ThreadingHTTPServer((host, port), Handler)
     print(f"Local Appeal API listening on http://{host}:{port}")
-    print("Endpoints: GET /healthz; POST /api/demo/cases; GET /api/cases/tenant-demo")
+    print("Endpoints: GET /healthz, /api/healthz; POST /api/demo/cases; GET /api/cases/tenant-demo")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
