@@ -11,7 +11,9 @@ COPY src ./src
 COPY config ./config
 COPY scripts/run_local_api.py ./scripts/run_local_api.py
 
-RUN python -m pip install --no-cache-dir "google-cloud-firestore>=2.16.0,<3.0.0"
+RUN python -m pip install --no-cache-dir \
+    "google-cloud-firestore>=2.16.0,<3.0.0" \
+    "google-cloud-modelarmor>=0.7.1,<1.0.0"
 
 RUN useradd --create-home --uid 10001 appeal \
     && mkdir -p /tmp/appeal \

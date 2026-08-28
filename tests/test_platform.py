@@ -6,7 +6,7 @@ from datetime import timedelta
 from pathlib import Path
 
 from appeal_agents.demo import demo_input
-from appeal_agents import default_local_security_cases, measure_security_boundary
+from appeal_agents import ManagedSecurityBoundary, default_local_security_cases, measure_security_boundary
 from appeal_agents import AgentPolicyRegistry, CapabilityDenied
 from appeal_agents.security import LocalSecurityBoundary
 from appeal_agents.workflow import AppealWorkflow
@@ -35,6 +35,38 @@ def workflow() -> AppealWorkflow:
 
 
 class PlatformTests(unittest.TestCase):
+    def test_managed_security_boundary_keeps_model_armor_before_gemma(self) -> None:
+        class StubBoundary(ManagedSecurityBoundary):
+            def __init__(self, armor_blocked: bool = False, gemma_blocked: bool = False, fail: bool = False) -> None:
+                super().__init__(project="project")
+                self.calls: list[str] = []
+                self.armor_blocked = armor_blocked
+                self.gemma_blocked = gemma_blocked
+                self.fail = fail
+
+            def _model_armor_blocked(self, surface: str, content: str) -> bool:
+                self.calls.append("model_armor")
+                if self.fail:
+                    raise RuntimeError("provider failure")
+                return self.armor_blocked
+
+            def _gemma_blocked(self, content: str) -> bool:
+                self.calls.append("gemma")
+                return self.gemma_blocked
+
+        clear = StubBoundary()
+        self.assertEqual(clear.inspect_inbound("clean synthetic prose").status.value, "clear")
+        self.assertEqual(clear.calls, ["model_armor", "gemma"])
+
+        armor_block = StubBoundary(armor_blocked=True)
+        self.assertEqual(armor_block.inspect_inbound("blocked").status.value, "blocked")
+        self.assertEqual(armor_block.calls, ["model_armor"])
+
+        provider_failure = StubBoundary(fail=True)
+        result = provider_failure.inspect_inbound("unknown")
+        self.assertEqual(result.status.value, "blocked")
+        self.assertEqual(result.categories, ("provider_unavailable",))
+
     def test_event_spine_delivers_a_duplicate_only_once_per_handler(self) -> None:
         spine = LocalEventSpine()
         seen: list[str] = []
@@ -253,6 +285,7 @@ class PlatformTests(unittest.TestCase):
         self.assertEqual(health_status, 200)
         self.assertEqual(health["deployment"], "local")
         self.assertEqual(health["storage"], "local")
+        self.assertEqual(health["security"], "local_deterministic_fallback")
         self.assertFalse(health["authenticated"])
         api_health_status, api_health = api.handle("GET", "/api/healthz", at=NOW)
         self.assertEqual(api_health_status, 200)

@@ -20,6 +20,7 @@ class LocalHttpApi:
         *,
         deployment: str = "local",
         storage: str = "local",
+        security: str = "local_deterministic_fallback",
         scheduler_auth_required: bool = False,
         scheduler_service_account: str | None = None,
         scheduler_audience: str | None = None,
@@ -27,6 +28,7 @@ class LocalHttpApi:
         self.service = service
         self.deployment = deployment
         self.storage = storage
+        self.security = security
         self.scheduler_auth_required = scheduler_auth_required
         self.scheduler_service_account = scheduler_service_account
         self.scheduler_audience = scheduler_audience
@@ -49,6 +51,7 @@ class LocalHttpApi:
                     "status": "ok",
                     "deployment": self.deployment,
                     "storage": self.storage,
+                    "security": self.security,
                     "authenticated": False,
                 }
             if method == "POST" and segments == ("api", "demo", "cases"):

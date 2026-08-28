@@ -9,6 +9,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import cast
 
+from appeal_agents import LocalSecurityBoundary, ManagedSecurityBoundary
 from appeal_agents.workflow import AppealWorkflow
 from appeal_core import CaseStateMachine, DeadlineCatalog, ReceiptLedger
 from appeal_platform import CaseStore, FirestoreCaseStore, LocalCaseRuntime
@@ -34,17 +35,38 @@ def build_store() -> tuple[CaseStore, str]:
     raise ValueError(f"unsupported APPEAL_STORAGE value: {storage!r}")
 
 
+def build_security() -> tuple[LocalSecurityBoundary, str]:
+    security = os.getenv("APPEAL_SECURITY", "local").strip().lower()
+    if security == "local":
+        return LocalSecurityBoundary(), "local_deterministic_fallback"
+    if security == "managed":
+        return (
+            ManagedSecurityBoundary(
+                project=os.getenv("GOOGLE_CLOUD_PROJECT", ""),
+                model_armor_location=os.getenv("APPEAL_MODEL_ARMOR_LOCATION", "europe-west2"),
+                model_armor_template=os.getenv("APPEAL_MODEL_ARMOR_TEMPLATE", "appeal-tripwire-v1"),
+                gemma_location=os.getenv("APPEAL_GEMMA_LOCATION", "global"),
+                gemma_model=os.getenv("APPEAL_GEMMA_MODEL", "google/gemma-4-26b-a4b-it-maas"),
+            ),
+            "managed_model_armor_gemma",
+        )
+    raise ValueError(f"unsupported APPEAL_SECURITY value: {security!r}")
+
+
 def build_api(ledger_path: Path) -> LocalHttpApi:
     deadlines = DeadlineCatalog.from_path(ROOT / "config" / "deadlines.yaml")
+    store, storage = build_store()
+    security, security_name = build_security()
     workflow = AppealWorkflow(
         CaseStateMachine(deadlines),
         ledger=ReceiptLedger(ledger_path),
+        security=security,
     )
-    store, storage = build_store()
     return LocalHttpApi(
         LocalAppealService(LocalCaseRuntime(workflow, store=store)),
         deployment=os.getenv("APPEAL_DEPLOYMENT", "local"),
         storage=storage,
+        security=security_name,
         scheduler_auth_required=os.getenv("APPEAL_SCHEDULER_AUTH_REQUIRED", "false").lower() == "true",
         scheduler_service_account=os.getenv("APPEAL_SCHEDULER_SERVICE_ACCOUNT"),
         scheduler_audience=os.getenv("APPEAL_SCHEDULER_AUDIENCE"),

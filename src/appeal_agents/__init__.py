@@ -12,7 +12,7 @@ from .models import (
     WorkflowOutcome,
 )
 from .permissions import AgentPolicy, AgentPolicyRegistry, CapabilityDenied, default_policy_registry
-from .security import InspectionResult, InspectionStatus, LocalSecurityBoundary
+from .security import InspectionResult, InspectionStatus, LocalSecurityBoundary, ManagedSecurityBoundary
 from .security_measurement import (
     SecurityMeasurement,
     SecurityMeasurementCase,
@@ -37,6 +37,7 @@ __all__ = [
     "InspectionResult",
     "InspectionStatus",
     "LocalSecurityBoundary",
+    "ManagedSecurityBoundary",
     "SecurityMeasurement",
     "SecurityMeasurementCase",
     "default_local_security_cases",
