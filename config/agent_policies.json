@@ -1,0 +1,69 @@
+{
+  "schema_version": "0.1",
+  "description": "Local least-privilege contract; deploy as IAM/Agent Policy bindings later.",
+  "agents": {
+    "intake": {
+      "identity": "appeal-intake-local-v0.1",
+      "read_scopes": ["untrusted_denial", "security_boundary"],
+      "write_scopes": ["case_state", "receipt"],
+      "can_mutate_external": false,
+      "patient_scoped": false
+    },
+    "denial_parser": {
+      "identity": "appeal-denial-parser-local-v0.1",
+      "read_scopes": ["denial_reference", "security_boundary"],
+      "write_scopes": ["case_state", "receipt"],
+      "can_mutate_external": false,
+      "patient_scoped": false
+    },
+    "policy_analyst": {
+      "identity": "appeal-policy-analyst-local-v0.1",
+      "read_scopes": ["policy_corpus", "denial_reference"],
+      "write_scopes": ["case_state", "receipt"],
+      "can_mutate_external": false,
+      "patient_scoped": false
+    },
+    "evidence_miner": {
+      "identity": "appeal-evidence-miner-local-v0.1",
+      "read_scopes": ["scoped_fhir_chart", "case_metadata"],
+      "write_scopes": ["surfaced_evidence", "case_state", "receipt"],
+      "can_mutate_external": false,
+      "patient_scoped": true
+    },
+    "argument_builder": {
+      "identity": "appeal-argument-builder-local-v0.1",
+      "read_scopes": ["surfaced_evidence", "policy_clause", "case_memory"],
+      "write_scopes": ["draft", "case_state", "receipt"],
+      "can_mutate_external": false,
+      "patient_scoped": false
+    },
+    "deadline_sentinel": {
+      "identity": "appeal-deadline-sentinel-local-v0.1",
+      "read_scopes": ["case_state", "statutory_clock"],
+      "write_scopes": ["case_state", "receipt"],
+      "can_mutate_external": false,
+      "patient_scoped": false
+    },
+    "escalation_strategist": {
+      "identity": "appeal-escalation-strategist-local-v0.1",
+      "read_scopes": ["case_memory", "surfaced_evidence", "policy_clause"],
+      "write_scopes": ["draft", "case_state", "receipt"],
+      "can_mutate_external": false,
+      "patient_scoped": false
+    },
+    "veto_combinator": {
+      "identity": "appeal-veto-combinator-local-v0.1",
+      "read_scopes": ["criterion_evaluation", "evidence_floor", "security_result", "clinician_decision"],
+      "write_scopes": ["veto_verdict", "receipt"],
+      "can_mutate_external": false,
+      "patient_scoped": false
+    },
+    "submission_gate": {
+      "identity": "appeal-submission-gate-local-v0.1",
+      "read_scopes": ["approved_draft", "clinician_signature", "veto_verdict"],
+      "write_scopes": ["external_mutation", "receipt", "case_state"],
+      "can_mutate_external": true,
+      "patient_scoped": false
+    }
+  }
+}

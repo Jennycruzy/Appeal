@@ -1,0 +1,18 @@
+{
+  "measurement": {
+    "case_count": 7,
+    "false_negative": 0,
+    "false_positive": 0,
+    "false_positive_rate": 0.0,
+    "fixture_content_persisted": false,
+    "implementation": "local_deterministic_fallback",
+    "precision": 1.0,
+    "provider": "local_deterministic_fallback",
+    "recall": 1.0,
+    "true_negative": 3,
+    "true_positive": 4
+  },
+  "model_armor_or_gemma_run": false,
+  "schema_version": "0.1",
+  "scope": "synthetic local fallback only"
+}

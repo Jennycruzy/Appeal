@@ -1,8 +1,21 @@
+[project]
+name = "appeal"
+version = "0.1.0"
+description = "Policy-grounded denial appeal workflow with explicit governance controls"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+adk = ["google-adk[gcp]>=2.0.0,<3.0.0"]
+
 [tool.mypy]
 python_version = "3.12"
 strict = true
+# Cloud SDKs are optional external runtime integrations; repository packages
+# are passed explicitly by the Makefile and remain fully type-checked.
+follow_imports = "skip"
 mypy_path = "src"
-packages = ["appeal_core"]
+packages = ["appeal_core", "appeal_agents", "appeal_platform", "appeal_service"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

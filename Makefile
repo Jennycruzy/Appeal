@@ -32,8 +32,17 @@ CMS_QIC_BULK_EXPECTED_COUNT ?= 240958
 CMS_QIC_BULK_PRIVACY_DECISIONS ?= ../Downloads/cms-qic-partd-privacy-decisions.json
 CMS_QIC_BULK_PRIVACY_PROPOSAL ?= ../Downloads/cms-qic-partd-privacy-decisions-agent-proposed.json
 CMS_QIC_BULK_ACCEPTANCE_MANIFEST ?= evidence/cms-qic-part-d-bulk-acceptance.json
+LOCAL_WORKFLOW_LEDGER ?= ../Downloads/appeal-local-receipts-v0.2.jsonl
+LOCAL_WORKFLOW_OUTPUT ?= ../Downloads/appeal-local-workflow-result.json
+LOCAL_RUNTIME_LEDGER ?= ../Downloads/appeal-local-runtime-receipts.jsonl
+LOCAL_RUNTIME_OUTPUT ?= ../Downloads/appeal-local-runtime-result.json
+LOCAL_API_LEDGER ?= ../Downloads/appeal-local-api-receipts.jsonl
+MODEL_ARMOR_PROJECT ?= onyx-yeti-506606-i9
+MODEL_ARMOR_LOCATION ?= europe-west2
+MODEL_ARMOR_TEMPLATE ?= appeal-tripwire-v1
+MODEL_ARMOR_OUTPUT ?= evidence/model-armor-measurement.json
 
-.PHONY: verify-ledger test typecheck load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime measure-local-security measure-model-armor run-local-api load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -42,7 +51,22 @@ test:
 	PYTHONPATH=src $(PYTHON) -m unittest discover -s tests -v
 
 typecheck:
-	.venv/bin/mypy --strict src/appeal_core
+	.venv/bin/mypy --strict src/appeal_core src/appeal_agents src/appeal_platform src/appeal_service
+
+run-local-workflow:
+	PYTHONPATH=src $(PYTHON) scripts/run_local_workflow.py --ledger "$(LOCAL_WORKFLOW_LEDGER)" --output "$(LOCAL_WORKFLOW_OUTPUT)"
+
+run-local-runtime:
+	PYTHONPATH=src $(PYTHON) scripts/run_local_runtime.py --ledger "$(LOCAL_RUNTIME_LEDGER)" --output "$(LOCAL_RUNTIME_OUTPUT)"
+
+measure-local-security:
+	PYTHONPATH=src $(PYTHON) scripts/measure_local_security.py
+
+measure-model-armor:
+	GOOGLE_CLOUD_PROJECT="$(MODEL_ARMOR_PROJECT)" PYTHONPATH=src .venv/bin/python scripts/measure_model_armor.py --location "$(MODEL_ARMOR_LOCATION)" --template-id "$(MODEL_ARMOR_TEMPLATE)" --output "$(MODEL_ARMOR_OUTPUT)"
+
+run-local-api:
+	PYTHONPATH=src $(PYTHON) scripts/run_local_api.py --ledger "$(LOCAL_API_LEDGER)"
 
 load-hapi:
 	PYTHONPATH=src $(PYTHON) scripts/load_synthea_corpus.py --input-dir "$(SYNTHETIC_INPUT_DIR)" --report "$(HAPI_LOAD_REPORT)" --timeout "$(HAPI_TIMEOUT)" --start-index "$(HAPI_START_INDEX)"
