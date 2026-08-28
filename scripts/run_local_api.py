@@ -45,6 +45,9 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
         LocalAppealService(LocalCaseRuntime(workflow, store=store)),
         deployment=os.getenv("APPEAL_DEPLOYMENT", "local"),
         storage=storage,
+        scheduler_auth_required=os.getenv("APPEAL_SCHEDULER_AUTH_REQUIRED", "false").lower() == "true",
+        scheduler_service_account=os.getenv("APPEAL_SCHEDULER_SERVICE_ACCOUNT"),
+        scheduler_audience=os.getenv("APPEAL_SCHEDULER_AUDIENCE"),
     )
 
 
@@ -61,7 +64,7 @@ def serve(host: str, port: int, ledger_path: Path) -> None:
             self.wfile.write(body)
 
         def do_GET(self) -> None:  # noqa: N802
-            status, value = api.handle("GET", self.path)
+            status, value = api.handle("GET", self.path, headers=dict(self.headers.items()))
             self._respond(status, value)
 
         def do_POST(self) -> None:  # noqa: N802
@@ -77,7 +80,7 @@ def serve(host: str, port: int, ledger_path: Path) -> None:
                     self._respond(400, {"error": "json_object_required"})
                     return
                 payload = cast(dict[str, object], parsed)
-            status, value = api.handle("POST", self.path, payload)
+            status, value = api.handle("POST", self.path, payload, headers=dict(self.headers.items()))
             self._respond(status, value)
 
         def log_message(self, format: str, *args: object) -> None:

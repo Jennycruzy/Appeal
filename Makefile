@@ -51,6 +51,8 @@ CLOUD_RUN_SERVICE ?= appeal-backend
 CLOUD_RUN_SERVICE_ACCOUNT ?= appeal-backend@onyx-yeti-506606-i9.iam.gserviceaccount.com
 CLOUD_RUN_STORAGE ?= firestore
 CLOUD_RUN_FIRESTORE_DATABASE ?= (default)
+CLOUD_RUN_SCHEDULER_URL ?= https://appeal-backend-835653516606.europe-west2.run.app
+CLOUD_RUN_SCHEDULER_SERVICE_ACCOUNT ?= appeal-scheduler@onyx-yeti-506606-i9.iam.gserviceaccount.com
 ADK_PROJECT ?= onyx-yeti-506606-i9
 ADK_LOCATION ?= global
 ADK_MODEL ?= gemini-3.7-flash
@@ -95,7 +97,7 @@ run-local-api:
 	PYTHONPATH=src $(PYTHON) scripts/run_local_api.py --ledger "$(LOCAL_API_LEDGER)"
 
 deploy-cloud-run:
-	gcloud run deploy "$(CLOUD_RUN_SERVICE)" --source . --project "$(CLOUD_RUN_PROJECT)" --region "$(CLOUD_RUN_REGION)" --service-account "$(CLOUD_RUN_SERVICE_ACCOUNT)" --set-env-vars "APPEAL_DEPLOYMENT=cloud_run,APPEAL_STORAGE=$(CLOUD_RUN_STORAGE),GOOGLE_CLOUD_PROJECT=$(CLOUD_RUN_PROJECT),APPEAL_FIRESTORE_DATABASE=$(CLOUD_RUN_FIRESTORE_DATABASE)" --allow-unauthenticated --min 0 --max 1 --memory 512Mi --cpu 1 --timeout 300 --quiet
+	gcloud run deploy "$(CLOUD_RUN_SERVICE)" --source . --project "$(CLOUD_RUN_PROJECT)" --region "$(CLOUD_RUN_REGION)" --service-account "$(CLOUD_RUN_SERVICE_ACCOUNT)" --set-env-vars "APPEAL_DEPLOYMENT=cloud_run,APPEAL_STORAGE=$(CLOUD_RUN_STORAGE),GOOGLE_CLOUD_PROJECT=$(CLOUD_RUN_PROJECT),APPEAL_FIRESTORE_DATABASE=$(CLOUD_RUN_FIRESTORE_DATABASE),APPEAL_SCHEDULER_AUTH_REQUIRED=true,APPEAL_SCHEDULER_SERVICE_ACCOUNT=$(CLOUD_RUN_SCHEDULER_SERVICE_ACCOUNT),APPEAL_SCHEDULER_AUDIENCE=$(CLOUD_RUN_SCHEDULER_URL)" --allow-unauthenticated --min 0 --max 1 --memory 512Mi --cpu 1 --timeout 300 --quiet
 
 seed-sentinel-case:
 	GOOGLE_CLOUD_PROJECT="$(SENTINEL_PROJECT)" PYTHONPATH=src .venv/bin/python scripts/seed_sentinel_case.py --project "$(SENTINEL_PROJECT)" --tenant-id "$(SENTINEL_TENANT)" --case-id "$(SENTINEL_CASE)" --entered-at "$(SENTINEL_ENTERED_AT)" --output "$(SENTINEL_SEED_OUTPUT)"

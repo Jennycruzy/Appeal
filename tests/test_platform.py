@@ -282,6 +282,18 @@ class PlatformTests(unittest.TestCase):
         self.assertEqual(tick_status, 200)
         self.assertEqual(tick["abandoned_count"], 0)
 
+    def test_sentinel_route_can_require_scheduler_identity(self) -> None:
+        service = LocalAppealService(workflow_runtime())
+        api = LocalHttpApi(
+            service,
+            scheduler_auth_required=True,
+            scheduler_service_account="appeal-scheduler@example.iam.gserviceaccount.com",
+            scheduler_audience="https://appeal.example.run.app",
+        )
+        status, value = api.handle("POST", "/api/sentinel/tick", at=NOW)
+        self.assertEqual(status, 401)
+        self.assertEqual(value["error"], "scheduler_auth_required")
+
 
 def workflow_runtime() -> LocalCaseRuntime:
     return LocalCaseRuntime(workflow())
