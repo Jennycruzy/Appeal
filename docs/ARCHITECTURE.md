@@ -25,7 +25,7 @@ flowchart LR
     E --> PA[Policy Analyst\nno chart capability]
     E --> EM[Evidence Miner\none patient scope]
     E --> AB[Argument Builder\nsurfaced evidence only]
-    E --> DS[Deadline Sentinel\nindependent clock]
+    E --> DS[Deadline Sentinel\nCloud Scheduler + persisted clock]
     E --> ES[Escalation Strategist\ncase memory + evidence]
 
     EM --> F[FHIR evidence references]

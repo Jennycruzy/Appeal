@@ -187,7 +187,7 @@ and [`docs/LIMITATIONS.md`](LIMITATIONS.md); they are no longer work items.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00005-968`, with 100% traffic on that revision. The verified
+`appeal-backend-00008-dkd`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. The `/api/healthz` endpoint
 returned `status: ok` with `storage: firestore`. A synthetic case completed
@@ -205,6 +205,13 @@ resume approval or adjudication yet. This establishes the hosted Google Cloud
 backend and Firestore write path, but it does not establish Agent Runtime,
 Agent Registry, Agent Identity, Pub/Sub, Memory Bank, Gateway, Firebase Auth,
 or a live default Model Armor/Gemma workflow boundary.
+
+Cloud Scheduler job `appeal-deadline-sentinel` is enabled in `europe-west2`
+with an hourly UTC cadence and an OIDC token for
+`appeal-scheduler@onyx-yeti-506606-i9.iam.gserviceaccount.com`. The protected
+route rejected an anonymous request with 401; a manual run of the real job
+returned 200 and closed two synthetic expired cases. The audit is
+`docs/audits/deadline-sentinel.md`.
 
 Before any real-data upload or managed-service expansion, run a live inventory
 against the approved project and record the results:

@@ -6,7 +6,7 @@
   "project_display_name": "Appeal",
   "region": "europe-west2",
   "service": "appeal-backend",
-  "revision": "appeal-backend-00005-968",
+  "revision": "appeal-backend-00008-dkd",
   "traffic_percent": 100,
   "service_url": "https://appeal-backend-hhcjpefk2q-nw.a.run.app",
   "regional_service_url": "https://appeal-backend-835653516606.europe-west2.run.app",
@@ -34,9 +34,22 @@
     "final_outcome": "closed_won",
     "board_persisted_case_count": 1
   },
+  "deadline_sentinel": {
+    "scheduler_job": "appeal-deadline-sentinel",
+    "scheduler_region": "europe-west2",
+    "schedule": "0 * * * *",
+    "time_zone": "UTC",
+    "target_path": "/api/sentinel/tick",
+    "oidc_service_account": "appeal-scheduler@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+    "anonymous_request_status": 401,
+    "authenticated_scheduler_request_status": 200,
+    "seeded_case_count": 2,
+    "final_case_state": "CLOSED_ABANDONED_DEADLINE",
+    "external_mutation_count_per_seeded_case": 1
+  },
   "state_store": "firestore_case_metadata",
   "workflow_context_store": "process_local_in_memory",
   "receipt_ledger": "container_local_jsonl",
   "real_case_data_uploaded": false,
-  "source_commit": "7d33348"
+  "source_commit": "5ac0639"
 }

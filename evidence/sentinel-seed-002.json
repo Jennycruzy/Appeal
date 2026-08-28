@@ -1,0 +1,12 @@
+{
+  "case_id": "case-sentinel-expired-002",
+  "database": "(default)",
+  "deadline_key": "standard_prior_authorization",
+  "entered_at": "2026-08-18T12:00:00Z",
+  "project_id": "onyx-yeti-506606-i9",
+  "raw_content_persisted": false,
+  "schema_version": "0.1",
+  "state": "AWAITING_DETERMINATION",
+  "synthetic_only": true,
+  "tenant_id": "tenant-sentinel-demo"
+}

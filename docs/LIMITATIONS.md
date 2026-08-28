@@ -16,7 +16,7 @@ complete.
   `src/appeal_agents/adk_workflow.py`.
 - A synthetic-only Cloud Run service is deployed in project
   `onyx-yeti-506606-i9`, region `europe-west2`, revision
-  `appeal-backend-00005-968`. Its health endpoint, Firestore-backed state,
+  `appeal-backend-00008-dkd`. Its health endpoint, Firestore-backed state,
   and one synthetic case lifecycle were verified; the aggregate record is
   [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json).
   The service is unauthenticated and synthetic-only, accepts no real case
@@ -61,10 +61,11 @@ complete.
 ## Operational features
 
 - The repository does not yet provide a web console, Firebase authentication,
-  Cloud Scheduler, managed Pub/Sub, or durable workflow-session persistence.
-  Cloud Run case state and safe references are persisted in Firestore, but the
-  workflow context and receipt ledger remain process/container-local. The
-  endpoint is synthetic-only and intentionally not a production deployment.
+  managed Pub/Sub, or durable workflow-session persistence. Cloud Scheduler
+  now invokes the protected Deadline Sentinel route hourly; Cloud Run case
+  state and safe references are persisted in Firestore, but the workflow
+  context and receipt ledger remain process/container-local. The endpoint is
+  synthetic-only and intentionally not a production deployment.
 - The local event spine records and deduplicates workflow events, but the
   deterministic workflow still invokes role adapters in-process; subscriber-
   driven agent execution is not yet implemented.

@@ -123,7 +123,7 @@ and its decision input stays outside the repository.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00005-968`, with 100% traffic on that revision. The verified
+`appeal-backend-00008-dkd`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. Its `/api/healthz` endpoint
 returned `status: ok` with `storage: firestore`, and a synthetic case
@@ -144,6 +144,14 @@ and Firestore write path but does not claim that the managed Agent Runtime,
 Pub/Sub, Firebase Auth, or the Model Armor/Gemma boundary is wired into the
 default workflow.
 See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
+
+The Deadline Sentinel is also scheduled on Cloud Scheduler job
+`appeal-deadline-sentinel` at the top of every UTC hour. Its OIDC identity is
+checked by the Sentinel route; an anonymous request returned `401`, while a
+real Scheduler invocation returned `200` and closed two synthetic expired
+cases. The scheduler and seed evidence are included in
+[`evidence/cloud-run-deployment.json`](evidence/cloud-run-deployment.json) and
+[`docs/audits/deadline-sentinel.md`](docs/audits/deadline-sentinel.md).
 
 ## Local product path
 
