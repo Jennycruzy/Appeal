@@ -151,6 +151,15 @@
       "records_seen": 3,
       "cases_abstained": 3,
       "summary_cases_evaluated": 0
+    },
+    "full_extraction_attempt": {
+      "status": "stopped_privacy_shaped_value_before_acceptance",
+      "part": "part_d",
+      "requested_scope": "all_records",
+      "raw_artifact_written": false,
+      "partial_output_retained": false,
+      "privacy_scan_complete": false,
+      "next_step": "run_full_scope_privacy_scan_and_complete_human_review"
     }
   },
   "field_policy": {

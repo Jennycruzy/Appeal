@@ -100,6 +100,25 @@ boundary against current source data; it is not an artificial corpus limit.
 Use `--all` with the extractor when the complete current Part C or Part D
 summary scope is selected for local processing.
 
+The full Part D extraction attempt stopped on a privacy-shaped value before
+acceptance. To locate every technical candidate without writing source rows,
+run the full-scope scanner first:
+
+```text
+make scan-cms-qic-privacy \
+  CMS_QIC_PART=part_d \
+  CMS_QIC_PRIVACY_SCAN_REPORT=evidence/cms-qic-part-d-privacy-scan.json
+```
+
+The scanner stores only source offsets, field names, categories, value hashes,
+and row/reference hashes. A report with candidates requires an authorized
+human review before rerunning extraction with `--allow-privacy-shaped-values`.
+That override is never implicit and does not itself clear privacy or reuse.
+
+The live API accepted 1,000-row pages during the source check but rejected
+larger 5,000- and 10,000-row requests with HTTP 400. Keep the page size at
+1,000 unless a later API check establishes a new server limit.
+
 ## What this unlocks
 
 This source is accepted for local regulator-summary benchmarking. It supports

@@ -60,17 +60,19 @@ status or `not_applicable`.
 
 ## Execution order
 
-1. Extract the selected CMS Part C or Part D scope outside the repository and
+1. Run the full-scope CMS privacy scan before extraction. If it finds
+   candidates, complete human review before allowing narrative extraction.
+2. Extract the selected CMS Part C or Part D scope outside the repository and
    retain its source manifest and file hash.
-2. Run the CMS summary adapter preflight. Record explicit source outcomes,
+3. Run the CMS summary adapter preflight. Record explicit source outcomes,
    summary-field presence, and abstentions separately from full Appeal
    evaluations.
-3. Resolve and inspect the current Washington IRO search endpoint. Accept it
+4. Resolve and inspect the current Washington IRO search endpoint. Accept it
    only after actual schema, privacy, provenance, and reuse checks pass.
-4. Procure one complete-case delivery under a written data-use or equivalent
+5. Procure one complete-case delivery under a written data-use or equivalent
    authorization, or collect patient-consented packets under documented
    consent and redaction controls.
-5. Complete the human acceptance manifest before running the full Appeal
+6. Complete the human acceptance manifest before running the full Appeal
    evaluator. Until then, full-case evaluations and end-to-end regulator
    comparisons remain zero.
 

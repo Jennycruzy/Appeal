@@ -179,7 +179,7 @@ deletion, and audit controls.
   in `src/appeal_core/criteria.py`. The Argument Builder cannot be represented
   as having clinical evidence unless an Evidence Miner observation supplies a
   FHIR reference.
-- The local test suite has 33 passing tests, and strict mypy has passed for the
+- The local test suite has 35 passing tests, and strict mypy has passed for the
   core package. Re-run both after any changes.
 - One official Michigan PRIRA order was manually downloaded and inspected. The
   result is in `evidence/manual-review-acquisition.json`; it counts as one
@@ -317,6 +317,13 @@ inputs. The aggregate report is
 full Appeal evaluation has run. Current counts are therefore 1,142,429
 available summary records, three preflight rows processed, zero summary cases
 evaluated, zero full Appeal cases, and zero regulator-ground-truth comparisons.
+
+The first full Part D extraction attempt stopped on a privacy-shaped value and
+left no partial output. Run `make scan-cms-qic-privacy` before retrying the
+full extraction. Its report contains only hashed locators and aggregate
+categories; any candidate still requires human review. The API rejected
+10,000- and 5,000-row requests with HTTP 400; use the validated 1,000-row
+page size unless a future source check confirms a different limit.
 
 ### Washington OIC public IRO search — next public-source check
 
@@ -493,9 +500,10 @@ server survives restart.
 
 ## Still outstanding
 
-1. Expand the CMS QIC summary adapter preflight from the three-row smoke run to
-   an explicitly selected outside-repository scope, then define and record any
-   summary-level comparisons separately. Preserve `appeal_type` and `decision`
+1. Run the full-scope CMS QIC privacy scanner before retrying the complete
+   extraction. Review any hashed candidate locators, then expand the CMS QIC
+   summary adapter preflight from the three-row smoke run to an explicitly
+   selected outside-repository scope. Preserve `appeal_type` and `decision`
    from the source, keep `denial_reason` and `prior_authorization` nullable
    unless row-level evidence exists, and abstain when the Evidence Floor needs
    clinical or original-denial inputs that the summary does not contain. The

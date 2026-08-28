@@ -193,6 +193,23 @@ def text_value(value: Any) -> str:
     return ""
 
 
+def privacy_categories(value: str) -> tuple[str, ...]:
+    categories: list[str] = []
+    if EMAIL.search(value):
+        categories.append("email_shape")
+    if PHONE.search(value):
+        categories.append("phone_shape")
+    if SSN.search(value):
+        categories.append("ssn_shape")
+    if MEMBER_ID.search(value):
+        categories.append("member_id_label")
+    if DOB.search(value):
+        categories.append("date_of_birth_label")
+    if ADDRESS.search(value):
+        categories.append("physical_address_shape")
+    return tuple(categories)
+
+
 def privacy_scan(rows: list[dict[str, Any]]) -> dict[str, Any]:
     values_by_field: dict[str, set[str]] = {}
     for row in rows:
@@ -206,18 +223,7 @@ def privacy_scan(rows: list[dict[str, Any]]) -> dict[str, Any]:
     for field, values in sorted(values_by_field.items()):
         field_counts: Counter[str] = Counter()
         for value in values:
-            if EMAIL.search(value):
-                field_counts["email_shape"] += 1
-            if PHONE.search(value):
-                field_counts["phone_shape"] += 1
-            if SSN.search(value):
-                field_counts["ssn_shape"] += 1
-            if MEMBER_ID.search(value):
-                field_counts["member_id_label"] += 1
-            if DOB.search(value):
-                field_counts["date_of_birth_label"] += 1
-            if ADDRESS.search(value):
-                field_counts["physical_address_shape"] += 1
+            field_counts.update(privacy_categories(value))
         if field_counts:
             by_field[field] = dict(sorted(field_counts.items()))
             counts.update(field_counts)
