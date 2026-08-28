@@ -19,7 +19,7 @@ from .memory import (
 )
 from .payer import PayerAdjudicator, PayerDecision, PayerDecisionStatus
 from .runtime import LocalCaseRuntime, RuntimeResult
-from .store import CaseStore, CaseStoreConflict, CaseStoreScopeError
+from .store import CaseStore, CaseStoreConflict, CaseStoreScopeError, FirestoreCaseStore
 from .reversibility import (
     ActionStatus,
     ReversibleAction,
@@ -33,6 +33,7 @@ __all__ = [
     "CaseStore",
     "CaseStoreConflict",
     "CaseStoreScopeError",
+    "FirestoreCaseStore",
     "ActionStatus",
     "DeliveryReceipt",
     "DomainEvent",

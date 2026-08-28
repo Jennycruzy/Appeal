@@ -124,6 +124,15 @@ def _optional_int(value: JsonValue | None, label: str) -> int | None:
     return value
 
 
+def _datetime(value: JsonValue | None, label: str) -> datetime:
+    text = _string(value, label)
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError as error:
+        raise ValueError(f"{label} must be an ISO-8601 datetime") from error
+    return _require_utc(parsed, label)
+
+
 @dataclass(frozen=True)
 class Deadline:
     key: str
@@ -328,6 +337,43 @@ class EvidenceRef:
         _require_nonempty(self.sha256, "evidence SHA-256")
 
 
+def _actor(value: JsonValue | None, label: str) -> Actor:
+    document = _object(value, label)
+    kind_text = _string(document.get("kind"), f"{label}.kind")
+    try:
+        kind = ActorKind(kind_text)
+    except ValueError as error:
+        raise ValueError(f"{label}.kind is not a supported actor kind") from error
+    return Actor(_string(document.get("identity"), f"{label}.identity"), kind)
+
+
+def _decision_source(value: JsonValue | None, label: str) -> DecisionSource:
+    document = _object(value, label)
+    kind_text = _string(document.get("kind"), f"{label}.kind")
+    if kind_text not in {"agent", "human", "deterministic"}:
+        raise ValueError(f"{label}.kind is not a supported decision kind")
+    return DecisionSource(
+        cast(DecisionKind, kind_text),
+        _string(document.get("identifier"), f"{label}.identifier"),
+        _string(document.get("version"), f"{label}.version"),
+    )
+
+
+def _evidence_ref(value: JsonValue | None, label: str) -> EvidenceRef:
+    document = _object(value, label)
+    return EvidenceRef(
+        _string(document.get("kind"), f"{label}.kind"),
+        _string(document.get("uri"), f"{label}.uri"),
+        _string(document.get("sha256"), f"{label}.sha256"),
+    )
+
+
+def _evidence_refs(value: JsonValue | None, label: str) -> tuple[EvidenceRef, ...]:
+    if not isinstance(value, list):
+        raise ValueError(f"{label} must be an array")
+    return tuple(_evidence_ref(item, f"{label}[{index}]") for index, item in enumerate(value))
+
+
 @dataclass(frozen=True)
 class StateTransition:
     case_id: str
@@ -350,6 +396,35 @@ class StateTransition:
         _require_nonempty(self.deadline_key, "deadline key")
         _require_nonempty(self.reason, "transition reason")
         _require_nonempty(self.idempotency_key, "idempotency key")
+
+    @classmethod
+    def from_json(cls, document: JsonObject) -> "StateTransition":
+        from_state_text = _string(document.get("from_state"), "transition.from_state")
+        to_state_text = _string(document.get("to_state"), "transition.to_state")
+        try:
+            from_state = CaseState(from_state_text)
+            to_state = CaseState(to_state_text)
+        except ValueError as error:
+            raise ValueError("transition contains an unknown case state") from error
+        signature_value = document.get("clinician_signature")
+        return cls(
+            case_id=_string(document.get("case_id"), "transition.case_id"),
+            tenant_id=_string(document.get("tenant_id"), "transition.tenant_id"),
+            from_state=from_state,
+            to_state=to_state,
+            entered_at=_datetime(document.get("entered_at"), "transition.entered_at"),
+            actor=_actor(document.get("actor"), "transition.actor"),
+            decision_source=_decision_source(document.get("decision_source"), "transition.decision_source"),
+            deadline_key=_string(document.get("deadline_key"), "transition.deadline_key"),
+            reason=_string(document.get("reason"), "transition.reason"),
+            evidence_refs=_evidence_refs(document.get("evidence_refs"), "transition.evidence_refs"),
+            idempotency_key=_string(document.get("idempotency_key"), "transition.idempotency_key"),
+            clinician_signature=(
+                _evidence_ref(signature_value, "transition.clinician_signature")
+                if signature_value is not None
+                else None
+            ),
+        )
 
 
 @dataclass(frozen=True)
@@ -423,6 +498,45 @@ class Case:
                 for transition in self.transitions
             ],
         }
+
+    @classmethod
+    def from_json(cls, document: JsonObject) -> "Case":
+        state_text = _string(document.get("state"), "case.state")
+        try:
+            state = CaseState(state_text)
+        except ValueError as error:
+            raise ValueError("case contains an unknown case state") from error
+        transitions_value = document.get("transitions")
+        if not isinstance(transitions_value, list) or not transitions_value:
+            raise ValueError("case.transitions must be a non-empty array")
+        transitions: list[StateTransition] = []
+        for index, value in enumerate(transitions_value):
+            transition_document = _object(value, f"case.transitions[{index}]")
+            transition = StateTransition.from_json(transition_document)
+            transitions.append(transition)
+
+        case_id = _string(document.get("case_id"), "case.case_id")
+        tenant_id = _string(document.get("tenant_id"), "case.tenant_id")
+        previous: StateTransition | None = None
+        for index, transition in enumerate(transitions):
+            if transition.case_id != case_id:
+                raise ValueError(f"case.transitions[{index}] has a different case ID")
+            if transition.tenant_id != tenant_id:
+                raise ValueError(f"case.transitions[{index}] has a different tenant ID")
+            if previous is None:
+                if transition.from_state is not CaseState.INTAKE_RECEIVED:
+                    raise ValueError("the initial transition must start at INTAKE_RECEIVED")
+            elif transition.from_state is not previous.to_state:
+                raise ValueError(f"case.transitions[{index}] breaks the state chain")
+            previous = transition
+
+        return cls(
+            case_id=case_id,
+            tenant_id=tenant_id,
+            state=state,
+            entered_at=_datetime(document.get("entered_at"), "case.entered_at"),
+            transitions=tuple(transitions),
+        )
 
 
 ALLOWED_TRANSITIONS: Final[dict[CaseState, frozenset[CaseState]]] = {

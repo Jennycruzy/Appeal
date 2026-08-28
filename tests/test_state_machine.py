@@ -8,6 +8,7 @@ from pathlib import Path
 from appeal_core import (
     Actor,
     ActorKind,
+    Case,
     CaseState,
     CaseStateMachine,
     DecisionSource,
@@ -50,6 +51,9 @@ class StateMachineTests(unittest.TestCase):
         self.assertEqual(document["case_id"], "case-001")
         self.assertEqual(len(case.transitions), 8)
         self.assertEqual(len(case.fingerprint()), 64)
+        restored = Case.from_json(case.to_json())
+        self.assertEqual(restored, case)
+        self.assertEqual(restored.fingerprint(), case.fingerprint())
 
     def test_invalid_transition_fails_loudly(self) -> None:
         case = MACHINE.create("case-002", "tenant-a", TIME, AGENT, DETERMINISTIC)
