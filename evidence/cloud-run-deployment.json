@@ -1,0 +1,29 @@
+{
+  "schema_version": "0.1",
+  "recorded_at": "2026-08-28",
+  "kind": "cloud_run_deployment",
+  "project_id": "onyx-yeti-506606-i9",
+  "project_display_name": "Appeal",
+  "region": "europe-west2",
+  "service": "appeal-backend",
+  "revision": "appeal-backend-00002-d24",
+  "traffic_percent": 100,
+  "service_url": "https://appeal-backend-hhcjpefk2q-nw.a.run.app",
+  "service_account": "appeal-backend@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+  "health_check": {
+    "path": "/api/healthz",
+    "status": "ok",
+    "authenticated": false
+  },
+  "synthetic_lifecycle": {
+    "case_created": true,
+    "clinician_approved": true,
+    "submitted": true,
+    "external_mutation_count": 1,
+    "final_case_state": "CLOSED_WON",
+    "final_outcome": "closed_won"
+  },
+  "state_store": "process_local_in_memory",
+  "real_case_data_uploaded": false,
+  "source_commit": "924b69f"
+}

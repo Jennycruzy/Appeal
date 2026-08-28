@@ -7,15 +7,17 @@ attached authorized-user ADC credential: it refreshed successfully on
 2026-08-28 and passed a read-only Resource Manager check for
 `appeal-fleet-2026-0825` (`APPEAL Fleet 2026`, ACTIVE); the same credential
 also passed a read-only check for the documented target
-`onyx-yeti-506606-i9` (`My Project 27960`, ACTIVE). The active `gcloud` CLI
-profile has no selected account, but its project is now set to the documented
-target. Google ADK `2.8.0` is installed in the project `.venv` and the ADK
+`onyx-yeti-506606-i9` (formerly `My Project 27960`, ACTIVE). The active `gcloud` CLI
+account and ADC credentials are now configured for the documented target.
+Google ADK `2.8.0` is installed in the project `.venv` and the ADK
 graph builds successfully. A synthetic seven-agent ADK workflow smoke run
 succeeded with Gemini `3.7-flash` at the global endpoint; its aggregate result
 is recorded in `evidence/adk-workflow-smoke.json`. A managed Model Armor
-template was configured and measured in a separate probe. No Cloud Run, Agent
-Runtime, Firestore, Pub/Sub, Gemma endpoint, or external payer deployment has
-been claimed.
+template was configured and measured in a separate probe. The deterministic
+HTTP facade is now deployed to Cloud Run; its deployment and synthetic
+lifecycle are recorded in `evidence/cloud-run-deployment.json` and
+`docs/audits/stage-c-cloud-run.md`. Agent Runtime, Firestore, Pub/Sub, Gemma
+endpoint, and external payer deployment remain unclaimed.
 
 The local exit remains runnable through `make run-local-runtime`. Its platform
 interfaces identify the future seams for case storage, event delivery,

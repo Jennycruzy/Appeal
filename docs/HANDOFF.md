@@ -86,13 +86,14 @@ co-signature, a case-bound statutory clock, and hash-chained local receipts.
 The local runtime also exposes reference-only event delivery, case-scoped
 memory, an independent payer adjudicator, and a reversibility journal.
 
-This is an executable local fallback, not a deployed ADK application, Gemma
-endpoint, or Google Cloud workload. A synthetic seven-agent ADK smoke run has
-completed and is recorded in `evidence/adk-workflow-smoke.json`; it is not a
-full appeal case evaluation. A separate managed Model Armor synthetic
-measurement has run and is recorded in
-`evidence/model-armor-measurement.json`, but it is not yet the default
-workflow boundary. The current limitations are recorded in
+This is an executable local fallback, and the same deterministic HTTP facade
+is now deployed as a synthetic-only Cloud Run service. It is not a deployed
+ADK application, Gemma endpoint, or managed Agent Runtime workflow. A
+synthetic seven-agent ADK smoke run has completed and is recorded in
+`evidence/adk-workflow-smoke.json`; it is not a full appeal case evaluation. A
+separate managed Model Armor synthetic measurement has run and is recorded in
+`evidence/model-armor-measurement.json`, but it is not yet the default workflow
+boundary. The current limitations are recorded in
 [`docs/LIMITATIONS.md`](LIMITATIONS.md). The local synthetic smoke command is:
 
 ```text
@@ -178,24 +179,25 @@ and [`docs/LIMITATIONS.md`](LIMITATIONS.md); they are no longer work items.
 
 ## Google Cloud hosting status
 
-No application workload has been hosted as of the latest workspace evidence.
-The project registration and API setup are real, but no Cloud Run service,
-Cloud Storage bucket, database, Artifact Registry image, or real-case upload is
-recorded. The historical preflight explicitly records that no application
-data, database, Cloud Run service, or service-account key was created. The
-current local `gcloud` profile has the documented target project selected but
-no interactive account selected. However, an attached authorized-user ADC
-credential was verified on 2026-08-28: it
-refreshed successfully and passed a read-only Resource Manager check for
-`appeal-fleet-2026-0825` (`APPEAL Fleet 2026`, ACTIVE); the same credential
-also passed a read-only check for the documented target
-`onyx-yeti-506606-i9` (`My Project 27960`, ACTIVE). This confirms
-credential/project access but does not establish a hosted workload or change
-the current deployment target; run a fresh inventory against the approved
-target before deployment.
+The deterministic Appeal HTTP backend is deployed to Cloud Run in project
+`onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
+`appeal-backend-00002-d24`, with 100% traffic on that revision. The verified
+service URL is
+<https://appeal-backend-hhcjpefk2q-nw.a.run.app>. The `/api/healthz` endpoint
+returned `status: ok`. A synthetic case completed creation, clinician
+approval, one submission mutation, and payer adjudication to `CLOSED_WON`.
+The aggregate-only deployment record is
+`evidence/cloud-run-deployment.json`; the narrative audit is
+`docs/audits/stage-c-cloud-run.md`.
 
-Before any deployment or real-data upload, run a live inventory against the
-approved project and record the results:
+The Cloud Run service is intentionally unauthenticated, synthetic-only, and
+process-local. No real case data was uploaded. It establishes the hosted
+Google Cloud backend for the demo path, but it does not establish Agent
+Runtime, Agent Registry, Agent Identity, Firestore, Pub/Sub, Memory Bank,
+Gateway, Firebase Auth, Gemma, or a live Model Armor workflow boundary.
+
+Before any real-data upload or managed-service expansion, run a live inventory
+against the approved project and record the results:
 
 ```text
 gcloud run services list --project=onyx-yeti-506606-i9

@@ -121,14 +121,23 @@ and its decision input stays outside the repository.
 
 ## Google Cloud status
 
-The workspace has Google Cloud project and API-registration evidence, but no
-application has been deployed. There is no repository evidence of a Cloud Run
-service, Cloud Storage bucket, database, Artifact Registry image, or uploaded
-real-case data. An attached ADC credential was verified against
-`appeal-fleet-2026-0825`; the local `gcloud` profile has the documented target
-project selected but still has no interactive account selected. This is
-credential/project access evidence, not a hosted application. See the
-[cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
+The deterministic Appeal HTTP backend is deployed to Cloud Run in project
+`onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
+`appeal-backend-00002-d24`, with 100% traffic on that revision. The verified
+service URL is
+<https://appeal-backend-hhcjpefk2q-nw.a.run.app>. Its `/api/healthz` endpoint
+returned `status: ok`, and a synthetic case completed creation, clinician
+approval, one submission mutation, and payer adjudication to `CLOSED_WON`.
+The aggregate deployment record is
+[`evidence/cloud-run-deployment.json`](evidence/cloud-run-deployment.json),
+with the audit narrative in
+[`docs/audits/stage-c-cloud-run.md`](docs/audits/stage-c-cloud-run.md).
+
+This is a synthetic-only, unauthenticated demonstration endpoint with
+process-local state; no real case data was uploaded. It proves the Google
+Cloud backend deployment but does not claim that the managed Agent Runtime,
+Firestore, Pub/Sub, Firebase Auth, or the Model Armor/Gemma boundary is live.
+See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
 
 ## Local product path
 
@@ -139,10 +148,12 @@ plus the four-veto combinator, quarantine state, Evidence Floor, clinician
 co-signature, single-mutation submission gate, statutory clock, and hash-chained
 receipts. The local platform runtime adds reference-only event delivery,
 tenant/case-scoped memory, an independent payer adjudicator, and a
-compensating-action journal. It is a local deterministic implementation and is
-not a claim of a live Gemini, ADK, or Google Cloud deployment. The scoring
-handoff is deferred until this workflow is complete; completed full Appeal
-evaluations remain zero.
+compensating-action journal. The same deterministic HTTP facade is deployed
+for the synthetic Cloud Run demonstration. The ADK/Gemini smoke and managed
+Model Armor measurement are separate provider evidence; the deployed
+container is not yet a managed Gemini-backed or Agent Runtime workflow. The
+scoring handoff is deferred until this workflow is complete; completed full
+Appeal evaluations remain zero.
 
 Run the synthetic vertical slice with:
 
@@ -161,8 +172,9 @@ make run-local-runtime
 ```
 
 The service lifecycle is also covered by tests as separate open, clinician
-approval, and payer-determination operations; it remains process-local until
-the Cloud Run/Firestore layer is available.
+approval, and payer-determination operations. The deployed Cloud Run demo uses
+the same process-local state, so it is not a substitute for the future
+Firestore layer.
 
 For local HTTP integration testing only, run:
 

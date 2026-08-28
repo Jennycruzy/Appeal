@@ -14,25 +14,24 @@ complete.
   case run or a production deployment. Google ADK `2.8.0` is installed in the
   project `.venv`, and the graph wiring is present behind
   `src/appeal_agents/adk_workflow.py`.
-- Cloud Run, Agent Runtime, Agent Registry, Agent Identity, managed Memory
-  Bank, Agent Gateway, Agent Policies, and Cloud Observability are not yet
-  deployed from this repository. A managed Model Armor template has been
-  configured and measured separately; it is not yet the default workflow
-  boundary. Local fallback seams for event delivery, case storage, scoped
-  memory, payer adjudication, and reversibility are present under
-  `src/appeal_platform/`.
-- The 2026-08-28 probe found an attached authorized-user ADC credential. It
-  refreshed successfully and passed a read-only Resource Manager check for
-  project `appeal-fleet-2026-0825` (`APPEAL Fleet 2026`, ACTIVE); the same
-  credential also passed a read-only check for the documented target
-  `onyx-yeti-506606-i9` (`My Project 27960`, ACTIVE). The active `gcloud` CLI
-  profile still has no selected account, although its project is set to the
-  documented target. The project `.venv` contains ADK; the system Python
-  interpreter does not. This proves credential/project access, not a managed
-  deployment or a completed ADK case run.
-- The current local seven-agent implementation demonstrates the role
-  boundaries and governance contracts; it is not represented as a managed
-  cloud deployment or a complete Gemini-backed appeal case evaluation.
+- A synthetic-only Cloud Run service is deployed in project
+  `onyx-yeti-506606-i9`, region `europe-west2`, revision
+  `appeal-backend-00002-d24`. Its health endpoint and one synthetic case
+  lifecycle were verified; the aggregate record is
+  [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json).
+  The service is unauthenticated and process-local, accepts no real case data,
+  and is not a production API.
+- Agent Runtime, Agent Registry, Agent Identity, managed Memory Bank, Agent
+  Gateway, Agent Policies, Firebase Auth, Firestore, Pub/Sub, and managed Cloud
+  Observability are not yet deployed from this repository. A managed Model
+  Armor template has been configured and measured separately; it is not yet
+  the default workflow boundary. Local fallback seams for event delivery,
+  case storage, scoped memory, payer adjudication, and reversibility are
+  present under `src/appeal_platform/`.
+- The current seven-agent implementation demonstrates the role boundaries and
+  governance contracts. The ADK/Gemini smoke ran separately in the project
+  environment; the deployed Cloud Run container exposes the deterministic API
+  facade, not a complete Gemini-backed appeal case evaluation.
 
 ## Data and evaluation
 
@@ -48,9 +47,9 @@ complete.
 
 ## Operational features
 
-- The local workflow does not yet provide a production case API, web console,
-  Firebase authentication, Cloud Scheduler, managed Pub/Sub, or persistent
-  multi-tenant storage. The local runtime is process-local and intentionally
+- The repository does not yet provide a web console, Firebase authentication,
+  Cloud Scheduler, managed Pub/Sub, or persistent multi-tenant storage. The
+  Cloud Run HTTP facade is synthetic-only and process-local; it is intentionally
   not a production deployment.
 - The local event spine records and deduplicates workflow events, but the
   deterministic workflow still invokes role adapters in-process; subscriber-

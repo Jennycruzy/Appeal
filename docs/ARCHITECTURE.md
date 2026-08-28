@@ -1,9 +1,11 @@
 # Appeal architecture
 
-The repository currently executes the local deterministic path. A synthetic
+The repository currently executes the local deterministic path and exposes the
+same API facade through a synthetic-only Cloud Run deployment. A synthetic
 seven-agent ADK/Gemini smoke and a separate managed Model Armor measurement
-are recorded as provider probes; managed Google Cloud services, Gemma, and the
-external payer remain future adapters and are marked as such below.
+are recorded as provider probes; Agent Runtime, persistent Google Cloud
+services, Gemma, and the external payer remain future adapters and are marked
+as such below.
 
 The local executor runs the role adapters in deterministic graph order and
 publishes reference-only event records through `LocalEventSpine`. Subscriber-
@@ -64,6 +66,7 @@ flowchart LR
 | Boundary | Current local implementation | Future managed target |
 |---|---|---|
 | Agent graph | Deterministic seven-role graph + synthetic ADK smoke | ADK 2.x workflow on Agent Runtime |
+| HTTP backend | Synthetic deterministic facade on Cloud Run | Authenticated case API with managed workflow services |
 | Case state | Immutable state machine + local store | Firestore with IAM conditions |
 | Event delivery | `LocalEventSpine` | Pub/Sub topics and idempotent subscribers |
 | Memory | `ScopedMemoryBank` | Per-case Memory Bank revisions |
