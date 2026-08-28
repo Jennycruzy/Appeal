@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from dataclasses import dataclass
+from collections.abc import Mapping
 
 from appeal_agents import AppealInput, AppealWorkflow
 from appeal_agents.demo import demo_input
-from appeal_core import CaseStateMachine, DeadlineCatalog
+from appeal_core import Case, CaseState, CaseStateMachine, DeadlineCatalog
 from appeal_platform import LocalCaseRuntime, PayerAdjudicator, RuntimeResult
 
 
@@ -16,6 +18,39 @@ class CaseNotFound(KeyError):
 
 def _now(value: datetime | None) -> datetime:
     return (value or datetime.now(UTC)).astimezone(UTC)
+
+
+@dataclass(frozen=True)
+class PersistedCaseView:
+    """Public metadata reconstructed after a process restart.
+
+    The workflow context is deliberately not reconstructed from Firestore:
+    denial content, chart content, model responses, and draft prose are not
+    persisted. Resume operations therefore require the live in-process
+    context until the scoped workflow-session store is implemented.
+    """
+
+    case: Case
+    graph: dict[str, object]
+    clock: Mapping[str, object]
+
+    def to_public_json(self) -> dict[str, object]:
+        return {
+            "schema_version": "0.1",
+            "agent_graph": self.graph,
+            "outcome": "persisted_metadata",
+            "case_state": self.case.state.value,
+            "case": self.case.to_json(),
+            "clock": self.clock,
+            "events": [],
+            "draft": None,
+            "combinator": None,
+            "failure_reason": "workflow_context_not_persisted",
+            "external_mutation_count": sum(
+                transition.to_state is CaseState.SUBMITTED_LEVEL_1
+                for transition in self.case.transitions
+            ),
+        }
 
 
 class LocalAppealService:
@@ -34,8 +69,8 @@ class LocalAppealService:
 
     def open_case(self, appeal_input: AppealInput, *, at: datetime | None = None) -> RuntimeResult:
         key = (appeal_input.tenant_id, appeal_input.case_id)
-        if key in self._results:
-            raise ValueError("case is already open in the local service")
+        if key in self._results or self.runtime.store.get(*key) is not None:
+            raise ValueError("case is already persisted for this tenant")
         result = self.runtime.start(appeal_input, at=_now(at))
         self._results[key] = result
         return result
@@ -44,13 +79,13 @@ class LocalAppealService:
         return self.open_case(demo_input(), at=at)
 
     def approve(self, tenant_id: str, case_id: str, *, at: datetime | None = None) -> RuntimeResult:
-        current = self._require(tenant_id, case_id)
+        current = self._require_live(tenant_id, case_id)
         result = self.runtime.approve(current, at=_now(at))
         self._results[(tenant_id, case_id)] = result
         return result
 
     def adjudicate(self, tenant_id: str, case_id: str, *, at: datetime | None = None) -> RuntimeResult:
-        current = self._require(tenant_id, case_id)
+        current = self._require_live(tenant_id, case_id)
         context = current.workflow.context
         if context is None or context.input.policy is None:
             raise ValueError("payer adjudication requires a versioned policy criterion")
@@ -62,21 +97,41 @@ class LocalAppealService:
         self._results[(tenant_id, case_id)] = result
         return result
 
-    def get(self, tenant_id: str, case_id: str) -> RuntimeResult:
-        return self._require(tenant_id, case_id)
+    def get(self, tenant_id: str, case_id: str) -> RuntimeResult | PersistedCaseView:
+        current = self._results.get((tenant_id, case_id))
+        if current is not None:
+            return current
+        case = self.runtime.store.get(tenant_id, case_id)
+        if case is None:
+            raise CaseNotFound(f"case {case_id!r} was not found for tenant {tenant_id!r}")
+        return self._persisted_view(case)
 
     def board(self, tenant_id: str) -> tuple[dict[str, object], ...]:
         tenant_id = tenant_id.strip()
         if not tenant_id:
             raise ValueError("tenant ID must not be empty")
-        return tuple(
-            result.to_public_json()
-            for (scope, _), result in sorted(self._results.items())
-            if scope == tenant_id
-        )
+        live = {
+            key: result
+            for key, result in self._results.items()
+            if key[0] == tenant_id
+        }
+        views: list[dict[str, object]] = [result.to_public_json() for result in live.values()]
+        for case in self.runtime.store.list_tenant(tenant_id):
+            if (tenant_id, case.case_id) not in live:
+                views.append(self._persisted_view(case).to_public_json())
+        return tuple(views)
 
-    def _require(self, tenant_id: str, case_id: str) -> RuntimeResult:
+    def _require_live(self, tenant_id: str, case_id: str) -> RuntimeResult:
         result = self._results.get((tenant_id, case_id))
         if result is None:
+            if self.runtime.store.get(tenant_id, case_id) is not None:
+                raise ValueError("workflow context is not available after restart")
             raise CaseNotFound(f"case {case_id!r} was not found for tenant {tenant_id!r}")
         return result
+
+    def _persisted_view(self, case: Case) -> PersistedCaseView:
+        return PersistedCaseView(
+            case=case,
+            graph=self.runtime.workflow.graph.to_json(),
+            clock=self.runtime.workflow.machine.statutory_clock(case).to_json(),
+        )

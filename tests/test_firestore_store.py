@@ -6,7 +6,9 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from appeal_core import Actor, ActorKind, Case, CaseState, CaseStateMachine, DecisionSource, DeadlineCatalog
-from appeal_platform import CaseStoreConflict, FirestoreCaseStore
+from appeal_agents import AppealWorkflow
+from appeal_platform import CaseStoreConflict, FirestoreCaseStore, LocalCaseRuntime
+from appeal_service import LocalAppealService
 
 
 class FakeSnapshot:
@@ -141,6 +143,19 @@ class FirestoreStoreTests(unittest.TestCase):
         client.documents[document_path] = tampered
         with self.assertRaises(CaseStoreConflict):
             store.get("tenant-a", "case-c")
+
+    def test_service_reads_persisted_metadata_after_process_restart(self) -> None:
+        client = FakeFirestoreClient()
+        store = FirestoreCaseStore(client=client)
+        first_service = LocalAppealService(LocalCaseRuntime(AppealWorkflow(MACHINE), store=store))
+        first_service.open_demo_case(at=TIME)
+
+        restarted = LocalAppealService(LocalCaseRuntime(AppealWorkflow(MACHINE), store=store))
+        view = restarted.get("tenant-demo", "case-demo-001")
+        self.assertEqual(view.to_public_json()["outcome"], "persisted_metadata")
+        self.assertEqual(len(restarted.board("tenant-demo")), 1)
+        with self.assertRaises(ValueError):
+            restarted.approve("tenant-demo", "case-demo-001", at=TIME)
 
 
 if __name__ == "__main__":
