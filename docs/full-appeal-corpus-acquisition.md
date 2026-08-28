@@ -1,9 +1,11 @@
 # Full Appeal case-corpus acquisition brief
 
-The project has two separate real-data tracks. The DMHC, NY DFS, Oregon, and
-Michigan material can provide regulator-facing summaries or outcomes, but it
-does not by itself provide a complete denial-to-appeal case file. This brief
-defines the package required to unlock the full Appeal evaluation track.
+The project has two separate real-data tracks. The official CMS QIC API now
+provides the primary public regulator-summary benchmark, but its summaries do
+not by themselves provide a complete denial-to-appeal case file. The DMHC, NY
+DFS, Oregon, and Michigan material has the same boundary. This brief defines
+the package required to unlock the full Appeal evaluation track; obtaining that
+package is no longer a prerequisite for the CMS summary benchmark.
 
 ## Target data package
 

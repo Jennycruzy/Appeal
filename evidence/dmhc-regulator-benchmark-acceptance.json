@@ -2,7 +2,9 @@
   "schema_version": "0.1",
   "recorded_at": "2026-08-28",
   "track_id": "regulator_outcome_benchmark",
-  "status": "candidate_pending_source_acceptance",
+  "status": "superseded_as_primary_source_candidate",
+  "superseded_by": "evidence/cms-qic-decision-search.json",
+  "supersession_reason": "The official CMS QIC decision-summary API is now the primary public source for this track; DMHC remains a secondary candidate pending payload access.",
   "purpose": "Evaluate regulator-facing determination and rationale summaries from a real public IMR source. This track is intentionally separate from end-to-end denial and appeal reconstruction.",
   "source": {
     "preferred_source_id": "california_dmhc_imr_determinations",

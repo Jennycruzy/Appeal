@@ -11,7 +11,7 @@ The project has two separate real-data release tracks. The repository does
 1. The **regulator-outcome benchmark** measures against real regulator
    determinations and regulator-authored summary findings. Its authoritative
    acceptance record is
-   [`evidence/dmhc-regulator-benchmark-acceptance.json`](evidence/dmhc-regulator-benchmark-acceptance.json).
+   [`evidence/cms-qic-decision-search.json`](evidence/cms-qic-decision-search.json).
 2. The **full Appeal case corpus** requires the original denial, policy
    criteria, clinical evidence, internal appeal, external-review rationale,
    and final outcome in one de-identified case package. Its acquisition and
@@ -19,14 +19,24 @@ The project has two separate real-data release tracks. The repository does
    [`docs/full-appeal-corpus-acquisition.md`](docs/full-appeal-corpus-acquisition.md)
    and [`evidence/full-appeal-case-corpus-acceptance.json`](evidence/full-appeal-case-corpus-acceptance.json).
 
-The primary public benchmark target is the official California Department of
-Managed Health Care (DMHC) Independent Medical Review (IMR) determinations
-dataset. Its official metadata says it contains DMHC IMR decisions since
-January 1, 2001 and declares a Creative Commons Attribution licence, but the
-case-level payload has not been accepted. See the [real-corpus audit](docs/audits/precredit-imr.md#source-decision)
-for the current retrieval decision.
+The primary public source selected for the regulator-summary benchmark is now
+the official CMS Qualified Independent Contractor (QIC) Decision Search API.
+At the latest inspection it reported 901,471 Part C records and 240,958 Part D
+records, with explicit `decision`, `appeal_type`, `decision_rationale`,
+`coverage_rules`, condition, requested item/service or drug, and decision-date
+fields. Its metadata, live counts, schema checks, and field policy are in
+[`evidence/cms-qic-decision-search.json`](evidence/cms-qic-decision-search.json)
+and the implementation boundary is in
+[`docs/cms-qic-decision-benchmark.md`](docs/cms-qic-decision-benchmark.md).
+This is a real regulator-authored decision-summary source and is not a full raw
+clinical case package: the original denial letter, complete clinical evidence,
+internal appeal, and original plan-policy version are not exposed in the API.
+The project therefore accepts it for regulator-summary benchmarking while
+keeping full-case Appeal evaluations at zero.
 
-The official download and API are currently returning Cloudflare 403 responses.
+The official DMHC download and API are currently returning Cloudflare 403
+responses, so DMHC remains a secondary candidate rather than the current
+benchmark source.
 A public Kaggle mirror was therefore downloaded outside the repository and
 inspected as a fallback candidate: 19,245 rows, 11 columns, `Determination`,
 `Findings`, treatment categories, and `Reference ID`. It has no explicit
@@ -62,6 +72,7 @@ Two other manually acquired regulator candidates are also tracked locally:
   complete denial packet needed here.
 
 Start with the [release-track handoff](docs/HANDOFF.md#release-tracks-2026-08-28),
+the [CMS QIC benchmark record](docs/cms-qic-decision-benchmark.md),
 then the [NY DFS handoff](docs/HANDOFF.md#ny-dfs-schema-mismatch--resume-here),
 the [Oregon fallback](docs/HANDOFF.md#oregon-iro-case-detail-fallback), the
 [NY acceptance manifest](evidence/ny-dfs-acceptance.json), the [Oregon
@@ -73,16 +84,19 @@ follow-up [request](docs/oregon-iro-review-request.md).
 
 The Synthea/HAPI material is a reproducible integration fixture and data-plane
 check. It is not real-denial evidence and does not support a clinical or
-regulator-ground-truth claim. The Oregon source-specific gate permits a
+regulator-ground-truth claim. The CMS QIC API is the accepted public source for
+regulator-authored decision-summary benchmarking; it does not supply the
+clinical Evidence Floor required for a full Appeal run. The Oregon source-specific gate permits a
 local-only adapter preflight and outcome-label inventory; it does not yet
 support a full denial appeal evaluation. The NY source remains separately
 blocked.
 
-All corpus gates are fail-closed within their respective tracks. The raw NY
-DFS, Oregon, and DMHC mirror files
+All corpus gates are fail-closed within their respective tracks. CMS API rows,
+the raw NY DFS and Oregon files, and the DMHC mirror
 are not committed. The local Oregon evaluation input and DMHC mirror CSV stay
 outside the repository; repository evidence contains metadata and aggregate
-counts only—not case numbers, treatment strings, or narrative values.
+counts only—not case numbers, treatment strings, or narrative values. The CMS
+inspector likewise writes no source row values.
 
 ## Google Cloud status
 
@@ -99,6 +113,7 @@ hosted application. See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting
 make test
 make typecheck
 make validate-ny-dfs
+APPEAL_CMS_QIC_ACA='<public ACA value>' make inspect-cms-qic
 make inspect-dmhc-imr \
   DMHC_IMR_INPUT=../Downloads/independent-medical-review-determinations-trends.csv
 make inspect-oregon-iro \

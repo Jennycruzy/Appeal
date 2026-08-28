@@ -386,26 +386,32 @@ in the material reviewed, so it is aggregate calibration evidence only.
 
 ### Source decision
 
-No source is currently verified as complete end-to-end. For this project,
-"complete" means a public, provenance-preserving case record with a denial
-basis, requested service, usable clinical rationale, regulator outcome, and a
-defensible prior-authorization scope decision. The ranked retrieval order is
-now: (1) reconcile the downloaded DMHC mirror against the official data
-dictionary/resource and complete its privacy, reuse, and prior-authorization
-gates; (2) obtain and inspect the official DMHC case-level resource or an
-official DMHC searchable record; (3) if both remain inaccessible, try the
-California CDI and Washington OIC case-level paths; (4) continue NY DFS only
-through its explicit mapping, privacy, reuse, and prior-authorization gates;
-and (5) treat Oregon as outcome-only until a denial packet or redacted synopsis
-supplies the missing inputs. Pennsylvania and CMS remain aggregate calibration
-sources. DWC is excluded for scope and completeness reasons.
+No public source is currently verified as a complete end-to-end case package.
+For this project, "complete" means a public, provenance-preserving case record
+with a denial basis, requested service, usable clinical rationale, regulator
+outcome, and a defensible prior-authorization scope decision. The official CMS
+QIC API is now the selected primary source for the regulator-summary track: it
+provides a large machine-readable corpus with explicit `appeal_type`,
+`decision`, `decision_rationale`, `coverage_rules`, condition, and requested
+item/drug fields. It does not provide the original denial letter, complete
+clinical evidence, internal appeal package, or original plan-policy version.
+The live inspection is recorded in
+`evidence/cms-qic-decision-search.json`; its detailed source boundary is in
+`docs/cms-qic-decision-benchmark.md`.
+
+DMHC remains a secondary retrieval candidate. The NY and Oregon candidates
+remain source-specific fallbacks with their existing privacy, reuse, and field
+boundaries. DWC is excluded for scope and completeness reasons. Pennsylvania
+remains aggregate calibration evidence; CMS QIC is no longer treated as an
+aggregate-only source.
 
 The project currently has **zero real denial cases evaluated and zero
-regulator-ground-truth comparisons**. It has three metadata-only source
-artifacts plus a local-only Oregon evaluation input. The Oregon adapter
-preflight is recorded, but it abstained on every row and did not produce an
-Appeal score. No README, evaluation file, demo case, or metric may claim an
-Appeal evaluation until a full adapter run and comparison are recorded.
+regulator-ground-truth comparisons**. It has an accepted CMS summary-source
+manifest, other metadata-only source artifacts, and a local-only Oregon
+evaluation input. The Oregon adapter preflight is recorded, but it abstained on
+every row and did not produce an Appeal score. No README, evaluation file, demo
+case, or metric may claim an Appeal evaluation until a full adapter run and
+comparison are recorded.
 
 The two-corpus boundary remains explicit: regulator records can test denial
 language, criterion-location reasoning, and externally recorded outcomes;
@@ -413,7 +419,27 @@ Synthea records can test chart retrieval, evidence sufficiency, and the
 Evidence Floor. A real regulator case must never be joined to a synthetic
 patient or presented as if its chart were available.
 
-## CMS benchmark definition
+## CMS QIC decision-summary source
+
+The official CMS QIC Decision Search API is the current primary public source
+for regulator-summary benchmarking. At the 2026-08-28 inspection it reported
+901,471 Part C records and 240,958 Part D records. It exposed the expected
+decision, appeal-type, rationale, summarized coverage-rule, condition, and
+requested item/drug fields in both datasets. The bounded inspector read only
+three rows per dataset and wrote no case values.
+
+The source is accepted for summary-level local evaluation under the manifest
+`evidence/cms-qic-decision-search.json`. The acceptance does not authorize
+publishing narrative rows and does not make the source a full clinical case
+corpus. `decision_rationale` remains a regulator summary; it is not renamed to
+`denial_reason`. `appeal_type` is populated only from the explicit CMS field.
+Clinical evidence, original denial, original plan policy, and prior-
+authorization status remain nullable.
+
+See [`docs/cms-qic-decision-benchmark.md`](../cms-qic-decision-benchmark.md)
+for the API query template, storage boundary, and adapter next step.
+
+## CMS prior-authorization metric definition
 
 The authoritative benchmark definition is:
 
@@ -431,6 +457,11 @@ they are used to calibrate the reference payer.
 
 ## Gaps
 
+- The CMS QIC summary source is available and accepted for the regulator-summary
+  track, but its summary rows have not yet been passed through a source
+  adapter; summary cases evaluated and regulator comparisons remain zero. It
+  does not contain the complete clinical/denial package needed by the full
+  Appeal track.
 - The DMHC resource is officially catalogued as covering all IMR decisions
   since 2001 and is declared CC BY, but its case-level schema has not been
   inspected because the downloadable payload and datastore remain behind the
@@ -457,7 +488,8 @@ they are used to calibrate the reference payer.
   policy. It remains local-only and is not an accepted evaluation corpus.
 - The NY browser table and downloaded workbook disagree on the visible record
   count (55,571 versus 61,606); the reason has not been established.
-- No CMS payer report has yet been collected as calibration evidence.
+- No CMS-0057-F payer report has yet been collected as calibration evidence;
+  this is separate from the CMS QIC decision-summary source.
 - No real denial has completed Appeal, so the Phase 9 hard-stop report does not
   exist yet. The adapter preflight is an explicit input-gap report, not a
   performance result.
@@ -469,9 +501,10 @@ they are used to calibrate the reference payer.
   1,640 rows abstained before a full Appeal evaluation. It cannot claim
   prior-authorization eligibility or public corpus redistribution. One Michigan
   order remains local-only and unevaluated. The NY DFS export remains blocked
-  by its mapping, privacy, and reuse decisions. DMHC is the primary retrieval
-  target; CDI and Washington are the next case-level alternatives. DWC is not
-  an equivalent health-plan benchmark.
+  by its mapping, privacy, and reuse decisions. CMS QIC summary extraction and
+  adapter evaluation are the next summary-track work; DMHC, CDI, and Washington
+  remain secondary case-level alternatives. DWC is not an equivalent
+  health-plan benchmark.
 - Phase 2 payer calibration cannot claim a target distribution until actual
   public 2025 reports are collected and hashed.
 - The overall build remains stopped at the Phase 0 billing/model-discovery
@@ -481,9 +514,10 @@ they are used to calibrate the reference payer.
 
 Pre-credit source discovery has identified three manually acquired regulator
 artifacts: one Michigan order, one NY DFS export, and one Oregon IRO workbook.
-The official DMHC dataset is the primary next retrieval target, but no DMHC
-payload has been accepted. Oregon is accepted for local-only external-review
-outcome handling, and its adapter preflight is recorded as 1,640 explicit
-abstentions. No full Appeal evaluation or regulator-ground-truth comparison
-has been completed. The project must not claim performance until those results
-are recorded.
+The official CMS QIC API is additionally accepted for the regulator-summary
+track, with 1,142,429 records reported by its Part C and Part D endpoints. No
+CMS summary adapter run, full Appeal evaluation, or regulator-ground-truth
+comparison has been completed. Oregon remains accepted for local-only
+external-review outcome handling, and its adapter preflight is recorded as
+1,640 explicit abstentions. The project must not claim performance until the
+appropriate adapter and comparisons are recorded.

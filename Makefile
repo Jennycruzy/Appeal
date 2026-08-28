@@ -17,8 +17,13 @@ OREGON_IRO_LOCAL_OUTPUT ?= ../Downloads/oregon-iro-local-evaluation.json
 OREGON_IRO_EVALUATION_REPORT ?= evidence/oregon-evaluation.json
 DMHC_IMR_INPUT ?= ../Downloads/independent-medical-review-determinations-trends.csv
 DMHC_IMR_REPORT ?= evidence/dmhc-imr-acquisition.json
+CMS_QIC_REPORT ?= evidence/cms-qic-decision-search.json
+CMS_QIC_ACA ?=
+CMS_QIC_PART ?= part_d
+CMS_QIC_LOCAL_OUTPUT ?= ../Downloads/cms-qic-$(CMS_QIC_PART)-summary.jsonl
+CMS_QIC_LOCAL_MANIFEST ?= ../Downloads/cms-qic-$(CMS_QIC_PART)-summary.manifest.json
 
-.PHONY: verify-ledger test typecheck load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -52,6 +57,12 @@ require-ny-dfs-ready:
 
 inspect-dmhc-imr:
 	$(PYTHON) scripts/inspect_dmhc_imr.py --csv "$(DMHC_IMR_INPUT)" --output "$(DMHC_IMR_REPORT)"
+
+inspect-cms-qic:
+	APPEAL_CMS_QIC_ACA="$(CMS_QIC_ACA)" $(PYTHON) scripts/inspect_cms_qic.py --output "$(CMS_QIC_REPORT)"
+
+fetch-cms-qic-summary:
+	APPEAL_CMS_QIC_ACA="$(CMS_QIC_ACA)" PYTHONPATH=scripts $(PYTHON) scripts/fetch_cms_qic_summary.py --part "$(CMS_QIC_PART)" --output "$(CMS_QIC_LOCAL_OUTPUT)" --manifest "$(CMS_QIC_LOCAL_MANIFEST)" --all
 
 inspect-oregon-iro:
 	$(PYTHON) scripts/inspect_oregon_iro.py --xlsx "$(OREGON_IRO_INPUT)" --output "$(OREGON_IRO_REPORT)"

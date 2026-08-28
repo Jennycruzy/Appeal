@@ -1,0 +1,222 @@
+{
+  "acceptance": {
+    "accepted_for_full_appeal_evaluation": false,
+    "accepted_for_local_summary_evaluation": true,
+    "accepted_record_count_reported_by_api": 1142429,
+    "decision": "accepted_for_regulator_summary_benchmark_only",
+    "narrative_rows_committed": false,
+    "raw_rows_committed": false,
+    "unlock_for_local_extraction": "Use the query templates and page outside the repository; preserve the source record and this manifest hash."
+  },
+  "datasets": {
+    "part_c": {
+      "catalog_metadata": {
+        "access_level": "public",
+        "description": "This dataset provides summaries of the IRE's decisions on Part C appeals which may exclude specific case details relevant to the decision in order to protect the privacy of the parties to the appeal. CMS will not use the information provided to address specific cases or attempt to differentiate decisions related to similar appeals.",
+        "distribution": {
+          "download_url": "https://downloads.cms.gov/qic-decision-search/partc-2026-08-25.csv",
+          "format": "csv",
+          "identifier": "d33abbba-686a-512e-a21f-db044d9741bf",
+          "media_type": "text/csv"
+        },
+        "identifier": "e1fc1663-7675-4d83-a8dd-5f709f440bbb",
+        "license": "https://www.usa.gov/publicdomain/label/1.0/",
+        "modified": "2026-08-26 14:20:52",
+        "publisher": "qic.cms.gov",
+        "title": "Part C decision data"
+      },
+      "dataset_id": "e1fc1663-7675-4d83-a8dd-5f709f440bbb",
+      "expected_fields": [
+        "_condition",
+        "appeal_type",
+        "coverage_rules",
+        "decision",
+        "decision_date",
+        "decision_rationale",
+        "item_service",
+        "part",
+        "record_number",
+        "related_reference_id"
+      ],
+      "missing_expected_fields": [],
+      "nonempty_sample_counts": {
+        "_condition": 3,
+        "appeal_type": 3,
+        "coverage_rules": 3,
+        "decision": 3,
+        "decision_date": 3,
+        "decision_rationale": 3,
+        "item_service": 3,
+        "part": 3,
+        "record_number": 3
+      },
+      "observed_fields": [
+        "_condition",
+        "appeal_type",
+        "coverage_rules",
+        "decision",
+        "decision_date",
+        "decision_rationale",
+        "item_service",
+        "part",
+        "record_number",
+        "related_reference_id"
+      ],
+      "privacy_scan": {
+        "candidate_counts": {},
+        "candidate_counts_by_field": {},
+        "distinct_field_values_scanned": 22,
+        "status": "bounded_technical_pattern_scan_only_no_legal_determination_claimed"
+      },
+      "query_template": "https://qic.cms.gov/api/1/datastore/query/e1fc1663-7675-4d83-a8dd-5f709f440bbb/0?keys=true&offset={offset}&limit={limit}&rowIds=true&redirect=false",
+      "raw_rows_written": false,
+      "reported_record_count": 901471,
+      "sample_rows_returned": 3
+    },
+    "part_d": {
+      "catalog_metadata": {
+        "access_level": "public",
+        "description": "If a Part D plan sponsor issues an unfavorable or partially favorable redetermination decision, the enrollee, the enrollee's representative, or the enrollee's prescriber may appeal the decision to the Independent Review Entity (IRE), also commonly called the Part D Qualified Independent Contractor (QIC), by requesting a reconsideration. C2C Innovative Solutions, Inc. is the current Part D IRE, effective February 1, 2021. ",
+        "distribution": {
+          "download_url": "https://downloads.cms.gov/qic-decision-search/partd-2026-08-25.csv",
+          "format": "csv",
+          "identifier": "4a6a1e7c-2f5d-5187-8af3-48430b4f3a91",
+          "media_type": "text/csv"
+        },
+        "identifier": "8152455d-179d-4455-9d09-e5dfc516be10",
+        "license": "https://www.usa.gov/publicdomain/label/1.0/",
+        "modified": "2026-08-26 14:08:03",
+        "publisher": "qic.cms.gov",
+        "title": "Part D decision data"
+      },
+      "dataset_id": "8152455d-179d-4455-9d09-e5dfc516be10",
+      "expected_fields": [
+        "_condition",
+        "appeal_type",
+        "coverage_rules",
+        "decision",
+        "decision_date",
+        "decision_date_sortable",
+        "decision_rationale",
+        "drug",
+        "part",
+        "record_number"
+      ],
+      "missing_expected_fields": [],
+      "nonempty_sample_counts": {
+        "_condition": 3,
+        "appeal_type": 3,
+        "coverage_rules": 3,
+        "decision": 3,
+        "decision_date": 3,
+        "decision_date_sortable": 3,
+        "decision_rationale": 3,
+        "drug": 3,
+        "part": 3,
+        "record_number": 3
+      },
+      "observed_fields": [
+        "_condition",
+        "appeal_type",
+        "coverage_rules",
+        "decision",
+        "decision_date",
+        "decision_date_sortable",
+        "decision_rationale",
+        "drug",
+        "part",
+        "record_number"
+      ],
+      "privacy_scan": {
+        "candidate_counts": {},
+        "candidate_counts_by_field": {},
+        "distinct_field_values_scanned": 19,
+        "status": "bounded_technical_pattern_scan_only_no_legal_determination_claimed"
+      },
+      "query_template": "https://qic.cms.gov/api/1/datastore/query/8152455d-179d-4455-9d09-e5dfc516be10/0?keys=true&offset={offset}&limit={limit}&rowIds=true&redirect=false",
+      "raw_rows_written": false,
+      "reported_record_count": 240958,
+      "sample_rows_returned": 3
+    }
+  },
+  "evaluation": {
+    "full_appeal_cases_evaluated": 0,
+    "regulator_ground_truth_comparisons": 0,
+    "regulator_summary_cases_evaluated": 0,
+    "summary_records_available": 1142429
+  },
+  "field_policy": {
+    "appeal_type": {
+      "source_field": "appeal_type",
+      "status": "explicit_source_field_verified"
+    },
+    "clinical_evidence": {
+      "source_field": null,
+      "status": "not_available_in_public_summary_api"
+    },
+    "decision_rationale": {
+      "source_field": "decision_rationale",
+      "status": "qic_summary_of_the_decision_and_denial_context"
+    },
+    "denial_reason": {
+      "source_field": null,
+      "status": "nullable; decision_rationale is not renamed to the original denial reason"
+    },
+    "policy_context": {
+      "source_field": "coverage_rules",
+      "status": "regulator_summary_policy_context; not necessarily the original plan policy version"
+    },
+    "prior_authorization": {
+      "source_field": null,
+      "status": "nullable; never inferred for all rows"
+    },
+    "regulator_outcome": {
+      "source_field": "decision",
+      "status": "explicit_qic_decision_summary_field"
+    }
+  },
+  "gates": {
+    "prior_authorization": {
+      "decision": "retain nullable and require row-level evidence before labeling",
+      "status": "not_verified_globally"
+    },
+    "privacy": {
+      "decision": "allow structured/local summary benchmarking; do not publish derived narrative rows",
+      "legal_determination_claimed": false,
+      "status": "source_declares_privacy_reduced_summaries; bounded_technical_scan_only"
+    },
+    "provenance": {
+      "evidence": "catalog metadata, dataset identifiers, modification timestamps, and query counts recorded above",
+      "status": "pass_official_catalog_and_live_api"
+    },
+    "reuse": {
+      "decision": "metadata and aggregate benchmark evidence may be committed; raw or derived narrative rows remain outside Git",
+      "status": "public_domain_label_observed_in_official_catalog"
+    },
+    "schema": {
+      "decision": "use explicit appeal_type and decision fields; keep denial_reason nullable",
+      "status": "pass_for_summary_track"
+    }
+  },
+  "recorded_at": "2026-08-28T01:14:32.494081Z",
+  "schema_version": "0.1",
+  "scope": {
+    "complete_api_scope": true,
+    "part_c_records_reported": 901471,
+    "part_d_records_reported": 240958,
+    "scope_note": "Counts are the complete records reported by the live API at inspection time; only bounded schema samples were read.",
+    "total_records_reported": 1142429
+  },
+  "source": {
+    "api_key_recorded": false,
+    "api_root": "https://qic.cms.gov/api/1",
+    "catalog_url": "https://qic.cms.gov/api/1/metastore/schemas/dataset/items",
+    "publisher": "Centers for Medicare & Medicaid Services",
+    "query_pagination": "offset_limit",
+    "raw_artifact_location": "outside_repository_only_if_local_extraction_is_authorized",
+    "raw_rows_written": false,
+    "retrieval_method": "official_catalog_and_datastore_api",
+    "source_id": "cms_qic_decision_summaries"
+  },
+  "status": "accepted_for_regulator_summary_benchmark"
+}

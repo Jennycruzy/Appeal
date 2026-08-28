@@ -59,19 +59,32 @@ state machine for all 1,640 rows and recorded 1,640 explicit abstentions before
 denial parsing. No real regulator case has completed Appeal, and there are
 still zero regulator-ground-truth comparison results.
 
-The next real-source target is the official California DMHC IMR determinations
-dataset. Its current state Open Data record reports coverage from 2001 to the
-present and a Creative Commons Attribution licence, but the downloadable
-payload still resolves to a Cloudflare-protected host. A public Kaggle mirror
-was successfully downloaded outside the repository and inspected as a blocked
+The primary public source is now the official CMS Qualified Independent
+Contractor (QIC) Decision Search API. It is a live, machine-readable source
+with explicit Part C and Part D decision, appeal-type, rationale, coverage-rule,
+condition, requested-item/drug, and date fields. At the 2026-08-28 inspection
+it reported 901,471 Part C records and 240,958 Part D records. The
+metadata-only acceptance record is `evidence/cms-qic-decision-search.json`,
+and the source decision and field boundary are in
+`docs/cms-qic-decision-benchmark.md`. No CMS API rows or narrative values are
+committed.
+
+CMS is accepted for regulator-summary benchmarking, not the full-case track.
+The public source does not expose the original denial letter, complete
+clinical evidence, internal appeal package, or original plan-policy version.
+The project therefore has a real public source for the outcome/rationale lane,
+while full Appeal evaluations remain zero until a complete package exists.
+
+The official DMHC IMR download and API remain Cloudflare-protected. A public
+Kaggle mirror was downloaded outside the repository and inspected as a blocked
 fallback candidate: 19,245 rows and 11 columns, with `Reference ID`,
 `Determination`, `Findings`, and treatment categories. Its technical scan found
 22 physical-address-shaped values; no narrative rows are accepted. The
-metadata-only acquisition record is
-`evidence/dmhc-kaggle-acquisition.json`. A published third-party case example
-is a lead, not an official payload. California DWC was investigated and
-rejected as a primary source because it is workers' compensation and does not
-expose the complete denial packet needed by this benchmark.
+metadata-only acquisition record is `evidence/dmhc-kaggle-acquisition.json`.
+A published third-party case example is a lead, not an official payload.
+California DWC was investigated and rejected as a primary source because it is
+workers' compensation and does not expose the complete denial packet needed by
+this benchmark.
 
 ## Release tracks (2026-08-28)
 
@@ -82,8 +95,10 @@ The real-data release is intentionally split into two tracks:
   source's provenance, reuse, privacy, and field semantics are accepted. It
   does not claim to contain the original denial letter, internal appeal, raw
   clinical evidence, policy version, or prior-authorization proof. Its
-  metadata-only acceptance record is
-  [`evidence/dmhc-regulator-benchmark-acceptance.json`](../evidence/dmhc-regulator-benchmark-acceptance.json).
+  current acceptance record is
+  [`evidence/cms-qic-decision-search.json`](../evidence/cms-qic-decision-search.json),
+  with the source implementation boundary in
+  [`cms-qic-decision-benchmark.md`](cms-qic-decision-benchmark.md).
 - `full_appeal_case_corpus` — complete de-identified case packages containing
   the denial, policy context, clinical evidence, internal appeal, external
   review, and final outcome. This requires an authorized data partner and a
@@ -92,10 +107,10 @@ The real-data release is intentionally split into two tracks:
   and the acquisition brief is
   [`docs/full-appeal-corpus-acquisition.md`](full-appeal-corpus-acquisition.md).
 
-The DMHC mirror, NY DFS export, Oregon report, and Michigan order are not
-silently promoted into the full-case track. Synthea remains an integration
-fixture only. Until a full-case package is accepted, full Appeal evaluations
-and end-to-end regulator comparisons remain zero.
+The CMS summary API, DMHC mirror, NY DFS export, Oregon report, and Michigan
+order are not silently promoted into the full-case track. Synthea remains an
+integration fixture only. Until a full-case package is accepted, full Appeal
+evaluations and end-to-end regulator comparisons remain zero.
 
 ## Google Cloud hosting status
 
@@ -233,9 +248,53 @@ The repository now has a fail-closed review workflow for this gate:
   until mapping, privacy, reuse, and prior-authorization review are explicitly
   recorded.
 
-### DMHC primary real-source path — resume here
+### CMS QIC decision-summary benchmark — current primary
 
-DMHC is the primary retrieval path because it is directly about health-plan
+The official CMS QIC Decision Search API is the selected public source for
+real regulator-summary benchmarking. The catalog and datastore API expose the
+Part C and Part D datasets without requiring a bulk CSV download. The live
+inspection recorded 901,471 Part C records and 240,958 Part D records, and
+confirmed the expected schemas in both datasets.
+
+The source record and field-level boundary are:
+
+- `evidence/cms-qic-decision-search.json` — live counts, dataset identifiers,
+  schema checks, bounded privacy scan, and acceptance decision;
+- `docs/cms-qic-decision-benchmark.md` — mappings, query template, storage
+  rules, and the full-case limitation;
+- `scripts/inspect_cms_qic.py` — metadata-only catalog/API inspector;
+- `scripts/fetch_cms_qic_summary.py` — atomic, paginated, local-only
+  normalized extractor;
+- `config/real_corpus_sources.json` — allow-listed source metadata.
+
+To refresh the aggregate evidence, supply the public ACA value shown by the CMS
+QIC page. The value is used only for the request and is not written to disk:
+
+```text
+APPEAL_CMS_QIC_ACA='<public ACA value>' make inspect-cms-qic
+```
+
+The inspector reads three rows from each dataset, records only field names,
+counts, and pattern totals, and writes no case text. The API's reported counts
+cover the complete current API scope; the bounded read is only the schema and
+privacy check. A future local extraction must page rows into an outside-
+repository file and hash that file without emitting its values.
+
+The CMS fields map as follows: `decision` is the explicit regulator outcome;
+`appeal_type` is used directly; `decision_rationale` is a regulator-authored
+summary and is not `denial_reason`; `coverage_rules` is summarized policy
+context and not the original plan policy version; and clinical evidence and
+prior-authorization status remain nullable. No CMS summary row may be joined
+to a Synthea patient.
+
+This source is ready for the summary adapter, but no summary adapter or Appeal
+comparison has run yet. Current counts are therefore 1,142,429 available
+summary records, zero summary cases evaluated, zero full Appeal cases, and zero
+regulator-ground-truth comparisons.
+
+### DMHC secondary real-source path
+
+DMHC remains a secondary retrieval path because it is directly about health-plan
 denials and its official description says the IMR database contains decisions
 since January 1, 2001. The source is not yet a complete accepted corpus: the
 case-level file has not been downloaded, its schema has not been inspected, and
@@ -283,7 +342,7 @@ regulator ground truth.
 
 ### Oregon IRO case-detail fallback
 
-Oregon is an outcome-only fallback while the DMHC path is pending. Its official
+Oregon is an outcome-only fallback while the CMS summary path is pending. Its official
 report already exposes a case-level `Case Outcome` and
 does not require guessing whether `Denial Reason` means `Appeal Type`. The
 project owner has accepted the 1,640 completed-review outcome rows for local
@@ -392,36 +451,36 @@ server survives restart.
 
 ## Still outstanding
 
-1. Resolve the real-denial source. Retrieve and inspect the official DMHC
-   case-level resource first, using the DMHC path above. If it remains
-   inaccessible, try the separate California CDI and Washington OIC case-level
-   paths. The Michigan PRIRA order is a manually acquired, local-only candidate
-   with its bytes, schema, omission review, terms, and hash recorded; it has not
-   been evaluated. The NY DFS export is a larger local candidate, but its 140
-   physical-address-shaped summary values, date-of-birth/member-ID labels, and
-   unresolved reuse position must be reviewed before any row is accepted. Its
-   `Denial Reason` field must not be called `Appeal Type` until the source
-   mapping is verified; see the resume instructions above. Oregon is accepted
-   only for a local-only external-review outcome run: 1,640 completed-review
-   rows, with prior-authorization eligibility explicitly unclaimed. Use
-   `make prepare-oregon-local-evaluation` to create the input outside Git. All
-   findings and URLs are documented in `docs/audits/precredit-imr.md`. Do not
-   claim a completed Appeal evaluation or regulator comparison until the run
-   and comparison are recorded. Pennsylvania, CMS, and similar aggregate
-   reports remain calibration inputs only. DWC is not an equivalent source.
-2. Complete policy terms review and ingest only permitted, ETag-backed policy
+1. Build and run the CMS QIC summary adapter against an explicitly selected,
+   outside-repository page range. Preserve `appeal_type` and `decision` from
+   the source, keep `denial_reason` and `prior_authorization` nullable unless
+   row-level evidence exists, and record summary-level comparisons separately.
+   The source reports 1,142,429 available records, but no summary case has yet
+   been evaluated. The state machine must abstain when the Evidence Floor needs
+   clinical or original-denial inputs that the summary does not contain.
+2. Keep the official DMHC path, the 140 NY address-shaped values, the eight DOB
+   labels, the nine member-ID labels, and NY's unresolved reuse/mapping decision
+   as secondary candidates. The NY export's `Denial Reason` must not be called
+   `Appeal Type` until its source mapping is verified. Oregon remains accepted
+   only for local-only external-review outcomes; its 1,640-row adapter
+   preflight abstained before denial parsing. Michigan remains local-only and
+   unevaluated. These candidates must not be mixed with the CMS source.
+3. The CMS source does not satisfy the full-case package. Obtain that package
+   only through an authorized source with the requirements in
+   `docs/full-appeal-corpus-acquisition.md`; do not block summary benchmarking
+   on a reply-dependent request.
+4. Complete policy terms review and ingest only permitted, ETag-backed policy
    documents. Extract traceable criterion trees and perform human validation.
-3. Complete quota and residency probes and authenticated managed-component
+5. Complete quota and residency probes and authenticated managed-component
    checks. The model metadata gate now passes, but the selected region and
    managed Agent Platform components are not yet fully verified.
-4. Only after preflight exit: build the independent PAS payer, then the agent
+6. Only after preflight exit: build the independent PAS payer, then the agent
    identities/tools, event spine, Memory Bank, governance boundary, Gemma,
    observability, console, evaluation, and seeded demo.
-5. The Phase 9 real-denial run and mandatory human-choice stop have not happened.
-   The Oregon adapter preflight is complete, but it found no rows with the
-   denial, policy, and clinical inputs needed for a full Appeal run. The stop
-   still requires those inputs, the full adapter, and a recorded
-   regulator-outcome comparison.
+7. The Phase 9 real-denial run and mandatory human-choice stop have not
+   happened. A summary adapter may produce a documented abstention, but it
+   cannot claim a full Appeal evaluation without the original denial, policy,
+   and clinical inputs.
 
 ## Resume checkpoint — after the PC is charged
 
