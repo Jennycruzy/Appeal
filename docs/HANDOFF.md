@@ -96,7 +96,10 @@ synthetic seven-agent ADK smoke run has completed and is recorded in
 separate managed Model Armor synthetic measurement has run and is recorded in
 `evidence/model-armor-measurement.json`, and a serverless Gemma MaaS synthetic
 measurement is recorded in `evidence/gemma-tripwire-measurement.json`; neither
-is yet the default workflow boundary. The current limitations are recorded in
+is yet the default workflow boundary. A real synthetic ADK case exit using an
+image-only PDF is recorded in `evidence/adk-stage-b-case-exit.json`; it still
+does not claim a managed Agent Runtime deployment or a full Appeal evaluation.
+The current limitations are recorded in
 [`docs/LIMITATIONS.md`](LIMITATIONS.md). The local synthetic smoke command is:
 
 ```text

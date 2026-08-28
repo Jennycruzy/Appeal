@@ -177,6 +177,20 @@ approval, and payer-determination operations. The deployed Cloud Run demo uses
 the same process-local state, so it is not a substitute for the future
 Firestore layer.
 
+Run the synthetic Stage B case through the real ADK `Runner` and Gemini vision
+path with:
+
+```text
+make run-adk-case
+```
+
+The ref-only exit artifact is
+`evidence/adk-stage-b-case-exit.json`, with the audit narrative in
+[`docs/audits/stage-b-adk-exit.md`](docs/audits/stage-b-adk-exit.md). The
+case is synthetic and the Cloud Run service remains a deterministic facade;
+this run does not claim a managed Agent Runtime deployment or a full Appeal
+evaluation.
+
 For local HTTP integration testing only, run:
 
 ```text

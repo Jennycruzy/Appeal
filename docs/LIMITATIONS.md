@@ -21,6 +21,13 @@ complete.
   [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json).
   The service is unauthenticated and process-local, accepts no real case data,
   and is not a production API.
+- A real synthetic ADK `Runner` execution completed through all seven named
+  roles using an image-only PDF input and Gemini `3.7-flash`. Its aggregate
+  Stage B exit is recorded in
+  [`evidence/adk-stage-b-case-exit.json`](../evidence/adk-stage-b-case-exit.json).
+  This proves the ADK/Gemini provider path and multimodal input path for one
+  synthetic case; the Cloud Run service is still a deterministic facade, and
+  managed Agent Runtime execution is not yet deployed.
 - Agent Runtime, Agent Registry, Agent Identity, managed Memory Bank, Agent
   Gateway, Agent Policies, Firebase Auth, Firestore, Pub/Sub, and managed Cloud
   Observability are not yet deployed from this repository. A managed Model
@@ -29,9 +36,9 @@ complete.
   case storage, scoped memory, payer adjudication, and reversibility are
   present under `src/appeal_platform/`.
 - The current seven-agent implementation demonstrates the role boundaries and
-  governance contracts. The ADK/Gemini smoke ran separately in the project
-  environment; the deployed Cloud Run container exposes the deterministic API
-  facade, not a complete Gemini-backed appeal case evaluation.
+  governance contracts. The ADK case exit is a synthetic provider exercise;
+  the deployed Cloud Run container exposes the deterministic API facade, not
+  a complete real-case Gemini-backed appeal evaluation.
 
 ## Data and evaluation
 

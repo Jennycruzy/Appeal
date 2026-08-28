@@ -2,8 +2,9 @@
 
 The repository currently executes the local deterministic path and exposes the
 same API facade through a synthetic-only Cloud Run deployment. A synthetic
-seven-agent ADK/Gemini smoke and separate managed Model Armor and serverless
-Gemma MaaS measurements are recorded as provider probes; Agent Runtime,
+seven-agent ADK/Gemini smoke, a multimodal ADK case exit, and separate managed
+Model Armor and serverless Gemma MaaS measurements are recorded as provider
+probes; Agent Runtime,
 persistent Google Cloud services, the default security boundary, and the
 external payer remain future adapters and are marked as such below.
 

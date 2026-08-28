@@ -19,7 +19,9 @@ lifecycle are recorded in `evidence/cloud-run-deployment.json` and
 `docs/audits/stage-c-cloud-run.md`. Agent Runtime, Firestore, Pub/Sub,
 dedicated Gemma GPU endpoint, and external payer deployment remain unclaimed.
 A separate serverless Gemma MaaS synthetic measurement is recorded in
-`evidence/gemma-tripwire-measurement.json`.
+`evidence/gemma-tripwire-measurement.json`. The Stage B ADK case exit is
+recorded in `evidence/adk-stage-b-case-exit.json`; it used an image-only
+synthetic PDF and did not persist model responses.
 
 The local exit remains runnable through `make run-local-runtime`. Its platform
 interfaces identify the future seams for case storage, event delivery,

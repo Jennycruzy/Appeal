@@ -1,0 +1,132 @@
+{
+  "adk": {
+    "all_expected_agents_observed": true,
+    "authors": [
+      "argument_builder",
+      "deadline_sentinel",
+      "denial_parser",
+      "escalation_strategist",
+      "evidence_miner",
+      "intake",
+      "policy_analyst"
+    ],
+    "event_count": 7,
+    "expected_agents": [
+      "intake",
+      "denial_parser",
+      "policy_analyst",
+      "evidence_miner",
+      "argument_builder",
+      "deadline_sentinel",
+      "escalation_strategist"
+    ],
+    "input_document_form": "image_only_synthetic_scan",
+    "input_media_type": "application/pdf",
+    "node_names": [
+      "argument_builder",
+      "deadline_sentinel",
+      "denial_parser",
+      "escalation_strategist",
+      "evidence_miner",
+      "intake",
+      "policy_analyst"
+    ],
+    "response_content_persisted": false
+  },
+  "deterministic_control_plane": {
+    "approved": {
+      "case_state": "AWAITING_DETERMINATION",
+      "external_mutation_count": 1,
+      "outcome": "submitted"
+    },
+    "criterion": {
+      "criterion_id": "criterion.root",
+      "evaluation_status": "satisfied",
+      "logic": "AND",
+      "policy_id": "policy-demo-001",
+      "source_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "source_span": {
+        "end_offset": 65,
+        "quote_persisted": false,
+        "start_offset": 0
+      }
+    },
+    "denial_parse": {
+      "span_count": 4,
+      "spans": [
+        {
+          "end_offset": 50,
+          "quote_persisted": false,
+          "source_hash": "c9fb308cfc144db9ddf3ac3ba97f05e6cbff8d441a9e5c1978d7fef4469b3036",
+          "start_offset": 15
+        },
+        {
+          "end_offset": 93,
+          "quote_persisted": false,
+          "source_hash": "c9fb308cfc144db9ddf3ac3ba97f05e6cbff8d441a9e5c1978d7fef4469b3036",
+          "start_offset": 52
+        },
+        {
+          "end_offset": 123,
+          "quote_persisted": false,
+          "source_hash": "c9fb308cfc144db9ddf3ac3ba97f05e6cbff8d441a9e5c1978d7fef4469b3036",
+          "start_offset": 95
+        },
+        {
+          "end_offset": 158,
+          "quote_persisted": false,
+          "source_hash": "c9fb308cfc144db9ddf3ac3ba97f05e6cbff8d441a9e5c1978d7fef4469b3036",
+          "start_offset": 125
+        }
+      ]
+    },
+    "draft": {
+      "claim_count": 1,
+      "text_persisted": false
+    },
+    "evidence": {
+      "dispositions": {
+        "criterion.conservative": "satisfied",
+        "criterion.finding": "satisfied"
+      },
+      "evidence_ref_count": 3,
+      "leaf_count": 2
+    },
+    "initial": {
+      "case_state": "AWAITING_CLINICIAN",
+      "outcome": "awaiting_clinician"
+    },
+    "receipt_count": 18,
+    "security_boundary": "local_deterministic_fallback; managed probes are separate evidence",
+    "veto_combinator": {
+      "model_dissent": false,
+      "status": "cleared",
+      "verdicts": [
+        {
+          "holder": "criterion_tree",
+          "status": "cleared"
+        },
+        {
+          "holder": "evidence_floor",
+          "status": "cleared"
+        },
+        {
+          "holder": "model_armor_plus_gemma_tripwire",
+          "status": "cleared"
+        },
+        {
+          "holder": "clinician",
+          "status": "cleared"
+        }
+      ]
+    }
+  },
+  "location": "global",
+  "model": "gemini-3.7-flash",
+  "project": "onyx-yeti-506606-i9",
+  "provider": "vertex_ai",
+  "real_case_data_uploaded": false,
+  "schema_version": "0.1",
+  "scope": "one synthetic Stage B case; model responses and fixture prose omitted",
+  "workflow": "appeal_agent_fleet"
+}

@@ -46,11 +46,13 @@ loopback for integration testing. The endpoint explicitly reports
 `authenticated: false`; Firebase/Auth/IAM must be added before any network
 deployment.
 
-This is a local deterministic exit, not evidence of a production ADK
-deployment, Gemma endpoint, Pub/Sub, Firestore, Agent Runtime, or external
-payer service. A separate synthetic seven-agent ADK smoke is recorded in
-`evidence/adk-workflow-smoke.json`; it does not turn this local path into a
-production case workflow. The separate managed Model Armor measurement is recorded in
-`evidence/model-armor-measurement.json`; it does not yet replace the local
+This local path is now paired with a real synthetic ADK case exit. The ADK
+`Runner` executed all seven roles with an image-only PDF input, and the
+aggregate result is recorded in `evidence/adk-stage-b-case-exit.json`, with
+the audit narrative in `docs/audits/stage-b-adk-exit.md`. It does not turn the
+Cloud Run facade into a managed Agent Runtime deployment or a full Appeal
+evaluation. The separate managed Model Armor and Gemma MaaS measurements are
+recorded in `evidence/model-armor-measurement.json` and
+`evidence/gemma-tripwire-measurement.json`; neither replaces the local
 security boundary in the default workflow. The scoring handoff remains
 intentionally deferred and uncommitted.
