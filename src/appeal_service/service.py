@@ -9,7 +9,14 @@ from collections.abc import Mapping
 from appeal_agents import AppealInput, AppealWorkflow
 from appeal_agents.demo import demo_input
 from appeal_core import Case, CaseState, CaseStateMachine, DeadlineCatalog
-from appeal_platform import DomainEvent, LocalCaseRuntime, PayerAdjudicator, RuntimeResult, SentinelTickResult
+from appeal_platform import (
+    AgentRuntimeSubscriber,
+    DomainEvent,
+    LocalCaseRuntime,
+    PayerAdjudicator,
+    RuntimeResult,
+    SentinelTickResult,
+)
 
 
 class CaseNotFound(KeyError):
@@ -50,8 +57,14 @@ class PersistedCaseView:
 class LocalAppealService:
     """Case-board operations with an explicit human approval boundary."""
 
-    def __init__(self, runtime: LocalCaseRuntime) -> None:
+    def __init__(
+        self,
+        runtime: LocalCaseRuntime,
+        *,
+        agent_runtime_subscriber: AgentRuntimeSubscriber | None = None,
+    ) -> None:
         self.runtime = runtime
+        self.agent_runtime_subscriber = agent_runtime_subscriber
         self._results: dict[tuple[str, str], RuntimeResult] = {}
 
     @classmethod
@@ -117,13 +130,16 @@ class LocalAppealService:
         """Accept a validated Pub/Sub event without granting it mutation rights."""
 
         self.runtime.spine.accept(event)
-        return {
+        result: dict[str, object] = {
             "status": "accepted",
             "event_id": event.event_id,
             "tenant_id": event.tenant_id,
             "case_id": event.case_id,
             "topic": event.topic,
         }
+        if self.agent_runtime_subscriber is not None:
+            result["agent_runtime"] = self.agent_runtime_subscriber.handle(event)
+        return result
 
     def get(self, tenant_id: str, case_id: str) -> RuntimeResult | PersistedCaseView:
         current = self._results.get((tenant_id, case_id))

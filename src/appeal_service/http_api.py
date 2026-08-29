@@ -31,6 +31,7 @@ class LocalHttpApi:
         scheduler_audience: str | None = None,
         pubsub_service_account: str | None = None,
         pubsub_audience: str | None = None,
+        agent_runtime: str = "disabled",
     ) -> None:
         self.service = service
         self.deployment = deployment
@@ -42,6 +43,7 @@ class LocalHttpApi:
         self.scheduler_audience = scheduler_audience
         self.pubsub_service_account = pubsub_service_account
         self.pubsub_audience = pubsub_audience
+        self.agent_runtime = agent_runtime
 
     def handle(
         self,
@@ -63,6 +65,7 @@ class LocalHttpApi:
                     "storage": self.storage,
                     "event_spine": self.event_spine,
                     "security": self.security,
+                    "agent_runtime": self.agent_runtime,
                     "authenticated": False,
                 }
             if method == "POST" and segments == ("api", "demo", "cases"):

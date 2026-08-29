@@ -1,0 +1,37 @@
+{
+  "schema_version": "0.1",
+  "recorded_at": "2026-08-29",
+  "kind": "managed_agent_runtime_subscriber_smoke",
+  "project_id": "onyx-yeti-506606-i9",
+  "region": "europe-west2",
+  "cloud_run_service": "appeal-backend",
+  "cloud_run_revision": "appeal-backend-00017-fxp",
+  "agent_runtime_resource": "projects/835653516606/locations/europe-west2/reasoningEngines/936968624818618368",
+  "event_topic": "appeal.workflow.event",
+  "trigger_allowlist": {
+    "agent": "intake",
+    "status": "clear",
+    "evidence_ref_count": "nonnegative_integer"
+  },
+  "synthetic_scope": {
+    "tenant_prefix": "tenant-demo",
+    "case_prefix": "case-demo",
+    "tenant_id": "tenant-demo-agent-runtime",
+    "case_id": "case-demo-agent-runtime-20260829"
+  },
+  "workflow_event_count": 13,
+  "authenticated_pubsub_delivery_reached": true,
+  "trigger_event_id": "d16013c94cc3976f295d7790fccc80cfae874e6c6c22dbdec982b47b5ffb04c9",
+  "agent_runtime_invocation_count": 1,
+  "invocation_attempt": 1,
+  "invocation_status": "completed",
+  "query_event_count": 2,
+  "query_authors": [
+    "appeal_agent_fleet"
+  ],
+  "response_content_persisted": false,
+  "invocation_record_path": "appeal_tenants/{tenant_id}/cases/{case_id}/agent_runtime_invocations/{event_id}",
+  "external_mutation_count": 0,
+  "case_state": "AWAITING_CLINICIAN",
+  "real_case_data_uploaded": false
+}

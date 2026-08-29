@@ -92,12 +92,9 @@ def _resource_metadata(remote_agent: Any) -> dict[str, Any]:
     api_resource = getattr(remote_agent, "api_resource", None)
     spec = getattr(api_resource, "spec", None)
     return {
-        "resource_name": _resource_value(remote_agent, "name", "resource_name"),
+        "resource_name": _resource_value(api_resource, "name"),
         "effective_identity": _resource_value(
             spec, "effective_identity", "effectiveIdentity"
-        ),
-        "resource_state": _resource_value(
-            api_resource, "state", "resource_state"
         ),
     }
 

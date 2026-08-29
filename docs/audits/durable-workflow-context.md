@@ -37,6 +37,8 @@ strict mypy passing. No real case data was uploaded.
 
 This closes durable workflow context and receipt persistence for the current
 synthetic Cloud Run boundary. The managed Pub/Sub event boundary is recorded
-separately in [`pubsub-event-spine.md`](pubsub-event-spine.md). Managed Memory
-Bank, Agent Runtime, Registry, Identity, Gateway, Policies, Observability,
-payer service separation, and the hosted console remain open work.
+separately in [`pubsub-event-spine.md`](pubsub-event-spine.md). The managed
+Agent Runtime, Registry, and Identity deployment is recorded separately in
+[`agent-runtime.md`](agent-runtime.md). Managed Memory Bank readback, Gateway,
+Policies, direct Observability trace export, payer service separation, and the
+hosted console remain open work.

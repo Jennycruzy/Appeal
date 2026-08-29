@@ -6,7 +6,7 @@
   "project_display_name": "Appeal",
   "region": "europe-west2",
   "service": "appeal-backend",
-  "revision": "appeal-backend-00016-p7s",
+  "revision": "appeal-backend-00017-fxp",
   "traffic_percent": 100,
   "service_url": "https://appeal-backend-hhcjpefk2q-nw.a.run.app",
   "regional_service_url": "https://appeal-backend-835653516606.europe-west2.run.app",
@@ -30,7 +30,8 @@
     "authenticated": false,
     "storage": "firestore",
     "event_spine": "pubsub_firestore",
-    "security": "managed_model_armor_gemma"
+    "security": "managed_model_armor_gemma",
+    "agent_runtime": "managed_subscriber_synthetic_only"
   },
   "synthetic_lifecycle": {
     "case_created": true,
@@ -93,6 +94,20 @@
     "authenticated_push_status": 200,
     "subscriber_mutation_authority": false,
     "event_payload": "reference_only_scalar_metadata"
+  },
+  "agent_runtime_subscriber": {
+    "resource": "projects/835653516606/locations/europe-west2/reasoningEngines/936968624818618368",
+    "mode": "synthetic_only",
+    "trigger_agent": "intake",
+    "trigger_status": "clear",
+    "invocation_status": "completed",
+    "invocation_attempt": 1,
+    "query_event_count": 2,
+    "query_authors": [
+      "appeal_agent_fleet"
+    ],
+    "response_content_persisted": false,
+    "evidence": "evidence/agent-runtime-subscriber.json"
   },
   "durable_workflow_smoke": {
     "case_id": "case-demo-durable-20260829",

@@ -89,9 +89,9 @@ The local runtime also exposes reference-only event delivery, case-scoped
 memory, an independent payer adjudicator, and a reversibility journal.
 
 This is an executable local fallback, and the same deterministic HTTP facade
-is now deployed as a synthetic-only Cloud Run service. It is not a deployed
-ADK application, dedicated Gemma GPU endpoint, or managed Agent Runtime workflow. A
-synthetic seven-agent ADK smoke run has completed and is recorded in
+is now deployed as a synthetic-only Cloud Run service. It is not a dedicated
+Gemma GPU endpoint or a complete Appeal case evaluation. A synthetic
+seven-agent ADK smoke run has completed and is recorded in
 `evidence/adk-workflow-smoke.json`; it is not a full appeal case evaluation. A
 separate managed Model Armor synthetic measurement has run and is recorded in
 `evidence/model-armor-measurement.json`, and a serverless Gemma MaaS synthetic
@@ -101,9 +101,22 @@ was the default workflow boundary in the earlier deployed revision. Commit
 revision `appeal-backend-00016-p7s` has now passed a hosted synthetic clean
 case through inbound, egress, and memory checks. A synthetic injection was
 blocked at inbound and quarantined before denial parsing. A real synthetic ADK
-case exit using an
-image-only PDF is recorded in `evidence/adk-stage-b-case-exit.json`; it still
-does not claim a managed Agent Runtime deployment or a full Appeal evaluation.
+case exit using an image-only PDF is recorded in
+`evidence/adk-stage-b-case-exit.json`.
+
+The seven-role ADK graph is also deployed as a managed Agent Runtime
+application in `europe-west2`, with Agent Registry and Agent Identity metadata.
+Managed session creation and a reference-only synthetic Memory Bank write
+succeeded; Memory Bank readback and direct trace export remain unverified. The
+deployment is recorded in
+[`evidence/agent-runtime-deployment.json`](../evidence/agent-runtime-deployment.json)
+and [`docs/audits/agent-runtime.md`](audits/agent-runtime.md). Cloud Run and
+Agent Runtime are separate boundaries. The authenticated Pub/Sub subscriber
+now invokes the managed graph for one allowlisted synthetic `intake/clear`
+checkpoint with Firestore idempotency; broader subscriber-driven execution,
+Firebase Auth, Gateway, Policies, and a full Appeal evaluation remain open.
+The aggregate checkpoint is recorded in
+[`evidence/agent-runtime-subscriber.json`](../evidence/agent-runtime-subscriber.json).
 The current limitations are recorded in
 [`docs/LIMITATIONS.md`](LIMITATIONS.md). The local synthetic smoke command is:
 
@@ -192,11 +205,12 @@ and [`docs/LIMITATIONS.md`](LIMITATIONS.md); they are no longer work items.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00016-p7s`, with 100% traffic on that revision. The verified
+`appeal-backend-00017-fxp`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. The `/api/healthz` endpoint
 returned `status: ok` with `storage: firestore` and
-`event_spine: pubsub_firestore`, and `security: managed_model_armor_gemma`. A hosted synthetic case completed
+`event_spine: pubsub_firestore`, `security: managed_model_armor_gemma`, and
+`agent_runtime: managed_subscriber_synthetic_only`. A hosted synthetic case completed
 creation, clinician approval, one submission mutation, and payer adjudication
 to `CLOSED_WON`; a subsequent board request read persisted synthetic cases.
 The aggregate-only deployment record is
@@ -215,11 +229,21 @@ revision also publishes reference-only workflow events through the
 `appeal-events` Pub/Sub topic and receives them through an authenticated push
 subscription; thirteen deliveries returned HTTP 200 in the synthetic smoke.
 This establishes the hosted Google Cloud backend and restart-safe Firestore
-workflow boundary plus the managed event boundary, but it does not establish
-Agent Runtime, Agent Registry, Agent Identity, Memory Bank, Gateway, Firebase
-Auth, or managed Observability deployment. The hosted Model Armor/Gemma
-boundary is verified for synthetic workflow inputs; it is not a full Appeal
-evaluation.
+workflow boundary plus the managed event boundary. A separate managed Agent
+Runtime resource in `europe-west2` hosts the seven-role ADK graph and is
+registered as `Appeal Agent Fleet` with Agent Registry and Agent Identity
+metadata. The aggregate runtime record is
+`evidence/agent-runtime-deployment.json`, with the narrative audit in
+`docs/audits/agent-runtime.md`. Managed session creation and a
+reference-only synthetic Memory Bank write succeeded; Memory Bank readback and
+direct trace export remain unverified. The current revision also invokes the
+managed graph for one allowlisted synthetic `intake/clear` checkpoint, with a
+Firestore invocation record completed at attempt 1 and aggregate-only query
+evidence. The record is in
+`evidence/agent-runtime-subscriber.json`. Agent Gateway, Agent Policies,
+Firebase Auth, and broader subscriber-driven Agent Runtime workflow execution
+are not yet deployed. The hosted Model Armor/Gemma boundary is verified for
+synthetic workflow inputs; it is not a full Appeal evaluation.
 
 Cloud Scheduler job `appeal-deadline-sentinel` is enabled in `europe-west2`
 with an hourly UTC cadence and an OIDC token for
@@ -263,7 +287,7 @@ deletion, and audit controls.
   in `src/appeal_core/criteria.py`. The Argument Builder cannot be represented
   as having clinical evidence unless an Evidence Miner observation supplies a
   FHIR reference.
-- The local test suite has 74 passing tests, and strict mypy has passed for the
+- The local test suite has 83 passing tests, and strict mypy has passed for the
   core package. Re-run both after any changes.
 - One official Michigan PRIRA order was manually downloaded and inspected. The
   result is in `evidence/manual-review-acquisition.json`; it counts as one
@@ -620,31 +644,33 @@ server survives restart.
 
 ## Still outstanding
 
-The source-acquisition track is closed. The managed Model Armor -> Gemma
-boundary is now deployed and verified on synthetic inputs. The remaining work
-is product construction and verification, in this order:
+The source-acquisition track is closed. Managed Model Armor/Gemma, Firestore
+persistence, Pub/Sub delivery, the seven-role managed Agent Runtime graph,
+Agent Registry, Agent Identity, managed session creation, the initial
+reference-only Memory Bank write, and one controlled synthetic Pub/Sub-to-Agent
+Runtime invocation are recorded as complete synthetic probes. The remaining
+work is product construction and verification, in this order:
 
-1. Deploy the seven-role workflow through the managed Google agent platform:
-   ADK execution, Agent Registry, Agent Identity, Gateway, Policies, Memory
-   Bank, and Observability. Probe each approved service once; if a component
-   is unavailable, record the limitation and continue with the smallest
-   truthful implementation.
-2. Separate the payer adjudicator into its own Cloud Run service and service
+1. Verify managed Memory Bank retrieval and direct Cloud Observability trace
+   export. Keep all receipts content-free and reference-only.
+2. Configure Agent Gateway and Agent Policies in an allowlisted, dry-run or
+   otherwise reversible manner before any enforcing binding.
+3. Separate the payer adjudicator into its own Cloud Run service and service
    account, validate the PAS behavior at the level actually implemented, and
    retain the deterministic Veto Combinator and single-mutation gate.
-3. Build the hosted console: Firebase Auth, live statutory clock, contradiction
+4. Build the hosted console: Firebase Auth, live statutory clock, contradiction
    view, clinician co-signature, case timeline, reasoning chain, quarantine
    display, and the asynchronous escalation path.
-4. Create traceable criterion trees from the already-selected permitted payer
+5. Create traceable criterion trees from the already-selected permitted payer
    policy corpus, hand-validate a sample, and record the agreement rate. This
    does not authorize a new policy-source investigation.
-5. Only after the workflow is complete, resume the uncommitted local scoring
+6. Only after the workflow is complete, resume the uncommitted local scoring
    handoff in `docs/SCORING_HANDOFF_LOCAL.md`: deterministic tree grading,
    random-criterion and generic-template controls, policy/evidence ablations,
    model-versus-tree adjudication, failure reporting, and the named-catch
    human stop. Until then, full Appeal evaluations remain zero and no scoring
    artifact should be committed.
-6. Finish the demo tenant, architecture/judging documentation, video, and
+7. Finish the demo tenant, architecture/judging documentation, video, and
    submission checks from the continuation specification. Every claimed
    number must point to committed evidence, and every missing capability must
    remain in `docs/LIMITATIONS.md`.
@@ -692,9 +718,14 @@ Google Cloud project `onyx-yeti-506606-i9` (`835653516606`) and region
 working; do not run `gcloud auth application-default login` again.
 
 The managed Model Armor -> Gemma boundary, reference-only durable workflow
-session/receipt boundary, and Pub/Sub event spine are deployed and verified on
-Cloud Run revision `appeal-backend-00016-p7s`. The next continuation is the
-managed agent-platform inventory. Start with:
+session/receipt boundary, Pub/Sub event spine, and the managed seven-role ADK
+deployment are recorded. Cloud Run remains revision
+`appeal-backend-00017-fxp`; Agent Runtime resource
+`projects/835653516606/locations/europe-west2/reasoningEngines/936968624818618368`
+is the separate managed deployment. The controlled synthetic subscriber
+checkpoint is complete; the next continuation is managed Memory Bank and
+Observability verification, followed by the remaining governance work. Start
+with:
 
 ```text
 cd /Users/user/appeal
@@ -715,14 +746,16 @@ gcloud run revisions list \
 ```
 
 Expected hosted health includes `status: ok`, `storage: firestore`,
-`event_spine: pubsub_firestore`, and `security: managed_model_armor_gemma`.
+`event_spine: pubsub_firestore`, `security: managed_model_armor_gemma`, and
+`agent_runtime: managed_subscriber_synthetic_only`.
 The clean and injection smoke results are recorded in
 `docs/audits/managed-security-cloud-run.md`, the Pub/Sub result is in
-`docs/audits/pubsub-event-spine.md`, and the aggregate record is in
+`docs/audits/pubsub-event-spine.md`, and the Agent Runtime result is in
+`docs/audits/agent-runtime.md`. The aggregate Cloud Run record is in
 `evidence/cloud-run-deployment.json`.
 
-Continue with managed agent-platform components, the separate payer service,
-and the hosted console. The ordered backlog is in
+Continue with managed Memory Bank/Observability verification, Gateway and
+Policies, the separate payer service, and the hosted console. The ordered backlog is in
 `## Still outstanding` above. Keep all inputs synthetic and aggregate-only.
 
 Do not resume the CMS, NY, Washington, DMHC, Oregon, or full-case acquisition
@@ -733,8 +766,8 @@ workflow and required inputs genuinely exist.
 ## Push status
 
 The public repository remote is already configured. Code commits through
-`10fd7f6` are on `origin/main`; the current documentation/evidence update is
-the next local commit:
+`685de63` are on `origin/main`; this documentation/evidence update is the next
+local commit:
 
 ```text
 git remote -v

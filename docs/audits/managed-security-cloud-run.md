@@ -33,6 +33,9 @@ invoked for that hostile input; this is the intended series behavior.
 The aggregate record is
 [`evidence/cloud-run-deployment.json`](../../evidence/cloud-run-deployment.json).
 The endpoint remains unauthenticated and synthetic-only. No real case data,
-patient identifier, denial narrative, or clinical chart was uploaded. This
-proves the hosted Model Armor -> Gemma workflow boundary, not managed Agent
-Runtime, Pub/Sub, Memory Bank, Firebase Auth, or a complete Appeal evaluation.
+patient identifier, denial narrative, or clinical chart was uploaded. At the
+time of this Cloud Run security audit, this proves the hosted Model Armor ->
+Gemma workflow boundary, not managed Agent Runtime, Memory Bank, Firebase Auth,
+or a complete Appeal evaluation. The later managed Agent Runtime, Agent
+Registry, and Agent Identity deployment is recorded in
+[`agent-runtime.md`](agent-runtime.md); it is a separate synthetic boundary.

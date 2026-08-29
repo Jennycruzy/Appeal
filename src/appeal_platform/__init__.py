@@ -3,8 +3,18 @@
 These adapters keep the local path runnable while exposing the managed seams
 for Pub/Sub, Firestore, Memory Bank, and a separately deployed payer service.
 The Firestore case-metadata adapter is used by the Cloud Run deployment; the
-remaining managed boundaries are still explicit future targets.
+remaining managed boundaries are explicit adapters with synthetic-only gates.
 """
+
+from .agent_runtime import (
+    AgentRuntimeInvocation,
+    AgentRuntimeInvocationInProgress,
+    AgentRuntimeSubscriber,
+    FirestoreAgentRuntimeInvocationStore,
+    InvocationClaim,
+    LocalAgentRuntimeInvocationStore,
+    ManagedAgentRuntimeInvoker,
+)
 
 from .events import (
     DomainEvent,
@@ -43,6 +53,7 @@ __all__ = [
     "CaseStoreConflict",
     "CaseStoreScopeError",
     "FirestoreCaseStore",
+    "FirestoreAgentRuntimeInvocationStore",
     "FirestoreReceiptLedger",
     "FirestorePubSubEventSpine",
     "FirestoreWorkflowSessionStore",
@@ -50,12 +61,18 @@ __all__ = [
     "DeliveryReceipt",
     "DomainEvent",
     "EventIdempotencyConflict",
+    "AgentRuntimeInvocation",
+    "AgentRuntimeInvocationInProgress",
+    "AgentRuntimeSubscriber",
+    "InvocationClaim",
     "LocalCaseRuntime",
+    "LocalAgentRuntimeInvocationStore",
     "LocalEventSpine",
     "LocalWorkflowSessionStore",
     "MemoryRecord",
     "MemoryScopeError",
     "MemoryWriteBlocked",
+    "ManagedAgentRuntimeInvoker",
     "PayerAdjudicator",
     "PayerDecision",
     "PayerDecisionStatus",

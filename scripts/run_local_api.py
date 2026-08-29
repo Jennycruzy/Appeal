@@ -18,6 +18,9 @@ from appeal_platform import (
     FirestoreReceiptLedger,
     FirestoreWorkflowSessionStore,
     FirestorePubSubEventSpine,
+    FirestoreAgentRuntimeInvocationStore,
+    AgentRuntimeSubscriber,
+    ManagedAgentRuntimeInvoker,
     LocalCaseRuntime,
 )
 from appeal_service import LocalAppealService, LocalHttpApi
@@ -97,6 +100,30 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
         ledger=ledger,
         security=security,
     )
+    agent_runtime_resource = os.getenv("APPEAL_AGENT_RUNTIME_RESOURCE", "").strip()
+    agent_runtime_subscriber = None
+    agent_runtime_name = "disabled"
+    if agent_runtime_resource:
+        if storage != "firestore":
+            raise ValueError("managed Agent Runtime subscriber requires Firestore storage")
+        agent_runtime_store = FirestoreAgentRuntimeInvocationStore(
+            project=os.getenv("GOOGLE_CLOUD_PROJECT"),
+            database=os.getenv("APPEAL_FIRESTORE_DATABASE", "(default)"),
+            claim_lease_seconds=float(os.getenv("APPEAL_AGENT_RUNTIME_CLAIM_LEASE_SECONDS", "120")),
+        )
+        agent_runtime_subscriber = AgentRuntimeSubscriber(
+            ManagedAgentRuntimeInvoker(
+                resource_name=agent_runtime_resource,
+                project=os.getenv("GOOGLE_CLOUD_PROJECT", ""),
+                location=os.getenv("APPEAL_AGENT_RUNTIME_LOCATION", "europe-west2"),
+                timeout_seconds=float(os.getenv("APPEAL_AGENT_RUNTIME_TIMEOUT_SECONDS", "45")),
+            ),
+            agent_runtime_store,
+            synthetic_only=os.getenv("APPEAL_AGENT_RUNTIME_SYNTHETIC_ONLY", "true").lower() == "true",
+            tenant_prefix=os.getenv("APPEAL_AGENT_RUNTIME_TENANT_PREFIX", "tenant-demo"),
+            case_prefix=os.getenv("APPEAL_AGENT_RUNTIME_CASE_PREFIX", "case-demo"),
+        )
+        agent_runtime_name = "managed_subscriber_synthetic_only"
     return LocalHttpApi(
         LocalAppealService(
             LocalCaseRuntime(
@@ -104,7 +131,8 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
                 store=store,
                 session_store=session_store,
                 spine=event_spine,
-            )
+            ),
+            agent_runtime_subscriber=agent_runtime_subscriber,
         ),
         deployment=os.getenv("APPEAL_DEPLOYMENT", "local"),
         storage=storage,
@@ -115,6 +143,7 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
         scheduler_audience=os.getenv("APPEAL_SCHEDULER_AUDIENCE"),
         pubsub_service_account=os.getenv("APPEAL_PUBSUB_PUSH_SERVICE_ACCOUNT"),
         pubsub_audience=os.getenv("APPEAL_PUBSUB_AUDIENCE"),
+        agent_runtime=agent_runtime_name,
     )
 
 

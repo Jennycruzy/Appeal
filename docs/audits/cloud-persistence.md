@@ -8,15 +8,18 @@ concurrency and delete protection. The Cloud Run service account
 `appeal-backend@onyx-yeti-506606-i9.iam.gserviceaccount.com` has only the
 `roles/datastore.user` project binding needed by the adapter.
 
-The Cloud Run service is revision `appeal-backend-00016-p7s`, serving 100% of
+The Cloud Run service is revision `appeal-backend-00017-fxp`, serving 100% of
 traffic. Its deployment configuration selects Firestore explicitly through
 `APPEAL_STORAGE=firestore`. The adapter stores the immutable case state
 machine, hashes, evidence references, and bounded metadata under the
 tenant-scoped path `appeal_tenants/{tenant_id}/cases/{case_id}`. The same case
 path now contains a reference-only workflow session under
 `workflow_sessions/current` and a hash-chained receipt ledger under
-`receipt_ledger/current`. Neither adapter stores denial prose, chart content,
-model responses, claim prose, or draft prose.
+`receipt_ledger/current`. Agent Runtime invocation claims and aggregate query
+results are stored under
+`agent_runtime_invocations/{event_id}` with a lease-based idempotency gate.
+Neither adapter stores denial prose, chart content, model responses, claim
+prose, or draft prose.
 
 The adapter uses Firestore's supported transactional decorator for read-then-
 write operations. A current fingerprint is required for updates, and a
@@ -52,8 +55,9 @@ The Deadline Sentinel now runs through the separately audited hourly
 Scheduler path in [`deadline-sentinel.md`](deadline-sentinel.md).
 
 This is not yet a complete Appeal service. The durable workflow-session,
-receipt, and Pub/Sub boundaries are implemented, but the endpoint is
-unauthenticated and synthetic-only, managed agent-platform services are not
-deployed, and no real case data was uploaded. The persisted session is
-reference-only by design: original denial and chart content are not recovered
-from Firestore.
+receipt, Pub/Sub, and controlled synthetic Agent Runtime subscriber boundaries
+are implemented, but the endpoint is unauthenticated and synthetic-only, the
+broader workflow remains in-process, and no real case data was uploaded. The
+persisted session and invocation records are reference-only by design:
+original denial, chart, and model response content are not recovered from
+Firestore.

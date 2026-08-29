@@ -16,7 +16,7 @@ complete.
   `src/appeal_agents/adk_workflow.py`.
 - A synthetic-only Cloud Run service is deployed in project
   `onyx-yeti-506606-i9`, region `europe-west2`, revision
-  `appeal-backend-00016-p7s`. Its health endpoint, Firestore-backed state,
+  `appeal-backend-00017-fxp`. Its health endpoint, Firestore-backed state,
   managed Model Armor -> Gemma boundary, and synthetic case lifecycle were
   verified; the aggregate record is
   [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json).
@@ -28,15 +28,25 @@ complete.
   Stage B exit is recorded in
   [`evidence/adk-stage-b-case-exit.json`](../evidence/adk-stage-b-case-exit.json).
   This proves the ADK/Gemini provider path and multimodal input path for one
-  synthetic case; the Cloud Run service is still a deterministic facade, and
-  managed Agent Runtime execution is not yet deployed.
-- Agent Runtime, Agent Registry, Agent Identity, managed Memory Bank, Agent
-  Gateway, Agent Policies, Firebase Auth, and managed Cloud
-  Observability are not yet deployed from this repository. Native Firestore
-  case state, reference-only workflow-session persistence, hash-chained
-  receipt persistence, and the managed Model Armor -> Gemma boundary are
-  deployed for the Cloud Run service. The managed Pub/Sub topic and
-  authenticated push subscription are also deployed; the aggregate proof is in
+  synthetic case; the Cloud Run service remains a deterministic facade. The
+  seven-role graph is now also deployed to managed Agent Runtime with Agent
+  Registry and Agent Identity metadata. The aggregate runtime record is
+  [`evidence/agent-runtime-deployment.json`](../evidence/agent-runtime-deployment.json)
+  and the audit is in [`docs/audits/agent-runtime.md`](audits/agent-runtime.md).
+- Managed Agent Runtime session creation and a reference-only synthetic
+  Memory Bank write succeeded. Memory Bank readback stopped at local SDK
+  parameter validation before a service read, so retrieval remains
+  unverified. Telemetry was requested and the default trace scope exists, but
+  direct trace export remains unverified. Agent Gateway, Agent Policies,
+  Firebase Auth, and broader subscriber-driven Agent Runtime workflow
+  execution are not yet deployed. A controlled synthetic subscriber checkpoint
+  is implemented and verified on the current revision; its aggregate record is
+  [`evidence/agent-runtime-subscriber.json`](../evidence/agent-runtime-subscriber.json).
+  Native Firestore case state, reference-only workflow-session persistence,
+  hash-chained receipt persistence, and the managed Model Armor -> Gemma
+  boundary are deployed for the Cloud Run service. The managed
+  Pub/Sub topic and authenticated push subscription are also deployed; the
+  aggregate proof is in
   [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json)
   and the audit is in [`docs/audits/cloud-persistence.md`](audits/cloud-persistence.md).
   The hosted security integration audit is in
@@ -63,17 +73,21 @@ complete.
 
 ## Operational features
 
-- The repository does not yet provide a web console, Firebase authentication,
-  or managed Memory Bank. Cloud Scheduler now invokes the
-  protected Deadline Sentinel route hourly; Cloud Run case state, safe
-  references, reference-only workflow sessions, and hash-chained receipts are
-  persisted in Firestore, and reference-only workflow events publish through
-  the managed Pub/Sub topic. Subscriber-driven agent execution is not yet
-  implemented. The endpoint is synthetic-only and intentionally not a
+- The repository does not yet provide a web console or Firebase
+  authentication. Cloud Scheduler now invokes the protected Deadline
+  Sentinel route hourly; Cloud Run case state, safe references,
+  reference-only workflow sessions, and hash-chained receipts are persisted in
+  Firestore, and reference-only workflow events publish through the managed
+  Pub/Sub topic. The managed Agent Runtime has a separately verified
+  reference-only session and Memory Bank write, and one allowlisted synthetic
+  Pub/Sub checkpoint invokes it with Firestore idempotency. This is not a
+  complete asynchronous Appeal workflow; Memory Bank retrieval remains
+  unverified. The endpoint is synthetic-only and intentionally not a
   production deployment.
 - The local event spine records and deduplicates workflow events, but the
-  deterministic workflow still invokes role adapters in-process; subscriber-
-  driven agent execution is not yet implemented.
+  deterministic workflow still invokes role adapters in-process. The managed
+  subscriber adapter is limited to one synthetic `intake/clear` checkpoint and
+  does not yet replace the in-process workflow.
 - `LocalAppealService` is an in-process case-board facade for testing the
   lifecycle; it is not an authenticated network API.
 - `scripts/run_local_api.py` exposes that facade on loopback for local

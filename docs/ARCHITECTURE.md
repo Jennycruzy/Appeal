@@ -2,23 +2,27 @@
 
 The repository currently executes the local deterministic path and exposes the
 same API facade through a synthetic-only Cloud Run deployment with Firestore
-case metadata persistence. A synthetic
-seven-agent ADK/Gemini smoke, a multimodal ADK case exit, and separate managed
-Model Armor and serverless Gemma MaaS measurements are recorded as provider
-probes; Agent Runtime, the remaining persistent workflow services, the default
-security boundary, and the external payer remain future adapters and are
-marked as such below.
+case metadata persistence. A synthetic seven-agent ADK/Gemini smoke, a
+multimodal ADK case exit, and the hosted Model Armor -> Gemma boundary are
+recorded. The same seven-role ADK graph is also deployed to managed Agent
+Runtime with Agent Registry and Agent Identity metadata, a managed session,
+and an initial reference-only Memory Bank write. Gateway, Policies, verified
+Memory Bank retrieval, managed trace export, the external payer, and the
+hosted console remain future integrations.
 
 The local executor runs the role adapters in deterministic graph order and
-publishes reference-only event records through `LocalEventSpine`. Subscriber-
-driven execution on Pub/Sub is a managed-service step, not a claim of the
-current local implementation.
+publishes reference-only event records through `LocalEventSpine`. The hosted
+boundary persists and publishes the same reference-only events through
+managed Pub/Sub; its subscriber currently validates, records, and
+acknowledges deliveries and invokes the managed Agent Runtime for one
+allowlisted synthetic checkpoint. Broader subscriber-driven workflow
+execution remains open.
 
 ```mermaid
 flowchart LR
     D[Denial PDF or scan] --> A[Zone A: Intake]
     A --> MA[Model Armor + Gemma MaaS tripwire\nSeparate provider probes; not default boundary]
-    MA -->|clear| E[Reference-only event spine\nlocal adapter / future Pub/Sub]
+    MA -->|clear| E[Reference-only event spine\nlocal adapter / managed Pub/Sub]
     MA -->|blocked| Q[QUARANTINED\nhuman release required]
 
     E --> DP[Denial Parser]
@@ -67,12 +71,12 @@ flowchart LR
 
 | Boundary | Current local implementation | Future managed target |
 |---|---|---|
-| Agent graph | Deterministic seven-role graph + synthetic ADK smoke | ADK 2.x workflow on Agent Runtime |
+| Agent graph | Deterministic seven-role graph + synthetic ADK smoke + managed Agent Runtime deployment + one controlled synthetic subscriber checkpoint | Broader subscriber-driven ADK execution on Agent Runtime |
 | HTTP backend | Synthetic deterministic facade on Cloud Run with Firestore case metadata | Authenticated case API with managed workflow services |
 | Case state | Immutable state machine + local fallback or Firestore adapter | Durable workflow sessions and IAM conditions |
-| Event delivery | `LocalEventSpine` | Pub/Sub topics and idempotent subscribers |
-| Memory | `ScopedMemoryBank` | Per-case Memory Bank revisions |
+| Event delivery | `LocalEventSpine` plus Firestore-registered managed Pub/Sub push and a Firestore-idempotent synthetic Agent Runtime subscriber | Broader managed subscriber workflow |
+| Memory | `ScopedMemoryBank` plus initial managed Memory Bank write | Verified per-case Memory Bank revisions and retrieval |
 | Payer | `PayerAdjudicator` with a private criterion copy | Separate Cloud Run service/account |
-| Security | Local fallback + managed Model Armor and Gemma MaaS probes | Model Armor and Gemma in series at the workflow boundary |
+| Security | Local fallback + hosted Model Armor and Gemma in series | Agent Gateway and Agent Policies around the managed path |
 | Human action | Local `approve()` resume step | Firebase-authenticated console co-signature |
 | External action | Local receipt-only mutation representation | Deterministic payer submission API |

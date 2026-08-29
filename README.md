@@ -123,11 +123,12 @@ and its decision input stays outside the repository.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00016-p7s`, with 100% traffic on that revision. The verified
+`appeal-backend-00017-fxp`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. Its `/api/healthz` endpoint
 returned `status: ok` with `storage: firestore`, `event_spine: pubsub_firestore`,
-and `security: managed_model_armor_gemma`. A fresh synthetic case passed the
+`security: managed_model_armor_gemma`, and
+`agent_runtime: managed_subscriber_synthetic_only`. A fresh synthetic case passed the
 managed Model Armor -> Gemma boundary on inbound, egress, and memory surfaces,
 then completed clinician approval, one submission mutation, and payer
 adjudication to `CLOSED_WON`. A synthetic injection was blocked at inbound
@@ -150,8 +151,15 @@ ledger. A synthetic case created on revision `00012`, approved after revision
 the final state was `CLOSED_WON` with one external mutation. It proves the
 Google Cloud backend deployment, restart-safe workflow boundary, Firestore
 write path, hosted Model Armor/Gemma boundary, and managed Pub/Sub event
-delivery. It does not claim that the managed Agent Runtime or Firebase Auth is
-deployed.
+delivery. A separate managed Agent Runtime deployment now hosts the same
+seven-role ADK graph with Agent Identity and Agent Registry metadata; its
+synthetic query, managed-session creation, and reference-only Memory Bank
+write are recorded separately. The current revision also invokes that managed
+graph once for an allowlisted synthetic `intake/clear` checkpoint, with
+Firestore idempotency and aggregate-only query evidence; the checkpoint record
+is [`evidence/agent-runtime-subscriber.json`](evidence/agent-runtime-subscriber.json).
+Memory Bank readback, trace export, Gateway, Policies, broader subscriber-driven
+runtime execution, and Firebase Auth remain unverified or not deployed.
 See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
 
 The Deadline Sentinel is also scheduled on Cloud Scheduler job
@@ -174,10 +182,14 @@ tenant/case-scoped memory, an independent payer adjudicator, and a
 compensating-action journal. The same deterministic HTTP facade is deployed
 for the synthetic Cloud Run demonstration. The hosted workflow now includes
 the managed Model Armor -> Gemma boundary and a Firestore-registered Pub/Sub
-event spine, while the ADK/Gemini smoke remains separate provider evidence and
-the container is not yet a managed Agent Runtime workflow. The scoring handoff
-is deferred until this workflow is complete; completed full Appeal evaluations
-remain zero.
+event spine. The seven-role ADK graph is also deployed to managed Agent
+Runtime, with Agent Registry and Agent Identity metadata plus synthetic
+session and Memory Bank write probes. The Cloud Run facade and managed Agent
+Runtime deployment remain separate boundaries; the authenticated Pub/Sub
+subscriber now invokes the managed runtime only for one allowlisted synthetic
+checkpoint, while the broader workflow remains deterministic and in-process.
+The scoring handoff is deferred until this workflow is complete; completed
+full Appeal evaluations remain zero.
 
 Run the synthetic vertical slice with:
 
@@ -211,8 +223,9 @@ The ref-only exit artifact is
 `evidence/adk-stage-b-case-exit.json`, with the audit narrative in
 [`docs/audits/stage-b-adk-exit.md`](docs/audits/stage-b-adk-exit.md). The
 case is synthetic and the Cloud Run service remains a deterministic facade;
-this run does not claim a managed Agent Runtime deployment or a full Appeal
-evaluation.
+this particular run does not claim a full Appeal evaluation. The separate
+managed Agent Runtime deployment is recorded in
+[`docs/audits/agent-runtime.md`](docs/audits/agent-runtime.md).
 
 For local HTTP integration testing only, run:
 
