@@ -28,10 +28,25 @@ def _require(value: str, label: str) -> str:
     return value
 
 
+def _string(value: object, label: str) -> str:
+    if not isinstance(value, str):
+        raise ValueError(f"{label} must be a string")
+    return value
+
+
 def _utc(value: datetime, label: str) -> datetime:
     if value.tzinfo is None or value.utcoffset() is None:
         raise ValueError(f"{label} must be timezone-aware")
     return value.astimezone(UTC)
+
+
+def _parse_datetime(value: object, label: str) -> datetime:
+    text = _string(value, label)
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError as error:
+        raise ValueError(f"{label} must be an ISO-8601 datetime") from error
+    return _utc(parsed, label)
 
 
 def _payload(mapping: Mapping[str, EventScalar]) -> EventPayload:
@@ -143,6 +158,31 @@ class DomainEvent:
             "published_at": self.published_at.astimezone(UTC).isoformat().replace("+00:00", "Z"),
             "payload": self.payload_dict(),
         }
+
+    @classmethod
+    def from_json(cls, document: Mapping[str, object]) -> "DomainEvent":
+        payload_value = document.get("payload")
+        if not isinstance(payload_value, Mapping):
+            raise ValueError("event payload must be an object")
+        payload: dict[str, EventScalar] = {}
+        for key, value in payload_value.items():
+            if not isinstance(key, str):
+                raise ValueError("event payload keys must be strings")
+            if value is not None and not isinstance(value, (str, int, bool)):
+                raise ValueError("event payload values must be scalar metadata")
+            payload[key] = value
+        return cls(
+            event_id=_require(_string(document.get("event_id"), "event ID"), "event ID"),
+            tenant_id=_require(_string(document.get("tenant_id"), "event tenant ID"), "event tenant ID"),
+            case_id=_require(_string(document.get("case_id"), "event case ID"), "event case ID"),
+            topic=_require(_string(document.get("topic"), "event topic"), "event topic"),
+            idempotency_key=_require(
+                _string(document.get("idempotency_key"), "event idempotency key"),
+                "event idempotency key",
+            ),
+            published_at=_parse_datetime(document.get("published_at"), "event published_at"),
+            payload=_payload(payload),
+        )
 
 
 @dataclass(frozen=True)

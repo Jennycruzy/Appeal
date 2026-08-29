@@ -9,7 +9,7 @@ from collections.abc import Mapping
 from appeal_agents import AppealInput, AppealWorkflow
 from appeal_agents.demo import demo_input
 from appeal_core import Case, CaseState, CaseStateMachine, DeadlineCatalog
-from appeal_platform import LocalCaseRuntime, PayerAdjudicator, RuntimeResult, SentinelTickResult
+from appeal_platform import DomainEvent, LocalCaseRuntime, PayerAdjudicator, RuntimeResult, SentinelTickResult
 
 
 class CaseNotFound(KeyError):
@@ -112,6 +112,18 @@ class LocalAppealService:
         for key in report.updated_cases:
             self._results.pop(key, None)
         return report
+
+    def accept_event(self, event: DomainEvent) -> dict[str, object]:
+        """Accept a validated Pub/Sub event without granting it mutation rights."""
+
+        self.runtime.spine.publish(event)
+        return {
+            "status": "accepted",
+            "event_id": event.event_id,
+            "tenant_id": event.tenant_id,
+            "case_id": event.case_id,
+            "topic": event.topic,
+        }
 
     def get(self, tenant_id: str, case_id: str) -> RuntimeResult | PersistedCaseView:
         current = self._results.get((tenant_id, case_id))

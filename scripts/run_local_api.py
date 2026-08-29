@@ -17,6 +17,7 @@ from appeal_platform import (
     FirestoreCaseStore,
     FirestoreReceiptLedger,
     FirestoreWorkflowSessionStore,
+    FirestorePubSubEventSpine,
     LocalCaseRuntime,
 )
 from appeal_service import LocalAppealService, LocalHttpApi
@@ -79,19 +80,41 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
         if storage == "firestore"
         else ReceiptLedger(ledger_path)
     )
+    event_spine_name = os.getenv("APPEAL_EVENT_SPINE", "local").strip().lower()
+    event_spine = None
+    if event_spine_name == "pubsub":
+        if storage != "firestore":
+            raise ValueError("Pub/Sub event spine requires Firestore storage")
+        event_spine = FirestorePubSubEventSpine(
+            project=os.getenv("GOOGLE_CLOUD_PROJECT"),
+            topic=os.getenv("APPEAL_PUBSUB_TOPIC", "appeal-events"),
+            database=os.getenv("APPEAL_FIRESTORE_DATABASE", "(default)"),
+        )
+    elif event_spine_name != "local":
+        raise ValueError(f"unsupported APPEAL_EVENT_SPINE value: {event_spine_name!r}")
     workflow = AppealWorkflow(
         CaseStateMachine(deadlines),
         ledger=ledger,
         security=security,
     )
     return LocalHttpApi(
-        LocalAppealService(LocalCaseRuntime(workflow, store=store, session_store=session_store)),
+        LocalAppealService(
+            LocalCaseRuntime(
+                workflow,
+                store=store,
+                session_store=session_store,
+                spine=event_spine,
+            )
+        ),
         deployment=os.getenv("APPEAL_DEPLOYMENT", "local"),
         storage=storage,
         security=security_name,
+        event_spine=("pubsub_firestore" if event_spine is not None else "local_in_process"),
         scheduler_auth_required=os.getenv("APPEAL_SCHEDULER_AUTH_REQUIRED", "false").lower() == "true",
         scheduler_service_account=os.getenv("APPEAL_SCHEDULER_SERVICE_ACCOUNT"),
         scheduler_audience=os.getenv("APPEAL_SCHEDULER_AUDIENCE"),
+        pubsub_service_account=os.getenv("APPEAL_PUBSUB_PUSH_SERVICE_ACCOUNT"),
+        pubsub_audience=os.getenv("APPEAL_PUBSUB_AUDIENCE"),
     )
 
 

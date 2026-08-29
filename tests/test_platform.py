@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import base64
+import json
 import unittest
 from datetime import UTC, datetime
 from datetime import timedelta
@@ -95,6 +97,21 @@ class PlatformTests(unittest.TestCase):
                 NOW,
                 {"content": "raw denial prose"},
             )
+
+    def test_pubsub_push_parser_reconstructs_reference_only_event(self) -> None:
+        event = DomainEvent.create(
+            "tenant-a",
+            "case-a",
+            "appeal.workflow.event",
+            "case-a:event:1",
+            NOW,
+            {"agent": "intake", "status": "clear"},
+        )
+        encoded = base64.b64encode(json.dumps(event.to_json()).encode("utf-8")).decode("ascii")
+        restored = LocalHttpApi._event_from_push({"message": {"data": encoded}})
+        self.assertEqual(restored, event)
+        with self.assertRaises(ValueError):
+            LocalHttpApi._event_from_push({"message": {"data": "not-base64"}})
 
     def test_memory_is_scoped_and_inspected_before_write(self) -> None:
         memory = ScopedMemoryBank(LocalSecurityBoundary())

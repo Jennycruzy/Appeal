@@ -19,6 +19,7 @@ from .memory import (
     ScopedMemoryBank,
 )
 from .payer import PayerAdjudicator, PayerDecision, PayerDecisionStatus
+from .pubsub import FirestorePubSubEventSpine
 from .receipts import FirestoreReceiptLedger
 from .runtime import LocalCaseRuntime, RuntimeResult, SentinelTickResult
 from .sessions import (
@@ -43,6 +44,7 @@ __all__ = [
     "CaseStoreScopeError",
     "FirestoreCaseStore",
     "FirestoreReceiptLedger",
+    "FirestorePubSubEventSpine",
     "FirestoreWorkflowSessionStore",
     "ActionStatus",
     "DeliveryReceipt",
