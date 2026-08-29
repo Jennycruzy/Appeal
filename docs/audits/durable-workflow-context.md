@@ -32,13 +32,13 @@ The hosted revision-boundary smoke used synthetic case
 The aggregate count stayed at one external mutation. Local tests cover
 Firestore session round trips, restart-safe approval and adjudication,
 content-free persistence, receipt idempotency, receipt-chain verification, and
-tamper detection. The full repository check completed with 77 tests passing and
+tamper detection. The full repository check completed with 83 tests passing and
 strict mypy passing. No real case data was uploaded.
 
 This closes durable workflow context and receipt persistence for the current
 synthetic Cloud Run boundary. The managed Pub/Sub event boundary is recorded
 separately in [`pubsub-event-spine.md`](pubsub-event-spine.md). The managed
 Agent Runtime, Registry, and Identity deployment is recorded separately in
-[`agent-runtime.md`](agent-runtime.md). Managed Memory Bank readback, Gateway,
-Policies, direct Observability trace export, payer service separation, and the
-hosted console remain open work.
+[`agent-runtime.md`](agent-runtime.md). Managed Memory Bank readback and the
+current Agent Runtime trace export are verified synthetic probes. Gateway,
+Policies, payer service separation, and the hosted console remain open work.

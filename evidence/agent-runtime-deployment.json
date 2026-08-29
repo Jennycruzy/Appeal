@@ -24,8 +24,9 @@
   "managed_memory_bank_requested": true,
   "managed_memory_bank": {
     "context_spec_present": true,
-    "readback_blocked_before_service_read": true,
-    "readback_verified": false,
+    "initial_readback_blocked_before_service_read": true,
+    "readback_verified": true,
+    "retrieval_result_count": 1,
     "scope_keys": [
       "case_id"
     ],
@@ -34,13 +35,24 @@
   "managed_observability_requested": true,
   "managed_observability": {
     "telemetry_requested": true,
-    "trace_export_verified": false,
+    "trace_export_verified": true,
+    "trace_api_http_status": 200,
+    "trace_window_days": 2,
+    "trace_count_observed": 22,
+    "agent_runtime_trace_count_observed": 2,
+    "agent_runtime_trace_span_counts": [
+      4,
+      4
+    ],
+    "agent_runtime_root_span_name": "invoke_workflow appeal_agent_fleet",
+    "span_attributes_persisted": false,
     "trace_scope": "projects/onyx-yeti-506606-i9/locations/global/traceScopes/_Default"
   },
   "max_instances": 1,
   "min_instances": 0,
   "project_id": "onyx-yeti-506606-i9",
   "recorded_at": "2026-08-29T06:10:50.893663+00:00",
+  "verification_recorded_at": "2026-08-29T12:27:37.049884Z",
   "resource_limits": {
     "cpu": "1",
     "memory": "2Gi"

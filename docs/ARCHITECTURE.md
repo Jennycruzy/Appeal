@@ -6,9 +6,9 @@ case metadata persistence. A synthetic seven-agent ADK/Gemini smoke, a
 multimodal ADK case exit, and the hosted Model Armor -> Gemma boundary are
 recorded. The same seven-role ADK graph is also deployed to managed Agent
 Runtime with Agent Registry and Agent Identity metadata, a managed session,
-and an initial reference-only Memory Bank write. Gateway, Policies, verified
-Memory Bank retrieval, managed trace export, the external payer, and the
-hosted console remain future integrations.
+an initial reference-only Memory Bank write, and verified Memory Bank and
+Cloud Trace readback. Gateway, Policies, the external payer, and the hosted
+console remain future integrations.
 
 The local executor runs the role adapters in deterministic graph order and
 publishes reference-only event records through `LocalEventSpine`. The hosted
@@ -75,7 +75,7 @@ flowchart LR
 | HTTP backend | Synthetic deterministic facade on Cloud Run with Firestore case metadata | Authenticated case API with managed workflow services |
 | Case state | Immutable state machine + local fallback or Firestore adapter | Durable workflow sessions and IAM conditions |
 | Event delivery | `LocalEventSpine` plus Firestore-registered managed Pub/Sub push and a Firestore-idempotent synthetic Agent Runtime subscriber | Broader managed subscriber workflow |
-| Memory | `ScopedMemoryBank` plus initial managed Memory Bank write | Verified per-case Memory Bank revisions and retrieval |
+| Memory | `ScopedMemoryBank` plus managed Memory Bank write and verified retrieval | Verified per-case Memory Bank revisions and broader case workflow |
 | Payer | `PayerAdjudicator` with a private criterion copy | Separate Cloud Run service/account |
 | Security | Local fallback + hosted Model Armor and Gemma in series | Agent Gateway and Agent Policies around the managed path |
 | Human action | Local `approve()` resume step | Firebase-authenticated console co-signature |

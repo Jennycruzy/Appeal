@@ -107,7 +107,8 @@ case exit using an image-only PDF is recorded in
 The seven-role ADK graph is also deployed as a managed Agent Runtime
 application in `europe-west2`, with Agent Registry and Agent Identity metadata.
 Managed session creation and a reference-only synthetic Memory Bank write
-succeeded; Memory Bank readback and direct trace export remain unverified. The
+succeeded. Direct Memory Bank retrieval and the current Agent Runtime trace
+export are now verified synthetic probes. The
 deployment is recorded in
 [`evidence/agent-runtime-deployment.json`](../evidence/agent-runtime-deployment.json)
 and [`docs/audits/agent-runtime.md`](audits/agent-runtime.md). Cloud Run and
@@ -235,8 +236,9 @@ registered as `Appeal Agent Fleet` with Agent Registry and Agent Identity
 metadata. The aggregate runtime record is
 `evidence/agent-runtime-deployment.json`, with the narrative audit in
 `docs/audits/agent-runtime.md`. Managed session creation and a
-reference-only synthetic Memory Bank write succeeded; Memory Bank readback and
-direct trace export remain unverified. The current revision also invokes the
+reference-only synthetic Memory Bank write succeeded. Direct Memory Bank
+retrieval and the current Agent Runtime trace export are verified synthetic
+probes. The current revision also invokes the
 managed graph for one allowlisted synthetic `intake/clear` checkpoint, with a
 Firestore invocation record completed at attempt 1 and aggregate-only query
 evidence. The record is in
@@ -647,30 +649,29 @@ server survives restart.
 The source-acquisition track is closed. Managed Model Armor/Gemma, Firestore
 persistence, Pub/Sub delivery, the seven-role managed Agent Runtime graph,
 Agent Registry, Agent Identity, managed session creation, the initial
-reference-only Memory Bank write, and one controlled synthetic Pub/Sub-to-Agent
-Runtime invocation are recorded as complete synthetic probes. The remaining
-work is product construction and verification, in this order:
+reference-only Memory Bank write and verified retrieval, the current Agent
+Runtime trace export, and one controlled synthetic Pub/Sub-to-Agent Runtime
+invocation are recorded as complete synthetic probes. The remaining work is
+product construction and verification, in this order:
 
-1. Verify managed Memory Bank retrieval and direct Cloud Observability trace
-   export. Keep all receipts content-free and reference-only.
-2. Configure Agent Gateway and Agent Policies in an allowlisted, dry-run or
+1. Configure Agent Gateway and Agent Policies in an allowlisted, dry-run or
    otherwise reversible manner before any enforcing binding.
-3. Separate the payer adjudicator into its own Cloud Run service and service
+2. Separate the payer adjudicator into its own Cloud Run service and service
    account, validate the PAS behavior at the level actually implemented, and
    retain the deterministic Veto Combinator and single-mutation gate.
-4. Build the hosted console: Firebase Auth, live statutory clock, contradiction
+3. Build the hosted console: Firebase Auth, live statutory clock, contradiction
    view, clinician co-signature, case timeline, reasoning chain, quarantine
    display, and the asynchronous escalation path.
-5. Create traceable criterion trees from the already-selected permitted payer
+4. Create traceable criterion trees from the already-selected permitted payer
    policy corpus, hand-validate a sample, and record the agreement rate. This
    does not authorize a new policy-source investigation.
-6. Only after the workflow is complete, resume the uncommitted local scoring
+5. Only after the workflow is complete, resume the uncommitted local scoring
    handoff in `docs/SCORING_HANDOFF_LOCAL.md`: deterministic tree grading,
    random-criterion and generic-template controls, policy/evidence ablations,
    model-versus-tree adjudication, failure reporting, and the named-catch
    human stop. Until then, full Appeal evaluations remain zero and no scoring
    artifact should be committed.
-7. Finish the demo tenant, architecture/judging documentation, video, and
+6. Finish the demo tenant, architecture/judging documentation, video, and
    submission checks from the continuation specification. Every claimed
    number must point to committed evidence, and every missing capability must
    remain in `docs/LIMITATIONS.md`.
@@ -723,9 +724,9 @@ deployment are recorded. Cloud Run remains revision
 `appeal-backend-00017-fxp`; Agent Runtime resource
 `projects/835653516606/locations/europe-west2/reasoningEngines/936968624818618368`
 is the separate managed deployment. The controlled synthetic subscriber
-checkpoint is complete; the next continuation is managed Memory Bank and
-Observability verification, followed by the remaining governance work. Start
-with:
+checkpoint is complete; Memory Bank retrieval and the current Agent Runtime
+trace export are also verified. The next continuation is Gateway and Policies,
+followed by the remaining governance work. Start with:
 
 ```text
 cd /Users/user/appeal
@@ -754,8 +755,8 @@ The clean and injection smoke results are recorded in
 `docs/audits/agent-runtime.md`. The aggregate Cloud Run record is in
 `evidence/cloud-run-deployment.json`.
 
-Continue with managed Memory Bank/Observability verification, Gateway and
-Policies, the separate payer service, and the hosted console. The ordered backlog is in
+Continue with Gateway and Policies, the separate payer service, and the hosted
+console. The ordered backlog is in
 `## Still outstanding` above. Keep all inputs synthetic and aggregate-only.
 
 Do not resume the CMS, NY, Washington, DMHC, Oregon, or full-case acquisition

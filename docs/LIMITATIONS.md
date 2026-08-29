@@ -34,10 +34,10 @@ complete.
   [`evidence/agent-runtime-deployment.json`](../evidence/agent-runtime-deployment.json)
   and the audit is in [`docs/audits/agent-runtime.md`](audits/agent-runtime.md).
 - Managed Agent Runtime session creation and a reference-only synthetic
-  Memory Bank write succeeded. Memory Bank readback stopped at local SDK
-  parameter validation before a service read, so retrieval remains
-  unverified. Telemetry was requested and the default trace scope exists, but
-  direct trace export remains unverified. Agent Gateway, Agent Policies,
+  Memory Bank write succeeded. Direct retrieval returned one memory in the
+  synthetic `case_id` scope without persisting its fact content in the report.
+  Telemetry was requested and Cloud Trace returned two matching Agent Runtime
+  traces in the two-day verification window. Agent Gateway, Agent Policies,
   Firebase Auth, and broader subscriber-driven Agent Runtime workflow
   execution are not yet deployed. A controlled synthetic subscriber checkpoint
   is implemented and verified on the current revision; its aggregate record is
@@ -80,10 +80,10 @@ complete.
   Firestore, and reference-only workflow events publish through the managed
   Pub/Sub topic. The managed Agent Runtime has a separately verified
   reference-only session and Memory Bank write, and one allowlisted synthetic
-  Pub/Sub checkpoint invokes it with Firestore idempotency. This is not a
-  complete asynchronous Appeal workflow; Memory Bank retrieval remains
-  unverified. The endpoint is synthetic-only and intentionally not a
-  production deployment.
+  Pub/Sub checkpoint invokes it with Firestore idempotency. Memory Bank
+  retrieval and the corresponding Cloud Trace export are verified only for
+  synthetic probes; this is not a complete asynchronous Appeal workflow. The
+  endpoint is synthetic-only and intentionally not a production deployment.
 - The local event spine records and deduplicates workflow events, but the
   deterministic workflow still invokes role adapters in-process. The managed
   subscriber adapter is limited to one synthetic `intake/clear` checkpoint and

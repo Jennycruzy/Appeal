@@ -48,7 +48,8 @@ authority. The aggregate result is in
 Non-trigger checkpoints are acknowledged without invoking the managed runtime,
 and the synthetic tenant/case prefixes remain enforced. The managed Agent
 Runtime, Registry, and Identity deployment is recorded separately in
-[`agent-runtime.md`](agent-runtime.md). Agent Gateway, Agent Policies, verified
-Memory Bank retrieval, direct Observability trace export, broader subscriber
-workflow execution, and the separate payer service remain open integrations.
+[`agent-runtime.md`](agent-runtime.md). Agent Gateway, Agent Policies, broader
+subscriber workflow execution, and the separate payer service remain open
+integrations. Memory Bank retrieval and the current Agent Runtime trace export
+are verified synthetic probes, not a complete Appeal observability deployment.
 No real case data was uploaded.

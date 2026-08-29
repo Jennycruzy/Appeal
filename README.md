@@ -158,8 +158,10 @@ write are recorded separately. The current revision also invokes that managed
 graph once for an allowlisted synthetic `intake/clear` checkpoint, with
 Firestore idempotency and aggregate-only query evidence; the checkpoint record
 is [`evidence/agent-runtime-subscriber.json`](evidence/agent-runtime-subscriber.json).
-Memory Bank readback, trace export, Gateway, Policies, broader subscriber-driven
-runtime execution, and Firebase Auth remain unverified or not deployed.
+The existing synthetic Memory Bank record now has a verified readback, and
+Cloud Trace contains two matching Agent Runtime traces in the verification
+window. Gateway, Policies, broader subscriber-driven runtime execution, and
+Firebase Auth remain unverified or not deployed.
 See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
 
 The Deadline Sentinel is also scheduled on Cloud Scheduler job

@@ -26,10 +26,14 @@ written to the repository. The registry and runtime metadata are recorded in
 
 Managed session creation succeeded for the reference-only synthetic user
 `synthetic-agent-runtime-smoke`. A reference-only synthetic memory write also
-succeeded with a `case_id` scope. The SDK readback attempt stopped at local
-parameter validation before a service read, so Memory Bank retrieval remains
-unverified. Telemetry was requested and the project's default global trace
-scope exists, but direct trace export remains unverified.
+succeeded with a `case_id` scope. Direct Memory Bank retrieval then returned
+one matching memory in that scope; only the result count and resource metadata
+were retained. Telemetry was requested and the project's default global trace
+scope exists. A two-day Cloud Trace complete-view query returned 22 traces,
+including two Agent Runtime traces with four spans each and root span
+`invoke_workflow appeal_agent_fleet`. No span attributes or response content
+were persisted. The aggregate results are recorded in
+[`evidence/agent-runtime-deployment.json`](../../evidence/agent-runtime-deployment.json).
 
 The controlled synthetic Pub/Sub subscriber now invokes this resource for one
 allowlisted `intake/clear` checkpoint. Firestore claims the stable event ID,
