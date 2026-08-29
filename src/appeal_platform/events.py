@@ -235,6 +235,11 @@ class LocalEventSpine:
         self._event_by_scope_key[scope_key] = event.event_id
         return event
 
+    def accept(self, event: DomainEvent) -> DomainEvent:
+        """Accept an already-delivered event without adding a new emission."""
+
+        return self.publish(event)
+
     def deliver(self, event_id: str | None = None, *, at: datetime | None = None) -> tuple[DeliveryReceipt, ...]:
         delivered_at = _utc(at or datetime.now(UTC), "delivery time")
         if event_id is None:

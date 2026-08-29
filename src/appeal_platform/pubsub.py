@@ -208,3 +208,20 @@ class FirestorePubSubEventSpine(LocalEventSpine):
         future.result(timeout=self._publish_timeout)
         self._mark_published(event)
         return super().publish(event)
+
+    def accept(self, event: DomainEvent) -> DomainEvent:
+        """Record a Pub/Sub delivery without publishing it back to the topic."""
+
+        existing_local = next((item for item in self.events() if item.event_id == event.event_id), None)
+        if existing_local is not None:
+            if existing_local != event:
+                raise EventIdempotencyConflict("event ID was reused with different event data")
+            return existing_local
+        ref = self._event_ref(event)
+        snapshot = ref.get()
+        if snapshot.exists:
+            document = snapshot.to_dict()
+            if document is None or document.get("event") != event.to_json():
+                raise EventIdempotencyConflict("event ID was reused with different event data")
+        ref.set(self._document(event, "published"))
+        return super().publish(event)

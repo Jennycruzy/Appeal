@@ -116,7 +116,7 @@ class LocalAppealService:
     def accept_event(self, event: DomainEvent) -> dict[str, object]:
         """Accept a validated Pub/Sub event without granting it mutation rights."""
 
-        self.runtime.spine.publish(event)
+        self.runtime.spine.accept(event)
         return {
             "status": "accepted",
             "event_id": event.event_id,

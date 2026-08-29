@@ -20,10 +20,12 @@ from appeal_agents import AppealWorkflow
 from appeal_platform import (
     CaseStoreConflict,
     FirestoreCaseStore,
+    FirestorePubSubEventSpine,
     FirestoreReceiptLedger,
     FirestoreWorkflowSessionStore,
     LocalCaseRuntime,
 )
+from appeal_platform.events import DomainEvent
 from appeal_service import LocalAppealService
 
 
@@ -110,6 +112,26 @@ class FakeFirestoreClient:
         return FakeTransaction(self)
 
 
+class FakePublishFuture:
+    def __init__(self, message_id: str) -> None:
+        self.message_id = message_id
+
+    def result(self, timeout: float | None = None) -> str:
+        return self.message_id
+
+
+class FakePublisher:
+    def __init__(self) -> None:
+        self.messages: list[tuple[str, bytes, dict[str, str]]] = []
+
+    def topic_path(self, project: str, topic: str) -> str:
+        return f"projects/{project}/topics/{topic}"
+
+    def publish(self, topic: str, data: bytes, **attributes: str) -> FakePublishFuture:
+        self.messages.append((topic, data, attributes))
+        return FakePublishFuture(f"message-{len(self.messages)}")
+
+
 ROOT = Path(__file__).resolve().parents[1]
 MACHINE = CaseStateMachine(DeadlineCatalog.from_path(ROOT / "config" / "deadlines.yaml"))
 TIME = datetime(2026, 8, 28, 12, 0, tzinfo=UTC)
@@ -122,6 +144,52 @@ def make_case(case_id: str) -> Case:
 
 
 class FirestoreStoreTests(unittest.TestCase):
+    def test_pubsub_event_spine_is_reference_only_and_idempotent(self) -> None:
+        client = FakeFirestoreClient()
+        publisher = FakePublisher()
+        spine = FirestorePubSubEventSpine(
+            project="project-a",
+            topic="appeal-events",
+            client=client,
+            publisher=publisher,
+        )
+        event = DomainEvent.create(
+            "tenant-a",
+            "case-a",
+            "appeal.workflow.event",
+            "case-a:event:1",
+            TIME,
+            {"agent": "intake", "status": "clear"},
+        )
+        self.assertEqual(spine.publish(event), event)
+        self.assertEqual(spine.publish(DomainEvent.from_json(event.to_json())), event)
+        self.assertEqual(len(publisher.messages), 1)
+        message_topic, message_body, attributes = publisher.messages[0]
+        self.assertEqual(message_topic, "projects/project-a/topics/appeal-events")
+        self.assertEqual(attributes["event_id"], event.event_id)
+        self.assertNotIn("content", message_body.decode("utf-8"))
+        self.assertNotIn("chart", message_body.decode("utf-8"))
+
+        second_spine = FirestorePubSubEventSpine(
+            project="project-a",
+            topic="appeal-events",
+            client=client,
+            publisher=publisher,
+        )
+        second_spine.publish(event)
+        second_spine.accept(event)
+        self.assertEqual(len(publisher.messages), 1)
+
+        with self.assertRaises(ValueError):
+            DomainEvent.create(
+                "tenant-a",
+                "case-a",
+                "appeal.workflow.event",
+                "case-a:event:2",
+                TIME,
+                {"content": "raw denial prose"},
+            )
+
     def test_firestore_receipts_are_idempotent_hash_chained_and_content_free(self) -> None:
         client = FakeFirestoreClient()
         ledger = FirestoreReceiptLedger(client=client)
