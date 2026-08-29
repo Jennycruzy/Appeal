@@ -6,7 +6,7 @@
   "project_display_name": "Appeal",
   "region": "europe-west2",
   "service": "appeal-backend",
-  "revision": "appeal-backend-00011-b8j",
+  "revision": "appeal-backend-00014-95f",
   "traffic_percent": 100,
   "service_url": "https://appeal-backend-hhcjpefk2q-nw.a.run.app",
   "regional_service_url": "https://appeal-backend-835653516606.europe-west2.run.app",
@@ -77,8 +77,23 @@
     "fixture_content_persisted": false
   },
   "state_store": "firestore_case_metadata",
-  "workflow_context_store": "process_local_in_memory",
-  "receipt_ledger": "container_local_jsonl",
+  "workflow_context_store": "firestore_reference_only_workflow_session",
+  "receipt_ledger": "firestore_hash_chained_per_tenant_case",
+  "durable_workflow_smoke": {
+    "case_id": "case-demo-durable-20260829",
+    "tenant_id": "tenant-demo-durable",
+    "created_revision": "appeal-backend-00012-rh7",
+    "approval_revision": "appeal-backend-00013-qzz",
+    "adjudication_revision": "appeal-backend-00014-95f",
+    "case_recovered_after_revision_replacement": true,
+    "clinician_approved": true,
+    "payer_adjudicated": true,
+    "final_case_state": "CLOSED_WON",
+    "external_mutation_count": 1,
+    "session_persistence_policy": "reference_only_no_denial_chart_model_or_draft_prose",
+    "receipt_persistence": "firestore_hash_chain_with_transactional_idempotency",
+    "fixture_content_persisted": false
+  },
   "real_case_data_uploaded": false,
-  "source_commit": "73fd446"
+  "source_commit": "e34d1f4"
 }

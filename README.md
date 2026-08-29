@@ -123,7 +123,7 @@ and its decision input stays outside the repository.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00011-b8j`, with 100% traffic on that revision. The verified
+`appeal-backend-00014-95f`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. Its `/api/healthz` endpoint
 returned `status: ok` with `storage: firestore` and
@@ -141,12 +141,14 @@ The managed-security audit is
 [`docs/audits/managed-security-cloud-run.md`](docs/audits/managed-security-cloud-run.md).
 
 This is a synthetic-only, unauthenticated demonstration endpoint with
-no real case data uploaded. Firestore persists the immutable case state and
-safe references, while workflow context and the receipt ledger remain local to
-the container; a restart can rehydrate board metadata but cannot resume an
-approval or adjudication yet. It proves the Google Cloud backend deployment
-and Firestore write path, plus the hosted Model Armor/Gemma boundary. It does
-not claim that the managed Agent Runtime, Pub/Sub, or Firebase Auth is deployed.
+no real case data uploaded. Firestore persists the immutable case state, safe
+references, a reference-only workflow session, and a hash-chained receipt
+ledger. A synthetic case created on revision `00012`, approved after revision
+`00013` replaced it, and adjudicated after revision `00014` replaced it again;
+the final state was `CLOSED_WON` with one external mutation. It proves the
+Google Cloud backend deployment, restart-safe workflow boundary, Firestore
+write path, and hosted Model Armor/Gemma boundary. It does not claim that the
+managed Agent Runtime, Pub/Sub, or Firebase Auth is deployed.
 See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
 
 The Deadline Sentinel is also scheduled on Cloud Scheduler job
@@ -191,8 +193,8 @@ make run-local-runtime
 
 The service lifecycle is also covered by tests as separate open, clinician
 approval, and payer-determination operations. The deployed Cloud Run demo uses
-Firestore for case metadata and state; workflow context is still process-local
-and remains an explicit limitation.
+Firestore for case metadata, reference-only workflow sessions, and receipts;
+the service remains synthetic-only and unauthenticated.
 
 Run the synthetic Stage B case through the real ADK `Runner` and Gemini vision
 path with:
@@ -247,8 +249,9 @@ temporary GPU deployment path was rejected by zero regional
 quota before creating an endpoint; the measurement therefore uses Google's
 serverless Gemma MaaS route and leaves no GPU resource to delete.
 
-The default metadata report and receipt ledger are written outside the
-repository under `../Downloads/`. Add `--approve` to simulate the clinician
+The default local metadata report and JSONL receipt ledger are written outside
+the repository under `../Downloads/`. The Cloud Run deployment uses its
+Firestore receipt adapter instead. Add `--approve` to simulate the clinician
 co-signature, `--inject` to exercise quarantine, or `--missing-evidence` to
 exercise fail-closed abstention by invoking
 `scripts/run_local_workflow.py` directly.

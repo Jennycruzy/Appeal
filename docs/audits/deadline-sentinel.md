@@ -29,7 +29,9 @@ The seed metadata is in
 [`evidence/sentinel-seed.json`](../../evidence/sentinel-seed.json) and
 [`evidence/sentinel-seed-002.json`](../../evidence/sentinel-seed-002.json).
 
-The receipt ledger for this container remains local, so the next audit item is
-durable receipt/event delivery through the managed event spine. This audit
+The Cloud Run service now persists its reference-only workflow sessions and
+hash-chained receipts in Firestore; the separate durable-boundary audit is
+[`durable-workflow-context.md`](durable-workflow-context.md). The next audit
+item is durable event delivery through the managed Pub/Sub spine. This audit
 does not claim Agent Runtime, Pub/Sub, Memory Bank, Firebase Auth, or a real
 case workflow deployment.
