@@ -57,14 +57,20 @@ class LocalHttpApi:
             if method == "POST" and segments == ("api", "demo", "cases"):
                 case_id = payload.get("case_id") if payload is not None else None
                 tenant_id = payload.get("tenant_id") if payload is not None else None
+                injection = payload.get("injection", False) if payload is not None else False
+                missing_evidence = payload.get("missing_evidence", False) if payload is not None else False
                 if case_id is not None and not isinstance(case_id, str):
                     raise ValueError("demo case_id must be a string")
                 if tenant_id is not None and not isinstance(tenant_id, str):
                     raise ValueError("demo tenant_id must be a string")
+                if not isinstance(injection, bool) or not isinstance(missing_evidence, bool):
+                    raise ValueError("demo safety flags must be boolean")
                 return 201, self.service.open_demo_case(
                     at=now,
                     case_id=case_id or "case-demo-001",
                     tenant_id=tenant_id or "tenant-demo",
+                    injection=injection,
+                    missing_evidence=missing_evidence,
                 ).to_public_json()
             if method == "POST" and segments == ("api", "sentinel", "tick"):
                 if not self._scheduler_authorized(headers or {}):

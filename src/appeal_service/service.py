@@ -81,8 +81,18 @@ class LocalAppealService:
         at: datetime | None = None,
         case_id: str = "case-demo-001",
         tenant_id: str = "tenant-demo",
+        injection: bool = False,
+        missing_evidence: bool = False,
     ) -> RuntimeResult:
-        return self.open_case(demo_input(case_id=case_id, tenant_id=tenant_id), at=at)
+        return self.open_case(
+            demo_input(
+                case_id=case_id,
+                tenant_id=tenant_id,
+                injection=injection,
+                missing_evidence=missing_evidence,
+            ),
+            at=at,
+        )
 
     def approve(self, tenant_id: str, case_id: str, *, at: datetime | None = None) -> RuntimeResult:
         current = self._require_live(tenant_id, case_id)
