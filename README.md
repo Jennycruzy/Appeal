@@ -123,26 +123,30 @@ and its decision input stays outside the repository.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00008-dkd`, with 100% traffic on that revision. The verified
+`appeal-backend-00011-b8j`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. Its `/api/healthz` endpoint
-returned `status: ok` with `storage: firestore`, and a synthetic case
-completed creation, clinician approval, one submission mutation, and payer
-adjudication to `CLOSED_WON`. The board then returned the persisted synthetic
-case from Firestore.
+returned `status: ok` with `storage: firestore` and
+`security: managed_model_armor_gemma`. A fresh synthetic case passed the
+managed Model Armor -> Gemma boundary on inbound, egress, and memory surfaces,
+then completed clinician approval, one submission mutation, and payer
+adjudication to `CLOSED_WON`. A synthetic injection was blocked at inbound
+and entered `QUARANTINED` before denial parsing, with zero external
+mutations. The board then returned persisted synthetic cases from Firestore.
 The aggregate deployment record is
 [`evidence/cloud-run-deployment.json`](evidence/cloud-run-deployment.json),
 with the persistence audit in
 [`docs/audits/cloud-persistence.md`](docs/audits/cloud-persistence.md).
+The managed-security audit is
+[`docs/audits/managed-security-cloud-run.md`](docs/audits/managed-security-cloud-run.md).
 
 This is a synthetic-only, unauthenticated demonstration endpoint with
 no real case data uploaded. Firestore persists the immutable case state and
 safe references, while workflow context and the receipt ledger remain local to
 the container; a restart can rehydrate board metadata but cannot resume an
 approval or adjudication yet. It proves the Google Cloud backend deployment
-and Firestore write path but does not claim that the managed Agent Runtime,
-Pub/Sub, Firebase Auth, or the Model Armor/Gemma boundary is wired into the
-default workflow.
+and Firestore write path, plus the hosted Model Armor/Gemma boundary. It does
+not claim that the managed Agent Runtime, Pub/Sub, or Firebase Auth is deployed.
 See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
 
 The Deadline Sentinel is also scheduled on Cloud Scheduler job
@@ -163,11 +167,11 @@ co-signature, single-mutation submission gate, statutory clock, and hash-chained
 receipts. The local platform runtime adds reference-only event delivery,
 tenant/case-scoped memory, an independent payer adjudicator, and a
 compensating-action journal. The same deterministic HTTP facade is deployed
-for the synthetic Cloud Run demonstration. The ADK/Gemini smoke and managed
-Model Armor measurement are separate provider evidence; the deployed
-container is not yet a managed Gemini-backed or Agent Runtime workflow. The
-scoring handoff is deferred until this workflow is complete; completed full
-Appeal evaluations remain zero.
+for the synthetic Cloud Run demonstration. The hosted workflow now includes
+the managed Model Armor -> Gemma boundary, while the ADK/Gemini smoke remains
+separate provider evidence and the container is not yet a managed Agent
+Runtime workflow. The scoring handoff is deferred until this workflow is
+complete; completed full Appeal evaluations remain zero.
 
 Run the synthetic vertical slice with:
 
@@ -237,8 +241,9 @@ make measure-gemma
 
 Its seven synthetic scans are recorded in
 `evidence/gemma-tripwire-measurement.json` as aggregate counts only. This is a
-provider measurement, not the default workflow boundary or a clinical
-decision. The temporary GPU deployment path was rejected by zero regional
+provider measurement and not a clinical decision; the hosted default boundary
+also exercised Model Armor followed by Gemma on a fresh synthetic case. The
+temporary GPU deployment path was rejected by zero regional
 quota before creating an endpoint; the measurement therefore uses Google's
 serverless Gemma MaaS route and leaves no GPU resource to delete.
 

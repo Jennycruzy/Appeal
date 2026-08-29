@@ -16,8 +16,9 @@ complete.
   `src/appeal_agents/adk_workflow.py`.
 - A synthetic-only Cloud Run service is deployed in project
   `onyx-yeti-506606-i9`, region `europe-west2`, revision
-  `appeal-backend-00008-dkd`. Its health endpoint, Firestore-backed state,
-  and one synthetic case lifecycle were verified; the aggregate record is
+  `appeal-backend-00011-b8j`. Its health endpoint, Firestore-backed state,
+  managed Model Armor -> Gemma boundary, and synthetic case lifecycle were
+  verified; the aggregate record is
   [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json).
   The service is unauthenticated and synthetic-only, accepts no real case
   data, and is not a production API. Workflow context and receipts remain
@@ -32,14 +33,14 @@ complete.
 - Agent Runtime, Agent Registry, Agent Identity, managed Memory Bank, Agent
   Gateway, Agent Policies, Firebase Auth, Pub/Sub, and managed Cloud
   Observability are not yet deployed from this repository. Native Firestore
-  case-metadata persistence is deployed for the Cloud Run service; the
-  aggregate proof is in
+  case-metadata persistence and the managed Model Armor -> Gemma boundary are
+  deployed for the Cloud Run service; the aggregate proof is in
   [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json)
   and the audit is in [`docs/audits/cloud-persistence.md`](audits/cloud-persistence.md).
-  A managed Model Armor template has been configured and measured separately;
-  it is not yet the default workflow boundary. Local fallback seams for event
-  delivery, scoped memory, payer adjudication, and reversibility are present
-  under `src/appeal_platform/`.
+  The hosted security integration audit is in
+  [`docs/audits/managed-security-cloud-run.md`](audits/managed-security-cloud-run.md).
+  Local fallback seams for event delivery, scoped memory, payer adjudication,
+  and reversibility are present under `src/appeal_platform/`.
 - The current seven-agent implementation demonstrates the role boundaries and
   governance contracts. The ADK case exit is a synthetic provider exercise;
   the deployed Cloud Run container exposes the deterministic API facade with
@@ -88,14 +89,16 @@ complete.
 - The managed Model Armor measurement is available in
   [`evidence/model-armor-measurement.json`](../evidence/model-armor-measurement.json):
   seven synthetic scans completed with precision `1.0`, recall `0.75`, and
-  false-positive rate `0.0`. It is a separate provider probe and is not yet
-  the default workflow boundary.
+  false-positive rate `0.0`. It is a labeled provider probe; the hosted
+  default boundary is separately verified in
+  [`docs/audits/managed-security-cloud-run.md`](audits/managed-security-cloud-run.md).
 - A separate serverless Gemma MaaS tripwire measurement is available in
   [`evidence/gemma-tripwire-measurement.json`](../evidence/gemma-tripwire-measurement.json):
   seven synthetic scans completed with precision `1.0`, recall `1.0`, and
   false-positive rate `0.0`, with zero provider errors or inconclusive scans.
-  It is not yet wired into the default workflow boundary and is not a
-  clinical decision. The attempted temporary GPU deployment was rejected
+  It is not a clinical decision. The hosted default boundary also cleared a
+  fresh synthetic case through Model Armor followed by Gemma and quarantined a
+  synthetic injection before denial parsing. The attempted temporary GPU deployment was rejected
   before resource creation because the selected region had zero L4 quota; no
   GPU endpoint remains. MaaS is serverless/pay-as-you-go, so there is no
   project endpoint or model resource to delete after the measurement.
@@ -106,6 +109,6 @@ complete.
 - The named-catch report, control arms, adjudication ablation, and failure
   distribution are not yet available.
 
-These limitations are the current truth as of 2026-08-28. They should be
+These limitations are the current truth as of 2026-08-29. They should be
 replaced by evidence-backed results only after the corresponding capability
 has run successfully.

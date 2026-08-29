@@ -1,6 +1,6 @@
 # Cloud persistence audit
 
-Recorded: 2026-08-28
+Recorded: 2026-08-29
 
 Appeal now has a native Firestore database in project
 `onyx-yeti-506606-i9`, located in `europe-west2`. The database uses optimistic
@@ -8,7 +8,7 @@ concurrency and delete protection. The Cloud Run service account
 `appeal-backend@onyx-yeti-506606-i9.iam.gserviceaccount.com` has only the
 `roles/datastore.user` project binding needed by the adapter.
 
-The Cloud Run service is revision `appeal-backend-00008-dkd`, serving 100% of
+The Cloud Run service is revision `appeal-backend-00011-b8j`, serving 100% of
 traffic. Its deployment configuration selects Firestore explicitly through
 `APPEAL_STORAGE=firestore`. The adapter stores the immutable case state
 machine, hashes, evidence references, and bounded metadata under the
@@ -21,7 +21,7 @@ fingerprint mismatch or malformed/tampered payload fails closed. Local tests
 cover tenant scoping, round trips, optimistic conflicts, tamper detection, and
 board hydration after a process restart.
 
-The hosted synthetic smoke test verified:
+The hosted synthetic lifecycle smoke test verified:
 
 - `/api/healthz` reported `deployment=cloud_run`, `storage=firestore`, and
   `status=ok`;
@@ -30,6 +30,11 @@ The hosted synthetic smoke test verified:
   payer adjudication;
 - the external mutation count remained exactly `1`; and
 - a subsequent board request returned the persisted tenant case.
+
+The same revision also runs the managed Model Armor -> Gemma security boundary.
+Its identity bindings are recorded in the managed security audit at
+[`managed-security-cloud-run.md`](managed-security-cloud-run.md). The security
+smoke is synthetic-only and does not change the Firestore data boundary.
 
 The aggregate record is [`evidence/cloud-run-deployment.json`](../../evidence/cloud-run-deployment.json).
 

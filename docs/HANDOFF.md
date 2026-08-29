@@ -1,6 +1,6 @@
 # APPEAL build handoff
 
-Updated: 2026-08-28
+Updated: 2026-08-29
 
 ## Current state
 
@@ -96,12 +96,12 @@ synthetic seven-agent ADK smoke run has completed and is recorded in
 separate managed Model Armor synthetic measurement has run and is recorded in
 `evidence/model-armor-measurement.json`, and a serverless Gemma MaaS synthetic
 measurement is recorded in `evidence/gemma-tripwire-measurement.json`; neither
-was the default workflow boundary in the deployed revision. Commit `ac7ef24`
-now adds a managed Model Armor -> Gemma boundary to the workflow and a local
-synthetic case has passed the inbound, egress, and memory checks through that
-boundary. The current Cloud Run revision predates that commit, so the managed
-boundary still needs one hosted deployment and verification. A real synthetic
-ADK case exit using an
+was the default workflow boundary in the earlier deployed revision. Commit
+`ac7ef24` added a managed Model Armor -> Gemma boundary to the workflow, and
+revision `appeal-backend-00011-b8j` has now passed a hosted synthetic clean
+case through inbound, egress, and memory checks. A synthetic injection was
+blocked at inbound and quarantined before denial parsing. A real synthetic ADK
+case exit using an
 image-only PDF is recorded in `evidence/adk-stage-b-case-exit.json`; it still
 does not claim a managed Agent Runtime deployment or a full Appeal evaluation.
 The current limitations are recorded in
@@ -192,17 +192,17 @@ and [`docs/LIMITATIONS.md`](LIMITATIONS.md); they are no longer work items.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00008-dkd`, with 100% traffic on that revision. The verified
+`appeal-backend-00011-b8j`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. The `/api/healthz` endpoint
-returned `status: ok` with `storage: firestore`; this revision predates commit
-`ac7ef24` and therefore still uses the earlier local security boundary. A
-synthetic case completed
+returned `status: ok` with `storage: firestore` and
+`security: managed_model_armor_gemma`. A hosted synthetic case completed
 creation, clinician approval, one submission mutation, and payer adjudication
-to `CLOSED_WON`; a subsequent board request read the persisted case.
+to `CLOSED_WON`; a subsequent board request read persisted synthetic cases.
 The aggregate-only deployment record is
 `evidence/cloud-run-deployment.json`; the narrative audit is
-`docs/audits/cloud-persistence.md`.
+`docs/audits/cloud-persistence.md`; the managed security audit is
+`docs/audits/managed-security-cloud-run.md`.
 
 The Cloud Run service is intentionally unauthenticated and synthetic-only. No
 real case data was uploaded. Firestore now persists the immutable case state
@@ -211,9 +211,8 @@ process/container-local; a restart can rehydrate board metadata but cannot
 resume approval or adjudication yet. This establishes the hosted Google Cloud
 backend and Firestore write path, but it does not establish Agent Runtime,
 Agent Registry, Agent Identity, Pub/Sub, Memory Bank, Gateway, Firebase Auth,
-or a live managed Model Armor/Gemma workflow boundary. The managed boundary is
-implemented and locally exercised on synthetic content, but its hosted
-deployment and permission check are still outstanding.
+or managed Observability deployment. The hosted Model Armor/Gemma boundary is
+verified for synthetic workflow inputs; it is not a full Appeal evaluation.
 
 Cloud Scheduler job `appeal-deadline-sentinel` is enabled in `europe-west2`
 with an hourly UTC cadence and an OIDC token for
@@ -614,43 +613,38 @@ server survives restart.
 
 ## Still outstanding
 
-The source-acquisition track is closed. The remaining work is product
-construction and verification, in this order:
+The source-acquisition track is closed. The managed Model Armor -> Gemma
+boundary is now deployed and verified on synthetic inputs. The remaining work
+is product construction and verification, in this order:
 
-1. Deploy and verify commit `ac7ef24` on Cloud Run with the managed
-   Model Armor -> Gemma boundary. Confirm that the runtime service account has
-   the required Vertex AI and Model Armor permissions, check that `/api/healthz`
-   reports `security: managed_model_armor_gemma`, run a synthetic clean case,
-   and exercise the blocked-input/quarantine path. Update the aggregate cloud
-   evidence only after the hosted checks pass. Do not upload real case data.
-2. Move the workflow context and hash-chained receipts out of process memory.
+1. Move the workflow context and hash-chained receipts out of process memory.
    Firestore currently persists case state and safe metadata, but restart
    recovery cannot yet resume approval or adjudication. Add durable context,
    receipt persistence, and idempotent replay behavior.
-3. Replace the in-process event reference with the Pub/Sub event spine. Keep
+2. Replace the in-process event reference with the Pub/Sub event spine. Keep
    the Deadline Sentinel on its real hourly Cloud Scheduler cadence and extend
    the receipt trail across transitions.
-4. Deploy the seven-role workflow through the managed Google agent platform:
+3. Deploy the seven-role workflow through the managed Google agent platform:
    ADK execution, Agent Registry, Agent Identity, Gateway, Policies, Memory
    Bank, and Observability. Probe each approved service once; if a component
    is unavailable, record the limitation and continue with the smallest
    truthful implementation.
-5. Separate the payer adjudicator into its own Cloud Run service and service
+4. Separate the payer adjudicator into its own Cloud Run service and service
    account, validate the PAS behavior at the level actually implemented, and
    retain the deterministic Veto Combinator and single-mutation gate.
-6. Build the hosted console: Firebase Auth, live statutory clock, contradiction
+5. Build the hosted console: Firebase Auth, live statutory clock, contradiction
    view, clinician co-signature, case timeline, reasoning chain, quarantine
    display, and the asynchronous escalation path.
-7. Create traceable criterion trees from the already-selected permitted payer
+6. Create traceable criterion trees from the already-selected permitted payer
    policy corpus, hand-validate a sample, and record the agreement rate. This
    does not authorize a new policy-source investigation.
-8. Only after the workflow is complete, resume the uncommitted local scoring
+7. Only after the workflow is complete, resume the uncommitted local scoring
    handoff in `docs/SCORING_HANDOFF_LOCAL.md`: deterministic tree grading,
    random-criterion and generic-template controls, policy/evidence ablations,
    model-versus-tree adjudication, failure reporting, and the named-catch
    human stop. Until then, full Appeal evaluations remain zero and no scoring
    artifact should be committed.
-9. Finish the demo tenant, architecture/judging documentation, video, and
+8. Finish the demo tenant, architecture/judging documentation, video, and
    submission checks from the continuation specification. Every claimed
    number must point to committed evidence, and every missing capability must
    remain in `docs/LIMITATIONS.md`.
@@ -690,25 +684,25 @@ decisions outside the repository. The accepted scope is local regulator-summary
 evaluation only; it is not a full Appeal case corpus. Do not upload the raw CSV
 or normalized narrative rows to Google Cloud or GitHub.
 
-## Resume checkpoint — when the PC is charged
+## Resume checkpoint — next continuation
 
-Last verified: 2026-08-28. Resume from `/Users/user/appeal` with the active
+Last verified: 2026-08-29. Resume from `/Users/user/appeal` with the active
 Google Cloud project `onyx-yeti-506606-i9` (`835653516606`) and region
 `europe-west2`. Do not switch back to `appeal-fleet-2026-0825`. ADC is already
 working; do not run `gcloud auth application-default login` again.
 
-The first continuation is the hosted deployment of commit `ac7ef24`, which is
-already pushed but not yet running on Cloud Run. Run:
+The managed Model Armor -> Gemma boundary is deployed and verified on Cloud Run
+revision `appeal-backend-00011-b8j`. The next continuation is durable workflow
+context and receipt persistence. Start with:
 
 ```text
 cd /Users/user/appeal
 git pull --ff-only origin main
 make test
 make typecheck
-make deploy-cloud-run
 ```
 
-Then verify the deployed health response and revision:
+If you need to confirm the hosted checkpoint:
 
 ```text
 curl -sS https://appeal-backend-hhcjpefk2q-nw.a.run.app/api/healthz
@@ -720,14 +714,13 @@ gcloud run revisions list \
 ```
 
 Expected hosted health includes `status: ok`, `storage: firestore`, and
-`security: managed_model_armor_gemma`. If the deployment or synthetic request
-fails, check the Cloud Run service account's Vertex AI and Model Armor access,
-record the exact error, and update `docs/LIMITATIONS.md`; do not substitute a
-local result for a hosted result.
+`security: managed_model_armor_gemma`. The clean and injection smoke results
+are recorded in `docs/audits/managed-security-cloud-run.md` and
+`evidence/cloud-run-deployment.json`.
 
-After the managed boundary is verified, continue with durable workflow context
-and receipts, Pub/Sub transitions, managed agent-platform components, the
-separate payer service, and the hosted console. The ordered backlog is in
+Continue with durable workflow context and receipts, Pub/Sub transitions,
+managed agent-platform components, the separate payer service, and the hosted
+console. The ordered backlog is in
 `## Still outstanding` above. Keep all inputs synthetic and aggregate-only.
 
 Do not resume the CMS, NY, Washington, DMHC, Oregon, or full-case acquisition

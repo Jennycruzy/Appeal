@@ -1,12 +1,12 @@
 {
   "schema_version": "0.1",
-  "recorded_at": "2026-08-28",
+  "recorded_at": "2026-08-29",
   "kind": "cloud_run_deployment",
   "project_id": "onyx-yeti-506606-i9",
   "project_display_name": "Appeal",
   "region": "europe-west2",
   "service": "appeal-backend",
-  "revision": "appeal-backend-00008-dkd",
+  "revision": "appeal-backend-00011-b8j",
   "traffic_percent": 100,
   "service_url": "https://appeal-backend-hhcjpefk2q-nw.a.run.app",
   "regional_service_url": "https://appeal-backend-835653516606.europe-west2.run.app",
@@ -17,13 +17,18 @@
     "type": "FIRESTORE_NATIVE",
     "concurrency_mode": "OPTIMISTIC",
     "delete_protection": "DELETE_PROTECTION_ENABLED",
-    "runtime_role": "roles/datastore.user"
+    "runtime_role": "roles/datastore.user",
+    "managed_security_roles": [
+      "roles/aiplatform.user",
+      "roles/modelarmor.user"
+    ]
   },
   "health_check": {
     "path": "/api/healthz",
     "status": "ok",
     "authenticated": false,
-    "storage": "firestore"
+    "storage": "firestore",
+    "security": "managed_model_armor_gemma"
   },
   "synthetic_lifecycle": {
     "case_created": true,
@@ -47,9 +52,33 @@
     "final_case_state": "CLOSED_ABANDONED_DEADLINE",
     "external_mutation_count_per_seeded_case": 1
   },
+  "managed_security_smoke": {
+    "implementation": "managed_model_armor_gemma",
+    "model_armor_location": "europe-west2",
+    "gemma_location": "global",
+    "clean_case": {
+      "case_created": true,
+      "final_case_state": "CLOSED_WON",
+      "external_mutation_count": 1,
+      "security_surfaces": {
+        "inbound": "clear",
+        "egress": "clear",
+        "memory": "clear"
+      }
+    },
+    "injection_case": {
+      "case_created": true,
+      "final_case_state": "QUARANTINED",
+      "external_mutation_count": 0,
+      "blocked_surface": "inbound",
+      "blocked_by": "model_armor_match",
+      "denial_parser_ran": false
+    },
+    "fixture_content_persisted": false
+  },
   "state_store": "firestore_case_metadata",
   "workflow_context_store": "process_local_in_memory",
   "receipt_ledger": "container_local_jsonl",
   "real_case_data_uploaded": false,
-  "source_commit": "5ac0639"
+  "source_commit": "73fd446"
 }
