@@ -12,7 +12,12 @@ from typing import cast
 from appeal_agents import LocalSecurityBoundary, ManagedSecurityBoundary
 from appeal_agents.workflow import AppealWorkflow
 from appeal_core import CaseStateMachine, DeadlineCatalog, ReceiptLedger
-from appeal_platform import CaseStore, FirestoreCaseStore, LocalCaseRuntime
+from appeal_platform import (
+    CaseStore,
+    FirestoreCaseStore,
+    FirestoreWorkflowSessionStore,
+    LocalCaseRuntime,
+)
 from appeal_service import LocalAppealService, LocalHttpApi
 
 
@@ -57,13 +62,21 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
     deadlines = DeadlineCatalog.from_path(ROOT / "config" / "deadlines.yaml")
     store, storage = build_store()
     security, security_name = build_security()
+    session_store = (
+        FirestoreWorkflowSessionStore(
+            project=os.getenv("GOOGLE_CLOUD_PROJECT"),
+            database=os.getenv("APPEAL_FIRESTORE_DATABASE", "(default)"),
+        )
+        if storage == "firestore"
+        else None
+    )
     workflow = AppealWorkflow(
         CaseStateMachine(deadlines),
         ledger=ReceiptLedger(ledger_path),
         security=security,
     )
     return LocalHttpApi(
-        LocalAppealService(LocalCaseRuntime(workflow, store=store)),
+        LocalAppealService(LocalCaseRuntime(workflow, store=store, session_store=session_store)),
         deployment=os.getenv("APPEAL_DEPLOYMENT", "local"),
         storage=storage,
         security=security_name,

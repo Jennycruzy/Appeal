@@ -13,6 +13,11 @@ from .events import DomainEvent, LocalEventSpine
 from .memory import ScopedMemoryBank
 from .payer import PayerAdjudicator, PayerDecision, PayerDecisionStatus
 from .reversibility import ReversibleAction, ReversibilityLedger
+from .sessions import (
+    LocalWorkflowSessionStore,
+    WorkflowSession,
+    WorkflowSessionStore,
+)
 from .store import CaseStore, CaseStoreConflict
 
 
@@ -58,12 +63,14 @@ class LocalCaseRuntime:
         spine: LocalEventSpine | None = None,
         memory: ScopedMemoryBank | None = None,
         reversibility: ReversibilityLedger | None = None,
+        session_store: WorkflowSessionStore | None = None,
     ) -> None:
         self.workflow = workflow
         self.store = store or CaseStore()
         self.spine = spine or LocalEventSpine()
         self.memory = memory or ScopedMemoryBank(workflow.security)
         self.reversibility = reversibility or ReversibilityLedger()
+        self.session_store = session_store or LocalWorkflowSessionStore()
 
     def start(
         self,
@@ -73,8 +80,21 @@ class LocalCaseRuntime:
         at: datetime | None = None,
     ) -> RuntimeResult:
         result = self.workflow.run(appeal_input, clinician_decision=clinician_decision, at=at)
-        self._persist(result)
-        return RuntimeResult(result)
+        runtime_result = RuntimeResult(result)
+        self._persist(runtime_result)
+        return runtime_result
+
+    def resume(self, tenant_id: str, case_id: str) -> RuntimeResult | None:
+        """Rehydrate a safe workflow context for a persisted case."""
+
+        case = self.store.get(tenant_id, case_id)
+        if case is None:
+            return None
+        session = self.session_store.get(tenant_id, case_id)
+        if session is None:
+            return None
+        restored = session.to_runtime_result(self.workflow, case)
+        return RuntimeResult(restored.workflow, restored.payer_decision)
 
     def submit_and_adjudicate(
         self,
@@ -122,15 +142,17 @@ class LocalCaseRuntime:
             favorable=payer_decision.status is PayerDecisionStatus.FAVORABLE,
             at=decision_at,
         )
-        self._persist(resumed, expected_fingerprint=result.workflow.case.fingerprint())
-        return RuntimeResult(resumed, payer_decision)
+        runtime_result = RuntimeResult(resumed, payer_decision)
+        self._persist(runtime_result, expected_fingerprint=result.workflow.case.fingerprint())
+        return runtime_result
 
     def approve(self, result: RuntimeResult, *, at: datetime) -> RuntimeResult:
         """Resume an awaiting-clinician case through the human co-signature."""
 
         approved = self.workflow.approve(result.workflow, at=at)
-        self._persist(approved, expected_fingerprint=result.workflow.case.fingerprint())
-        return RuntimeResult(approved)
+        runtime_result = RuntimeResult(approved)
+        self._persist(runtime_result, expected_fingerprint=result.workflow.case.fingerprint())
+        return runtime_result
 
     def sentinel_tick(self, *, at: datetime | None = None) -> SentinelTickResult:
         """Process expired persisted cases without requiring workflow content."""
@@ -215,15 +237,16 @@ class LocalCaseRuntime:
             tuple(updated_cases),
         )
 
-    def _persist(self, result: WorkflowResult, *, expected_fingerprint: str | None = None) -> None:
-        self.store.save(result.case, expected_fingerprint=expected_fingerprint)
-        for index, event in enumerate(result.events, start=1):
+    def _persist(self, result: RuntimeResult, *, expected_fingerprint: str | None = None) -> None:
+        workflow_result = result.workflow
+        self.store.save(workflow_result.case, expected_fingerprint=expected_fingerprint)
+        for index, event in enumerate(workflow_result.events, start=1):
             self.spine.publish(
                 DomainEvent.create(
-                    result.case.tenant_id,
-                    result.case.case_id,
+                    workflow_result.case.tenant_id,
+                    workflow_result.case.case_id,
                     "appeal.workflow.event",
-                    f"{result.case.case_id}:workflow-event:{index}",
+                    f"{workflow_result.case.case_id}:workflow-event:{index}",
                     event.recorded_at,
                     {
                         "agent": event.agent,
@@ -233,28 +256,33 @@ class LocalCaseRuntime:
                 )
             )
         self.memory.write(
-            result.case.tenant_id,
-            result.case.case_id,
+            workflow_result.case.tenant_id,
+            workflow_result.case.case_id,
             "local_case_runtime",
             "workflow_status",
-            f"outcome={result.outcome.value};state={result.case.state.value};events={len(result.events)}",
-            result.case.entered_at,
+            f"outcome={workflow_result.outcome.value};state={workflow_result.case.state.value};events={len(workflow_result.events)}",
+            workflow_result.case.entered_at,
         )
-        if result.mutation_count:
+        if workflow_result.context is not None:
+            self.session_store.save(
+                WorkflowSession.from_result(workflow_result, result.payer_decision),
+                expected_fingerprint=expected_fingerprint,
+            )
+        if workflow_result.mutation_count:
             submission_transition = next(
                 transition
-                for transition in result.case.transitions
+                for transition in workflow_result.case.transitions
                 if transition.to_state is CaseState.SUBMITTED_LEVEL_1
             )
             self.reversibility.record_action(
                 ReversibleAction(
-                    action_id=f"{result.case.case_id}:submission:level-1",
-                    tenant_id=result.case.tenant_id,
-                    case_id=result.case.case_id,
+                    action_id=f"{workflow_result.case.case_id}:submission:level-1",
+                    tenant_id=workflow_result.case.tenant_id,
+                    case_id=workflow_result.case.case_id,
                     action_kind="submit_level_1",
-                    idempotency_key=f"{result.case.case_id}:submission:level-1",
+                    idempotency_key=f"{workflow_result.case.case_id}:submission:level-1",
                     performed_at=submission_transition.entered_at,
-                    external_reference=f"submission://{result.case.case_id}/level-1",
+                    external_reference=f"submission://{workflow_result.case.case_id}/level-1",
                     compensating_action="withdraw_level_1_submission",
                 )
             )

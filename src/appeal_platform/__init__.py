@@ -20,6 +20,12 @@ from .memory import (
 )
 from .payer import PayerAdjudicator, PayerDecision, PayerDecisionStatus
 from .runtime import LocalCaseRuntime, RuntimeResult, SentinelTickResult
+from .sessions import (
+    FirestoreWorkflowSessionStore,
+    LocalWorkflowSessionStore,
+    WorkflowSession,
+    WorkflowSessionConflict,
+)
 from .store import CaseStore, CaseStoreConflict, CaseStoreScopeError, FirestoreCaseStore
 from .reversibility import (
     ActionStatus,
@@ -35,12 +41,14 @@ __all__ = [
     "CaseStoreConflict",
     "CaseStoreScopeError",
     "FirestoreCaseStore",
+    "FirestoreWorkflowSessionStore",
     "ActionStatus",
     "DeliveryReceipt",
     "DomainEvent",
     "EventIdempotencyConflict",
     "LocalCaseRuntime",
     "LocalEventSpine",
+    "LocalWorkflowSessionStore",
     "MemoryRecord",
     "MemoryScopeError",
     "MemoryWriteBlocked",
@@ -55,4 +63,6 @@ __all__ = [
     "RuntimeResult",
     "SentinelTickResult",
     "ScopedMemoryBank",
+    "WorkflowSession",
+    "WorkflowSessionConflict",
 ]

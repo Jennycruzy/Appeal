@@ -22,13 +22,7 @@ def _now(value: datetime | None) -> datetime:
 
 @dataclass(frozen=True)
 class PersistedCaseView:
-    """Public metadata reconstructed after a process restart.
-
-    The workflow context is deliberately not reconstructed from Firestore:
-    denial content, chart content, model responses, and draft prose are not
-    persisted. Resume operations therefore require the live in-process
-    context until the scoped workflow-session store is implemented.
-    """
+    """Public metadata shown when no resumable workflow capsule exists."""
 
     case: Case
     graph: dict[str, object]
@@ -123,6 +117,10 @@ class LocalAppealService:
         current = self._results.get((tenant_id, case_id))
         if current is not None:
             return current
+        resumed = self.runtime.resume(tenant_id, case_id)
+        if resumed is not None:
+            self._results[(tenant_id, case_id)] = resumed
+            return resumed
         case = self.runtime.store.get(tenant_id, case_id)
         if case is None:
             raise CaseNotFound(f"case {case_id!r} was not found for tenant {tenant_id!r}")
@@ -140,14 +138,23 @@ class LocalAppealService:
         views: list[dict[str, object]] = [result.to_public_json() for result in live.values()]
         for case in self.runtime.store.list_tenant(tenant_id):
             if (tenant_id, case.case_id) not in live:
-                views.append(self._persisted_view(case).to_public_json())
+                resumed = self.runtime.resume(tenant_id, case.case_id)
+                if resumed is not None:
+                    self._results[(tenant_id, case.case_id)] = resumed
+                    views.append(resumed.to_public_json())
+                else:
+                    views.append(self._persisted_view(case).to_public_json())
         return tuple(views)
 
     def _require_live(self, tenant_id: str, case_id: str) -> RuntimeResult:
         result = self._results.get((tenant_id, case_id))
         if result is None:
+            result = self.runtime.resume(tenant_id, case_id)
+            if result is not None:
+                self._results[(tenant_id, case_id)] = result
+                return result
             if self.runtime.store.get(tenant_id, case_id) is not None:
-                raise ValueError("workflow context is not available after restart")
+                raise ValueError("workflow context is not available for this persisted case")
             raise CaseNotFound(f"case {case_id!r} was not found for tenant {tenant_id!r}")
         return result
 

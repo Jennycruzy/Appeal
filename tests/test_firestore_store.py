@@ -7,7 +7,12 @@ from pathlib import Path
 
 from appeal_core import Actor, ActorKind, Case, CaseState, CaseStateMachine, DecisionSource, DeadlineCatalog
 from appeal_agents import AppealWorkflow
-from appeal_platform import CaseStoreConflict, FirestoreCaseStore, LocalCaseRuntime
+from appeal_platform import (
+    CaseStoreConflict,
+    FirestoreCaseStore,
+    FirestoreWorkflowSessionStore,
+    LocalCaseRuntime,
+)
 from appeal_service import LocalAppealService
 
 
@@ -153,15 +158,28 @@ class FirestoreStoreTests(unittest.TestCase):
     def test_service_reads_persisted_metadata_after_process_restart(self) -> None:
         client = FakeFirestoreClient()
         store = FirestoreCaseStore(client=client)
-        first_service = LocalAppealService(LocalCaseRuntime(AppealWorkflow(MACHINE), store=store))
+        sessions = FirestoreWorkflowSessionStore(client=client)
+        first_service = LocalAppealService(
+            LocalCaseRuntime(AppealWorkflow(MACHINE), store=store, session_store=sessions)
+        )
         first_service.open_demo_case(at=TIME)
 
-        restarted = LocalAppealService(LocalCaseRuntime(AppealWorkflow(MACHINE), store=store))
+        restarted = LocalAppealService(
+            LocalCaseRuntime(AppealWorkflow(MACHINE), store=store, session_store=sessions)
+        )
         view = restarted.get("tenant-demo", "case-demo-001")
-        self.assertEqual(view.to_public_json()["outcome"], "persisted_metadata")
+        self.assertEqual(view.to_public_json()["outcome"], "awaiting_clinician")
         self.assertEqual(len(restarted.board("tenant-demo")), 1)
-        with self.assertRaises(ValueError):
-            restarted.approve("tenant-demo", "case-demo-001", at=TIME)
+        approved = restarted.approve("tenant-demo", "case-demo-001", at=TIME)
+        self.assertEqual(approved.to_public_json()["outcome"], "submitted")
+
+        resumed_again = LocalAppealService(
+            LocalCaseRuntime(AppealWorkflow(MACHINE), store=store, session_store=sessions)
+        )
+        closed = resumed_again.adjudicate("tenant-demo", "case-demo-001", at=TIME)
+        self.assertEqual(closed.to_public_json()["outcome"], "closed_won")
+        self.assertNotIn("advanced imaging", str(client.documents))
+        self.assertNotIn("conservative therapy completed", str(client.documents))
 
 
 if __name__ == "__main__":

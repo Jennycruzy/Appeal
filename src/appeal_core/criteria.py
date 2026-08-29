@@ -72,6 +72,18 @@ def _string(value: JsonValue | None, label: str) -> str:
     return value
 
 
+def _integer(value: JsonValue | None, label: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise CriterionValidationError(f"{label} must be an integer")
+    return value
+
+
+def _strings(value: JsonValue | None, label: str) -> tuple[str, ...]:
+    if not isinstance(value, list):
+        raise CriterionValidationError(f"{label} must be an array")
+    return tuple(_string(item, f"{label}[{index}]") for index, item in enumerate(value))
+
+
 @dataclass(frozen=True)
 class SourceSpan:
     source_hash: str
@@ -85,6 +97,15 @@ class SourceSpan:
         if self.start_offset < 0 or self.end_offset <= self.start_offset:
             raise CriterionValidationError("source offsets must describe a non-empty span")
         _require(self.quote, "verbatim quote")
+
+    @classmethod
+    def from_json(cls, document: JsonObject) -> "SourceSpan":
+        return cls(
+            source_hash=_string(document.get("source_hash"), "source_span.source_hash"),
+            start_offset=_integer(document.get("start_offset"), "source_span.start_offset"),
+            end_offset=_integer(document.get("end_offset"), "source_span.end_offset"),
+            quote=_string(document.get("quote"), "source_span.quote"),
+        )
 
 
 @dataclass(frozen=True)
@@ -145,6 +166,35 @@ class PolicyCriterion:
                 "quote": self.source_span.quote,
             },
         }
+
+    @classmethod
+    def from_json(cls, document: JsonObject) -> "PolicyCriterion":
+        logic_text = _string(document.get("logic"), "criterion.logic")
+        try:
+            logic = CriterionLogic(logic_text)
+        except ValueError as error:
+            raise CriterionValidationError(f"unknown criterion logic: {logic_text}") from error
+        children_value = document.get("children")
+        if not isinstance(children_value, list):
+            raise CriterionValidationError("criterion.children must be an array")
+        source_span_value = _object(document.get("source_span"), "criterion.source_span")
+        return cls(
+            policy_id=_string(document.get("policy_id"), "criterion.policy_id"),
+            payer=_string(document.get("payer"), "criterion.payer"),
+            section_ref=_string(document.get("section_ref"), "criterion.section_ref"),
+            cpt_codes=_strings(document.get("cpt_codes"), "criterion.cpt_codes"),
+            effective_date=_string(document.get("effective_date"), "criterion.effective_date"),
+            criterion_id=_string(document.get("criterion_id"), "criterion.criterion_id"),
+            text=_string(document.get("text"), "criterion.text"),
+            logic=logic,
+            children=tuple(
+                cls.from_json(_object(child, f"criterion.children[{index}]"))
+                for index, child in enumerate(children_value)
+            ),
+            satisfied_by=_strings(document.get("satisfied_by"), "criterion.satisfied_by"),
+            source_hash=_string(document.get("source_hash"), "criterion.source_hash"),
+            source_span=SourceSpan.from_json(source_span_value),
+        )
 
     def fingerprint(self) -> str:
         serialized = json.dumps(self.to_json(), sort_keys=True, separators=(",", ":"))
