@@ -767,8 +767,9 @@ workflow and required inputs genuinely exist.
 ## Push status
 
 The public repository remote is already configured. Code commits through
-`685de63` are on `origin/main`; this documentation/evidence update is the next
-local commit:
+`685de63` are on `origin/main`; the local continuation commits covering the
+subscriber boundary, Memory Bank/Trace verification, and this handoff update
+are not pushed yet.
 
 ```text
 git remote -v
