@@ -55,7 +55,17 @@ class LocalHttpApi:
                     "authenticated": False,
                 }
             if method == "POST" and segments == ("api", "demo", "cases"):
-                return 201, self.service.open_demo_case(at=now).to_public_json()
+                case_id = payload.get("case_id") if payload is not None else None
+                tenant_id = payload.get("tenant_id") if payload is not None else None
+                if case_id is not None and not isinstance(case_id, str):
+                    raise ValueError("demo case_id must be a string")
+                if tenant_id is not None and not isinstance(tenant_id, str):
+                    raise ValueError("demo tenant_id must be a string")
+                return 201, self.service.open_demo_case(
+                    at=now,
+                    case_id=case_id or "case-demo-001",
+                    tenant_id=tenant_id or "tenant-demo",
+                ).to_public_json()
             if method == "POST" and segments == ("api", "sentinel", "tick"):
                 if not self._scheduler_authorized(headers or {}):
                     return 401, {"error": "scheduler_auth_required"}

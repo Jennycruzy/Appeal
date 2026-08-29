@@ -315,6 +315,19 @@ class PlatformTests(unittest.TestCase):
         self.assertEqual(tick_status, 200)
         self.assertEqual(tick["abandoned_count"], 0)
 
+    def test_local_http_contract_allows_a_new_synthetic_variant(self) -> None:
+        service = LocalAppealService(workflow_runtime())
+        api = LocalHttpApi(service)
+        status, value = api.handle(
+            "POST",
+            "/api/demo/cases",
+            {"case_id": "case-demo-variant", "tenant_id": "tenant-demo-variant"},
+            at=NOW,
+        )
+        self.assertEqual(status, 201)
+        self.assertEqual(value["case"]["case_id"], "case-demo-variant")  # type: ignore[index]
+        self.assertEqual(value["case"]["tenant_id"], "tenant-demo-variant")  # type: ignore[index]
+
     def test_sentinel_route_can_require_scheduler_identity(self) -> None:
         service = LocalAppealService(workflow_runtime())
         api = LocalHttpApi(

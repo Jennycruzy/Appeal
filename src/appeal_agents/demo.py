@@ -54,8 +54,14 @@ def demo_policy() -> PolicyCriterion:
     )
 
 
-def demo_input(*, injection: bool = False, missing_evidence: bool = False) -> AppealInput:
-    patient_id = "patient-demo-001"
+def demo_input(
+    *,
+    injection: bool = False,
+    missing_evidence: bool = False,
+    case_id: str = "case-demo-001",
+    tenant_id: str = "tenant-demo",
+) -> AppealInput:
+    patient_id = f"patient-{case_id}"
     content = (
         "Denial notice.\n"
         "Requested service: advanced imaging.\n"
@@ -73,8 +79,8 @@ def demo_input(*, injection: bool = False, missing_evidence: bool = False) -> Ap
             FhirResource("Observation", "observation-demo-001", patient_id, "IMG", "diagnostic finding documented")
         )
     return AppealInput(
-        case_id="case-demo-001",
-        tenant_id="tenant-demo",
+        case_id=case_id,
+        tenant_id=tenant_id,
         patient_id=patient_id,
         received_at=datetime(2026, 8, 28, 12, 0, tzinfo=UTC),
         denial=DenialDocument.from_content("local://demo-denial-scan.pdf", "application/pdf", content),
