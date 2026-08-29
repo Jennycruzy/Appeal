@@ -123,11 +123,11 @@ and its decision input stays outside the repository.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00014-95f`, with 100% traffic on that revision. The verified
+`appeal-backend-00016-p7s`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. Its `/api/healthz` endpoint
-returned `status: ok` with `storage: firestore` and
-`security: managed_model_armor_gemma`. A fresh synthetic case passed the
+returned `status: ok` with `storage: firestore`, `event_spine: pubsub_firestore`,
+and `security: managed_model_armor_gemma`. A fresh synthetic case passed the
 managed Model Armor -> Gemma boundary on inbound, egress, and memory surfaces,
 then completed clinician approval, one submission mutation, and payer
 adjudication to `CLOSED_WON`. A synthetic injection was blocked at inbound
@@ -139,6 +139,8 @@ with the persistence audit in
 [`docs/audits/cloud-persistence.md`](docs/audits/cloud-persistence.md).
 The managed-security audit is
 [`docs/audits/managed-security-cloud-run.md`](docs/audits/managed-security-cloud-run.md).
+The Pub/Sub audit is
+[`docs/audits/pubsub-event-spine.md`](docs/audits/pubsub-event-spine.md).
 
 This is a synthetic-only, unauthenticated demonstration endpoint with
 no real case data uploaded. Firestore persists the immutable case state, safe
@@ -147,8 +149,9 @@ ledger. A synthetic case created on revision `00012`, approved after revision
 `00013` replaced it, and adjudicated after revision `00014` replaced it again;
 the final state was `CLOSED_WON` with one external mutation. It proves the
 Google Cloud backend deployment, restart-safe workflow boundary, Firestore
-write path, and hosted Model Armor/Gemma boundary. It does not claim that the
-managed Agent Runtime, Pub/Sub, or Firebase Auth is deployed.
+write path, hosted Model Armor/Gemma boundary, and managed Pub/Sub event
+delivery. It does not claim that the managed Agent Runtime or Firebase Auth is
+deployed.
 See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
 
 The Deadline Sentinel is also scheduled on Cloud Scheduler job
@@ -170,10 +173,11 @@ receipts. The local platform runtime adds reference-only event delivery,
 tenant/case-scoped memory, an independent payer adjudicator, and a
 compensating-action journal. The same deterministic HTTP facade is deployed
 for the synthetic Cloud Run demonstration. The hosted workflow now includes
-the managed Model Armor -> Gemma boundary, while the ADK/Gemini smoke remains
-separate provider evidence and the container is not yet a managed Agent
-Runtime workflow. The scoring handoff is deferred until this workflow is
-complete; completed full Appeal evaluations remain zero.
+the managed Model Armor -> Gemma boundary and a Firestore-registered Pub/Sub
+event spine, while the ADK/Gemini smoke remains separate provider evidence and
+the container is not yet a managed Agent Runtime workflow. The scoring handoff
+is deferred until this workflow is complete; completed full Appeal evaluations
+remain zero.
 
 Run the synthetic vertical slice with:
 

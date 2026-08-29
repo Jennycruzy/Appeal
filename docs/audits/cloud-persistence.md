@@ -8,7 +8,7 @@ concurrency and delete protection. The Cloud Run service account
 `appeal-backend@onyx-yeti-506606-i9.iam.gserviceaccount.com` has only the
 `roles/datastore.user` project binding needed by the adapter.
 
-The Cloud Run service is revision `appeal-backend-00014-95f`, serving 100% of
+The Cloud Run service is revision `appeal-backend-00016-p7s`, serving 100% of
 traffic. Its deployment configuration selects Firestore explicitly through
 `APPEAL_STORAGE=firestore`. The adapter stores the immutable case state
 machine, hashes, evidence references, and bounded metadata under the
@@ -51,9 +51,9 @@ The aggregate record is [`evidence/cloud-run-deployment.json`](../../evidence/cl
 The Deadline Sentinel now runs through the separately audited hourly
 Scheduler path in [`deadline-sentinel.md`](deadline-sentinel.md).
 
-This is not yet a complete Appeal service. The durable workflow-session and
-receipt boundary is implemented, but the endpoint is unauthenticated and
-synthetic-only, managed Pub/Sub and managed agent-platform services are not
+This is not yet a complete Appeal service. The durable workflow-session,
+receipt, and Pub/Sub boundaries are implemented, but the endpoint is
+unauthenticated and synthetic-only, managed agent-platform services are not
 deployed, and no real case data was uploaded. The persisted session is
 reference-only by design: original denial and chart content are not recovered
 from Firestore.

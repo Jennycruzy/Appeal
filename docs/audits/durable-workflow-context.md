@@ -36,6 +36,7 @@ tamper detection. The full repository check completed with 77 tests passing and
 strict mypy passing. No real case data was uploaded.
 
 This closes durable workflow context and receipt persistence for the current
-synthetic Cloud Run boundary. Pub/Sub event delivery, managed Memory Bank,
-Agent Runtime, Registry, Identity, Gateway, Policies, Observability, payer
-service separation, and the hosted console remain open work.
+synthetic Cloud Run boundary. The managed Pub/Sub event boundary is recorded
+separately in [`pubsub-event-spine.md`](pubsub-event-spine.md). Managed Memory
+Bank, Agent Runtime, Registry, Identity, Gateway, Policies, Observability,
+payer service separation, and the hosted console remain open work.

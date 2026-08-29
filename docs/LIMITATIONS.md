@@ -16,7 +16,7 @@ complete.
   `src/appeal_agents/adk_workflow.py`.
 - A synthetic-only Cloud Run service is deployed in project
   `onyx-yeti-506606-i9`, region `europe-west2`, revision
-  `appeal-backend-00014-95f`. Its health endpoint, Firestore-backed state,
+  `appeal-backend-00016-p7s`. Its health endpoint, Firestore-backed state,
   managed Model Armor -> Gemma boundary, and synthetic case lifecycle were
   verified; the aggregate record is
   [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json).
@@ -31,11 +31,12 @@ complete.
   synthetic case; the Cloud Run service is still a deterministic facade, and
   managed Agent Runtime execution is not yet deployed.
 - Agent Runtime, Agent Registry, Agent Identity, managed Memory Bank, Agent
-  Gateway, Agent Policies, Firebase Auth, Pub/Sub, and managed Cloud
+  Gateway, Agent Policies, Firebase Auth, and managed Cloud
   Observability are not yet deployed from this repository. Native Firestore
   case state, reference-only workflow-session persistence, hash-chained
   receipt persistence, and the managed Model Armor -> Gemma boundary are
-  deployed for the Cloud Run service; the aggregate proof is in
+  deployed for the Cloud Run service. The managed Pub/Sub topic and
+  authenticated push subscription are also deployed; the aggregate proof is in
   [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json)
   and the audit is in [`docs/audits/cloud-persistence.md`](audits/cloud-persistence.md).
   The hosted security integration audit is in
@@ -63,11 +64,13 @@ complete.
 ## Operational features
 
 - The repository does not yet provide a web console, Firebase authentication,
-  managed Pub/Sub, or managed Memory Bank. Cloud Scheduler now invokes the
+  or managed Memory Bank. Cloud Scheduler now invokes the
   protected Deadline Sentinel route hourly; Cloud Run case state, safe
   references, reference-only workflow sessions, and hash-chained receipts are
-  persisted in Firestore. The endpoint is synthetic-only and intentionally not
-  a production deployment.
+  persisted in Firestore, and reference-only workflow events publish through
+  the managed Pub/Sub topic. Subscriber-driven agent execution is not yet
+  implemented. The endpoint is synthetic-only and intentionally not a
+  production deployment.
 - The local event spine records and deduplicates workflow events, but the
   deterministic workflow still invokes role adapters in-process; subscriber-
   driven agent execution is not yet implemented.

@@ -32,6 +32,6 @@ The seed metadata is in
 The Cloud Run service now persists its reference-only workflow sessions and
 hash-chained receipts in Firestore; the separate durable-boundary audit is
 [`durable-workflow-context.md`](durable-workflow-context.md). The next audit
-item is durable event delivery through the managed Pub/Sub spine. This audit
-does not claim Agent Runtime, Pub/Sub, Memory Bank, Firebase Auth, or a real
-case workflow deployment.
+item is managed agent-platform execution. This audit does not claim Agent
+Runtime, Registry, Identity, Memory Bank, Firebase Auth, or a real case
+workflow deployment.

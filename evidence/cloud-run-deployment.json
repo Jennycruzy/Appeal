@@ -6,7 +6,7 @@
   "project_display_name": "Appeal",
   "region": "europe-west2",
   "service": "appeal-backend",
-  "revision": "appeal-backend-00014-95f",
+  "revision": "appeal-backend-00016-p7s",
   "traffic_percent": 100,
   "service_url": "https://appeal-backend-hhcjpefk2q-nw.a.run.app",
   "regional_service_url": "https://appeal-backend-835653516606.europe-west2.run.app",
@@ -18,6 +18,7 @@
     "concurrency_mode": "OPTIMISTIC",
     "delete_protection": "DELETE_PROTECTION_ENABLED",
     "runtime_role": "roles/datastore.user",
+    "pubsub_publisher_scope": "projects/onyx-yeti-506606-i9/topics/appeal-events",
     "managed_security_roles": [
       "roles/aiplatform.user",
       "roles/modelarmor.user"
@@ -28,6 +29,7 @@
     "status": "ok",
     "authenticated": false,
     "storage": "firestore",
+    "event_spine": "pubsub_firestore",
     "security": "managed_model_armor_gemma"
   },
   "synthetic_lifecycle": {
@@ -79,6 +81,19 @@
   "state_store": "firestore_case_metadata",
   "workflow_context_store": "firestore_reference_only_workflow_session",
   "receipt_ledger": "firestore_hash_chained_per_tenant_case",
+  "pubsub": {
+    "topic": "projects/onyx-yeti-506606-i9/topics/appeal-events",
+    "subscription": "projects/onyx-yeti-506606-i9/subscriptions/appeal-events-to-backend",
+    "push_endpoint": "https://appeal-backend-835653516606.europe-west2.run.app/api/events/pubsub",
+    "push_service_account": "appeal-pubsub-push@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+    "oidc_audience": "https://appeal-backend-835653516606.europe-west2.run.app/api/events/pubsub",
+    "ack_deadline_seconds": 60,
+    "anonymous_request_status": 401,
+    "authenticated_push_deliveries": 13,
+    "authenticated_push_status": 200,
+    "subscriber_mutation_authority": false,
+    "event_payload": "reference_only_scalar_metadata"
+  },
   "durable_workflow_smoke": {
     "case_id": "case-demo-durable-20260829",
     "tenant_id": "tenant-demo-durable",
@@ -95,5 +110,5 @@
     "fixture_content_persisted": false
   },
   "real_case_data_uploaded": false,
-  "source_commit": "e34d1f4"
+  "source_commit": "10fd7f6"
 }
