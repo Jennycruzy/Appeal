@@ -5,11 +5,22 @@ from collections.abc import Iterable, Mapping
 from datetime import UTC, datetime
 from pathlib import Path
 
-from appeal_core import Actor, ActorKind, Case, CaseState, CaseStateMachine, DecisionSource, DeadlineCatalog
+from appeal_agents.demo import demo_input
+from appeal_core import (
+    Actor,
+    ActorKind,
+    Case,
+    CaseState,
+    CaseStateMachine,
+    DecisionSource,
+    DeadlineCatalog,
+    LedgerIntegrityError,
+)
 from appeal_agents import AppealWorkflow
 from appeal_platform import (
     CaseStoreConflict,
     FirestoreCaseStore,
+    FirestoreReceiptLedger,
     FirestoreWorkflowSessionStore,
     LocalCaseRuntime,
 )
@@ -111,6 +122,36 @@ def make_case(case_id: str) -> Case:
 
 
 class FirestoreStoreTests(unittest.TestCase):
+    def test_firestore_receipts_are_idempotent_hash_chained_and_content_free(self) -> None:
+        client = FakeFirestoreClient()
+        ledger = FirestoreReceiptLedger(client=client)
+        workflow = AppealWorkflow(MACHINE, ledger=ledger)
+        first = workflow.run(demo_input())
+        second = workflow.run(demo_input())
+        self.assertEqual(first.outcome.value, "awaiting_clinician")
+        self.assertEqual(second.outcome.value, "awaiting_clinician")
+        verified = ledger.verify_scope("tenant-demo", "case-demo-001")
+        self.assertGreater(verified.entry_count, 1)
+        receipt_path = (
+            "appeal_tenants",
+            "tenant-demo",
+            "cases",
+            "case-demo-001",
+            "receipt_ledger",
+            "current",
+        )
+        self.assertNotIn("advanced imaging", str(client.documents[receipt_path]))
+        self.assertNotIn("conservative therapy completed", str(client.documents[receipt_path]))
+        tampered = dict(client.documents[receipt_path])
+        raw_entries = list(tampered["entries"])  # type: ignore[arg-type]
+        first_entry = dict(raw_entries[0])
+        first_entry["reason"] = "tampered"
+        raw_entries[0] = first_entry
+        tampered["entries"] = raw_entries
+        client.documents[receipt_path] = tampered
+        with self.assertRaises(LedgerIntegrityError):
+            ledger.verify_scope("tenant-demo", "case-demo-001")
+
     def test_firestore_round_trip_is_tenant_scoped_and_content_free(self) -> None:
         store = FirestoreCaseStore(client=FakeFirestoreClient())
         case = make_case("case-a")

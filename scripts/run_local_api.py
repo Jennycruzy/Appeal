@@ -15,6 +15,7 @@ from appeal_core import CaseStateMachine, DeadlineCatalog, ReceiptLedger
 from appeal_platform import (
     CaseStore,
     FirestoreCaseStore,
+    FirestoreReceiptLedger,
     FirestoreWorkflowSessionStore,
     LocalCaseRuntime,
 )
@@ -70,9 +71,17 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
         if storage == "firestore"
         else None
     )
+    ledger = (
+        FirestoreReceiptLedger(
+            project=os.getenv("GOOGLE_CLOUD_PROJECT"),
+            database=os.getenv("APPEAL_FIRESTORE_DATABASE", "(default)"),
+        )
+        if storage == "firestore"
+        else ReceiptLedger(ledger_path)
+    )
     workflow = AppealWorkflow(
         CaseStateMachine(deadlines),
-        ledger=ReceiptLedger(ledger_path),
+        ledger=ledger,
         security=security,
     )
     return LocalHttpApi(
