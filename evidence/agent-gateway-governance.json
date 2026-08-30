@@ -1,0 +1,131 @@
+{
+  "schema_version": "0.1",
+  "kind": "agent_gateway_governance_smoke",
+  "recorded_at": "2026-08-29T15:26:35Z",
+  "project_id": "onyx-yeti-506606-i9",
+  "project_number": "835653516606",
+  "region": "europe-west2",
+  "apis": {
+    "agentregistry.googleapis.com": "enabled",
+    "aiplatform.googleapis.com": "enabled",
+    "cloudtrace.googleapis.com": "enabled",
+    "iap.googleapis.com": "enabled",
+    "logging.googleapis.com": "enabled",
+    "modelarmor.googleapis.com": "enabled",
+    "monitoring.googleapis.com": "enabled",
+    "networksecurity.googleapis.com": "enabled",
+    "networkservices.googleapis.com": "enabled",
+    "observability.googleapis.com": "enabled",
+    "telemetry.googleapis.com": "enabled",
+    "serviceextensions.googleapis.com": "unavailable_internal_service"
+  },
+  "gateway": {
+    "name": "projects/onyx-yeti-506606-i9/locations/europe-west2/agentGateways/appeal-agent-gateway",
+    "governed_access_path": "AGENT_TO_ANYWHERE",
+    "protocols": ["MCP"],
+    "registry": "//agentregistry.googleapis.com/projects/onyx-yeti-506606-i9/locations/europe-west2",
+    "create_time": "2026-08-29T13:02:05.794642249Z"
+  },
+  "registered_endpoints": [
+    {
+      "service": "projects/835653516606/locations/europe-west2/services/appeal-aiplatform-mtls",
+      "endpoint": "projects/onyx-yeti-506606-i9/locations/europe-west2/endpoints/agentregistry-00000000-0000-0000-9249-d5a5a8dd379f",
+      "endpoint_id": "urn:endpoint:projects-835653516606:projects:835653516606:locations:europe-west2:agentregistry:services:appeal-aiplatform-mtls",
+      "url": "https://europe-west2-aiplatform.mtls.googleapis.com",
+      "protocol_binding": "HTTP_JSON",
+      "iam_role": "roles/iap.egressor"
+    },
+    {
+      "service": "projects/835653516606/locations/europe-west2/services/appeal-telemetry-mtls",
+      "endpoint": "projects/onyx-yeti-506606-i9/locations/europe-west2/endpoints/agentregistry-00000000-0000-0000-41e3-d1245cc5d5dc",
+      "endpoint_id": "urn:endpoint:projects-835653516606:projects:835653516606:locations:europe-west2:agentregistry:services:appeal-telemetry-mtls",
+      "url": "https://telemetry.mtls.googleapis.com",
+      "protocol_binding": "HTTP_JSON",
+      "iam_role": "roles/iap.egressor"
+    }
+  ],
+  "authorization": {
+    "extension": "projects/onyx-yeti-506606-i9/locations/europe-west2/authzExtensions/appeal-iap-authz",
+    "service": "iap.googleapis.com",
+    "fail_open": true,
+    "timeout": "1s",
+    "iam_enforcement_mode": "DRY_RUN",
+    "iap_policy_version": "V1",
+    "policy": "projects/onyx-yeti-506606-i9/locations/europe-west2/authzPolicies/appeal-iap-authz-policy",
+    "policy_profile": "REQUEST_AUTHZ",
+    "action": "CUSTOM",
+    "iam_policy_resource": "projects/835653516606/locations/europe-west2/iap_web/agentRegistry",
+    "iam_role": "roles/iap.egressor",
+    "principal": "principal://agents.global.proj-835653516606.system.id.goog/resources/aiplatform/projects/835653516606/locations/europe-west2/reasoningEngines/936968624818618368",
+    "condition": "api.getAttribute('iap.googleapis.com/mcp.tool.isReadOnly', false) == true && api.getAttribute('iap.googleapis.com/mcp.tool.isDestructive', true) == false && api.getAttribute('iap.googleapis.com/mcp.tool.isOpenWorld', true) == false"
+  },
+  "runtime_binding": {
+    "resource": "projects/835653516606/locations/europe-west2/reasoningEngines/936968624818618368",
+    "identity_type": "AGENT_IDENTITY",
+    "agent_to_anywhere_gateway": "projects/onyx-yeti-506606-i9/locations/europe-west2/agentGateways/appeal-agent-gateway"
+  },
+  "synthetic_smoke": {
+    "pubsub_topic": "projects/onyx-yeti-506606-i9/topics/appeal-events",
+    "pubsub_message_id": "20712876188906126",
+    "tenant_id": "tenant-demo-agent-gateway",
+    "case_id": "case-demo-agent-gateway-20260829151856898653",
+    "event_id": "f13bb5a625fb6c123f5e0ea7856b699c4de6e0553a8c74a71539c139a3f24eee",
+    "published_at": "2026-08-29T15:18:56.898653Z",
+    "cloud_run_delivery": {
+      "status": 200,
+      "revision": "appeal-backend-00017-fxp",
+      "endpoint": "/api/events/pubsub"
+    },
+    "invocation": {
+      "status": "completed",
+      "attempt": 1,
+      "query_event_count": 2,
+      "query_authors": ["appeal_agent_fleet"],
+      "completed_at": "2026-08-29T15:19:34.209634Z",
+      "response_content_persisted": false
+    },
+    "external_mutation_count": 0,
+    "real_case_data_uploaded": false
+  },
+  "gateway_log_window": {
+    "start": "2026-08-29T15:20:15.608106Z",
+    "end": "2026-08-29T15:20:18.780554Z",
+    "request_count": 19,
+    "status_counts": {"200": 18, "404": 1},
+    "authorization_result_counts": {"ALLOWED": 14, "not_present_on_connect": 5},
+    "destination_hosts": [
+      "europe-west2-aiplatform.mtls.googleapis.com",
+      "telemetry.mtls.googleapis.com"
+    ],
+    "registered_agent_registry_resources": [
+      "projects/835653516606/locations/europe-west2/endpoints/agentregistry-00000000-0000-0000-9249-d5a5a8dd379f",
+      "projects/835653516606/locations/europe-west2/endpoints/agentregistry-00000000-0000-0000-41e3-d1245cc5d5dc"
+    ],
+    "unregistered_endpoint_mentioned": false,
+    "destination_404_was_policy_denial": false
+  },
+  "iap_audit_window_before_registration": {
+    "authorize_user_count": 9,
+    "dry_run_true_count": 9,
+    "authorization_granted_true_count": 9,
+    "audited_resource": "projects/835653516606/locations/global/endpoints/unregisteredEndpoint",
+    "observed_request_classes": [
+      "regional Agent Platform sessions and reasoning-engine calls",
+      "regional Agent Platform model call",
+      "Telemetry metrics and traces"
+    ],
+    "endpoint_registration_complete": false
+  },
+  "iap_audit_window_after_registration": {
+    "query_start": "2026-08-29T15:18:50Z",
+    "query_end": "2026-08-29T15:26:35Z",
+    "authorize_user_count": 0,
+    "interpretation": "No matching AuthorizeUser entries were returned at capture time; post-registration endpoint association was confirmed in Gateway request logs."
+  },
+  "enforcement_readiness": {
+    "enforcement_promoted": false,
+    "mcp_mutation_probe_executed": false,
+    "external_tools_or_payer_registered": false,
+    "next_required_work": "Run a dedicated synthetic MCP read-only versus mutation probe, then consider ENFORCE only after the result is reviewed."
+  }
+}

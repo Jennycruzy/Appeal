@@ -1,0 +1,125 @@
+{
+  "tools": [
+    {
+      "name": "appeal.read_denial_reference",
+      "description": "Read bounded metadata for a quarantined or parsed synthetic denial reference.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "tenant_id": {"type": "string", "minLength": 1, "maxLength": 160},
+          "case_id": {"type": "string", "minLength": 1, "maxLength": 160}
+        },
+        "required": ["tenant_id", "case_id"],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "title": "Read Denial Reference",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "appeal.read_case_state",
+      "description": "Read bounded synthetic case-state metadata and the next control-plane boundary.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "tenant_id": {"type": "string", "minLength": 1, "maxLength": 160},
+          "case_id": {"type": "string", "minLength": 1, "maxLength": 160}
+        },
+        "required": ["tenant_id", "case_id"],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "title": "Read Case State",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "appeal.read_case_metadata",
+      "description": "Read tenant- and case-scoped metadata without clinical content.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "tenant_id": {"type": "string", "minLength": 1, "maxLength": 160},
+          "case_id": {"type": "string", "minLength": 1, "maxLength": 160}
+        },
+        "required": ["tenant_id", "case_id"],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "title": "Read Case Metadata",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "appeal.read_scoped_evidence",
+      "description": "Read only a patient-scoped synthetic evidence reference, never chart prose.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "tenant_id": {"type": "string", "minLength": 1, "maxLength": 160},
+          "case_id": {"type": "string", "minLength": 1, "maxLength": 160},
+          "patient_id": {"type": "string", "minLength": 1, "maxLength": 160}
+        },
+        "required": ["tenant_id", "case_id", "patient_id"],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "title": "Read Scoped Evidence",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "appeal.read_policy_clause",
+      "description": "Read a versioned synthetic payer-policy clause reference.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "tenant_id": {"type": "string", "minLength": 1, "maxLength": 160},
+          "case_id": {"type": "string", "minLength": 1, "maxLength": 160}
+        },
+        "required": ["tenant_id", "case_id"],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "title": "Read Policy Clause",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "appeal.read_payer_determination",
+      "description": "Read bounded synthetic payer outcome metadata without payer credentials or raw content.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "tenant_id": {"type": "string", "minLength": 1, "maxLength": 160},
+          "case_id": {"type": "string", "minLength": 1, "maxLength": 160}
+        },
+        "required": ["tenant_id", "case_id"],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "title": "Read Payer Determination",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "schema_version": "0.1",
+  "registry_name": "appeal-agent-fleet",
+  "registry_version": "2026-08-29.1",
+  "synthetic_only": true,
+  "description": "Seven discoverable Appeal reasoning agents. The Submission Gate is a non-discoverable control-plane authority.",
+  "agents": [
+    {
+      "role": "intake",
+      "display_name": "Intake",
+      "version": "0.1.0",
+      "framework": "google-adk",
+      "identity": "appeal-intake-agent-v0.1",
+      "principal": "appeal-intake@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "data_scopes": ["external_artifacts", "quarantine_boundary"],
+      "capabilities": ["denial.read", "security.inspect", "case.write"],
+      "allowed_tools": ["appeal.read_denial_reference"],
+      "restrictions": ["cannot read clinical chart", "cannot mutate external systems"],
+      "discoverable": true
+    },
+    {
+      "role": "denial_parser",
+      "display_name": "Denial Parser",
+      "version": "0.1.0",
+      "framework": "google-adk",
+      "identity": "appeal-denial-parser-agent-v0.1",
+      "principal": "appeal-denial-parser@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "data_scopes": ["denial_artifact", "security_boundary"],
+      "capabilities": ["denial.read", "security.inspect", "case.write"],
+      "allowed_tools": ["appeal.read_denial_reference"],
+      "restrictions": ["cannot access clinical chart", "cannot mutate external systems"],
+      "discoverable": true
+    },
+    {
+      "role": "policy_analyst",
+      "display_name": "Policy Analyst",
+      "version": "0.1.0",
+      "framework": "google-adk",
+      "identity": "appeal-policy-analyst-agent-v0.1",
+      "principal": "appeal-policy-analyst@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "data_scopes": ["policy_corpus", "parsed_denial"],
+      "capabilities": ["policy.read", "denial.read", "case.write"],
+      "allowed_tools": ["appeal.read_denial_reference", "appeal.read_policy_clause"],
+      "restrictions": ["cannot access patient chart", "cannot submit appeal", "cannot mutate external systems"],
+      "discoverable": true
+    },
+    {
+      "role": "evidence_miner",
+      "display_name": "Evidence Miner",
+      "version": "0.1.0",
+      "framework": "google-adk",
+      "identity": "appeal-evidence-miner-agent-v0.1",
+      "principal": "appeal-evidence-miner@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "data_scopes": ["scoped_clinical_evidence", "case_metadata"],
+      "capabilities": ["clinical-chart.read", "case.metadata.read", "evidence.write", "case.write"],
+      "allowed_tools": ["appeal.read_case_metadata", "appeal.read_scoped_evidence"],
+      "restrictions": ["patient-scoped reads only", "cannot submit appeal", "cannot mutate external systems"],
+      "discoverable": true
+    },
+    {
+      "role": "argument_builder",
+      "display_name": "Argument Builder",
+      "version": "0.1.0",
+      "framework": "google-adk",
+      "identity": "appeal-argument-builder-agent-v0.1",
+      "principal": "appeal-argument-builder@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "data_scopes": ["validated_references", "policy_corpus", "case_memory"],
+      "capabilities": ["evidence.read", "policy.read", "memory.read", "draft.write", "case.write"],
+      "allowed_tools": ["appeal.read_policy_clause"],
+      "restrictions": ["cannot retrieve arbitrary clinical data", "cannot submit appeal", "cannot mutate external systems"],
+      "discoverable": true
+    },
+    {
+      "role": "deadline_sentinel",
+      "display_name": "Deadline Sentinel",
+      "version": "0.1.0",
+      "framework": "google-adk",
+      "identity": "appeal-deadline-sentinel-agent-v0.1",
+      "principal": "appeal-deadline-sentinel@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "data_scopes": ["statutory_clock", "case_state"],
+      "capabilities": ["case.read", "clock.read", "case.write"],
+      "allowed_tools": ["appeal.read_case_state"],
+      "restrictions": ["cannot alter clinical reasoning", "cannot submit appeal", "cannot mutate external systems"],
+      "discoverable": true
+    },
+    {
+      "role": "escalation_strategist",
+      "display_name": "Escalation Strategist",
+      "version": "0.1.0",
+      "framework": "google-adk",
+      "identity": "appeal-escalation-strategist-agent-v0.1",
+      "principal": "appeal-escalation-strategist@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "data_scopes": ["payer_outcome", "validated_case_state", "policy_corpus"],
+      "capabilities": ["memory.read", "evidence.read", "policy.read", "payer.read", "draft.write", "case.write"],
+      "allowed_tools": ["appeal.read_policy_clause", "appeal.read_payer_determination"],
+      "restrictions": ["cannot mutate submission", "cannot submit appeal", "cannot access arbitrary chart data"],
+      "discoverable": true
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+name: appeal-iap-authz-policy
+target:
+  resources:
+    - "projects/onyx-yeti-506606-i9/locations/europe-west2/agentGateways/appeal-agent-gateway"
+policyProfile: REQUEST_AUTHZ
+action: CUSTOM
+customProvider:
+  authzExtension:
+    resources:
+      - "projects/onyx-yeti-506606-i9/locations/europe-west2/authzExtensions/appeal-iap-authz"

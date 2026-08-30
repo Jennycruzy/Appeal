@@ -43,8 +43,10 @@ aggregate result. The current revision's invocation evidence is recorded in
 
 This audit proves a managed Agent Runtime, Registry, and Agent Identity
 deployment boundary for the seven-role graph plus one controlled synthetic
-subscriber invocation. It does not claim Agent Gateway, Agent Policies,
-Firebase Auth, broader subscriber-driven workflow execution, a separate payer
-service, a hosted console, or a complete Appeal evaluation.
+subscriber invocation. The separate Gateway and dry-run Agent Policy path is
+recorded in [`agent-gateway.md`](agent-gateway.md); it does not claim MCP
+mutation enforcement, Firebase Auth, broader subscriber-driven workflow
+execution, a separate payer service, a hosted console, or a complete Appeal
+evaluation.
 The deployment and all smoke inputs are synthetic and aggregate-only; no real
 case data was uploaded.

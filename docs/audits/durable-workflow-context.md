@@ -40,5 +40,7 @@ synthetic Cloud Run boundary. The managed Pub/Sub event boundary is recorded
 separately in [`pubsub-event-spine.md`](pubsub-event-spine.md). The managed
 Agent Runtime, Registry, and Identity deployment is recorded separately in
 [`agent-runtime.md`](agent-runtime.md). Managed Memory Bank readback and the
-current Agent Runtime trace export are verified synthetic probes. Gateway,
-Policies, payer service separation, and the hosted console remain open work.
+current Agent Runtime trace export are verified synthetic probes. The dry-run
+Gateway and Agent Policy path is recorded in
+[`agent-gateway.md`](agent-gateway.md); MCP enforcement, payer service
+separation, and the hosted console remain open work.

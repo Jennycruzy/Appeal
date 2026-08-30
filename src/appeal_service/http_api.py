@@ -10,7 +10,7 @@ from collections.abc import Callable, Mapping
 from typing import cast
 from urllib.parse import unquote
 
-from appeal_platform import DomainEvent
+from appeal_platform import DomainEvent, default_agent_registry
 
 from .service import CaseNotFound, LocalAppealService
 
@@ -94,6 +94,21 @@ class LocalHttpApi:
                 if not self._pubsub_authorized(headers or {}):
                     return 401, {"error": "pubsub_auth_required"}
                 return 200, self.service.accept_event(self._event_from_push(payload or {}))
+            if method == "GET" and len(segments) == 3 and segments[:2] == ("api", "agents"):
+                role = segments[2]
+                try:
+                    registration = default_agent_registry().for_role(role)
+                except KeyError:
+                    return 404, {"error": "agent_not_found"}
+                result = registration.to_json()
+                result.update(
+                    {
+                        "live": True,
+                        "synthetic_only": True,
+                        "endpoint_path": f"/api/agents/{role}",
+                    }
+                )
+                return 200, result
             if len(segments) == 3 and segments[:2] == ("api", "cases") and method == "GET":
                 board = self.service.board(segments[2])
                 return 200, {"cases": list(board), "tenant_id": segments[2]}

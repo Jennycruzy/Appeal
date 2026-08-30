@@ -10,6 +10,7 @@ WORKDIR /app
 COPY src ./src
 COPY config ./config
 COPY scripts/run_local_api.py ./scripts/run_local_api.py
+COPY scripts/run_mcp_server.py ./scripts/run_mcp_server.py
 
 RUN python -m pip install --no-cache-dir \
     "google-cloud-firestore>=2.16.0,<3.0.0" \

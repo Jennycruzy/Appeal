@@ -1,0 +1,102 @@
+{
+  "schema_version": "0.1",
+  "status": "verified",
+  "captured_at": {
+    "utc": "2026-08-29T18:04:48Z",
+    "wat": "2026-08-29 19:04:48 WAT",
+    "pdt": "2026-08-29 11:04:48 PDT"
+  },
+  "synthetic_only": true,
+  "transport": {
+    "protocol": "mcp-json-rpc",
+    "endpoint": "https://appeal-mcp-hhcjpefk2q-nw.a.run.app/api/mcp",
+    "identity_mode": "verified_id_token",
+    "custom_role_header_used": false,
+    "gateway_path_used": false
+  },
+  "cloud_run": {
+    "project": "onyx-yeti-506606-i9",
+    "region": "europe-west2",
+    "service": "appeal-mcp",
+    "revision": "appeal-mcp-00005-6mv",
+    "service_account": "appeal-mcp@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+    "url": "https://appeal-mcp-hhcjpefk2q-nw.a.run.app"
+  },
+  "agent_registry": {
+    "mcp_server_resource": "projects/onyx-yeti-506606-i9/locations/europe-west2/mcpServers/agentregistry-00000000-0000-0000-fe79-effa5b933d5a",
+    "tool_spec": "config/mcp_tools.json",
+    "discoverable_tool_count": 6,
+    "mutation_tool_discoverable": false
+  },
+  "verified_principals": [
+    "appeal-evidence-miner@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+    "appeal-policy-analyst@onyx-yeti-506606-i9.iam.gserviceaccount.com"
+  ],
+  "tool_names": [
+    "appeal.read_denial_reference",
+    "appeal.read_case_state",
+    "appeal.read_case_metadata",
+    "appeal.read_scoped_evidence",
+    "appeal.read_policy_clause",
+    "appeal.read_payer_determination"
+  ],
+  "calls": [
+    {
+      "request_id": "live-evidence-allow",
+      "principal": "appeal-evidence-miner@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "agent_role": "evidence_miner",
+      "tenant_id": "tenant-demo",
+      "case_id": "case-mcp-live",
+      "tool": "appeal.read_scoped_evidence",
+      "decision": "AUTHORIZED",
+      "required_capability": "clinical-chart.read",
+      "required_scope": "scoped_fhir_chart",
+      "reference_only": true,
+      "response_content_persisted": false,
+      "mutation_executed": false
+    },
+    {
+      "request_id": "live-chart-deny",
+      "principal": "appeal-policy-analyst@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "agent_role": "policy_analyst",
+      "tenant_id": "tenant-demo",
+      "case_id": "case-mcp-live",
+      "tool": "appeal.read_scoped_evidence",
+      "decision": "DENIED",
+      "reason_code": "capability_not_in_registered_scope",
+      "required_capability": "clinical-chart.read",
+      "required_scope": "scoped_fhir_chart",
+      "response_content_persisted": false,
+      "mutation_executed": false
+    },
+    {
+      "request_id": "live-mutation-deny",
+      "principal": "appeal-policy-analyst@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "agent_role": "policy_analyst",
+      "tenant_id": "tenant-demo",
+      "case_id": "case-mcp-live",
+      "tool": "appeal.request_external_mutation",
+      "decision": "DENIED",
+      "reason_code": "capability_not_in_registered_scope",
+      "required_capability": "external.mutation",
+      "required_scope": "external_mutation",
+      "response_content_persisted": false,
+      "mutation_executed": false
+    }
+  ],
+  "checks": {
+    "health_ok": true,
+    "verified_id_token_mode": true,
+    "six_read_tools_listed": true,
+    "submission_gate_mutation_hidden": true,
+    "evidence_miner_scoped_read_authorized": true,
+    "policy_analyst_chart_read_denied": true,
+    "policy_analyst_mutation_denied": true,
+    "mutation_count": 0
+  },
+  "enforcement_boundary": {
+    "direct_cloud_run_identity_and_capability_gate": "verified",
+    "agent_gateway_iap_enforcement": "not_promoted; gateway remains dry-run",
+    "gateway_denial_attribution": "pending a gateway-routed MCP probe"
+  }
+}

@@ -58,9 +58,20 @@ CLOUD_RUN_PUBSUB_AUDIENCE ?= https://appeal-backend-835653516606.europe-west2.ru
 CLOUD_RUN_SECURITY ?= managed
 CLOUD_RUN_SCHEDULER_URL ?= https://appeal-backend-835653516606.europe-west2.run.app
 CLOUD_RUN_SCHEDULER_SERVICE_ACCOUNT ?= appeal-scheduler@onyx-yeti-506606-i9.iam.gserviceaccount.com
+MCP_PROJECT ?= onyx-yeti-506606-i9
+MCP_REGION ?= europe-west2
+MCP_SERVICE ?= appeal-mcp
+MCP_SERVICE_ACCOUNT ?= appeal-mcp@onyx-yeti-506606-i9.iam.gserviceaccount.com
+MCP_AUDIENCE ?= https://appeal-mcp-hhcjpefk2q-nw.a.run.app
+MCP_INVOKER_SERVICE_ACCOUNT ?= appeal-mcp-invoker@onyx-yeti-506606-i9.iam.gserviceaccount.com
+MCP_SERVER_RESOURCE ?= projects/835653516606/locations/europe-west2/mcpServers/agentregistry-00000000-0000-0000-fe79-effa5b933d5a
+AGENT_GATEWAY_URI ?= projects/onyx-yeti-506606-i9/locations/europe-west2/agentGateways/appeal-agent-gateway
+MCP_REGISTRY ?= config/agent_registry.json
+MCP_OUTPUT ?= evidence/mcp-governance-probe.json
 ADK_PROJECT ?= onyx-yeti-506606-i9
 ADK_LOCATION ?= global
 ADK_MODEL ?= gemini-3.7-flash
+AGENT_RUNTIME_MODEL ?= projects/onyx-yeti-506606-i9/locations/global/publishers/google/models/gemini-3.7-flash
 ADK_OUTPUT ?= evidence/adk-stage-b-case-exit.json
 ADK_LEDGER ?= ../Downloads/appeal-adk-stage-b-receipts.jsonl
 AGENT_RUNTIME_RESOURCE ?= projects/835653516606/locations/europe-west2/reasoningEngines/936968624818618368
@@ -76,7 +87,7 @@ SENTINEL_CASE ?= case-sentinel-expired-001
 SENTINEL_ENTERED_AT ?= 2026-08-18T12:00:00Z
 SENTINEL_SEED_OUTPUT ?= evidence/sentinel-seed.json
 
-.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run run-mcp-server run-mcp-probe deploy-mcp-cloud-run seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -106,13 +117,22 @@ run-adk-case:
 	GOOGLE_CLOUD_PROJECT="$(ADK_PROJECT)" GOOGLE_CLOUD_LOCATION="$(ADK_LOCATION)" GOOGLE_GENAI_USE_VERTEXAI=TRUE PYTHONPATH=src .venv/bin/python scripts/run_adk_case.py --project "$(ADK_PROJECT)" --location "$(ADK_LOCATION)" --model "$(ADK_MODEL)" --output "$(ADK_OUTPUT)" --ledger "$(ADK_LEDGER)"
 
 deploy-agent-runtime:
-	GOOGLE_CLOUD_PROJECT="$(ADK_PROJECT)" GOOGLE_CLOUD_LOCATION="$(CLOUD_RUN_REGION)" PYTHONPATH=src .venv/bin/python scripts/deploy_agent_runtime.py --project "$(ADK_PROJECT)" --location "$(CLOUD_RUN_REGION)" --model "$(ADK_MODEL)"
+	GOOGLE_CLOUD_PROJECT="$(ADK_PROJECT)" GOOGLE_CLOUD_LOCATION="$(CLOUD_RUN_REGION)" PYTHONPATH=src .venv/bin/python scripts/deploy_agent_runtime.py --project "$(ADK_PROJECT)" --location "$(CLOUD_RUN_REGION)" --model "$(AGENT_RUNTIME_MODEL)" --existing-resource "$(AGENT_RUNTIME_RESOURCE)" --agent-gateway "$(AGENT_GATEWAY_URI)" --mcp-server-resource "$(MCP_SERVER_RESOURCE)" --mcp-invoker-service-account "$(MCP_INVOKER_SERVICE_ACCOUNT)" --mcp-audience "$(MCP_AUDIENCE)"
 
 run-local-api:
 	PYTHONPATH=src $(PYTHON) scripts/run_local_api.py --ledger "$(LOCAL_API_LEDGER)"
 
 deploy-cloud-run:
 	gcloud run deploy "$(CLOUD_RUN_SERVICE)" --source . --project "$(CLOUD_RUN_PROJECT)" --region "$(CLOUD_RUN_REGION)" --service-account "$(CLOUD_RUN_SERVICE_ACCOUNT)" --set-env-vars "APPEAL_DEPLOYMENT=cloud_run,APPEAL_STORAGE=$(CLOUD_RUN_STORAGE),APPEAL_EVENT_SPINE=$(CLOUD_RUN_EVENT_SPINE),APPEAL_PUBSUB_TOPIC=$(CLOUD_RUN_PUBSUB_TOPIC),APPEAL_PUBSUB_PUSH_SERVICE_ACCOUNT=$(CLOUD_RUN_PUBSUB_PUSH_SERVICE_ACCOUNT),APPEAL_PUBSUB_AUDIENCE=$(CLOUD_RUN_PUBSUB_AUDIENCE),APPEAL_SECURITY=$(CLOUD_RUN_SECURITY),GOOGLE_CLOUD_PROJECT=$(CLOUD_RUN_PROJECT),APPEAL_FIRESTORE_DATABASE=$(CLOUD_RUN_FIRESTORE_DATABASE),APPEAL_MODEL_ARMOR_LOCATION=$(MODEL_ARMOR_LOCATION),APPEAL_MODEL_ARMOR_TEMPLATE=$(MODEL_ARMOR_TEMPLATE),APPEAL_GEMMA_LOCATION=$(GEMMA_LOCATION),APPEAL_GEMMA_MODEL=$(GEMMA_MODEL),APPEAL_SCHEDULER_AUTH_REQUIRED=true,APPEAL_SCHEDULER_SERVICE_ACCOUNT=$(CLOUD_RUN_SCHEDULER_SERVICE_ACCOUNT),APPEAL_SCHEDULER_AUDIENCE=$(CLOUD_RUN_SCHEDULER_URL),APPEAL_AGENT_RUNTIME_RESOURCE=$(AGENT_RUNTIME_RESOURCE),APPEAL_AGENT_RUNTIME_LOCATION=$(AGENT_RUNTIME_LOCATION),APPEAL_AGENT_RUNTIME_TIMEOUT_SECONDS=$(AGENT_RUNTIME_TIMEOUT_SECONDS),APPEAL_AGENT_RUNTIME_CLAIM_LEASE_SECONDS=$(AGENT_RUNTIME_CLAIM_LEASE_SECONDS),APPEAL_AGENT_RUNTIME_SYNTHETIC_ONLY=$(AGENT_RUNTIME_SYNTHETIC_ONLY),APPEAL_AGENT_RUNTIME_TENANT_PREFIX=$(AGENT_RUNTIME_TENANT_PREFIX),APPEAL_AGENT_RUNTIME_CASE_PREFIX=$(AGENT_RUNTIME_CASE_PREFIX)" --allow-unauthenticated --min 0 --max 1 --memory 512Mi --cpu 1 --timeout 300 --quiet
+
+run-mcp-server:
+	MCP_IDENTITY_MODE=header PYTHONPATH=src $(PYTHON) scripts/run_mcp_server.py --host 127.0.0.1 --port 8081 --registry "$(MCP_REGISTRY)"
+
+run-mcp-probe:
+	PYTHONPATH=src $(PYTHON) scripts/run_mcp_probe.py --registry "$(MCP_REGISTRY)" --output "$(MCP_OUTPUT)"
+
+deploy-mcp-cloud-run:
+	gcloud run deploy "$(MCP_SERVICE)" --source . --project "$(MCP_PROJECT)" --region "$(MCP_REGION)" --service-account "$(MCP_SERVICE_ACCOUNT)" --command python --args scripts/run_mcp_server.py --set-env-vars "MCP_IDENTITY_MODE=verified,MCP_AUDIENCE=$(MCP_AUDIENCE),MCP_RUNTIME_INVOKER_PRINCIPAL=$(MCP_INVOKER_SERVICE_ACCOUNT),MCP_RUNTIME_INVOKER_ROLE=evidence_miner" --no-allow-unauthenticated --min 0 --max 1 --memory 512Mi --cpu 1 --timeout 300 --quiet
 
 seed-sentinel-case:
 	GOOGLE_CLOUD_PROJECT="$(SENTINEL_PROJECT)" PYTHONPATH=src .venv/bin/python scripts/seed_sentinel_case.py --project "$(SENTINEL_PROJECT)" --tenant-id "$(SENTINEL_TENANT)" --case-id "$(SENTINEL_CASE)" --entered-at "$(SENTINEL_ENTERED_AT)" --output "$(SENTINEL_SEED_OUTPUT)"

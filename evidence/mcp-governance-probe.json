@@ -1,0 +1,140 @@
+{
+  "audit_records": [
+    {
+      "agent_role": "evidence_miner",
+      "case_id": "case-demo-mcp-authorized-read",
+      "decision": "AUTHORIZED",
+      "mutation": false,
+      "reason_code": "scope_allowed",
+      "recorded_at": "2026-08-29T16:16:05.158745Z",
+      "request_id": "rpc-3",
+      "required_capability": "clinical-chart.read",
+      "required_scope": "scoped_fhir_chart",
+      "response_content_persisted": false,
+      "tenant_id": "tenant-demo-mcp",
+      "tool": "appeal.read_scoped_evidence"
+    },
+    {
+      "agent_role": "policy_analyst",
+      "case_id": "case-demo-mcp-denied-chart",
+      "decision": "DENIED",
+      "mutation": false,
+      "reason_code": "capability_not_in_registered_scope",
+      "recorded_at": "2026-08-29T16:16:05.158745Z",
+      "request_id": "rpc-4",
+      "required_capability": "clinical-chart.read",
+      "required_scope": "scoped_fhir_chart",
+      "response_content_persisted": false,
+      "tenant_id": "tenant-demo-mcp",
+      "tool": "appeal.read_scoped_evidence"
+    },
+    {
+      "agent_role": "policy_analyst",
+      "case_id": "case-demo-mcp-denied-mutation",
+      "decision": "DENIED",
+      "mutation": true,
+      "reason_code": "capability_not_in_registered_scope",
+      "recorded_at": "2026-08-29T16:16:05.158745Z",
+      "request_id": "rpc-5",
+      "required_capability": "external.mutation",
+      "required_scope": "external_mutation",
+      "response_content_persisted": false,
+      "tenant_id": "tenant-demo-mcp",
+      "tool": "appeal.request_external_mutation"
+    },
+    {
+      "agent_role": "submission_gate",
+      "case_id": "case-demo-mcp-gate-check",
+      "decision": "AUTHORIZED",
+      "mutation": true,
+      "reason_code": "submission_gate_checks_clear",
+      "recorded_at": "2026-08-29T16:16:05.158745Z",
+      "request_id": "rpc-6",
+      "required_capability": "external.mutation",
+      "required_scope": "external_mutation",
+      "response_content_persisted": false,
+      "tenant_id": "tenant-demo-mcp",
+      "tool": "appeal.request_external_mutation"
+    }
+  ],
+  "authorized_read": {
+    "case_id": "case-demo-mcp-authorized-read",
+    "decision": "AUTHORIZED",
+    "patient_scope_hash": "d49dca93d043e2b8bafdec44cdf550f29f0168a513aaf3f506bcc98ffd151126",
+    "reference_only": true,
+    "references": [
+      {
+        "reference_hash": "e6bb87a9a2996f92276e2f3c291e1ab0765e75852ec0920bb5b7386435cab6d1",
+        "resource_id": "synthetic-observation-001",
+        "resource_type": "Observation"
+      }
+    ],
+    "response_content_persisted": false,
+    "scope": "scoped_fhir_chart",
+    "tenant_id": "tenant-demo-mcp",
+    "tool": "appeal.read_scoped_evidence"
+  },
+  "checks": {
+    "chart_read_denied": true,
+    "gate_authorized_without_execution": true,
+    "initialize_ok": true,
+    "mutation_denied_for_policy_analyst": true,
+    "mutation_tool_hidden": true,
+    "scoped_read_authorized": true,
+    "seven_registry_agents": true,
+    "six_discoverable_read_tools": true
+  },
+  "denied_chart_read": {
+    "case_id": "case-demo-mcp-denied-chart",
+    "decision": "DENIED",
+    "isError": true,
+    "mutation": false,
+    "reason_code": "capability_not_in_registered_scope",
+    "required_capability": "clinical-chart.read",
+    "required_scope": "scoped_fhir_chart",
+    "response_content_persisted": false,
+    "tenant_id": "tenant-demo-mcp",
+    "tool": "appeal.read_scoped_evidence"
+  },
+  "denied_mutation": {
+    "case_id": "case-demo-mcp-denied-mutation",
+    "decision": "DENIED",
+    "isError": true,
+    "mutation": true,
+    "reason_code": "capability_not_in_registered_scope",
+    "required_capability": "external.mutation",
+    "required_scope": "external_mutation",
+    "response_content_persisted": false,
+    "tenant_id": "tenant-demo-mcp",
+    "tool": "appeal.request_external_mutation"
+  },
+  "gate_authorization": {
+    "case_id": "case-demo-mcp-gate-check",
+    "decision": "AUTHORIZED",
+    "execution": "not_executed",
+    "idempotency_key_hash": "3a4d23da352620840a086d3534ff6df358ae42b1fe9e0f66a531fcc6bb52c488",
+    "mutation_count": 0,
+    "reference_only": true,
+    "requires_external_executor": true,
+    "response_content_persisted": false,
+    "tenant_id": "tenant-demo-mcp",
+    "tool": "appeal.request_external_mutation"
+  },
+  "mutation_executed": false,
+  "protocol": "mcp-json-rpc",
+  "recorded_at": "2026-08-29T16:16:05.158745Z",
+  "registry_path": "config/agent_registry.json",
+  "registry_roles": [
+    "intake",
+    "denial_parser",
+    "policy_analyst",
+    "evidence_miner",
+    "argument_builder",
+    "deadline_sentinel",
+    "escalation_strategist"
+  ],
+  "response_content_persisted": false,
+  "schema_version": "0.1",
+  "status": "verified",
+  "synthetic_only": true
+}

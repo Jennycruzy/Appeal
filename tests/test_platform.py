@@ -332,6 +332,22 @@ class PlatformTests(unittest.TestCase):
         self.assertEqual(tick_status, 200)
         self.assertEqual(tick["abandoned_count"], 0)
 
+    def test_agent_registry_route_returns_live_scoped_record(self) -> None:
+        service = LocalAppealService(workflow_runtime())
+        api = LocalHttpApi(service)
+
+        status, value = api.handle("GET", "/api/agents/evidence_miner", at=NOW)
+
+        self.assertEqual(status, 200)
+        self.assertEqual(value["role"], "evidence_miner")
+        self.assertEqual(value["live"], True)
+        self.assertIn("clinical-chart.read", value["capabilities"])  # type: ignore[operator]
+        self.assertEqual(value["synthetic_only"], True)
+
+        missing_status, missing = api.handle("GET", "/api/agents/submission_gate", at=NOW)
+        self.assertEqual(missing_status, 404)
+        self.assertEqual(missing["error"], "agent_not_found")
+
     def test_local_http_contract_allows_a_new_synthetic_variant(self) -> None:
         service = LocalAppealService(workflow_runtime())
         api = LocalHttpApi(service)

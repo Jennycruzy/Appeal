@@ -88,15 +88,14 @@ Two other manually acquired regulator candidates are also tracked locally:
   workers' compensation source and its public index does not provide the
   complete denial packet needed here.
 
-Start with the [release-track handoff](docs/HANDOFF.md#release-tracks-2026-08-28),
-the [CMS QIC benchmark record](docs/cms-qic-decision-benchmark.md),
-and the [real-denial smart acquisition path](docs/real-denial-smart-path.md),
-then the [NY DFS handoff](docs/HANDOFF.md#ny-dfs-schema-mismatch--resume-here),
-the [Oregon fallback](docs/HANDOFF.md#oregon-iro-case-detail-fallback), the
+Start with the [CMS QIC benchmark record](docs/cms-qic-decision-benchmark.md),
+the [real-denial smart acquisition path](docs/real-denial-smart-path.md), the
 [NY acceptance manifest](evidence/ny-dfs-acceptance.json), the [Oregon
 acceptance manifest](evidence/oregon-acceptance.json), and the review-request
 record for [NY DFS](docs/ny-dfs-review-request.md) plus the optional Oregon
-follow-up [request](docs/oregon-iro-review-request.md).
+follow-up [request](docs/oregon-iro-review-request.md). The active full-scope
+execution plan is maintained locally and is intentionally not part of the
+public repository.
 
 ## What is and is not evidence
 
@@ -160,9 +159,16 @@ Firestore idempotency and aggregate-only query evidence; the checkpoint record
 is [`evidence/agent-runtime-subscriber.json`](evidence/agent-runtime-subscriber.json).
 The existing synthetic Memory Bank record now has a verified readback, and
 Cloud Trace contains two matching Agent Runtime traces in the verification
-window. Gateway, Policies, broader subscriber-driven runtime execution, and
-Firebase Auth remain unverified or not deployed.
-See the [cloud handoff](docs/HANDOFF.md#google-cloud-hosting-status).
+window. Managed Runtime egress is now bound to a regional Agent Gateway with
+an IAP policy in `DRY_RUN`; the two observed platform destinations are
+registered and endpoint-specific egress permissions are verified. MCP
+mutation enforcement, broader subscriber-driven runtime execution, and
+Firebase Auth remain unverified or not deployed. The governance audit is
+[`docs/audits/agent-gateway.md`](docs/audits/agent-gateway.md), with aggregate
+evidence in
+[`evidence/agent-gateway-governance.json`](evidence/agent-gateway-governance.json).
+The current cloud evidence is in the [Agent Gateway audit](docs/audits/agent-gateway.md)
+and the [aggregate governance record](evidence/agent-gateway-governance.json).
 
 The Deadline Sentinel is also scheduled on Cloud Scheduler job
 `appeal-deadline-sentinel` at the top of every UTC hour. Its OIDC identity is
@@ -190,6 +196,8 @@ session and Memory Bank write probes. The Cloud Run facade and managed Agent
 Runtime deployment remain separate boundaries; the authenticated Pub/Sub
 subscriber now invokes the managed runtime only for one allowlisted synthetic
 checkpoint, while the broader workflow remains deterministic and in-process.
+Managed Runtime egress is bound to the regional Agent Gateway in dry-run mode;
+no MCP mutation probe or enforced policy has been completed.
 The scoring handoff is deferred until this workflow is complete; completed
 full Appeal evaluations remain zero.
 

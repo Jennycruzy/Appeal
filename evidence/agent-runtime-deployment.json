@@ -1,58 +1,25 @@
 {
-  "adk_model": "gemini-3.7-flash",
+  "adk_model": "projects/onyx-yeti-506606-i9/locations/global/publishers/google/models/gemini-3.7-flash",
+  "agent_gateway": "projects/onyx-yeti-506606-i9/locations/europe-west2/agentGateways/appeal-agent-gateway",
   "display_name": "Appeal Agent Fleet",
   "effective_identity": "agents.global.proj-835653516606.system.id.goog/resources/aiplatform/projects/835653516606/locations/europe-west2/reasoningEngines/936968624818618368",
+  "existing_resource_updated": true,
   "framework": "google-adk",
   "identity_type": "AGENT_IDENTITY",
   "location": "europe-west2",
-  "agent_registry": {
-    "api": "agentregistry.googleapis.com",
-    "appeal_agent": {
-      "agent_id": "urn:agent:projects-835653516606:projects:835653516606:locations:europe-west2:aiplatform:reasoningEngines:936968624818618368",
-      "framework": "google-adk",
-      "name": "projects/onyx-yeti-506606-i9/locations/europe-west2/agents/agentregistry-00000000-0000-0000-0297-456f49a106c2"
-    },
-    "location": "europe-west2",
-    "registered_agent_count_observed": 2
-  },
-  "managed_gateway_configured": false,
-  "managed_identity": {
-    "api": "agentidentity.googleapis.com",
-    "effective_identity": "agents.global.proj-835653516606.system.id.goog/resources/aiplatform/projects/835653516606/locations/europe-west2/reasoningEngines/936968624818618368",
-    "identity_type": "AGENT_IDENTITY"
-  },
+  "managed_gateway_configured": true,
   "managed_memory_bank_requested": true,
-  "managed_memory_bank": {
-    "context_spec_present": true,
-    "initial_readback_blocked_before_service_read": true,
-    "readback_verified": true,
-    "retrieval_result_count": 1,
-    "scope_keys": [
-      "case_id"
-    ],
-    "synthetic_reference_only_write_succeeded": true
-  },
   "managed_observability_requested": true,
-  "managed_observability": {
-    "telemetry_requested": true,
-    "trace_export_verified": true,
-    "trace_api_http_status": 200,
-    "trace_window_days": 2,
-    "trace_count_observed": 22,
-    "agent_runtime_trace_count_observed": 2,
-    "agent_runtime_trace_span_counts": [
-      4,
-      4
-    ],
-    "agent_runtime_root_span_name": "invoke_workflow appeal_agent_fleet",
-    "span_attributes_persisted": false,
-    "trace_scope": "projects/onyx-yeti-506606-i9/locations/global/traceScopes/_Default"
-  },
   "max_instances": 1,
+  "mcp_audience": "https://appeal-mcp-hhcjpefk2q-nw.a.run.app",
+  "mcp_invoker_service_account": "appeal-mcp-invoker@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+  "mcp_server_resource": "projects/835653516606/locations/europe-west2/mcpServers/agentregistry-00000000-0000-0000-fe79-effa5b933d5a",
+  "mcp_toolset_attached_to": [
+    "evidence_miner"
+  ],
   "min_instances": 0,
   "project_id": "onyx-yeti-506606-i9",
-  "recorded_at": "2026-08-29T06:10:50.893663+00:00",
-  "verification_recorded_at": "2026-08-29T12:27:37.049884Z",
+  "recorded_at": "2026-08-30T19:31:09.176542+00:00",
   "resource_limits": {
     "cpu": "1",
     "memory": "2Gi"
@@ -63,20 +30,22 @@
   "schema_version": "0.1",
   "smoke": {
     "query_authors": [
-      "appeal_agent_fleet"
+      "argument_builder",
+      "deadline_sentinel",
+      "denial_parser",
+      "escalation_strategist",
+      "evidence_miner",
+      "intake",
+      "policy_analyst"
     ],
-    "query_event_count": 2,
+    "query_error_codes": [],
+    "query_event_count": 7,
+    "query_succeeded": true,
     "query_user_id": "synthetic-agent-runtime-smoke",
     "response_content_persisted": false
   },
-  "source_commit": "685de631f02ef455d3986702420640af3a0afe4d",
+  "source_commit": "0bc8c1fba16d9610d2943e51d74d2cb92e9e11fd",
   "source_package": "src",
   "staging_bucket": "gs://appeal-agent-staging-onyx-yeti-506606-i9",
-  "synthetic_only": true,
-  "managed_sessions": {
-    "context_spec_present": true,
-    "response_content_persisted": false,
-    "session_observed_before_explicit_create": 1,
-    "synthetic_session_created": true
-  }
+  "synthetic_only": true
 }

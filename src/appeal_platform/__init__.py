@@ -28,6 +28,14 @@ from .memory import (
     MemoryWriteBlocked,
     ScopedMemoryBank,
 )
+from .mcp import (
+    MCP_TOOL_DEFINITIONS,
+    McpAuditRecord,
+    McpJsonRpcServer,
+    McpRequestRejected,
+    McpToolDefinition,
+    McpToolServer,
+)
 from .payer import PayerAdjudicator, PayerDecision, PayerDecisionStatus
 from .pubsub import FirestorePubSubEventSpine
 from .receipts import FirestoreReceiptLedger
@@ -39,6 +47,7 @@ from .sessions import (
     WorkflowSessionConflict,
 )
 from .store import CaseStore, CaseStoreConflict, CaseStoreScopeError, FirestoreCaseStore
+from .registry import AgentRegistration, AgentRegistry, default_agent_registry
 from .reversibility import (
     ActionStatus,
     ReversibleAction,
@@ -53,6 +62,9 @@ __all__ = [
     "CaseStoreConflict",
     "CaseStoreScopeError",
     "FirestoreCaseStore",
+    "AgentRegistration",
+    "AgentRegistry",
+    "default_agent_registry",
     "FirestoreAgentRuntimeInvocationStore",
     "FirestoreReceiptLedger",
     "FirestorePubSubEventSpine",
@@ -72,6 +84,12 @@ __all__ = [
     "MemoryRecord",
     "MemoryScopeError",
     "MemoryWriteBlocked",
+    "MCP_TOOL_DEFINITIONS",
+    "McpAuditRecord",
+    "McpJsonRpcServer",
+    "McpRequestRejected",
+    "McpToolDefinition",
+    "McpToolServer",
     "ManagedAgentRuntimeInvoker",
     "PayerAdjudicator",
     "PayerDecision",

@@ -1,0 +1,16 @@
+{
+  "etag": "ACAB",
+  "bindings": [
+    {
+      "role": "roles/iap.egressor",
+      "members": [
+        "principal://agents.global.proj-835653516606.system.id.goog/resources/aiplatform/projects/835653516606/locations/europe-west2/reasoningEngines/936968624818618368"
+      ],
+      "condition": {
+        "title": "Appeal agent read-only egress",
+        "description": "Permit only read-only, non-destructive, closed-world MCP operations; mutation and open-world operations remain outside the allow condition.",
+        "expression": "api.getAttribute('iap.googleapis.com/mcp.tool.isReadOnly', false) == true && api.getAttribute('iap.googleapis.com/mcp.tool.isDestructive', true) == false && api.getAttribute('iap.googleapis.com/mcp.tool.isOpenWorld', true) == false"
+      }
+    }
+  ]
+}

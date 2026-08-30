@@ -1,0 +1,88 @@
+{
+  "schema_version": "0.1",
+  "status": "verified",
+  "captured_at": {
+    "utc": "2026-08-29T18:13:37Z",
+    "wat": "2026-08-29 19:13:37 WAT",
+    "pdt": "2026-08-29 11:13:37 PDT"
+  },
+  "project": "onyx-yeti-506606-i9",
+  "location": "europe-west2",
+  "source_manifest": "config/agent_registry.json",
+  "backend_base_url": "https://appeal-backend-835653516606.europe-west2.run.app/api/agents",
+  "cloud_run_revision": "appeal-backend-00018-w7f",
+  "discoverable_agent_count": 7,
+  "submission_gate_discoverable": false,
+  "agents": [
+    {
+      "role": "intake",
+      "display_name": "Intake",
+      "service": "projects/onyx-yeti-506606-i9/locations/europe-west2/services/appeal-agent-intake",
+      "agent": "projects/onyx-yeti-506606-i9/locations/europe-west2/agents/agentregistry-00000000-0000-0000-921a-4288a249beea",
+      "endpoint": "https://appeal-backend-835653516606.europe-west2.run.app/api/agents/intake",
+      "principal": "appeal-intake@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "version": "0.1.0"
+    },
+    {
+      "role": "denial_parser",
+      "display_name": "Denial Parser",
+      "service": "projects/onyx-yeti-506606-i9/locations/europe-west2/services/appeal-agent-denial-parser",
+      "agent": "projects/onyx-yeti-506606-i9/locations/europe-west2/agents/agentregistry-00000000-0000-0000-5614-6fc17ab02577",
+      "endpoint": "https://appeal-backend-835653516606.europe-west2.run.app/api/agents/denial_parser",
+      "principal": "appeal-denial-parser@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "version": "0.1.0"
+    },
+    {
+      "role": "policy_analyst",
+      "display_name": "Policy Analyst",
+      "service": "projects/onyx-yeti-506606-i9/locations/europe-west2/services/appeal-agent-policy-analyst",
+      "agent": "projects/onyx-yeti-506606-i9/locations/europe-west2/agents/agentregistry-00000000-0000-0000-e618-1357ebdaf60c",
+      "endpoint": "https://appeal-backend-835653516606.europe-west2.run.app/api/agents/policy_analyst",
+      "principal": "appeal-policy-analyst@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "version": "0.1.0"
+    },
+    {
+      "role": "evidence_miner",
+      "display_name": "Evidence Miner",
+      "service": "projects/onyx-yeti-506606-i9/locations/europe-west2/services/appeal-agent-evidence-miner",
+      "agent": "projects/onyx-yeti-506606-i9/locations/europe-west2/agents/agentregistry-00000000-0000-0000-7e63-19ace49f9e35",
+      "endpoint": "https://appeal-backend-835653516606.europe-west2.run.app/api/agents/evidence_miner",
+      "principal": "appeal-evidence-miner@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "version": "0.1.0"
+    },
+    {
+      "role": "argument_builder",
+      "display_name": "Argument Builder",
+      "service": "projects/onyx-yeti-506606-i9/locations/europe-west2/services/appeal-agent-argument-builder",
+      "agent": "projects/onyx-yeti-506606-i9/locations/europe-west2/agents/agentregistry-00000000-0000-0000-b9e8-af1ea7ffc15a",
+      "endpoint": "https://appeal-backend-835653516606.europe-west2.run.app/api/agents/argument_builder",
+      "principal": "appeal-argument-builder@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "version": "0.1.0"
+    },
+    {
+      "role": "deadline_sentinel",
+      "display_name": "Deadline Sentinel",
+      "service": "projects/onyx-yeti-506606-i9/locations/europe-west2/services/appeal-agent-deadline-sentinel",
+      "agent": "projects/onyx-yeti-506606-i9/locations/europe-west2/agents/agentregistry-00000000-0000-0000-a00d-34a97bf51045",
+      "endpoint": "https://appeal-backend-835653516606.europe-west2.run.app/api/agents/deadline_sentinel",
+      "principal": "appeal-deadline-sentinel@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "version": "0.1.0"
+    },
+    {
+      "role": "escalation_strategist",
+      "display_name": "Escalation Strategist",
+      "service": "projects/onyx-yeti-506606-i9/locations/europe-west2/services/appeal-agent-escalation-strategist",
+      "agent": "projects/onyx-yeti-506606-i9/locations/europe-west2/agents/agentregistry-00000000-0000-0000-4203-824802e0a150",
+      "endpoint": "https://appeal-backend-835653516606.europe-west2.run.app/api/agents/escalation_strategist",
+      "principal": "appeal-escalation-strategist@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+      "version": "0.1.0"
+    }
+  ],
+  "checks": {
+    "seven_managed_agent_records": true,
+    "seven_live_backend_routes": true,
+    "capability_and_data_scope_descriptions_present": true,
+    "submission_gate_absent_from_discoverable_agents": true,
+    "all_records_synthetic_only": true
+  }
+}

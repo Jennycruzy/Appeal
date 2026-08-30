@@ -37,10 +37,18 @@ complete.
   Memory Bank write succeeded. Direct retrieval returned one memory in the
   synthetic `case_id` scope without persisting its fact content in the report.
   Telemetry was requested and Cloud Trace returned two matching Agent Runtime
-  traces in the two-day verification window. Agent Gateway, Agent Policies,
-  Firebase Auth, and broader subscriber-driven Agent Runtime workflow
-  execution are not yet deployed. A controlled synthetic subscriber checkpoint
-  is implemented and verified on the current revision; its aggregate record is
+  traces in the two-day verification window. A regional Agent Gateway and IAP
+  Agent Policies are deployed in `DRY_RUN`, and the two observed platform
+  destinations are registered with endpoint-specific egress permissions. No
+  MCP server or tool is registered, so mutation-denial enforcement and an
+  `ENFORCE` promotion are not verified. Firebase Auth and broader
+  subscriber-driven Agent Runtime workflow execution are also not yet
+  deployed. The governance audit is in
+  [`docs/audits/agent-gateway.md`](audits/agent-gateway.md), with aggregate
+  evidence in
+  [`evidence/agent-gateway-governance.json`](../evidence/agent-gateway-governance.json).
+  A controlled synthetic subscriber checkpoint is implemented and verified on
+  the current revision; its aggregate record is
   [`evidence/agent-runtime-subscriber.json`](../evidence/agent-runtime-subscriber.json).
   Native Firestore case state, reference-only workflow-session persistence,
   hash-chained receipt persistence, and the managed Model Armor -> Gemma

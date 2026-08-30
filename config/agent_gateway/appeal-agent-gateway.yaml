@@ -1,0 +1,7 @@
+name: appeal-agent-gateway
+protocols:
+  - MCP
+googleManaged:
+  governedAccessPath: AGENT_TO_ANYWHERE
+registries:
+  - //agentregistry.googleapis.com/projects/onyx-yeti-506606-i9/locations/europe-west2
