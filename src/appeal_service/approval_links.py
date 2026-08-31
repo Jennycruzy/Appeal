@@ -29,9 +29,12 @@ def _decoded(value: str) -> bytes:
     if not value or any(character not in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_" for character in value):
         raise ApprovalLinkError("approval link encoding is invalid")
     try:
-        return base64.urlsafe_b64decode(value + "=" * (-len(value) % 4))
+        decoded = base64.urlsafe_b64decode(value + "=" * (-len(value) % 4))
     except (ValueError, UnicodeError) as error:
         raise ApprovalLinkError("approval link encoding is invalid") from error
+    if _encoded(decoded) != value:
+        raise ApprovalLinkError("approval link encoding is not canonical")
+    return decoded
 
 
 @dataclass(frozen=True)

@@ -13,6 +13,7 @@ from typing import Any
 
 from inspect_cms_qic_bulk import sha256_file
 from sample_cms_qic_benchmark import require_external
+from appeal_evaluation import inspect_queue
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -114,6 +115,23 @@ def create_queues(
             for item in ordered:
                 handle.write(json.dumps(item, ensure_ascii=False, sort_keys=True) + "\n")
 
+    inspection_a = inspect_queue(
+        queue_a,
+        taxonomy_version=str(taxonomy.get("taxonomy_id")),
+        annotator_id="queue-template-a",
+        annotator_role="researcher",
+        require_locked_test=False,
+    )
+    inspection_b = inspect_queue(
+        queue_b,
+        taxonomy_version=str(taxonomy.get("taxonomy_id")),
+        annotator_id="queue-template-b",
+        annotator_role="researcher",
+        require_locked_test=False,
+    )
+    if inspection_a.context_fingerprint != inspection_b.context_fingerprint:
+        raise ValueError("independent queues have different source context")
+
     order_a = [str(item["case_ref"]) for item in sorted(items, key=lambda item: queue_rank(str(item["case_ref"]), "reviewer_a"))]
     order_b = [str(item["case_ref"]) for item in sorted(items, key=lambda item: queue_rank(str(item["case_ref"]), "reviewer_b"))]
     return {
@@ -138,11 +156,13 @@ def create_queues(
                 "location": "outside_repository_only",
                 "sha256": sha256_file(queue_a),
                 "order_fingerprint": hashlib.sha256("\n".join(order_a).encode("ascii")).hexdigest(),
+                "context_fingerprint": inspection_a.context_fingerprint,
             },
             "reviewer_b": {
                 "location": "outside_repository_only",
                 "sha256": sha256_file(queue_b),
                 "order_fingerprint": hashlib.sha256("\n".join(order_b).encode("ascii")).hexdigest(),
+                "context_fingerprint": inspection_b.context_fingerprint,
             },
             "independent_order": order_a != order_b,
         },

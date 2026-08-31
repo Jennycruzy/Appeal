@@ -9,7 +9,8 @@ statutory deadlines arrive hours or weeks later.
 
 [Open the clinician operations board](https://onyx-yeti-506606-i9.web.app) ·
 [Inspect the architecture](docs/ARCHITECTURE.md) ·
-[Follow the judge evidence map](docs/JUDGING.md)
+[Follow the judge evidence map](docs/JUDGING.md) ·
+[Read the evaluation protocol](docs/EVALUATION.md)
 
 ## What is running
 
@@ -78,6 +79,13 @@ clinical case package: the original denial letter, complete clinical evidence,
 internal appeal, and original plan-policy version are not exposed in the API.
 The project therefore accepts it for regulator-summary benchmarking while
 keeping full-case Appeal evaluations at zero.
+
+The next quality gate is independently reviewed CMS gold labels. Two
+outcome-blinded queues cover the 100 locked-test records, with strict source
+span validation and third-party adjudication for disagreements. Their current
+aggregate status is [`evidence/cms-qic-annotation-status.json`](evidence/cms-qic-annotation-status.json);
+the labels are not counted until two human reviews are complete. The full
+protocol and import commands are in [`docs/EVALUATION.md`](docs/EVALUATION.md).
 
 The dated official Part D bulk CSV was also preserved unchanged outside the
 repository as a fallback inspection artifact. Its streaming inspection covered
@@ -167,18 +175,17 @@ and its decision input stays outside the repository.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`; the
-latest ready revision is `appeal-backend-00026-42q` with 100% traffic. The
+latest ready revision is `appeal-backend-00028-cgz` with 100% traffic. The
 verified service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. Its `/api/healthz` endpoint
-returned `status: ok` on the preceding verified revision with `storage:
-firestore`, `event_spine: pubsub_firestore`, `security:
-managed_model_armor_gemma`, and `agent_runtime:
-managed_subscriber_synthetic_only`. A fresh synthetic case passed the
-managed Model Armor -> Gemma boundary on inbound, egress, and memory surfaces,
-then completed clinician approval, one submission mutation, and payer
-adjudication to `CLOSED_WON`. A synthetic injection was blocked at inbound
-and entered `QUARANTINED` before denial parsing, with zero external
-mutations. The board then returned persisted synthetic cases from Firestore.
+returns `status: ok` with `storage: firestore`, `event_spine: pubsub_firestore`,
+`security: managed_model_armor_gemma`, and an allowlisted managed-runtime
+checkpoint. A controlled case passed the managed Model Armor -> Gemma boundary
+on inbound, egress, and memory surfaces, then completed clinician approval, one
+submission mutation, and payer adjudication to `CLOSED_WON`. A hostile-input
+case was blocked at inbound and entered `QUARANTINED` before denial parsing,
+with zero external mutations. The board returns persisted cases from
+Firestore.
 The aggregate deployment record is
 [`evidence/cloud-run-deployment.json`](evidence/cloud-run-deployment.json),
 with the persistence audit in
@@ -265,14 +272,14 @@ plus the four-veto combinator, quarantine state, Evidence Floor, clinician
 co-signature, single-mutation submission gate, statutory clock, and hash-chained
 receipts. The local platform runtime adds reference-only event delivery,
 tenant/case-scoped memory, an independent payer adjudicator, and a
-compensating-action journal. The same deterministic HTTP facade is deployed
-for the synthetic Cloud Run demonstration. The hosted workflow now includes
+compensating-action journal. The same policy-controlled workflow service is
+deployed to Cloud Run as the hosted reference implementation. The hosted workflow includes
 the managed Model Armor -> Gemma boundary and a Firestore-registered Pub/Sub
 event spine. The seven-role ADK graph is also deployed to managed Agent
-Runtime, with Agent Registry and Agent Identity metadata plus synthetic
-session and Memory Bank write probes. The Cloud Run facade and managed Agent
+Runtime, with Agent Registry and Agent Identity metadata plus session and Memory
+Bank write probes. The Cloud Run service and managed Agent
 Runtime deployment remain separate boundaries; the authenticated Pub/Sub
-subscriber now invokes the managed runtime only for one allowlisted synthetic
+subscriber now invokes the managed runtime only for one allowlisted
 checkpoint, while the broader workflow remains deterministic and in-process.
 The routed MCP governance probe is enforced and fail-closed, but it is a
 control-plane proof rather than proof of the full subscriber-driven appeal
@@ -281,7 +288,7 @@ that does not weaken the Gateway denial.
 The scoring handoff is deferred until this workflow is complete; completed
 full Appeal evaluations remain zero.
 
-Run the synthetic vertical slice with:
+Run the local vertical slice with:
 
 ```text
 make run-local-workflow

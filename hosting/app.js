@@ -214,13 +214,13 @@ async function createMobileLink() {
   }
 }
 
-async function createDemoCase(mode, index = 0) {
+async function createEvaluationCase(mode, index = 0) {
   const suffix = `${Date.now()}-${index}-${mode}`;
   return api("/api/demo/cases", {
     method: "POST",
     body: JSON.stringify({
       tenant_id: tenantId,
-      case_id: `case-demo-dashboard-${suffix}`,
+      case_id: `case-appeal-board-${suffix}`,
       injection: mode === "injection",
       missing_evidence: mode === "missing_evidence"
     })
@@ -233,7 +233,7 @@ document.querySelector("#seed-button").addEventListener("click", async () => {
   setMessage(runtimeMessage, "Loading six governed evaluation cases…", "working");
   try {
     for (const [index, mode] of ["clean", "clean", "missing_evidence", "injection", "clean", "clean"].entries()) {
-      await createDemoCase(mode, index);
+      await createEvaluationCase(mode, index);
     }
     await refreshBoard("Six evaluation cases created and loaded from Firestore.");
   } catch (error) {

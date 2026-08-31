@@ -9,11 +9,13 @@
     "independent_order": true,
     "reviewer_a": {
       "location": "outside_repository_only",
+      "context_fingerprint": "23b96643ce9f88bfdd436ff7391b0c3b011e9f0f1dbc86a51784a5d216d9f772",
       "order_fingerprint": "c7ee152ce640e9637b8eaed903e481783c4a15150f6f106b7c097012c487c93c",
       "sha256": "bd1670e39a23c919ac9965b768c95ae9dc3cf74038fef7a552ab81dd0a79fae9"
     },
     "reviewer_b": {
       "location": "outside_repository_only",
+      "context_fingerprint": "23b96643ce9f88bfdd436ff7391b0c3b011e9f0f1dbc86a51784a5d216d9f772",
       "order_fingerprint": "adbdff6a6a01773a159a93579618a0327b30fb13e507d0d83a1fb50c89b24bfa",
       "sha256": "ea56c9a1e861489745465c9be7d8c946bb330268a75704929aa9dea73108b5d1"
     }

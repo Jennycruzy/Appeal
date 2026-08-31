@@ -1,0 +1,52 @@
+{
+  "gold_claim_allowed": false,
+  "gold_policy": {
+    "disagreement_requires_third_human": true,
+    "gold_status": "pending_human_annotation",
+    "minimum_independent_annotations": 2,
+    "model_generated_label_can_be_gold": false
+  },
+  "manifest_sha256": "5a63ca86d88d6c0e9584ec0ba132598d29fbd7f8de0485fc2069e2dfb6675285",
+  "review_progress": {
+    "adjudication_file_present": false,
+    "independent_disagreements": 0,
+    "locked_test": {
+      "complete_pair": false,
+      "queue_a_complete": 0,
+      "queue_b_complete": 0,
+      "rows": 100
+    },
+    "queue_a": {
+      "complete": 0,
+      "partial": 0,
+      "pending": 300,
+      "splits": {
+        "development": 200,
+        "locked_test": 100
+      }
+    },
+    "queue_b": {
+      "complete": 0,
+      "partial": 0,
+      "pending": 300,
+      "splits": {
+        "development": 200,
+        "locked_test": 100
+      }
+    }
+  },
+  "schema_version": "1.0",
+  "source": {
+    "outcome_labels_seen": false,
+    "queue_a_rows": 300,
+    "queue_a_sha256": "bd1670e39a23c919ac9965b768c95ae9dc3cf74038fef7a552ab81dd0a79fae9",
+    "queue_b_rows": 300,
+    "queue_b_sha256": "ea56c9a1e861489745465c9be7d8c946bb330268a75704929aa9dea73108b5d1",
+    "same_case_set": true,
+    "same_locked_test_case_set": true,
+    "source_narratives_emitted": false,
+    "taxonomy_version": "cms_part_d_rationale_v1"
+  },
+  "status": "pending_human_annotation",
+  "taxonomy_sha256": "2fee95b5682ac449cf450421a39cc53548cb0d798fcbae576355201d1234dea9"
+}
