@@ -127,7 +127,12 @@ class LocalAppealService:
         return report
 
     def accept_event(self, event: DomainEvent) -> dict[str, object]:
-        """Accept a validated Pub/Sub event without granting it mutation rights."""
+        """Accept and route a validated reference-only event.
+
+        Workflow-resumable events are handled from the persisted case/session
+        boundary. The managed Agent Runtime subscriber remains an additional
+        advisory checkpoint and never receives mutation authority.
+        """
 
         self.runtime.spine.accept(event)
         result: dict[str, object] = {
@@ -137,6 +142,7 @@ class LocalAppealService:
             "case_id": event.case_id,
             "topic": event.topic,
         }
+        result["workflow"] = self.runtime.handle_event(event)
         if self.agent_runtime_subscriber is not None:
             result["agent_runtime"] = self.agent_runtime_subscriber.handle(event)
         return result

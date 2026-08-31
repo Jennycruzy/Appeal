@@ -1,0 +1,132 @@
+{
+  "execution_scope": "local_deterministic_synthetic_scenarios",
+  "kind": "operational_utility_measurement",
+  "known_limits": [
+    "Synthetic traces do not measure clinical quality or regulator agreement.",
+    "The Oregon rate is an external-review outcome proxy and is not a prior-authorization overturn rate.",
+    "The labor benchmark is a published reference, not a case-level counterfactual.",
+    "A real allowed-amount source and full Appeal evaluation remain required for a defensible recoverable-dollar claim."
+  ],
+  "published_burden_reference": {
+    "derived_admin_labor_cost_per_request_usd": 6.9745,
+    "derived_hours_per_request": 0.325,
+    "interpretation": "external administrative-burden benchmark, not measured Appeal labor",
+    "medical_secretary_median_hourly_usd_may_2024": 21.46,
+    "reported_hours_per_physician_week": 13,
+    "reported_requests_per_physician_week": 40,
+    "source": "https://www.ama-assn.org/about/leadership/latest-prior-authorization-survey-shows-promised-reform-remains-elusive",
+    "wage_source": "https://www.bls.gov/news.release/archives/ocwage_04022025.htm"
+  },
+  "raw_content_persisted": false,
+  "real_outcome_proxy": {
+    "cases": 1640,
+    "comparison_to_appeal_predictions": "not_run",
+    "overturn_proxy_rate": 0.356707,
+    "overturned_or_partial": 585,
+    "scope": "official Oregon external-review outcomes; not prior-authorization and not a full Appeal corpus",
+    "source": "evidence/oregon-evaluation.json"
+  },
+  "receipt_chain": {
+    "entry_count": 97,
+    "tip_hash": "9f2171e132d26d9d1d8fe1d55bfee6995f88384b3cbb08ee16c9700b99caceb3",
+    "verification": "passed"
+  },
+  "recorded_at": "2026-08-28T12:00:00Z",
+  "recoverable_dollars": {
+    "formula_if_authorized_amount_is_supplied": "authorized_allowed_amount_usd * real_outcome_proxy.overturn_proxy_rate",
+    "per_abandoned_appeal_usd": null,
+    "reason": "No allowed medical amount is present in the accepted regulator-summary or external-review sources; do not invent one.",
+    "status": "sensitivity_only"
+  },
+  "scenarios": [
+    {
+      "autonomous_transition_count": 10,
+      "autonomous_transition_fraction": 0.9091,
+      "case_fingerprint": "a03cd7586e922963592c726c9b05e410847e7777ae193d7be43d2a7ddc44b0a5",
+      "external_mutation_count": 1,
+      "final_outcome": "closed_won",
+      "final_state": "CLOSED_WON",
+      "human_action_count": 1,
+      "initial_state": "AWAITING_CLINICIAN",
+      "scenario": "clean_win",
+      "transition_count": 11,
+      "workflow_elapsed_hours": 6.0
+    },
+    {
+      "autonomous_transition_count": 2,
+      "autonomous_transition_fraction": 1.0,
+      "case_fingerprint": "d22fdf7cb5528d4b3aaf76375792e674ecbbdaa7d2cb6f0a22100fd3135ed92e",
+      "external_mutation_count": 0,
+      "final_outcome": "quarantined",
+      "final_state": "QUARANTINED",
+      "human_action_count": 0,
+      "initial_state": "QUARANTINED",
+      "scenario": "injection_quarantine",
+      "transition_count": 2,
+      "workflow_elapsed_hours": 0.0
+    },
+    {
+      "autonomous_transition_count": 5,
+      "autonomous_transition_fraction": 1.0,
+      "case_fingerprint": "a2b66230f9b2bb7055f1c1f957ada47c5a54aa6c7bfb45c0b4e08f14b9b51eb3",
+      "external_mutation_count": 0,
+      "final_outcome": "abstained",
+      "final_state": "EVIDENCE_INSUFFICIENT",
+      "human_action_count": 0,
+      "initial_state": "EVIDENCE_INSUFFICIENT",
+      "scenario": "missing_evidence_abstention",
+      "transition_count": 5,
+      "workflow_elapsed_hours": 0.0
+    },
+    {
+      "autonomous_transition_count": 8,
+      "autonomous_transition_fraction": 1.0,
+      "case_fingerprint": "92ec9b9e9bb7219ef7ee4f1687ad807cbcaf6f23db3481b0538320d7f855e131",
+      "external_mutation_count": 0,
+      "final_outcome": "awaiting_clinician",
+      "final_state": "AWAITING_CLINICIAN",
+      "human_action_count": 0,
+      "initial_state": "EVIDENCE_INSUFFICIENT",
+      "scenario": "evidence_arrival_wake",
+      "transition_count": 8,
+      "workflow_elapsed_hours": 2.0
+    },
+    {
+      "autonomous_transition_count": 9,
+      "autonomous_transition_fraction": 0.9,
+      "case_fingerprint": "e0e8c154f85ea5737196968f891b33b0ee8d9915740f178ce3ff1867b23b2f20",
+      "external_mutation_count": 1,
+      "final_outcome": "deadline_abandoned",
+      "final_state": "CLOSED_ABANDONED_DEADLINE",
+      "human_action_count": 1,
+      "initial_state": "AWAITING_CLINICIAN",
+      "scenario": "deadline_abandonment",
+      "transition_count": 10,
+      "workflow_elapsed_hours": 192.0
+    },
+    {
+      "autonomous_transition_count": 10,
+      "autonomous_transition_fraction": 0.9091,
+      "case_fingerprint": "e1662ca18ea40cf202d5c58160f93213fcd290347ba6bf3dc571b4dd0159e2dc",
+      "external_mutation_count": 1,
+      "final_outcome": "escalation_ready",
+      "final_state": "ESCALATION_ELIGIBLE",
+      "human_action_count": 1,
+      "initial_state": "AWAITING_CLINICIAN",
+      "scenario": "level_two_escalation",
+      "transition_count": 11,
+      "workflow_elapsed_hours": 6.0
+    }
+  ],
+  "schema_version": "0.1",
+  "summary": {
+    "autonomous_transition_count": 44,
+    "autonomous_transition_fraction": 0.9362,
+    "case_count": 6,
+    "cases_that_refused_to_file": 2,
+    "external_mutation_count": 3,
+    "human_action_count": 3,
+    "transition_count": 47
+  },
+  "synthetic_only": true
+}

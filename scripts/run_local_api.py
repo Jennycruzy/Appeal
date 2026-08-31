@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import cast
 
 from appeal_agents import LocalSecurityBoundary, ManagedSecurityBoundary
+from appeal_agents.demo import demo_input
 from appeal_agents.workflow import AppealWorkflow
 from appeal_core import CaseStateMachine, DeadlineCatalog, ReceiptLedger
 from appeal_platform import (
@@ -28,6 +29,14 @@ from appeal_service import LocalAppealService, LocalHttpApi
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LEDGER = ROOT.parent / "Downloads" / "appeal-local-api-receipts.jsonl"
+
+
+def synthetic_input_resolver(tenant_id: str, case_id: str):
+    """Rehydrate only the public synthetic demo fixture after a restart."""
+
+    if not tenant_id.startswith("tenant-demo") or not case_id.startswith("case-demo"):
+        return None
+    return demo_input(case_id=case_id, tenant_id=tenant_id)
 
 
 def build_store() -> tuple[CaseStore, str]:
@@ -131,6 +140,7 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
                 store=store,
                 session_store=session_store,
                 spine=event_spine,
+                input_resolver=synthetic_input_resolver,
             ),
             agent_runtime_subscriber=agent_runtime_subscriber,
         ),

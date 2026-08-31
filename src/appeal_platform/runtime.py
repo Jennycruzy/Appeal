@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from collections.abc import Callable
+from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 
 from appeal_agents import AppealInput, AppealWorkflow, WorkflowOutcome, WorkflowResult
-from appeal_core import Actor, ActorKind, CaseState, DecisionSource, ReceiptDraft
-from appeal_agents.models import AGENT_IDENTITIES
+from appeal_agents.models import AGENT_IDENTITIES, WorkflowEvent
+from appeal_core import Actor, ActorKind, CaseState, CriterionStatus, DecisionSource, ReceiptDraft
 
 from .events import DomainEvent, LocalEventSpine
 from .memory import ScopedMemoryBank
@@ -16,9 +17,15 @@ from .reversibility import ReversibleAction, ReversibilityLedger
 from .sessions import (
     LocalWorkflowSessionStore,
     WorkflowSession,
+    WorkflowSessionConflict,
     WorkflowSessionStore,
 )
 from .store import CaseStore, CaseStoreConflict
+
+
+PAYER_DETERMINATION_TOPIC = "payer.determination.received"
+EVIDENCE_ARRIVAL_TOPIC = "appeal.evidence.arrived"
+InputResolver = Callable[[str, str], AppealInput | None]
 
 
 @dataclass(frozen=True)
@@ -64,6 +71,7 @@ class LocalCaseRuntime:
         memory: ScopedMemoryBank | None = None,
         reversibility: ReversibilityLedger | None = None,
         session_store: WorkflowSessionStore | None = None,
+        input_resolver: InputResolver | None = None,
     ) -> None:
         self.workflow = workflow
         self.store = store or CaseStore()
@@ -71,6 +79,8 @@ class LocalCaseRuntime:
         self.memory = memory or ScopedMemoryBank(workflow.security)
         self.reversibility = reversibility or ReversibilityLedger()
         self.session_store = session_store or LocalWorkflowSessionStore()
+        self.input_resolver = input_resolver
+        self._inputs: dict[tuple[str, str], AppealInput] = {}
 
     def start(
         self,
@@ -79,6 +89,7 @@ class LocalCaseRuntime:
         clinician_decision: bool | None = None,
         at: datetime | None = None,
     ) -> RuntimeResult:
+        self._inputs[(appeal_input.tenant_id, appeal_input.case_id)] = appeal_input
         result = self.workflow.run(appeal_input, clinician_decision=clinician_decision, at=at)
         runtime_result = RuntimeResult(result)
         self._persist(runtime_result)
@@ -95,6 +106,159 @@ class LocalCaseRuntime:
             return None
         restored = session.to_runtime_result(self.workflow, case)
         return RuntimeResult(restored.workflow, restored.payer_decision)
+
+    def handle_event(
+        self,
+        event: DomainEvent,
+        *,
+        at: datetime | None = None,
+    ) -> dict[str, object]:
+        """Resume one persisted case from a reference-only external event.
+
+        The case state and session fingerprints are the idempotency boundary:
+        a duplicate event observes the already-advanced state and cannot
+        create another transition or mutation. Event payloads contain only
+        bounded metadata; evidence bodies are resolved server-side.
+        """
+
+        now = (at or event.published_at).astimezone(UTC)
+        if event.topic not in {PAYER_DETERMINATION_TOPIC, EVIDENCE_ARRIVAL_TOPIC}:
+            return {
+                "status": "ignored",
+                "event_id": event.event_id,
+                "reason": "event_topic_not_workflow_resumable",
+            }
+        current = self.resume(event.tenant_id, event.case_id)
+        if current is None:
+            return {
+                "status": "skipped",
+                "event_id": event.event_id,
+                "reason": "case_or_workflow_session_not_found",
+            }
+        if current.workflow.context is not None and event.event_id in current.workflow.context.processed_event_ids:
+            return {
+                "status": "duplicate",
+                "event_id": event.event_id,
+                "reason": "event was already processed",
+                "case_state": current.workflow.case.state.value,
+            }
+        if event.topic == PAYER_DETERMINATION_TOPIC:
+            return self._handle_payer_event(current, event, now)
+        return self._handle_evidence_event(current, event, now)
+
+    def _handle_payer_event(
+        self,
+        current: RuntimeResult,
+        event: DomainEvent,
+        at: datetime,
+    ) -> dict[str, object]:
+        payload = event.payload_dict()
+        decision = payload.get("decision")
+        if decision not in {
+            PayerDecisionStatus.FAVORABLE.value,
+            PayerDecisionStatus.UNFAVORABLE.value,
+            PayerDecisionStatus.PENDED.value,
+        }:
+            raise ValueError("payer determination event has an unsupported decision")
+        criterion_status = payload.get("criterion_status")
+        if criterion_status not in {status.value for status in CriterionStatus}:
+            raise ValueError("payer determination event has an unsupported criterion_status")
+        evidence_ref_count = payload.get("evidence_ref_count")
+        if (
+            not isinstance(evidence_ref_count, int)
+            or isinstance(evidence_ref_count, bool)
+            or evidence_ref_count < 0
+        ):
+            raise ValueError("payer determination event requires a non-negative evidence_ref_count")
+        if decision == PayerDecisionStatus.FAVORABLE.value and (
+            criterion_status != CriterionStatus.SATISFIED.value or evidence_ref_count < 1
+        ):
+            raise ValueError("favorable payer determination must carry satisfied evidence metadata")
+        if decision == PayerDecisionStatus.UNFAVORABLE.value and criterion_status != CriterionStatus.CONTRADICTED.value:
+            raise ValueError("unfavorable payer determination must carry contradicted criterion metadata")
+        if decision == PayerDecisionStatus.PENDED.value and criterion_status not in {
+            CriterionStatus.ABSENT.value,
+            CriterionStatus.CONFLICTED.value,
+        }:
+            raise ValueError("pended payer determination must carry absent or conflicted criterion metadata")
+        if decision == PayerDecisionStatus.PENDED.value:
+            if current.workflow.context is not None:
+                current.workflow.context.processed_event_ids.add(event.event_id)
+            payer_decision = _payer_decision_from_event(current, decision, criterion_status)
+            self._persist(
+                RuntimeResult(current.workflow, payer_decision),
+                expected_fingerprint=current.workflow.case.fingerprint(),
+            )
+            return {
+                "status": "ignored",
+                "event_id": event.event_id,
+                "reason": "payer determination is still pending",
+                "case_state": current.workflow.case.state.value,
+                "payer_decision": payer_decision.to_json(),
+            }
+        if current.workflow.case.state is not CaseState.AWAITING_DETERMINATION:
+            return {
+                "status": "duplicate",
+                "event_id": event.event_id,
+                "reason": "case is no longer awaiting payer determination",
+                "case_state": current.workflow.case.state.value,
+            }
+        resumed = self.workflow.process_determination(
+            current.workflow,
+            favorable=decision == PayerDecisionStatus.FAVORABLE.value,
+            at=at,
+        )
+        if resumed.context is not None:
+            resumed.context.processed_event_ids.add(event.event_id)
+        payer_decision = _payer_decision_from_event(current, decision, criterion_status)
+        result = RuntimeResult(resumed, payer_decision)
+        self._persist(result, expected_fingerprint=current.workflow.case.fingerprint())
+        return _event_result(event, result, "payer_determination_resumed")
+
+    def _handle_evidence_event(
+        self,
+        current: RuntimeResult,
+        event: DomainEvent,
+        at: datetime,
+    ) -> dict[str, object]:
+        payload = event.payload_dict()
+        revision = payload.get("evidence_revision")
+        count = payload.get("evidence_ref_count")
+        if not isinstance(revision, str) or not revision.strip():
+            raise ValueError("evidence event requires evidence_revision metadata")
+        if not isinstance(count, int) or isinstance(count, bool) or count < 1:
+            raise ValueError("evidence event requires a positive evidence_ref_count")
+        if current.workflow.case.state is not CaseState.EVIDENCE_INSUFFICIENT:
+            return {
+                "status": "duplicate",
+                "event_id": event.event_id,
+                "reason": "case is not waiting for evidence",
+                "case_state": current.workflow.case.state.value,
+            }
+        appeal_input = self._resolve_input(event.tenant_id, event.case_id)
+        if appeal_input is None:
+            return {
+                "status": "skipped",
+                "event_id": event.event_id,
+                "reason": "authorized_case_input_not_available",
+            }
+        resumed = self.workflow.resume_after_evidence(current.workflow, appeal_input, at=at)
+        if resumed.context is not None:
+            resumed.context.processed_event_ids.add(event.event_id)
+        result = RuntimeResult(resumed, current.payer_decision)
+        self._persist(result, expected_fingerprint=current.workflow.case.fingerprint())
+        return _event_result(event, result, "evidence_arrival_resumed")
+
+    def _resolve_input(self, tenant_id: str, case_id: str) -> AppealInput | None:
+        local = self._inputs.get((tenant_id, case_id))
+        if local is not None:
+            return local
+        if self.input_resolver is None:
+            return None
+        resolved = self.input_resolver(tenant_id, case_id)
+        if resolved is not None:
+            self._inputs[(tenant_id, case_id)] = resolved
+        return resolved
 
     def submit_and_adjudicate(
         self,
@@ -200,6 +364,31 @@ class LocalCaseRuntime:
             except CaseStoreConflict:
                 conflicts += 1
                 continue
+            session = self.session_store.get(case.tenant_id, case.case_id)
+            if session is not None:
+                try:
+                    self.session_store.save(
+                        replace(
+                            session,
+                            case_fingerprint=updated.fingerprint(),
+                            events=session.events
+                            + (
+                                WorkflowEvent(
+                                    "deadline_sentinel",
+                                    "expired",
+                                    reason,
+                                    now,
+                                    case.last_transition.evidence_refs,
+                                ),
+                            ),
+                            outcome=WorkflowOutcome.DEADLINE_ABANDONED,
+                            failure_reason=reason,
+                        ),
+                        expected_fingerprint=case.fingerprint(),
+                    )
+                except WorkflowSessionConflict:
+                    conflicts += 1
+                    continue
             abandoned += 1
             updated_cases.append((case.tenant_id, case.case_id))
             if self.workflow.ledger is not None:
@@ -286,3 +475,38 @@ class LocalCaseRuntime:
                     compensating_action="withdraw_level_1_submission",
                 )
             )
+
+
+def _event_result(event: DomainEvent, result: RuntimeResult, action: str) -> dict[str, object]:
+    response: dict[str, object] = {
+        "status": "resumed",
+        "event_id": event.event_id,
+        "action": action,
+        "case_state": result.workflow.case.state.value,
+        "outcome": result.workflow.outcome.value,
+        "mutation_count": result.workflow.mutation_count,
+    }
+    if result.payer_decision is not None:
+        response["payer_decision"] = result.payer_decision.to_json()
+    return response
+
+
+def _payer_decision_from_event(
+    current: RuntimeResult,
+    decision: str,
+    criterion_status: str,
+) -> PayerDecision:
+    context = current.workflow.context
+    if context is None or context.input.policy is None:
+        raise ValueError("payer determination requires the persisted policy criterion")
+    evaluation_refs = context.criterion_evaluation.evidence_refs if context.criterion_evaluation is not None else ()
+    return PayerDecision(
+        case_id=current.workflow.case.case_id,
+        tenant_id=current.workflow.case.tenant_id,
+        status=PayerDecisionStatus(decision),
+        criterion_id=context.input.policy.criterion_id,
+        criterion_status=CriterionStatus(criterion_status),
+        reason="payer determination received through the typed event boundary",
+        evidence_refs=evaluation_refs,
+        payer_graph_fingerprint=context.input.policy.fingerprint(),
+    )

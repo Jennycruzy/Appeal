@@ -8,17 +8,19 @@ recorded. The same seven-role ADK graph is also deployed to managed Agent
 Runtime with Agent Registry and Agent Identity metadata, a managed session,
 an initial reference-only Memory Bank write, and verified Memory Bank and
 Cloud Trace readback. Managed Runtime egress now passes through a regional
-Agent Gateway with IAP authorization in dry-run mode; the observed platform
-destinations are registered, while enforced tool policies, the external payer,
-and the hosted console remain future integrations.
+Agent Gateway with IAP authorization in enforced, fail-closed mode; the
+observed platform destinations are registered and a routed MCP read/denied-
+canary proof is recorded. The external payer and hosted console remain future
+integrations.
 
 The local executor runs the role adapters in deterministic graph order and
-publishes reference-only event records through `LocalEventSpine`. The hosted
-boundary persists and publishes the same reference-only events through
-managed Pub/Sub; its subscriber currently validates, records, and
-acknowledges deliveries and invokes the managed Agent Runtime for one
-allowlisted synthetic checkpoint. Broader subscriber-driven workflow
-execution remains open.
+publishes reference-only event records through `LocalEventSpine`. Its typed
+evidence-arrival and payer-determination handlers rehydrate persisted cases,
+record processed event IDs, and resume safely after a restart. The hosted
+boundary persists and publishes the same reference-only events through managed
+Pub/Sub; its subscriber currently validates, records, and acknowledges
+deliveries and invokes the managed Agent Runtime for one allowlisted synthetic
+checkpoint. Broader subscriber-driven workflow execution remains open.
 
 ```mermaid
 flowchart LR
@@ -79,6 +81,6 @@ flowchart LR
 | Event delivery | `LocalEventSpine` plus Firestore-registered managed Pub/Sub push and a Firestore-idempotent synthetic Agent Runtime subscriber | Broader managed subscriber workflow |
 | Memory | `ScopedMemoryBank` plus managed Memory Bank write and verified retrieval | Verified per-case Memory Bank revisions and broader case workflow |
 | Payer | `PayerAdjudicator` with a private criterion copy | Separate Cloud Run service/account |
-| Security | Local fallback + hosted Model Armor/Gemma in series + dry-run Agent Gateway/IAP policy with observed platform endpoint registration | Enforced endpoint/tool policies around the managed path |
+| Security | Local fallback + hosted Model Armor/Gemma in series + enforced Agent Gateway/IAP policy with observed platform endpoint registration | Broader endpoint/tool policy coverage around the managed path |
 | Human action | Local `approve()` resume step | Firebase-authenticated console co-signature |
 | External action | Local receipt-only mutation representation | Deterministic payer submission API |

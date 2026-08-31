@@ -272,7 +272,19 @@ class AppealWorkflow:
             initial_actor,
             initial_source,
         )
-        context = WorkflowContext(appeal_input, self.machine, case, self.security, self.ledger, self.policies)
+        context = WorkflowContext(
+            appeal_input,
+            self.machine,
+            case,
+            self.security,
+            self.ledger,
+            self.policies,
+            patient_scope_hash=_patient_scope_hash(
+                appeal_input.tenant_id,
+                appeal_input.case_id,
+                appeal_input.patient_id,
+            ),
+        )
 
         self.deadline_sentinel.run(context, now)
         if context.case.state is CaseState.INTAKE_RECEIVED:
@@ -334,6 +346,72 @@ class AppealWorkflow:
             context.outcome = WorkflowOutcome.DEADLINE_ABANDONED
         return WorkflowResult(
             outcome=context.outcome or WorkflowOutcome.FAILED,
+            case_state=context.case.state,
+            case=context.case,
+            clock=clock,
+            events=tuple(context.events),
+            draft=context.draft,
+            combinator=context.combinator_decision,
+            failure_reason=context.failure_reason,
+            mutation_count=result.mutation_count + mutation_count,
+            context=context,
+        )
+
+    def resume_after_evidence(
+        self,
+        result: WorkflowResult,
+        appeal_input: AppealInput,
+        *,
+        at: datetime,
+    ) -> WorkflowResult:
+        """Re-run the evidence boundary after a case-scoped evidence event.
+
+        Durable sessions intentionally omit denial and chart bodies. The event
+        handler therefore supplies a freshly authorized ``AppealInput`` from
+        a server-side resolver, while this method reuses only the persisted
+        case/policy context. No event can manufacture evidence: the Evidence
+        Miner and Evidence Floor still decide whether a draft is possible.
+        """
+
+        context = result.context
+        if context is None or result.case_state is not CaseState.EVIDENCE_INSUFFICIENT:
+            raise ValueError("evidence resume requires an evidence-insufficient workflow context")
+        if (
+            appeal_input.tenant_id != context.input.tenant_id
+            or appeal_input.case_id != context.input.case_id
+        ):
+            raise ValueError("evidence resume input is outside the persisted case scope")
+        if context.patient_scope_hash is None:
+            raise ValueError("evidence resume requires a persisted patient scope binding")
+        if (
+            _patient_scope_hash(appeal_input.tenant_id, appeal_input.case_id, appeal_input.patient_id)
+            != context.patient_scope_hash
+        ):
+            raise ValueError("evidence resume input is outside the persisted patient scope")
+        now = at.astimezone(UTC)
+        context.input = appeal_input
+        context.outcome = None
+        context.failure_reason = None
+        self.evidence_miner.run(context, now)
+        if context.case.state is CaseState.EVIDENCE_ASSEMBLED:
+            self.argument_builder.run(context, now)
+
+        mutation_count = self._apply_clinician_gate(context, now, None)
+        if context.outcome is None:
+            if context.case.state is CaseState.AWAITING_CLINICIAN:
+                context.outcome = WorkflowOutcome.AWAITING_CLINICIAN
+            elif context.case.state is CaseState.QUARANTINED:
+                context.outcome = WorkflowOutcome.QUARANTINED
+            elif context.case.state is CaseState.EVIDENCE_INSUFFICIENT:
+                context.outcome = WorkflowOutcome.ABSTAINED
+            else:
+                context.outcome = WorkflowOutcome.FAILED
+        self.escalation_strategist.run(context, now)
+        clock = self.deadline_sentinel.run(context, now)
+        if context.case.state is CaseState.CLOSED_ABANDONED_DEADLINE:
+            context.outcome = WorkflowOutcome.DEADLINE_ABANDONED
+        return WorkflowResult(
+            outcome=context.outcome,
             case_state=context.case.state,
             case=context.case,
             clock=clock,
@@ -476,3 +554,10 @@ class AppealWorkflow:
 
 def _clear_inspection(surface: str) -> InspectionResult:
     return InspectionResult(surface, InspectionStatus.CLEAR, "local_deterministic_fallback", (), "not applicable")
+
+
+def _patient_scope_hash(tenant_id: str, case_id: str, patient_id: str) -> str:
+    """Bind the patient scope to this tenant/case before durable storage."""
+
+    scope = f"{tenant_id}\x00{case_id}\x00{patient_id}"
+    return hashlib.sha256(scope.encode("utf-8")).hexdigest()

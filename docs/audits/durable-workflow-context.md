@@ -36,11 +36,16 @@ tamper detection. The full repository check completed with 83 tests passing and
 strict mypy passing. No real case data was uploaded.
 
 This closes durable workflow context and receipt persistence for the current
-synthetic Cloud Run boundary. The managed Pub/Sub event boundary is recorded
-separately in [`pubsub-event-spine.md`](pubsub-event-spine.md). The managed
-Agent Runtime, Registry, and Identity deployment is recorded separately in
+synthetic Cloud Run boundary. The local runtime also has restart-safe
+evidence-arrival and payer-determination resume handlers with durable
+processed-event IDs; the aggregate proof is in
+[`evidence/async-workflow-proof.json`](../../evidence/async-workflow-proof.json).
+The managed Pub/Sub event boundary is recorded separately in
+[`pubsub-event-spine.md`](pubsub-event-spine.md). The managed Agent Runtime,
+Registry, and Identity deployment is recorded separately in
 [`agent-runtime.md`](agent-runtime.md). Managed Memory Bank readback and the
-current Agent Runtime trace export are verified synthetic probes. The dry-run
-Gateway and Agent Policy path is recorded in
-[`agent-gateway.md`](agent-gateway.md); MCP enforcement, payer service
-separation, and the hosted console remain open work.
+current Agent Runtime trace export are verified synthetic probes. The Gateway
+MCP enforcement proof is recorded in
+[`agent-gateway-mcp-enforcement.json`](../../evidence/agent-gateway-mcp-enforcement.json);
+the hosted subscriber-driven workflow, payer service separation, and hosted
+console remain open work.

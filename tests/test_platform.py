@@ -3,6 +3,7 @@ from __future__ import annotations
 import base64
 import json
 import unittest
+from dataclasses import replace
 from datetime import UTC, datetime
 from datetime import timedelta
 from pathlib import Path
@@ -15,12 +16,14 @@ from appeal_agents.workflow import AppealWorkflow
 from appeal_core import Actor, ActorKind, CaseState, CaseStateMachine, DecisionSource, DeadlineCatalog, EvidenceRef
 from appeal_platform import (
     DomainEvent,
+    EVIDENCE_ARRIVAL_TOPIC,
     LocalCaseRuntime,
     LocalEventSpine,
     MemoryScopeError,
     MemoryWriteBlocked,
     PayerAdjudicator,
     PayerDecisionStatus,
+    PAYER_DETERMINATION_TOPIC,
     ReversibleAction,
     ReversibilityLedger,
     ScopedMemoryBank,
@@ -220,6 +223,217 @@ class PlatformTests(unittest.TestCase):
         self.assertEqual(approved.workflow.mutation_count, 1)
         self.assertEqual(runtime.store.require("tenant-demo", "case-demo-001").state.value, "AWAITING_DETERMINATION")
 
+    def test_evidence_event_resumes_after_restart_and_is_idempotent(self) -> None:
+        appeal_input = demo_input(
+            missing_evidence=True,
+            case_id="case-demo-evidence-resume",
+            tenant_id="tenant-demo-evidence-resume",
+        )
+        first = LocalCaseRuntime(workflow())
+        waiting = first.start(appeal_input, at=NOW)
+        self.assertEqual(waiting.workflow.case_state, CaseState.EVIDENCE_INSUFFICIENT)
+        self.assertEqual(waiting.workflow.outcome.value, "abstained")
+        session = first.session_store.get(appeal_input.tenant_id, appeal_input.case_id)
+        assert session is not None
+        self.assertNotIn(appeal_input.patient_id, str(session.to_json()))
+
+        restarted = LocalCaseRuntime(
+            workflow(),
+            store=first.store,
+            spine=first.spine,
+            session_store=first.session_store,
+            input_resolver=lambda tenant_id, case_id: demo_input(
+                case_id=case_id,
+                tenant_id=tenant_id,
+            ),
+        )
+        event = DomainEvent.create(
+            appeal_input.tenant_id,
+            appeal_input.case_id,
+            EVIDENCE_ARRIVAL_TOPIC,
+            f"{appeal_input.case_id}:evidence:revision-2",
+            NOW + timedelta(minutes=5),
+            {"evidence_revision": "revision-2", "evidence_ref_count": 2},
+        )
+        resumed = restarted.handle_event(event, at=NOW + timedelta(minutes=5))
+        self.assertEqual(resumed["status"], "resumed")
+        self.assertEqual(resumed["case_state"], CaseState.AWAITING_CLINICIAN.value)
+        self.assertEqual(resumed["outcome"], "awaiting_clinician")
+        self.assertEqual(resumed["mutation_count"], 0)
+
+        duplicate = restarted.handle_event(event, at=NOW + timedelta(minutes=6))
+        self.assertEqual(duplicate["status"], "duplicate")
+        self.assertEqual(restarted.store.require(appeal_input.tenant_id, appeal_input.case_id).state, CaseState.AWAITING_CLINICIAN)
+
+    def test_evidence_event_that_still_abstains_is_not_replayed(self) -> None:
+        appeal_input = demo_input(
+            missing_evidence=True,
+            case_id="case-demo-evidence-no-progress",
+            tenant_id="tenant-demo-evidence-no-progress",
+        )
+        runtime = LocalCaseRuntime(workflow())
+        waiting = runtime.start(appeal_input, at=NOW)
+        event = DomainEvent.create(
+            appeal_input.tenant_id,
+            appeal_input.case_id,
+            EVIDENCE_ARRIVAL_TOPIC,
+            f"{appeal_input.case_id}:evidence:still-missing",
+            NOW + timedelta(minutes=1),
+            {"evidence_revision": "revision-still-missing", "evidence_ref_count": 1},
+        )
+        first = runtime.handle_event(event, at=NOW + timedelta(minutes=1))
+        second = runtime.handle_event(event, at=NOW + timedelta(minutes=2))
+        self.assertEqual(first["status"], "resumed")
+        self.assertEqual(first["case_state"], CaseState.EVIDENCE_INSUFFICIENT.value)
+        self.assertEqual(second["status"], "duplicate")
+        self.assertEqual(runtime.store.require(appeal_input.tenant_id, appeal_input.case_id).state, CaseState.EVIDENCE_INSUFFICIENT)
+        session = runtime.session_store.get(appeal_input.tenant_id, appeal_input.case_id)
+        assert session is not None
+        self.assertEqual(len(session.processed_event_ids), 1)
+
+    def test_payer_event_resumes_after_restart_and_cannot_double_mutate(self) -> None:
+        appeal_input = demo_input(
+            case_id="case-demo-payer-resume",
+            tenant_id="tenant-demo-payer-resume",
+        )
+        first = LocalCaseRuntime(workflow())
+        waiting = first.start(appeal_input, at=NOW)
+        submitted = first.approve(waiting, at=NOW + timedelta(minutes=5))
+        self.assertEqual(submitted.workflow.case_state, CaseState.AWAITING_DETERMINATION)
+
+        restarted = LocalCaseRuntime(
+            workflow(),
+            store=first.store,
+            spine=first.spine,
+            session_store=first.session_store,
+            reversibility=first.reversibility,
+        )
+        event = DomainEvent.create(
+            appeal_input.tenant_id,
+            appeal_input.case_id,
+            PAYER_DETERMINATION_TOPIC,
+            f"{appeal_input.case_id}:payer:decision-1",
+            NOW + timedelta(hours=6),
+            {
+                "decision": PayerDecisionStatus.FAVORABLE.value,
+                "criterion_status": "satisfied",
+                "evidence_ref_count": 2,
+            },
+        )
+        closed = restarted.handle_event(event, at=NOW + timedelta(hours=6))
+        self.assertEqual(closed["status"], "resumed")
+        self.assertEqual(closed["case_state"], CaseState.CLOSED_WON.value)
+        self.assertEqual(closed["mutation_count"], 1)
+        self.assertEqual(closed["payer_decision"]["status"], PayerDecisionStatus.FAVORABLE.value)  # type: ignore[index]
+        duplicate = restarted.handle_event(event, at=NOW + timedelta(hours=7))
+        self.assertEqual(duplicate["status"], "duplicate")
+        self.assertEqual(duplicate["case_state"], CaseState.CLOSED_WON.value)
+        self.assertEqual(restarted.reversibility.verify().entry_count, 1)
+
+    def test_pended_payer_event_is_recorded_without_mutation(self) -> None:
+        appeal_input = demo_input(case_id="case-demo-payer-pended", tenant_id="tenant-demo-payer-pended")
+        runtime = LocalCaseRuntime(workflow())
+        waiting = runtime.start(appeal_input, at=NOW)
+        submitted = runtime.approve(waiting, at=NOW + timedelta(minutes=5))
+        event = DomainEvent.create(
+            appeal_input.tenant_id,
+            appeal_input.case_id,
+            PAYER_DETERMINATION_TOPIC,
+            f"{appeal_input.case_id}:payer:pended",
+            NOW + timedelta(hours=1),
+            {
+                "decision": PayerDecisionStatus.PENDED.value,
+                "criterion_status": "absent",
+                "evidence_ref_count": 0,
+            },
+        )
+
+        first = runtime.handle_event(event, at=NOW + timedelta(hours=1))
+        duplicate = runtime.handle_event(event, at=NOW + timedelta(hours=2))
+
+        self.assertEqual(first["status"], "ignored")
+        self.assertEqual(duplicate["status"], "duplicate")
+        self.assertEqual(first["payer_decision"]["status"], PayerDecisionStatus.PENDED.value)  # type: ignore[index]
+        self.assertEqual(runtime.store.require(appeal_input.tenant_id, appeal_input.case_id).state, CaseState.AWAITING_DETERMINATION)
+        self.assertEqual(submitted.workflow.mutation_count, 1)
+        self.assertEqual(runtime.reversibility.verify().entry_count, 1)
+
+    def test_resumable_event_metadata_is_validated_before_any_transition(self) -> None:
+        appeal_input = demo_input(case_id="case-demo-event-validation", tenant_id="tenant-demo-event-validation")
+        runtime = LocalCaseRuntime(workflow())
+        waiting = runtime.start(appeal_input, at=NOW)
+        submitted = runtime.approve(waiting, at=NOW + timedelta(minutes=1))
+        self.assertEqual(submitted.workflow.case_state, CaseState.AWAITING_DETERMINATION)
+        malformed = DomainEvent.create(
+            appeal_input.tenant_id,
+            appeal_input.case_id,
+            PAYER_DETERMINATION_TOPIC,
+            f"{appeal_input.case_id}:payer:malformed",
+            NOW + timedelta(hours=1),
+            {"decision": PayerDecisionStatus.FAVORABLE.value, "criterion_status": "absent", "evidence_ref_count": 0},
+        )
+        with self.assertRaises(ValueError):
+            runtime.handle_event(malformed, at=NOW + timedelta(hours=1))
+        self.assertEqual(runtime.store.require(appeal_input.tenant_id, appeal_input.case_id).state, CaseState.AWAITING_DETERMINATION)
+
+        missing = demo_input(missing_evidence=True, case_id="case-demo-event-validation-2", tenant_id="tenant-demo-event-validation")
+        runtime.start(missing, at=NOW)
+        wrong_scope = replace(
+            missing,
+            patient_id="patient-not-the-case",
+            chart=(),
+        )
+        restarted = LocalCaseRuntime(
+            workflow(),
+            store=runtime.store,
+            spine=runtime.spine,
+            session_store=runtime.session_store,
+            input_resolver=lambda _tenant_id, _case_id: wrong_scope,
+        )
+        evidence_event = DomainEvent.create(
+            missing.tenant_id,
+            missing.case_id,
+            EVIDENCE_ARRIVAL_TOPIC,
+            f"{missing.case_id}:evidence:wrong-patient",
+            NOW + timedelta(minutes=2),
+            {"evidence_revision": "revision-wrong", "evidence_ref_count": 1},
+        )
+        with self.assertRaises(ValueError):
+            restarted.handle_event(evidence_event, at=NOW + timedelta(minutes=2))
+        self.assertEqual(runtime.store.require(missing.tenant_id, missing.case_id).state, CaseState.EVIDENCE_INSUFFICIENT)
+
+    def test_evidence_resume_fails_closed_without_a_persisted_scope_binding(self) -> None:
+        appeal_input = demo_input(
+            missing_evidence=True,
+            case_id="case-demo-event-no-scope",
+            tenant_id="tenant-demo-event-no-scope",
+        )
+        runtime = LocalCaseRuntime(workflow())
+        runtime.start(appeal_input, at=NOW)
+        session = runtime.session_store.get(appeal_input.tenant_id, appeal_input.case_id)
+        assert session is not None
+        runtime.session_store.save(
+            replace(session, patient_scope_hash=None),
+            expected_fingerprint=runtime.store.require(appeal_input.tenant_id, appeal_input.case_id).fingerprint(),
+        )
+        restarted = LocalCaseRuntime(
+            workflow(),
+            store=runtime.store,
+            spine=runtime.spine,
+            session_store=runtime.session_store,
+            input_resolver=lambda tenant_id, case_id: demo_input(case_id=case_id, tenant_id=tenant_id),
+        )
+        event = DomainEvent.create(
+            appeal_input.tenant_id,
+            appeal_input.case_id,
+            EVIDENCE_ARRIVAL_TOPIC,
+            f"{appeal_input.case_id}:evidence:no-scope",
+            NOW + timedelta(minutes=1),
+            {"evidence_revision": "revision-no-scope", "evidence_ref_count": 1},
+        )
+        with self.assertRaises(ValueError):
+            restarted.handle_event(event, at=NOW + timedelta(minutes=1))
+
     def test_deadline_sentinel_abandons_only_expired_executable_cases(self) -> None:
         runtime = LocalCaseRuntime(workflow())
         machine = runtime.workflow.machine
@@ -278,7 +492,25 @@ class PlatformTests(unittest.TestCase):
         self.assertEqual(report.abandoned_count, 1)
         self.assertEqual(report.conflict_count, 0)
         self.assertEqual(runtime.store.require("tenant-a", "case-expired").state, CaseState.CLOSED_ABANDONED_DEADLINE)
+        # This fixture is written directly to the case store, so it has no
+        # workflow session capsule to rehydrate.
+        self.assertIsNone(runtime.resume("tenant-a", "case-expired"))
         self.assertEqual(runtime.sentinel_tick(at=NOW).abandoned_count, 0)
+
+    def test_deadline_sentinel_updates_a_persisted_session_capsule(self) -> None:
+        runtime = LocalCaseRuntime(workflow())
+        appeal_input = demo_input(case_id="case-expired-session", tenant_id="tenant-a")
+        waiting = runtime.start(appeal_input, at=NOW)
+        runtime.approve(waiting, at=NOW + timedelta(minutes=5))
+
+        report = runtime.sentinel_tick(at=NOW + timedelta(days=8))
+
+        self.assertEqual(report.abandoned_count, 1)
+        restored = runtime.resume(appeal_input.tenant_id, appeal_input.case_id)
+        self.assertIsNotNone(restored)
+        assert restored is not None
+        self.assertEqual(restored.workflow.case_state, CaseState.CLOSED_ABANDONED_DEADLINE)
+        self.assertEqual(restored.workflow.outcome.value, "deadline_abandoned")
 
     def test_case_service_exposes_board_and_later_adjudication(self) -> None:
         service = LocalAppealService(workflow_runtime())

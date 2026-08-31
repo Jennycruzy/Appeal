@@ -548,7 +548,10 @@ ALLOWED_TRANSITIONS: Final[dict[CaseState, frozenset[CaseState]]] = {
     CaseState.POLICY_NOT_FOUND_HUMAN_REVIEW: frozenset({CaseState.QUARANTINED}),
     CaseState.CRITERION_IDENTIFIED: frozenset({CaseState.EVIDENCE_ASSEMBLED, CaseState.EVIDENCE_INSUFFICIENT, CaseState.QUARANTINED}),
     CaseState.EVIDENCE_ASSEMBLED: frozenset({CaseState.DRAFT_READY, CaseState.QUARANTINED}),
-    CaseState.EVIDENCE_INSUFFICIENT: frozenset({CaseState.DRAFT_READY, CaseState.CLOSED_ABANDONED_DEADLINE, CaseState.QUARANTINED}),
+    # A newly arrived, case-scoped evidence event may move a waiting case
+    # back through the Evidence Miner. The transition is explicit; callers
+    # still have to satisfy the Evidence Floor before a draft can be built.
+    CaseState.EVIDENCE_INSUFFICIENT: frozenset({CaseState.EVIDENCE_ASSEMBLED, CaseState.DRAFT_READY, CaseState.CLOSED_ABANDONED_DEADLINE, CaseState.QUARANTINED}),
     CaseState.DRAFT_READY: frozenset({CaseState.AWAITING_CLINICIAN, CaseState.QUARANTINED}),
     CaseState.AWAITING_CLINICIAN: frozenset({CaseState.DRAFT_REVISION, CaseState.SUBMITTED_LEVEL_1, CaseState.QUARANTINED}),
     CaseState.DRAFT_REVISION: frozenset({CaseState.DRAFT_READY, CaseState.AWAITING_CLINICIAN, CaseState.QUARANTINED}),

@@ -376,6 +376,8 @@ class WorkflowSession:
     failure_reason: str | None
     mutation_count: int
     payer_decision: PayerDecision | None = None
+    patient_scope_hash: str | None = None
+    processed_event_ids: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         _require(self.tenant_id, "session tenant ID")
@@ -406,6 +408,8 @@ class WorkflowSession:
             failure_reason=result.failure_reason,
             mutation_count=result.mutation_count,
             payer_decision=payer_decision,
+            patient_scope_hash=context.patient_scope_hash if context is not None else None,
+            processed_event_ids=tuple(sorted(context.processed_event_ids)) if context is not None else (),
         )
 
     def to_json(self) -> dict[str, object]:
@@ -434,6 +438,8 @@ class WorkflowSession:
             "failure_reason": self.failure_reason,
             "mutation_count": self.mutation_count,
             "payer_decision": _payer_json(self.payer_decision),
+            "patient_scope_hash": self.patient_scope_hash,
+            "processed_event_ids": list(self.processed_event_ids),
         }
 
     def fingerprint(self) -> str:
@@ -485,6 +491,15 @@ class WorkflowSession:
             failure_reason=failure_reason,
             mutation_count=mutation_count,
             payer_decision=_payer(document.get("payer_decision"), "session.payer_decision"),
+            patient_scope_hash=(
+                _string(document.get("patient_scope_hash"), "session.patient_scope_hash")
+                if document.get("patient_scope_hash") is not None
+                else None
+            ),
+            processed_event_ids=tuple(
+                _string(item, f"session.processed_event_ids[{index}]")
+                for index, item in enumerate(_array(document.get("processed_event_ids", []), "session.processed_event_ids"))
+            ),
         )
 
     def to_runtime_result(self, workflow: AppealWorkflow, case: Case) -> "RuntimeResumeLike":
@@ -524,6 +539,8 @@ class WorkflowSession:
             events=list(self.events),
             outcome=self.outcome,
             failure_reason=self.failure_reason,
+            patient_scope_hash=self.patient_scope_hash,
+            processed_event_ids=set(self.processed_event_ids),
         )
         if policy is not None:
             context.policy_match = PolicyMatch(policy.policy_id, policy.criterion_id, policy, policy.source_span)

@@ -96,9 +96,12 @@ complete.
   synthetic probes; this is not a complete asynchronous Appeal workflow. The
   endpoint is synthetic-only and intentionally not a production deployment.
 - The local event spine records and deduplicates workflow events, but the
-  deterministic workflow still invokes role adapters in-process. The managed
-  subscriber adapter is limited to one synthetic `intake/clear` checkpoint and
-  does not yet replace the in-process workflow.
+  deterministic workflow still invokes role adapters in-process. A local
+  restart harness now proves typed evidence-arrival and payer-determination
+  wakes, processed-event idempotency, patient-scope binding, and deadline
+  handling; see [`evidence/async-workflow-proof.json`](../evidence/async-workflow-proof.json).
+  The managed subscriber adapter is limited to one synthetic `intake/clear`
+  checkpoint and does not yet replace the in-process workflow on Cloud Run.
 - `LocalAppealService` is an in-process case-board facade for testing the
   lifecycle; it is not an authenticated network API.
 - `scripts/run_local_api.py` exposes that facade on loopback for local
@@ -134,9 +137,23 @@ complete.
 - `make measure-local-security` measures the local deterministic fallback on
   synthetic labeled fixtures and writes aggregate counts only. Those results
   must not be described as Model Armor or Gemma measurements.
-- The full adversarial suite and IAM assertion suite are not yet complete.
-- The named-catch report, control arms, adjudication ablation, and failure
-  distribution are not yet available.
+- `make measure-operational-utility` now provides six aggregate synthetic
+  control scenarios (clean, injection, missing evidence, evidence wake,
+  deadline, and level-two escalation) with transition, human-action,
+  latency, mutation, abstention, and quarantine counts. The report is in
+  [`evidence/operational-utility-measurement.json`](../evidence/operational-utility-measurement.json)
+  and the method is audited in
+  [`docs/audits/operational-utility.md`](audits/operational-utility.md).
+  It is not a clinical efficacy study, and it does not support a recoverable
+  dollar claim without an authorized allowed-amount field.
+- A full adversarial suite, IAM assertion suite, policy/evidence ablations,
+  model-versus-deterministic adjudication comparison, and case-level failure
+  distribution are not yet complete.
+- `make seed-demo-cases` creates six local synthetic board stories and records
+  them in [`evidence/seeded-demo-tenant.json`](../evidence/seeded-demo-tenant.json).
+  The hosted tenant has only the previously recorded synthetic cases; this
+  local manifest does not substitute for Firebase Auth, tenant authorization,
+  or a deployed dashboard.
 
 These limitations are the current truth as of 2026-08-31. They should be
 replaced by evidence-backed results only after the corresponding capability

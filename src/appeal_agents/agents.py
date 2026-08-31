@@ -103,6 +103,12 @@ class WorkflowContext:
     events: list[WorkflowEvent] = field(default_factory=list)
     outcome: WorkflowOutcome | None = None
     failure_reason: str | None = None
+    # A one-way binding used when a durable session is rehydrated. The raw
+    # patient identifier remains in the transient input only.
+    patient_scope_hash: str | None = None
+    # Event IDs are bounded transport metadata, not event bodies. They make a
+    # no-progress retry (for example, still-missing evidence) idempotent.
+    processed_event_ids: set[str] = field(default_factory=set)
 
     def require_read(self, agent_name: str, scope: str) -> None:
         if self.policies is not None:
@@ -336,7 +342,7 @@ class EvidenceMinerAgent:
     name = "evidence_miner"
 
     def run(self, context: WorkflowContext, at: datetime) -> None:
-        if context.case.state is not CaseState.CRITERION_IDENTIFIED or context.policy_match is None:
+        if context.case.state not in {CaseState.CRITERION_IDENTIFIED, CaseState.EVIDENCE_INSUFFICIENT} or context.policy_match is None:
             return
         context.require_read(self.name, "scoped_fhir_chart")
         context.require_read(self.name, "case_metadata")
@@ -387,11 +393,13 @@ class EvidenceMinerAgent:
         context.observations = tuple(observations)
         context.criterion_evaluation = evaluate_criterion(context.policy_match.criterion, context.observations)
         refs = tuple(ref for observation in observations for ref in observation.references)
+        retrying_after_missing_evidence = context.case.state is CaseState.EVIDENCE_INSUFFICIENT
         if context.criterion_evaluation.status is CriterionStatus.SATISFIED:
             context.transition(CaseState.EVIDENCE_ASSEMBLED, self.name, at, "required evidence surfaced for every criterion branch", refs)
             context.record(self.name, "complete", "Evidence Miner returned scoped FHIR references", at, refs)
         else:
-            context.transition(CaseState.EVIDENCE_INSUFFICIENT, self.name, at, "Evidence Floor cannot establish the criterion", refs)
+            if not retrying_after_missing_evidence:
+                context.transition(CaseState.EVIDENCE_INSUFFICIENT, self.name, at, "Evidence Floor cannot establish the criterion", refs)
             context.outcome = WorkflowOutcome.ABSTAINED
             context.failure_reason = "required clinical evidence is absent or contradictory"
             context.record(

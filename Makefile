@@ -92,7 +92,7 @@ SENTINEL_CASE ?= case-sentinel-expired-001
 SENTINEL_ENTERED_AT ?= 2026-08-18T12:00:00Z
 SENTINEL_SEED_OUTPUT ?= evidence/sentinel-seed.json
 
-.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run run-mcp-server run-mcp-probe deploy-mcp-cloud-run sync-mcp-registry seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime run-async-workflow-proof measure-operational-utility seed-demo-cases measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run run-mcp-server run-mcp-probe deploy-mcp-cloud-run sync-mcp-registry seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -108,6 +108,15 @@ run-local-workflow:
 
 run-local-runtime:
 	PYTHONPATH=src $(PYTHON) scripts/run_local_runtime.py --ledger "$(LOCAL_RUNTIME_LEDGER)" --output "$(LOCAL_RUNTIME_OUTPUT)"
+
+run-async-workflow-proof:
+	PYTHONPATH=src $(PYTHON) scripts/run_async_workflow_proof.py
+
+measure-operational-utility:
+	PYTHONPATH=src $(PYTHON) scripts/measure_operational_utility.py
+
+seed-demo-cases:
+	PYTHONPATH=src $(PYTHON) scripts/seed_demo_cases.py
 
 measure-local-security:
 	PYTHONPATH=src $(PYTHON) scripts/measure_local_security.py

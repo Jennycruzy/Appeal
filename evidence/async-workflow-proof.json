@@ -1,0 +1,94 @@
+{
+  "deadline_scheduler": {
+    "abandoned_count": 1,
+    "case_id": "case-demo-async-deadline",
+    "final": {
+      "case_fingerprint": "9410e7d4afaab4865a831fbed35b4e557e998b68fce77d2293238ea38451b843",
+      "case_state": "CLOSED_ABANDONED_DEADLINE",
+      "external_mutation_count": 1,
+      "transition_count": 10
+    },
+    "inspected_count": 1,
+    "tick_at": "2026-09-05T12:00:00Z"
+  },
+  "event_transport": {
+    "duplicate_delivery_policy": "case_state_and_idempotency_fingerprint",
+    "payload_policy": "reference_only_scalar_metadata",
+    "topics": [
+      "appeal.evidence.arrived",
+      "payer.determination.received"
+    ]
+  },
+  "evidence_resume": {
+    "duplicate_status": "duplicate",
+    "event_id": "c8c4d41cd72c55682dfac7655087e3a4372b7093c40a818509434ff8af5c8191",
+    "event_payload_fields": [
+      "evidence_ref_count",
+      "evidence_revision"
+    ],
+    "final": {
+      "case_fingerprint": "d7c7fe29606d7b13b57db128bac7cc3e25635912652be99b93c3b46b9d79aad0",
+      "case_state": "AWAITING_CLINICIAN",
+      "external_mutation_count": 0,
+      "transition_count": 8
+    },
+    "initial": {
+      "case_fingerprint": "8067dac97e036d73ada2ad8b2aa26ffe19d8b0583f3e6bb14e66285df38cc6ea",
+      "case_state": "EVIDENCE_INSUFFICIENT",
+      "external_mutation_count": 0,
+      "transition_count": 5
+    },
+    "patient_scope_hash_persisted": true,
+    "reference_only_session": "reference_only_no_denial_chart_model_or_draft_prose",
+    "restart_rehydrated": true,
+    "resume_case_state": "AWAITING_CLINICIAN",
+    "resume_status": "resumed"
+  },
+  "execution_scope": "local_deterministic_restart_harness",
+  "hosted_follow_up_required": true,
+  "kind": "durable_async_workflow_proof",
+  "no_progress_retry": {
+    "case_state": "EVIDENCE_INSUFFICIENT",
+    "duplicate_status": "duplicate",
+    "event_id": "c9ff21369beb028f4901b3638232ca8841e1f6faadc9fbad657ceeb530e8abe0",
+    "processed_event_count": 1,
+    "resume_status": "resumed"
+  },
+  "payer_resume": {
+    "approved_before_restart": "AWAITING_DETERMINATION",
+    "duplicate_status": "duplicate",
+    "event_id": "1423f53afd8d08c4910937322c889881b4c89b0ea3b80dac4382afef4c61039d",
+    "event_payload_fields": [
+      "criterion_status",
+      "decision",
+      "evidence_ref_count"
+    ],
+    "final": {
+      "case_fingerprint": "2d024ea62adeb3a68d092900acc0e36e134194b2bd810d4bd0ff28f267b01d22",
+      "case_state": "CLOSED_WON",
+      "external_mutation_count": 1,
+      "transition_count": 11
+    },
+    "initial": {
+      "case_fingerprint": "ec3d78864fb502f221dcf61e357c2fb9e9cbe355286eadb40ff38040701d61bd",
+      "case_state": "AWAITING_DETERMINATION",
+      "external_mutation_count": 1,
+      "transition_count": 9
+    },
+    "restart_rehydrated": true,
+    "resume_case_state": "CLOSED_WON",
+    "resume_mutation_count": 1,
+    "resume_status": "resumed",
+    "reversibility_entry_count": 1
+  },
+  "raw_content_persisted": false,
+  "receipt_chain": {
+    "entry_count": 71,
+    "ledger_path_outside_repository": true,
+    "tip_hash": "94dc68f0f61c48fbbc6a4c5d699c54d22abc460f10115cd4b451cd7fc71bacc3",
+    "verification": "passed"
+  },
+  "recorded_at": "2026-08-28T12:00:00Z",
+  "schema_version": "0.1",
+  "synthetic_only": true
+}

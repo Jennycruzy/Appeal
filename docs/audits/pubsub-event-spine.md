@@ -25,8 +25,11 @@ The message body is a validated `DomainEvent`: tenant and case identifiers,
 topic, idempotency key, timestamp, and scalar metadata only. The event schema
 rejects raw content fields such as denial bodies, chart data, prompts, prose,
 and text. The push receiver records an already-published event without
-publishing it back to the same topic, preventing a delivery loop. No push
-message can grant approval or perform an external mutation.
+publishing it back to the same topic, preventing a delivery loop. The local
+workflow runtime now routes the two resumable topics through the persisted case
+and session boundary; processed event IDs make no-progress retries idempotent.
+No push message can grant approval or perform an external mutation without the
+clinician gate.
 
 The prior hosted delivery verification on revision `appeal-backend-00016-p7s`
 returned:
@@ -48,12 +51,13 @@ authority. The aggregate result is in
 Non-trigger checkpoints are acknowledged without invoking the managed runtime,
 and the synthetic tenant/case prefixes remain enforced. The managed Agent
 Runtime, Registry, and Identity deployment is recorded separately in
-[`agent-runtime.md`](agent-runtime.md). The managed Agent Gateway and dry-run
-Agent Policy path is recorded in [`agent-gateway.md`](agent-gateway.md); MCP
-mutation enforcement, broader subscriber workflow execution, and the separate
-payer service remain open integrations. Memory Bank retrieval and the current
-Agent Runtime trace export are verified synthetic probes, not a complete Appeal
-observability deployment.
+[`agent-runtime.md`](agent-runtime.md). The managed Agent Gateway and enforced
+MCP policy path is recorded in [`agent-gateway.md`](agent-gateway.md); the
+hosted subscriber-driven workflow and separate payer service remain open
+integrations. The local restart/replay proof is recorded in
+[`durable-async-workflow.md`](durable-async-workflow.md). Memory Bank retrieval
+and the current Agent Runtime trace export are verified synthetic probes, not a
+complete Appeal observability deployment.
 
 Revision `appeal-backend-00019-6zt` now serves 100% of traffic with the same
 synthetic-only trigger boundary, a 120-second Agent Runtime query budget, and

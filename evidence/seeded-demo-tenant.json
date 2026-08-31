@@ -1,0 +1,89 @@
+{
+  "board_scope_check": {
+    "other_tenant_case_count": 0,
+    "tenant_case_count": 6
+  },
+  "case_count": 6,
+  "case_ids": [
+    "case-demo-seeded-clean",
+    "case-demo-seeded-injection",
+    "case-demo-seeded-missing",
+    "case-demo-seeded-evidence",
+    "case-demo-seeded-deadline",
+    "case-demo-seeded-escalation"
+  ],
+  "cases": [
+    {
+      "case_fingerprint": "9834b814bf350765884be961cba95d700bc549d78d3fba37d186a7914c0f004c",
+      "case_id": "case-demo-seeded-clean",
+      "case_state": "AWAITING_CLINICIAN",
+      "external_mutation_count": 0,
+      "outcome": "awaiting_clinician",
+      "processed_event_count": 0,
+      "session_persisted": true
+    },
+    {
+      "case_fingerprint": "0719ae7f9916e4d3d2f636a1214787046c1617d027b134735b6630054aaeb103",
+      "case_id": "case-demo-seeded-injection",
+      "case_state": "QUARANTINED",
+      "external_mutation_count": 0,
+      "outcome": "quarantined",
+      "processed_event_count": 0,
+      "session_persisted": true
+    },
+    {
+      "case_fingerprint": "37492e1efd7447c2a84627deec683df972e8d169c1149ad8455319d3f6aeb8c1",
+      "case_id": "case-demo-seeded-missing",
+      "case_state": "EVIDENCE_INSUFFICIENT",
+      "external_mutation_count": 0,
+      "outcome": "abstained",
+      "processed_event_count": 0,
+      "session_persisted": true
+    },
+    {
+      "case_fingerprint": "8cb03a012fcb4a39e8002156ca796517401665258f3c70d1d3f148e81f624086",
+      "case_id": "case-demo-seeded-evidence",
+      "case_state": "AWAITING_CLINICIAN",
+      "external_mutation_count": 0,
+      "outcome": "awaiting_clinician",
+      "processed_event_count": 1,
+      "session_persisted": true
+    },
+    {
+      "case_fingerprint": "2e25cee82bed61b2020e2811c1299ed0f57e385cfbf99180fb97dc55e1a4e84b",
+      "case_id": "case-demo-seeded-deadline",
+      "case_state": "CLOSED_ABANDONED_DEADLINE",
+      "external_mutation_count": 1,
+      "outcome": "deadline_abandoned",
+      "processed_event_count": 0,
+      "session_persisted": true
+    },
+    {
+      "case_fingerprint": "bb71fbdaaa07cf7bcbd98167193a7fa21e7e7c209572e6b0498966098056db79",
+      "case_id": "case-demo-seeded-escalation",
+      "case_state": "ESCALATION_ELIGIBLE",
+      "external_mutation_count": 1,
+      "outcome": "escalation_ready",
+      "processed_event_count": 1,
+      "session_persisted": true
+    }
+  ],
+  "hosted_follow_up_required": true,
+  "kind": "seeded_synthetic_demo_tenant",
+  "limitations": [
+    "The board is a local deterministic synthetic fixture, not a hosted authenticated dashboard.",
+    "No real patient, payer, denial, chart, or submission data is used."
+  ],
+  "persistence_policy": "aggregate_case_metadata_and_reference_only_workflow_sessions",
+  "raw_content_persisted": false,
+  "receipt_chain": {
+    "entry_count": 88,
+    "ledger_path_outside_repository": true,
+    "tip_hash": "1aa3ad5d0389fa35342f6a7dc7b4f90d83bc3db6b6e425ad597550804b8e6607",
+    "verification": "passed"
+  },
+  "recorded_at": "2026-08-28T12:00:00Z",
+  "schema_version": "0.1",
+  "synthetic_only": true,
+  "tenant_id": "tenant-demo-seeded"
+}

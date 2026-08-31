@@ -122,7 +122,7 @@ and its decision input stays outside the repository.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00017-fxp`, with 100% traffic on that revision. The verified
+`appeal-backend-00019-6zt`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. Its `/api/healthz` endpoint
 returned `status: ok` with `storage: firestore`, `event_spine: pubsub_firestore`,
@@ -160,10 +160,13 @@ is [`evidence/agent-runtime-subscriber.json`](evidence/agent-runtime-subscriber.
 The existing synthetic Memory Bank record now has a verified readback, and
 Cloud Trace contains two matching Agent Runtime traces in the verification
 window. Managed Runtime egress is now bound to a regional Agent Gateway with
-an IAP policy in `DRY_RUN`; the two observed platform destinations are
-registered and endpoint-specific egress permissions are verified. MCP
-mutation enforcement, broader subscriber-driven runtime execution, and
-Firebase Auth remain unverified or not deployed. The governance audit is
+an enforced, fail-closed IAP policy; the observed platform destinations are
+registered and endpoint-specific egress permissions are verified. A routed
+MCP read was allowed by the Gateway and a destructive canary was denied with
+HTTP 403 before Cloud Run, with zero mutation; the aggregate proof is
+[`evidence/agent-gateway-mcp-enforcement.json`](evidence/agent-gateway-mcp-enforcement.json).
+The broader subscriber-driven workflow and Firebase Auth remain unverified or
+not deployed. The governance audit is
 [`docs/audits/agent-gateway.md`](docs/audits/agent-gateway.md), with aggregate
 evidence in
 [`evidence/agent-gateway-governance.json`](evidence/agent-gateway-governance.json).
@@ -196,8 +199,10 @@ session and Memory Bank write probes. The Cloud Run facade and managed Agent
 Runtime deployment remain separate boundaries; the authenticated Pub/Sub
 subscriber now invokes the managed runtime only for one allowlisted synthetic
 checkpoint, while the broader workflow remains deterministic and in-process.
-Managed Runtime egress is bound to the regional Agent Gateway in dry-run mode;
-no MCP mutation probe or enforced policy has been completed.
+The routed MCP governance probe is enforced and fail-closed, but it is a
+control-plane proof rather than proof of the full subscriber-driven appeal
+workflow. A later advisory smoke may still hit Vertex shared-capacity quota;
+that does not weaken the Gateway denial.
 The scoring handoff is deferred until this workflow is complete; completed
 full Appeal evaluations remain zero.
 
@@ -210,6 +215,11 @@ make run-local-workflow
 The control-plane boundaries are mapped in
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
+The judge-facing evidence map is in
+[`docs/JUDGING.md`](docs/JUDGING.md). It separates hosted proofs, local
+restart/utility proofs, real regulator-summary data, and capabilities that are
+still open.
+
 Run the local platform runtime, including a synthetic payer determination,
 with:
 
@@ -221,6 +231,42 @@ The service lifecycle is also covered by tests as separate open, clinician
 approval, and payer-determination operations. The deployed Cloud Run demo uses
 Firestore for case metadata, reference-only workflow sessions, and receipts;
 the service remains synthetic-only and unauthenticated.
+
+Exercise the restart-safe asynchronous path with:
+
+```text
+make run-async-workflow-proof
+```
+
+This local, aggregate-only harness covers a missing-evidence wake, a payer
+determination after restart, a protected deadline tick, receipt-chain
+verification, patient-scope binding, and duplicate-event handling. Its report
+is [`evidence/async-workflow-proof.json`](evidence/async-workflow-proof.json).
+It is not a claim that the current hosted Cloud Run revision runs the complete
+workflow; the hosted subscriber remains a bounded synthetic checkpoint.
+
+Measure the local operational utility and control scenarios with:
+
+```text
+make measure-operational-utility
+```
+
+The aggregate report is
+[`evidence/operational-utility-measurement.json`](evidence/operational-utility-measurement.json),
+with its honest interpretation and dollar-claim boundary in
+[`docs/audits/operational-utility.md`](docs/audits/operational-utility.md).
+
+Seed the six local judge stories (clean, quarantine, abstention, evidence
+wake, missed deadline, and level-two escalation) with:
+
+```text
+make seed-demo-cases
+```
+
+The aggregate board manifest is
+[`evidence/seeded-demo-tenant.json`](evidence/seeded-demo-tenant.json). It is
+local synthetic evidence; hosted Firebase Auth, dashboard access, and hosted
+case seeding remain open.
 
 Run the synthetic Stage B case through the real ADK `Runner` and Gemini vision
 path with:
@@ -288,6 +334,8 @@ exercise fail-closed abstention by invoking
 ```text
 make test
 make typecheck
+make run-async-workflow-proof
+make measure-operational-utility
 make validate-ny-dfs
 APPEAL_CMS_QIC_ACA='<public ACA value>' make inspect-cms-qic
 make run-cms-qic-summary \
