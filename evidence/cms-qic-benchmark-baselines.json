@@ -1,0 +1,96 @@
+{
+  "baselines": {
+    "development_majority_outcome": {
+      "development_label_counts": {
+        "favorable": 13,
+        "unfavorable": 187
+      },
+      "locked_test_selective_accuracy": {
+        "confidence_95": [
+          0.7002003116591013,
+          0.858343459380847
+        ],
+        "denominator": 100,
+        "numerator": 79,
+        "value": 0.79
+      },
+      "selected_label": "unfavorable"
+    },
+    "explicit_appeal_type_passthrough": {
+      "locked_test_accuracy": {
+        "confidence_95": [
+          0.9630065017930143,
+          1.0
+        ],
+        "denominator": 100,
+        "numerator": 100,
+        "value": 1.0
+      },
+      "quality_claim_allowed": false
+    },
+    "keyword_outcome": {
+      "abstentions": 99,
+      "coverage": 0.01,
+      "locked_test_selective_accuracy": {
+        "confidence_95": [
+          0.20654931437723745,
+          1.0
+        ],
+        "denominator": 1,
+        "numerator": 1,
+        "value": 1.0
+      }
+    },
+    "part_d_requested_item_class": {
+      "locked_test_accuracy": {
+        "confidence_95": [
+          0.9630065017930143,
+          1.0
+        ],
+        "denominator": 100,
+        "numerator": 100,
+        "value": 1.0
+      },
+      "quality_claim_allowed": false
+    }
+  },
+  "claim_boundary": {
+    "clinical_efficacy": false,
+    "full_appeal_evaluation": false,
+    "real_world_regulator_summary_benchmark": true
+  },
+  "eligible_next_metrics": [
+    "coverage-rule citation grounding after annotation",
+    "rationale-category classification after independent label policy",
+    "route recommendation against a predeclared operational mapping",
+    "exploratory regulator-outcome prediction with leakage-stratified reporting"
+  ],
+  "leakage_audit": {
+    "direct_target_key_counts": {
+      "appeal_type": 300
+    },
+    "exact_target_value_in_input_counts": {
+      "appeal_type": 300,
+      "regulator_outcome": 2,
+      "requested_item_class": 300
+    },
+    "interpretation": {
+      "appeal_type": "explicit source-field extraction; not a reasoning-quality metric",
+      "coverage_rules": "grounding metric requires a separately annotated citation gold set",
+      "regulator_outcome": "target key is withheld, but rationale can contain outcome cues; report prediction only as exploratory",
+      "requested_item_class": "implied directly by the Part D dataset schema; not a reasoning-quality metric"
+    }
+  },
+  "recorded_at": "2026-08-31T17:34:56.837136Z",
+  "schema_version": "1.0",
+  "source": {
+    "development_count": 200,
+    "input_sha256": "565e4c948d791df8da3eea9a0368565143b40b9c8f34bdca1f0e4ca3d28e92ed",
+    "locked_test_count": 100,
+    "narratives_emitted": false,
+    "sample_count": 300,
+    "source_class": "regulator_summary",
+    "source_id": "cms_qic_decision_summaries"
+  },
+  "status": "cms_qic_leakage_and_baselines_complete"
+}
