@@ -16,7 +16,7 @@ to reproduce the local proofs.
 | Registry and Gateway | Verified hosted | Seven Agent Registry records, scoped MCP read, denied mutation canary, enforced fail-closed Gateway, zero mutation |
 | Durable asynchronous workflow | Verified hosted and locally | Hosted authenticated Pub/Sub payer wake, Firestore resume, duplicate delivery, one mutation; local evidence wake/deadline/restart proof |
 | ADK/Gemini | Provider and managed-runtime smoke verified; full hosted workflow open | Seven-role synthetic ADK run and one managed subscriber checkpoint; no full case path claim |
-| Payer and mutation | Local boundary verified; separate hosted payer open | Private payer criterion, typed async determination, one gated synthetic mutation and compensation journal |
+| Payer and mutation | Verified hosted boundary; real payer integration open | Private payer Cloud Run service with dedicated identity, bounded determination contract, typed async wake, one gated synthetic mutation and compensation journal |
 | Auth, dashboard, mobile clinician loop | Open | A local six-case board manifest exists, but the current Cloud Run demonstration is intentionally unauthenticated and has no production console |
 | Real-data evaluation | Summary/outcome tracks only | CMS QIC decision summaries and Oregon external-review aggregates; completed full Appeal evaluations remain zero |
 | Utility | Local sensitivity measurement | Six aggregate synthetic scenarios, published burden references, and an explicitly null recoverable-dollar amount |
@@ -31,7 +31,7 @@ to reproduce the local proofs.
 | Case survives restart and external wakes it | Hosted synthetic payer event plus `make run-async-workflow-proof` | [`evidence/cloud-run-async-workflow.json`](../evidence/cloud-run-async-workflow.json), [`docs/audits/hosted-async-workflow.md`](audits/hosted-async-workflow.md), and [`evidence/async-workflow-proof.json`](../evidence/async-workflow-proof.json). The hosted proof covers payer continuation; the local harness covers evidence wake and deadline replay. |
 | Deadline wake is protected and idempotent | `POST /api/sentinel/tick` with Scheduler identity; local sentinel test | [`docs/audits/deadline-sentinel.md`](audits/deadline-sentinel.md), [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json). Hosted Scheduler proof exists; local session continuity is covered by `test_deadline_sentinel_updates_a_persisted_session_capsule`. |
 | Model path and multimodal input | `make run-adk-case`; managed Runtime smoke | [`evidence/adk-stage-b-case-exit.json`](../evidence/adk-stage-b-case-exit.json), [`evidence/agent-runtime-deployment.json`](../evidence/agent-runtime-deployment.json). These are provider/runtime proofs, not a complete hosted Appeal evaluation. A later advisory smoke may still hit shared Vertex capacity; that does not weaken Gateway denial. |
-| Payer determination cannot mutate directly | Hosted typed payer event and local `LocalCaseRuntime.handle_event` | [`evidence/cloud-run-async-workflow.json`](../evidence/cloud-run-async-workflow.json), [`src/appeal_platform/payer.py`](../src/appeal_platform/payer.py), and tests in [`tests/test_platform.py`](../tests/test_platform.py). The payer logic still runs inside the backend; a separate payer Cloud Run service/account is not deployed yet. |
+| Payer determination cannot mutate directly | Private payer Cloud Run service plus hosted typed payer event | [`evidence/payer-service.json`](../evidence/payer-service.json), [`docs/audits/payer-service.md`](audits/payer-service.md), [`evidence/cloud-run-async-workflow.json`](../evidence/cloud-run-async-workflow.json), and tests in [`tests/test_payer_service.py`](../tests/test_payer_service.py). The service is synthetic-only; no real payer API is connected. |
 | Exactly one gated mutation and compensation | `make run-async-workflow-proof`; `PayerAdjudicator` path | [`evidence/async-workflow-proof.json`](../evidence/async-workflow-proof.json), [`src/appeal_platform/reversibility.py`](../src/appeal_platform/reversibility.py). The external reference is synthetic; no payer API is called. |
 | Real-data grounding | CMS QIC summary and Oregon outcome adapters | [`evidence/cms-qic-decision-search.json`](../evidence/cms-qic-decision-search.json), [`evidence/oregon-evaluation.json`](../evidence/oregon-evaluation.json), [`docs/DATA_PROVENANCE.md`](DATA_PROVENANCE.md). These sources do not contain the complete denial, policy, chart, appeal, and outcome package needed for a full-case score. |
 | Operational utility and controls | `make measure-operational-utility` | [`evidence/operational-utility-measurement.json`](../evidence/operational-utility-measurement.json), [`docs/audits/operational-utility.md`](audits/operational-utility.md). Metrics are aggregate synthetic workflow measures; the Oregon rate is an external-review proxy, and recoverable dollars are sensitivity-only. |
@@ -60,8 +60,9 @@ do not prove clinical quality, payer agreement, or production throughput.
   packet, and an external-review outcome is not a prior-authorization ground
   truth label.
 - No PHI is uploaded, and no real payer submission or withdrawal occurs.
-- No hosted Firebase-authenticated dashboard, mobile clinician approval, or
-  separate payer service is represented as complete.
+- No hosted Firebase-authenticated dashboard or mobile clinician approval is
+  represented as complete. The separate payer service is deployed and
+  authenticated, but remains synthetic-only with no real payer API.
 - The utility report does not invent a dollar amount. Supply an authorized
   allowed amount before applying its sensitivity formula.
 - A Vertex `_ResourceExhaustedError` is a quota/capacity failure in a later

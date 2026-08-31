@@ -117,9 +117,12 @@ complete.
 - Multimodal scanned-document extraction is not yet connected to Gemini's
   vision path. A local fixture may carry a document media type and a bounded
   extraction adapter, but that is not evidence of a live vision deployment.
-- External submission and withdrawal are not connected to a payer. The local
-  submission gate can prove idempotent decision logic and receipt generation;
-  it does not file a real appeal.
+- The separate private payer service is deployed with a dedicated identity and
+  accepts reference-only synthetic observations; see
+  [`evidence/payer-service.json`](../evidence/payer-service.json). External
+  submission and withdrawal are not connected to a real payer. The local and
+  hosted submission gates prove idempotent decision logic and receipt
+  generation; they do not file a real appeal.
 - The local reversibility ledger records a compensating action, but it is not
   yet connected to an external payer withdrawal or cancellation API.
 

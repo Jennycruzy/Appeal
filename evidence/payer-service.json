@@ -1,0 +1,49 @@
+{
+  "schema_version": "0.1",
+  "recorded_at": "2026-08-31T11:07:38Z",
+  "kind": "hosted_payer_service",
+  "project_id": "onyx-yeti-506606-i9",
+  "region": "europe-west2",
+  "service": "appeal-payer",
+  "revision": "appeal-payer-00001-j9g",
+  "service_url": "https://appeal-payer-hhcjpefk2q-nw.a.run.app",
+  "regional_service_url": "https://appeal-payer-835653516606.europe-west2.run.app",
+  "service_account": "appeal-payer@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+  "access": {
+    "unauthenticated_health_status": 403,
+    "backend_invoker_binding": "roles/run.invoker",
+    "backend_service_account": "appeal-backend@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+    "temporary_operator_token_grant_revoked": true
+  },
+  "contract": {
+    "request_route": "/api/payer/determine",
+    "accepted_fields": ["tenant_id", "case_id", "idempotency_key", "observations"],
+    "observation_fields": [
+      "observation_id",
+      "leaf_criterion_id",
+      "disposition",
+      "evidence_type",
+      "references"
+    ],
+    "raw_content_accepted": false,
+    "case_store": false,
+    "chart_reader": false,
+    "submission_gate": false,
+    "mutation_authority": false,
+    "synthetic_only": true
+  },
+  "synthetic_probe": {
+    "tenant_id": "tenant-demo-payer-hosted-service",
+    "case_id": "case-payer-hosted-service-20260831",
+    "idempotency_key": "case-payer-hosted-service-20260831:payer:1",
+    "authenticated_identity": "appeal-backend@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+    "http_status": 200,
+    "status": "favorable",
+    "criterion_status": "satisfied",
+    "evidence_ref_count": 2,
+    "external_mutation_count": 0,
+    "mutation_authority": false
+  },
+  "source_commit": "90493bd",
+  "real_case_data_uploaded": false
+}

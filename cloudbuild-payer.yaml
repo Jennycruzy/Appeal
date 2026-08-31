@@ -1,0 +1,19 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -f
+      - Dockerfile.payer
+      - -t
+      - ${_IMAGE}
+      - .
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - ${_IMAGE}
+images:
+  - ${_IMAGE}
+substitutions:
+  _IMAGE: europe-west2-docker.pkg.dev/onyx-yeti-506606-i9/cloud-run-source-deploy/appeal-payer:latest
+options:
+  logging: CLOUD_LOGGING_ONLY

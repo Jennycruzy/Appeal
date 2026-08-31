@@ -173,6 +173,12 @@ mutation. The aggregate trace is
 [`evidence/cloud-run-async-workflow.json`](evidence/cloud-run-async-workflow.json),
 with the audit in
 [`docs/audits/hosted-async-workflow.md`](docs/audits/hosted-async-workflow.md).
+The payer determination boundary is also deployed as a separate private Cloud
+Run service under its own service account. It accepts bounded evidence
+references only, returns no mutation authority, and rejects unauthenticated
+requests; its authenticated synthetic probe is recorded in
+[`evidence/payer-service.json`](evidence/payer-service.json), with the contract
+audit in [`docs/audits/payer-service.md`](docs/audits/payer-service.md).
 The managed Agent Runtime remains advisory and synthetic-only; a later
 checkpoint may be recorded as failed/retryable when Vertex shared capacity is
 exhausted, without redelivering the durable workflow event. Firebase Auth and

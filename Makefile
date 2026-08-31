@@ -58,6 +58,11 @@ CLOUD_RUN_PUBSUB_AUDIENCE ?= https://appeal-backend-835653516606.europe-west2.ru
 CLOUD_RUN_SECURITY ?= managed
 CLOUD_RUN_SCHEDULER_URL ?= https://appeal-backend-835653516606.europe-west2.run.app
 CLOUD_RUN_SCHEDULER_SERVICE_ACCOUNT ?= appeal-scheduler@onyx-yeti-506606-i9.iam.gserviceaccount.com
+PAYER_SERVICE_PROJECT ?= onyx-yeti-506606-i9
+PAYER_SERVICE_REGION ?= europe-west2
+PAYER_SERVICE ?= appeal-payer
+PAYER_SERVICE_ACCOUNT ?= appeal-payer@onyx-yeti-506606-i9.iam.gserviceaccount.com
+PAYER_IMAGE ?= europe-west2-docker.pkg.dev/onyx-yeti-506606-i9/cloud-run-source-deploy/appeal-payer:latest
 MCP_PROJECT ?= onyx-yeti-506606-i9
 MCP_REGION ?= europe-west2
 MCP_SERVICE ?= appeal-mcp
@@ -92,7 +97,7 @@ SENTINEL_CASE ?= case-sentinel-expired-001
 SENTINEL_ENTERED_AT ?= 2026-08-18T12:00:00Z
 SENTINEL_SEED_OUTPUT ?= evidence/sentinel-seed.json
 
-.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime run-async-workflow-proof measure-operational-utility seed-demo-cases measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run run-mcp-server run-mcp-probe deploy-mcp-cloud-run sync-mcp-registry seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime run-async-workflow-proof measure-operational-utility seed-demo-cases measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run build-payer-service deploy-payer-service run-payer-service run-mcp-server run-mcp-probe deploy-mcp-cloud-run sync-mcp-registry seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -101,7 +106,7 @@ test:
 	PYTHONPATH=src $(PYTHON) -m unittest discover -s tests -v
 
 typecheck:
-	.venv/bin/mypy --strict src/appeal_core src/appeal_agents src/appeal_platform src/appeal_service
+	.venv/bin/mypy --strict src/appeal_core src/appeal_agents src/appeal_platform src/appeal_service src/appeal_payer_service
 
 run-local-workflow:
 	PYTHONPATH=src $(PYTHON) scripts/run_local_workflow.py --ledger "$(LOCAL_WORKFLOW_LEDGER)" --output "$(LOCAL_WORKFLOW_OUTPUT)"
@@ -138,6 +143,15 @@ run-local-api:
 
 deploy-cloud-run:
 	gcloud run deploy "$(CLOUD_RUN_SERVICE)" --source . --project "$(CLOUD_RUN_PROJECT)" --region "$(CLOUD_RUN_REGION)" --service-account "$(CLOUD_RUN_SERVICE_ACCOUNT)" --set-env-vars "APPEAL_DEPLOYMENT=cloud_run,APPEAL_STORAGE=$(CLOUD_RUN_STORAGE),APPEAL_EVENT_SPINE=$(CLOUD_RUN_EVENT_SPINE),APPEAL_PUBSUB_TOPIC=$(CLOUD_RUN_PUBSUB_TOPIC),APPEAL_PUBSUB_PUSH_SERVICE_ACCOUNT=$(CLOUD_RUN_PUBSUB_PUSH_SERVICE_ACCOUNT),APPEAL_PUBSUB_AUDIENCE=$(CLOUD_RUN_PUBSUB_AUDIENCE),APPEAL_SECURITY=$(CLOUD_RUN_SECURITY),GOOGLE_CLOUD_PROJECT=$(CLOUD_RUN_PROJECT),APPEAL_FIRESTORE_DATABASE=$(CLOUD_RUN_FIRESTORE_DATABASE),APPEAL_MODEL_ARMOR_LOCATION=$(MODEL_ARMOR_LOCATION),APPEAL_MODEL_ARMOR_TEMPLATE=$(MODEL_ARMOR_TEMPLATE),APPEAL_GEMMA_LOCATION=$(GEMMA_LOCATION),APPEAL_GEMMA_MODEL=$(GEMMA_MODEL),APPEAL_SCHEDULER_AUTH_REQUIRED=true,APPEAL_SCHEDULER_SERVICE_ACCOUNT=$(CLOUD_RUN_SCHEDULER_SERVICE_ACCOUNT),APPEAL_SCHEDULER_AUDIENCE=$(CLOUD_RUN_SCHEDULER_URL),APPEAL_AGENT_RUNTIME_RESOURCE=$(AGENT_RUNTIME_RESOURCE),APPEAL_AGENT_RUNTIME_LOCATION=$(AGENT_RUNTIME_LOCATION),APPEAL_AGENT_RUNTIME_TIMEOUT_SECONDS=$(AGENT_RUNTIME_TIMEOUT_SECONDS),APPEAL_AGENT_RUNTIME_CLAIM_LEASE_SECONDS=$(AGENT_RUNTIME_CLAIM_LEASE_SECONDS),APPEAL_AGENT_RUNTIME_SYNTHETIC_ONLY=$(AGENT_RUNTIME_SYNTHETIC_ONLY),APPEAL_AGENT_RUNTIME_TENANT_PREFIX=$(AGENT_RUNTIME_TENANT_PREFIX),APPEAL_AGENT_RUNTIME_CASE_PREFIX=$(AGENT_RUNTIME_CASE_PREFIX)" --allow-unauthenticated --min 0 --max 1 --memory 512Mi --cpu 1 --timeout 300 --quiet
+
+build-payer-service:
+	gcloud builds submit . --project "$(PAYER_SERVICE_PROJECT)" --region "$(PAYER_SERVICE_REGION)" --config cloudbuild-payer.yaml --substitutions "_IMAGE=$(PAYER_IMAGE)" --quiet
+
+deploy-payer-service:
+	gcloud run deploy "$(PAYER_SERVICE)" --image "$(PAYER_IMAGE)" --project "$(PAYER_SERVICE_PROJECT)" --region "$(PAYER_SERVICE_REGION)" --service-account "$(PAYER_SERVICE_ACCOUNT)" --no-allow-unauthenticated --min 0 --max 1 --memory 256Mi --cpu 1 --timeout 60 --quiet
+
+run-payer-service:
+	PYTHONPATH=src $(PYTHON) scripts/run_payer_service.py
 
 run-mcp-server:
 	MCP_IDENTITY_MODE=header PYTHONPATH=src $(PYTHON) scripts/run_mcp_server.py --host 127.0.0.1 --port 8081 --registry "$(MCP_REGISTRY)"
