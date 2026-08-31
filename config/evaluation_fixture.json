@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "source_id": "cms_qic_fixture",
+    "source_class": "regulator_summary",
+    "supported_tasks": [
+      "appeal_type",
+      "requested_item_class",
+      "coverage_rules",
+      "route",
+      "regulator_outcome"
+    ]
+  },
+  "cases": [
+    {
+      "case_ref": "fixture-case-001",
+      "source_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "split": "locked_test",
+      "appeal_type": "exception",
+      "requested_item_class": "drug",
+      "coverage_rule_ids": ["rule-formulary", "rule-medical-necessity"],
+      "route": "external_review",
+      "regulator_outcome": "overturned"
+    },
+    {
+      "case_ref": "fixture-case-002",
+      "source_fingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "split": "locked_test",
+      "appeal_type": "standard",
+      "requested_item_class": "service",
+      "coverage_rule_ids": ["rule-prior-authorization"],
+      "route": "internal_reconsideration",
+      "regulator_outcome": "upheld"
+    }
+  ],
+  "predictions": [
+    {
+      "case_ref": "fixture-case-001",
+      "appeal_type": "exception",
+      "requested_item_class": "drug",
+      "coverage_rule_ids": ["rule-formulary", "rule-medical-necessity"],
+      "route": "external_review",
+      "regulator_outcome": "overturned",
+      "latency_ms": 120
+    },
+    {
+      "case_ref": "fixture-case-002",
+      "appeal_type": null,
+      "requested_item_class": "service",
+      "coverage_rule_ids": ["rule-prior-authorization"],
+      "route": "internal_reconsideration",
+      "regulator_outcome": "overturned",
+      "abstained_tasks": ["appeal_type"],
+      "latency_ms": 95
+    }
+  ]
+}

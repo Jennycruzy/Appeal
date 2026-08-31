@@ -21,7 +21,7 @@ strict = true
 # are passed explicitly by the Makefile and remain fully type-checked.
 follow_imports = "skip"
 mypy_path = "src"
-packages = ["appeal_core", "appeal_agents", "appeal_platform", "appeal_service", "appeal_payer_service"]
+packages = ["appeal_core", "appeal_agents", "appeal_platform", "appeal_service", "appeal_payer_service", "appeal_evaluation"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
