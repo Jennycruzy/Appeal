@@ -17,7 +17,7 @@ to reproduce the local proofs.
 | Durable asynchronous workflow | Verified hosted and locally | Hosted authenticated Pub/Sub payer wake, Firestore resume, duplicate delivery, one mutation; local evidence wake/deadline/restart proof |
 | ADK/Gemini | Provider and managed-runtime smoke verified; full hosted workflow open | Seven-role synthetic ADK run and one managed subscriber checkpoint; no full case path claim |
 | Payer and mutation | Verified hosted boundary; real payer integration open | Private payer Cloud Run service with dedicated identity, bounded determination contract, typed async wake, one gated synthetic mutation and compensation journal |
-| Auth, dashboard, mobile clinician loop | Open | A local six-case board manifest exists, but the current Cloud Run demonstration is intentionally unauthenticated and has no production console |
+| Auth, dashboard, mobile clinician loop | Hosted synthetic proof | Firebase Email/Password Auth, a `tenant_id` claim, the Hosting board/mobile pages, and a fail-closed Cloud Run boundary are live; browser/mobile capture remains in the final video gate |
 | Real-data evaluation | Summary/outcome tracks only | CMS QIC decision summaries and Oregon external-review aggregates; completed full Appeal evaluations remain zero |
 | Utility | Local sensitivity measurement | Six aggregate synthetic scenarios, published burden references, and an explicitly null recoverable-dollar amount |
 
@@ -35,9 +35,9 @@ to reproduce the local proofs.
 | Exactly one gated mutation and compensation | `make run-async-workflow-proof`; `PayerAdjudicator` path | [`evidence/async-workflow-proof.json`](../evidence/async-workflow-proof.json), [`src/appeal_platform/reversibility.py`](../src/appeal_platform/reversibility.py). The external reference is synthetic; no payer API is called. |
 | Real-data grounding | CMS QIC summary and Oregon outcome adapters | [`evidence/cms-qic-decision-search.json`](../evidence/cms-qic-decision-search.json), [`evidence/oregon-evaluation.json`](../evidence/oregon-evaluation.json), [`docs/DATA_PROVENANCE.md`](DATA_PROVENANCE.md). These sources do not contain the complete denial, policy, chart, appeal, and outcome package needed for a full-case score. |
 | Operational utility and controls | `make measure-operational-utility` | [`evidence/operational-utility-measurement.json`](../evidence/operational-utility-measurement.json), [`docs/audits/operational-utility.md`](audits/operational-utility.md). Metrics are aggregate synthetic workflow measures; the Oregon rate is an external-review proxy, and recoverable dollars are sensitivity-only. |
-| Six seeded operating stories | `make seed-demo-cases` | [`evidence/seeded-demo-tenant.json`](../evidence/seeded-demo-tenant.json). Six local synthetic states are visible (clean, quarantine, abstention, evidence wake, deadline, escalation); hosted seeding and dashboard access remain open. |
+| Six seeded operating stories | `make seed-demo-cases` plus hosted board | [`evidence/seeded-demo-tenant.json`](../evidence/seeded-demo-tenant.json) records the local stories; [`evidence/firebase-auth-boundary.json`](../evidence/firebase-auth-boundary.json) records six hosted synthetic states and the live tenant board. |
 | Receipts and observability | Local receipt verification; hosted Cloud Trace/Firestore audits | [`docs/audits/cloud-persistence.md`](audits/cloud-persistence.md), [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json). A complete hosted case trace across all roles is not yet captured. |
-| Authenticated console and mobile approval | Blocked before Firebase link | Firebase APIs are enabled, but `addFirebase` is still denied and no Auth users, Hosting site, dashboard, signed notification links, or phone approval route exist. See [`evidence/firebase-auth-boundary.json`](../evidence/firebase-auth-boundary.json). Do not use the unauthenticated demo endpoint for real data. |
+| Authenticated console and mobile approval | Hosted boundary verified | Firebase Auth/Email-Password, tenant claim enforcement, Hosting dashboard/mobile page, and Secret Manager-backed signed links are live. Use only the synthetic account and cases in [`evidence/firebase-auth-boundary.json`](../evidence/firebase-auth-boundary.json); no real-data workflow is claimed. |
 
 ## Reproduce the local proof package
 
@@ -60,11 +60,10 @@ do not prove clinical quality, payer agreement, or production throughput.
   packet, and an external-review outcome is not a prior-authorization ground
   truth label.
 - No PHI is uploaded, and no real payer submission or withdrawal occurs.
-- No hosted Firebase-authenticated dashboard or mobile clinician approval is
-  represented as complete. The fail-closed Firebase/tenant verifier and signed
-  mobile-link contract are implemented and tested locally; hosted rollout is
-  blocked before Firebase linking. The separate payer service is deployed and
-  authenticated, but remains synthetic-only with no real payer API.
+- Hosted Firebase-authenticated dashboard and the signed mobile clinician
+  approval route are deployed and exercised at the boundary level with
+  synthetic data. A full browser/mobile recording is still a submission gate,
+  and the separate payer service remains synthetic-only with no real payer API.
 - The utility report does not invent a dollar amount. Supply an authorized
   allowed amount before applying its sensitivity formula.
 - A Vertex `_ResourceExhaustedError` is a quota/capacity failure in a later

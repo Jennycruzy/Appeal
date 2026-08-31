@@ -94,18 +94,14 @@ complete.
 
 ## Operational features
 
-- The repository does not yet provide a web console or hosted Firebase
-  authentication. A fail-closed Firebase ID-token/tenant verifier and signed
-  mobile approval-link contract are implemented and locally tested in
-  [`docs/audits/auth-dashboard-contract.md`](audits/auth-dashboard-contract.md),
-  but they are not deployed. Firebase Management, Identity Toolkit, and Hosting APIs are
-  enabled in the active project, but the project is not Firebase-linked: the
-  owner-account `addFirebase` call returned `PERMISSION_DENIED`, and the
-  read-only Firebase project lookup returned `NOT_FOUND`. Firebase documents
-  accepting its Terms in the Firebase Console as a prerequisite for this
-  operation. No Auth users, Hosting site, dashboard, signed notification link,
-  or mobile approval route has been created; the boundary evidence is in
+- The fail-closed Firebase ID-token/tenant verifier, signed mobile
+  approval-link contract, Firebase Auth configuration, and Firebase Hosting
+  dashboard are deployed. Revision `appeal-backend-00027-zm5` requires a
+  Firebase ID token with the `tenant_id` claim and reads the mobile-link secret
+  from Secret Manager. The hosted proof uses one synthetic clinician account
+  and six synthetic cases; its aggregate boundary evidence is in
   [`evidence/firebase-auth-boundary.json`](../evidence/firebase-auth-boundary.json).
+  This is not a production identity lifecycle or real clinical-data deployment.
   Cloud Scheduler now invokes the protected Deadline
   Sentinel route hourly; Cloud Run case state, safe references,
   reference-only workflow sessions, and hash-chained receipts are persisted in
@@ -178,9 +174,8 @@ complete.
   distribution are not yet complete.
 - `make seed-demo-cases` creates six local synthetic board stories and records
   them in [`evidence/seeded-demo-tenant.json`](../evidence/seeded-demo-tenant.json).
-  The hosted tenant has only the recorded synthetic proof cases; this
-  local manifest does not substitute for Firebase Auth, tenant authorization,
-  or a deployed dashboard.
+  The hosted tenant has a separate six-case synthetic proof recorded in
+  [`evidence/firebase-auth-boundary.json`](../evidence/firebase-auth-boundary.json).
 
 These limitations are the current truth as of 2026-08-31. They should be
 replaced by evidence-backed results only after the corresponding capability

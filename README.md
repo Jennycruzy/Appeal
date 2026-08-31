@@ -149,8 +149,8 @@ The managed-security audit is
 The Pub/Sub audit is
 [`docs/audits/pubsub-event-spine.md`](docs/audits/pubsub-event-spine.md).
 
-This is a synthetic-only, unauthenticated demonstration endpoint with
-no real case data uploaded. Firestore persists the immutable case state, safe
+The hosted service is a synthetic-only demonstration endpoint with no real
+case data uploaded. Firestore persists the immutable case state, safe
 references, a reference-only workflow session, and a hash-chained receipt
 ledger. A synthetic case created on revision `00012`, approved after revision
 `00013` replaced it, and adjudicated after revision `00014` replaced it again;
@@ -188,14 +188,14 @@ requests; its authenticated synthetic probe is recorded in
 audit in [`docs/audits/payer-service.md`](docs/audits/payer-service.md).
 The managed Agent Runtime remains advisory and synthetic-only; a later
 checkpoint may be recorded as failed/retryable when Vertex shared capacity is
-exhausted, without redelivering the durable workflow event. Firebase Management,
-Identity Toolkit, and Hosting APIs are enabled, but the project is not yet
-Firebase-linked: the owner account's `addFirebase` request returned
-`PERMISSION_DENIED`, and Firebase reports no available project. The likely
-remaining operator step is accepting the Firebase Terms once in the Firebase
-Console, then retrying the link. No Auth users, Hosting site, dashboard, or
-mobile approval route has been created. The read-only boundary check is
-[`evidence/firebase-auth-boundary.json`](evidence/firebase-auth-boundary.json).
+exhausted, without redelivering the durable workflow event. Firebase is now
+linked to the active project. Auth is initialized with Email/Password enabled,
+one synthetic clinician account carries the `tenant-demo-hosted` claim, and
+the Firebase Hosting dashboard and mobile approval page are live at
+<https://onyx-yeti-506606-i9.web.app>. Cloud Run revision `00027-zm5` enforces
+the Firebase ID-token/tenant boundary and reads the signing secret from Secret
+Manager. The hosted six-case board proof and remaining browser/video gates are
+recorded in [`evidence/firebase-auth-boundary.json`](evidence/firebase-auth-boundary.json).
 The governance audit is
 [`docs/audits/agent-gateway.md`](docs/audits/agent-gateway.md), with aggregate
 evidence in
@@ -295,12 +295,12 @@ make seed-demo-cases
 
 The aggregate board manifest is
 [`evidence/seeded-demo-tenant.json`](evidence/seeded-demo-tenant.json). It is
-local synthetic evidence; hosted Firebase Auth, dashboard access, and hosted
-six-case seeding remain open. The hosted payer continuation proof is separate
-and does not imply that the full dashboard exists. The fail-closed
-Firebase/tenant verifier and signed mobile-link contract are implemented and
-tested locally; hosted rollout is blocked before Firebase linking (see
-[`docs/audits/auth-dashboard-contract.md`](docs/audits/auth-dashboard-contract.md)).
+local synthetic evidence; the hosted six-case board is separately recorded in
+[`evidence/firebase-auth-boundary.json`](evidence/firebase-auth-boundary.json).
+The hosted payer continuation proof is separate from the board, and the
+fail-closed Firebase/tenant verifier and signed mobile-link contract are now
+deployed as described in
+[`docs/audits/auth-dashboard-contract.md`](docs/audits/auth-dashboard-contract.md).
 
 Run the synthetic Stage B case through the real ADK `Runner` and Gemini vision
 path with:

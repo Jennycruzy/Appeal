@@ -1,43 +1,83 @@
 {
-  "schema_version": "0.1",
-  "recorded_at": "2026-08-31T11:22:38Z",
+  "schema_version": "0.2",
+  "recorded_at": "2026-08-31T16:50:04Z",
   "kind": "firebase_auth_dashboard_boundary",
   "project_id": "onyx-yeti-506606-i9",
   "project_number": "835653516606",
-  "status": "blocked_before_firebase_link",
+  "status": "hosted_auth_dashboard_and_mobile_boundary_verified",
   "observations": {
     "active_cloud_identity_is_project_owner": true,
     "firebase_management_api_enabled": true,
     "identity_toolkit_api_enabled": true,
     "firebase_hosting_api_enabled": true,
-    "project_firebase_label_present": false,
-    "firebase_project_get_http_status": 404,
-    "firebase_available_projects_http_status": 200,
-    "firebase_available_projects_count": 0,
-    "firebase_add_http_status": 403,
-    "firebase_add_error": "PERMISSION_DENIED",
-    "users_created": 0,
-    "hosting_sites_created": 0,
-    "dashboard_deployed": false,
-    "mobile_approval_deployed": false
+    "project_firebase_label_present": true,
+    "firebase_project_get_http_status": 200,
+    "firebase_project_state": "ACTIVE",
+    "firebase_default_hosting_site": "onyx-yeti-506606-i9",
+    "firebase_hosting_url": "https://onyx-yeti-506606-i9.web.app",
+    "firebase_web_app_id": "1:835653516606:web:ea41ce591b9eb7f54ec06f",
+    "firebase_web_app_state": "ACTIVE",
+    "firebase_auth_initialized": true,
+    "firebase_terms_acceptance_required": false,
+    "email_password_sign_in_enabled": true,
+    "firebase_authorized_domains": [
+      "onyx-yeti-506606-i9.firebaseapp.com",
+      "onyx-yeti-506606-i9.web.app"
+    ],
+    "synthetic_user_created": true,
+    "synthetic_user_uid": "eZllZdEhNVdkhDmtyFltJANQvId2",
+    "synthetic_user_email": "clinician.demo@appeal.test",
+    "synthetic_user_tenant_claim": "tenant-demo-hosted",
+    "hosted_auth_sign_in_http_status": 200,
+    "cloud_run_revision": "appeal-backend-00027-zm5",
+    "cloud_run_authentication_required": true,
+    "cloud_run_mobile_approval_enabled": true,
+    "cloud_run_firebase_cors_preflight_http_status": 204,
+    "dashboard_deployed": true,
+    "mobile_approval_page_deployed": true,
+    "mobile_approval_case_id": "case-demo-hosted-dashboard-20260831164345-0-clean",
+    "mobile_link_issue_http_status": 201,
+    "mobile_link_preview_http_status": 200,
+    "mobile_link_approval_http_status": 200,
+    "mobile_link_approval_final_state": "AWAITING_DETERMINATION",
+    "mobile_link_approval_external_mutation_count": 1,
+    "mobile_link_approval_cors_origin": "https://onyx-yeti-506606-i9.web.app",
+    "hosted_board_http_status": 200,
+    "hosted_six_case_count": 6,
+    "hosted_case_states": {
+      "case-demo-hosted-dashboard-20260831164345-0-clean": "AWAITING_DETERMINATION",
+      "case-demo-hosted-dashboard-20260831164345-1-clean": "AWAITING_CLINICIAN",
+      "case-demo-hosted-dashboard-20260831164345-2-missing_evidence": "EVIDENCE_INSUFFICIENT",
+      "case-demo-hosted-dashboard-20260831164345-3-injection": "QUARANTINED",
+      "case-demo-hosted-dashboard-20260831164345-4-clean": "QUARANTINED",
+      "case-demo-hosted-dashboard-20260831164345-5-clean": "QUARANTINED"
+    }
   },
   "interpretation": {
-    "firebase_linked": false,
-    "firebase_terms_acceptance_required": true,
-    "likely_operator_action": "Accept the Firebase Terms of Service once in the Firebase Console as the project-owner account, then retry adding Firebase to the existing Appeal project.",
-    "operator_guidance": "https://firebase.google.com/docs/projects/use-firebase-with-existing-cloud-project",
+    "firebase_linked": true,
+    "firebase_auth_verified": true,
+    "tenant_authorization_verified": true,
+    "hosting_verified": true,
+    "dashboard_verified": true,
+    "signed_mobile_approval_backend_verified": true,
+    "operator_guidance": "https://console.firebase.google.com/project/onyx-yeti-506606-i9/authentication",
+    "remaining_proof": [
+      "authenticated browser capture",
+      "mobile approval capture on an awaiting clinician case",
+      "final trace/video and submission metadata"
+    ],
     "not_claimed": [
-      "Firebase Auth",
-      "tenant authorization",
-      "Firebase Hosting",
-      "dashboard",
-      "signed mobile approval"
+      "real patient data",
+      "real payer integration",
+      "full Appeal evaluation"
     ]
   },
   "safety": {
     "real_case_data_uploaded": false,
     "credentials_committed": false,
-    "no_users_or_hosting_resources_created": true
+    "demo_password_recorded": false,
+    "secret_value_recorded": false,
+    "all_hosted_cases_are_synthetic": true
   },
-  "source": "read-only project IAM/API checks plus documented Firebase addFirebase attempt"
+  "source": "Firebase Management, Identity Toolkit, Firebase Hosting, Cloud Run, and authenticated synthetic API checks; tokens and secret values omitted"
 }

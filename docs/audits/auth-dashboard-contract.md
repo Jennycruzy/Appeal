@@ -18,14 +18,14 @@ invariant. Link tokens are not written to receipts or evidence artifacts.
 
 The contract is exercised by `tests/test_auth_and_mobile.py` for authentication
 failure, tenant isolation, link tamper/expiry rejection, and a successful
-synthetic mobile approval. This is implementation and local contract evidence,
-not hosted Firebase proof. The current project has no Firebase project yet:
-the APIs are enabled, but `addFirebase` returned `PERMISSION_DENIED` until the
-owner account accepts Firebase Terms in the Firebase Console. The exact
-read-only boundary is recorded in
+synthetic mobile approval. The hosted boundary is now also verified: Firebase
+Auth is initialized with Email/Password enabled, the synthetic clinician
+account carries `tenant_id=tenant-demo-hosted`, the Firebase Hosting dashboard
+returns HTTP 200, and the tenant-scoped Cloud Run board returns HTTP 200 for
+six synthetic cases. The aggregate boundary record is
 [`evidence/firebase-auth-boundary.json`](../../evidence/firebase-auth-boundary.json).
 
-Once the owner accepts the Terms and links Firebase, deploy with:
+The authenticated Cloud Run deployment uses:
 
 ```text
 APPEAL_FIREBASE_AUTH_REQUIRED=true
@@ -33,7 +33,6 @@ APPEAL_FIREBASE_PROJECT_ID=onyx-yeti-506606-i9
 APPEAL_MOBILE_LINK_SECRET='<secret from Secret Manager; never commit it>'
 ```
 
-The remaining hosted work is to create synthetic clinician accounts, configure
-the `tenant_id` custom claim, publish a Firebase Hosting dashboard, and capture
-an authenticated browser/mobile trace. No real case data is permitted in that
-proof.
+The remaining hosted work is to capture the authenticated browser/mobile trace
+and finish the final video/submission metadata. No real case data is permitted
+in that proof.
