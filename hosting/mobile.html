@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Appeal synthetic mobile clinician approval">
+    <title>Appeal mobile approval</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./firebase-config.js"></script>
+    <script type="module" src="./mobile.js"></script>
+  </head>
+  <body>
+    <header class="topbar compact-topbar">
+      <div><p class="eyebrow">Appeal / clinician approval</p><h1>Mobile review</h1></div>
+      <span class="safety-badge">Synthetic data only</span>
+    </header>
+    <main class="page-shell narrow-shell">
+      <section class="panel">
+        <p class="eyebrow">Short-lived signed capability</p>
+        <h2>Approve one case</h2>
+        <p class="muted">Firebase Auth still scopes the request to the tenant claim. The link alone cannot approve a case.</p>
+        <form id="mobile-sign-in-form" class="stack-form">
+          <label for="mobile-email">Email</label>
+          <input id="mobile-email" type="email" autocomplete="username" required>
+          <label for="mobile-password">Password</label>
+          <input id="mobile-password" type="password" autocomplete="current-password" required>
+          <button type="submit" class="primary">Sign in to review</button>
+        </form>
+        <p id="mobile-auth-message" class="message" role="status"></p>
+      </section>
+      <section id="mobile-case-card" class="panel" hidden>
+        <div class="detail-heading"><div><p class="eyebrow">Approval target</p><h2 id="mobile-case-id">—</h2></div><span id="mobile-state" class="pill">—</span></div>
+        <p id="mobile-expiry" class="muted"></p>
+        <button id="mobile-approve-button" class="primary">Approve this case</button>
+        <p id="mobile-action-message" class="message" role="status"></p>
+      </section>
+    </main>
+  </body>
+</html>

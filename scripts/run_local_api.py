@@ -176,15 +176,40 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
 
 def serve(host: str, port: int, ledger_path: Path) -> None:
     api = build_api(ledger_path)
+    allowed_cors_origins = frozenset(
+        origin.strip()
+        for origin in os.getenv("APPEAL_CORS_ORIGINS", "").split("|")
+        if origin.strip()
+    )
 
     class Handler(BaseHTTPRequestHandler):
+        def _cors_headers(self) -> dict[str, str]:
+            origin = self.headers.get("Origin", "").strip()
+            if not origin or origin not in allowed_cors_origins:
+                return {}
+            return {
+                "Access-Control-Allow-Origin": origin,
+                "Access-Control-Allow-Headers": "Authorization, Content-Type",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Max-Age": "600",
+                "Vary": "Origin",
+            }
+
         def _respond(self, status: int, value: dict[str, object]) -> None:
             body = json.dumps(value, sort_keys=True).encode("utf-8")
             self.send_response(status)
             self.send_header("Content-Type", "application/json")
             self.send_header("Content-Length", str(len(body)))
+            for name, value in self._cors_headers().items():
+                self.send_header(name, value)
             self.end_headers()
             self.wfile.write(body)
+
+        def do_OPTIONS(self) -> None:  # noqa: N802
+            self.send_response(204)
+            for name, value in self._cors_headers().items():
+                self.send_header(name, value)
+            self.end_headers()
 
         def do_GET(self) -> None:  # noqa: N802
             status, value = api.handle("GET", self.path, headers=dict(self.headers.items()))

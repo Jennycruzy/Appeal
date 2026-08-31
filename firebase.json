@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "onyx-yeti-506606-i9",
+    "public": "hosting",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
