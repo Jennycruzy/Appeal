@@ -51,12 +51,10 @@ and one non-executing destructive canary was denied at Agent Gateway with HTTP
 with matching Gateway evidence in
 [`evidence/agent-gateway-mcp-enforcement.json`](../../evidence/agent-gateway-mcp-enforcement.json).
 
-The advisory model sequence after that governance proof hit
-`_ResourceExhaustedError`, so the latest deployment smoke is not represented as
-a clean seven-role completion. Earlier seven-role completion evidence remains
-valid. This audit does not claim Firebase Auth, broader subscriber-driven
-workflow execution, a separate payer service, a hosted console, or a complete
-Appeal evaluation.
+The post-fix synthetic deployment smoke completed all seven advisory roles with
+no provider error events. This audit does not claim Firebase Auth, broader
+subscriber-driven workflow execution, a separate payer service, a hosted
+console, or a complete Appeal evaluation.
 The deployment and all smoke inputs are synthetic and aggregate-only; no real
 case data was uploaded.
 

@@ -42,14 +42,11 @@ complete.
   Runtime dependency hosts and the MCP server are registered with
   endpoint-specific egress permissions. A registered read was allowed and a
   non-executing destructive canary was denied by Gateway with HTTP 403; the
-  real Submission Gate mutation remains hidden. The latest advisory sequence
-  hit Gemini `_ResourceExhaustedError` after governance completed, so it is not
-  a clean seven-role smoke. Firebase Auth and broader
+  real Submission Gate mutation remains hidden. After adding Vertex quota
+  resilience, the managed smoke completed all seven advisory roles with no
+  provider error events. Firebase Auth and broader
   subscriber-driven Agent Runtime workflow execution are also not yet
-  deployed. The advisory quota failure was observed before the Vertex
-  resilience settings were deployed; it remains an operational condition to
-  re-verify, not an authentication or gateway-enforcement failure. The
-  governance audit is in
+  deployed. The governance audit is in
   [`docs/audits/agent-gateway.md`](audits/agent-gateway.md), with aggregate
   evidence in
   [`evidence/agent-gateway-governance.json`](../evidence/agent-gateway-governance.json).

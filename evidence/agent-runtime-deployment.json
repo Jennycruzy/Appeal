@@ -5,6 +5,21 @@
   "effective_identity": "agents.global.proj-835653516606.system.id.goog/resources/aiplatform/projects/835653516606/locations/europe-west2/reasoningEngines/936968624818618368",
   "existing_resource_updated": true,
   "framework": "google-adk",
+  "gemini_resilience": {
+    "min_request_interval_seconds": 2.0,
+    "retry_attempts": 5,
+    "retry_http_status_codes": [
+      408,
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "retry_initial_delay_seconds": 2.0,
+    "retry_jitter": 1.0,
+    "retry_max_delay_seconds": 30.0
+  },
   "identity_type": "AGENT_IDENTITY",
   "location": "europe-west2",
   "managed_gateway_configured": true,
@@ -19,7 +34,7 @@
   ],
   "min_instances": 0,
   "project_id": "onyx-yeti-506606-i9",
-  "recorded_at": "2026-08-31T05:09:22.909837+00:00",
+  "recorded_at": "2026-08-31T06:55:02.522883+00:00",
   "resource_limits": {
     "cpu": "1",
     "memory": "2Gi"
@@ -47,19 +62,18 @@
       "argument_builder",
       "deadline_sentinel",
       "denial_parser",
+      "escalation_strategist",
       "evidence_miner",
       "intake",
       "policy_analyst"
     ],
-    "query_error_codes": [
-      "_ResourceExhaustedError"
-    ],
-    "query_event_count": 9,
-    "query_succeeded": false,
+    "query_error_codes": [],
+    "query_event_count": 8,
+    "query_succeeded": true,
     "query_user_id": "synthetic-agent-runtime-smoke",
     "response_content_persisted": false
   },
-  "source_commit": "257c22ba015e92491606f89f726e1a7e54103eee",
+  "source_commit": "2a46f65c5ac9552ce792401c58ef237d322642d1",
   "source_package": "src",
   "staging_bucket": "gs://appeal-agent-staging-onyx-yeti-506606-i9",
   "synthetic_only": true
