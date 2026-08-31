@@ -8,6 +8,7 @@ exactly once, and continue working when payer responses, new evidence, or
 statutory deadlines arrive hours or weeks later.
 
 [Open the clinician operations board](https://onyx-yeti-506606-i9.web.app) ·
+[Judge access](docs/JUDGE_ACCESS.md) ·
 [Inspect the architecture](docs/ARCHITECTURE.md) ·
 [Follow the judge evidence map](docs/JUDGING.md) ·
 [Read the evaluation protocol](docs/EVALUATION.md)
