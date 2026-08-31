@@ -43,8 +43,13 @@ def parse_span_spec(value: str) -> list[dict[str, object]]:
 
 
 def prompt_choice(prompt: str, choices: list[str]) -> int:
+    print("\nChoose one:")
+    for index, choice in enumerate(choices, start=1):
+        print(f"  {index}. {choice}")
     while True:
         answer = input(prompt).strip()
+        if answer.casefold() in {"q", "quit"}:
+            raise KeyboardInterrupt
         try:
             index = int(answer)
         except ValueError:
