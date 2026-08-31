@@ -82,6 +82,22 @@ class LocalWorkflowTests(unittest.TestCase):
         public = result.to_public_json()
         self.assertIsNone(public["draft"].get("text") if isinstance(public["draft"], dict) else None)
         self.assertNotIn("advanced imaging", str(public))
+        self.assertNotIn("chronic knee pain", str(public))
+
+    def test_public_result_exposes_a_source_bound_clinician_record(self) -> None:
+        public = workflow().run(demo_input()).to_public_json()
+        review = public["review"]
+        assert isinstance(review, dict)
+        denial = review["denial"]
+        policy = review["policy"]
+        self.assertIsInstance(denial, dict)
+        self.assertIsInstance(policy, dict)
+        assert isinstance(denial, dict)
+        assert isinstance(policy, dict)
+        self.assertEqual(set(denial), {"reason_code", "policy_reference", "source_spans"})
+        self.assertNotIn("quote", str(policy))
+        self.assertGreater(len(review["observations"]), 0)
+        self.assertGreater(len(review["claims"]), 0)
 
     def test_graph_exposes_the_seven_roles_and_control_edges(self) -> None:
         instance = workflow()

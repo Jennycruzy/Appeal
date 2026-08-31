@@ -13,8 +13,10 @@ from appeal_core import (
     Case,
     CaseState,
     CaseStateMachine,
+    CriterionEvaluation,
     DecisionSource,
     EvidenceRef,
+    PolicyCriterion,
     ReceiptLedger,
     StatutoryClock,
 )
@@ -102,8 +104,9 @@ class WorkflowResult:
 
         case = self.case
         case_json = case.to_json() if hasattr(case, "to_json") else {}
+        context = self.context
         return {
-            "schema_version": "0.1",
+            "schema_version": "0.2",
             "agent_graph": LOCAL_AGENT_GRAPH.to_json(),
             "outcome": self.outcome.value,
             "case_state": self.case_state.value,
@@ -147,6 +150,7 @@ class WorkflowResult:
             ),
             "failure_reason": self.failure_reason,
             "external_mutation_count": self.mutation_count,
+            "review": _review_public(context, self.draft),
             "security": {
                 surface: {
                     "status": inspection.status.value,
@@ -161,6 +165,102 @@ class WorkflowResult:
                 if inspection is not None
             },
         }
+
+
+def _criterion_evaluation_public(evaluation: CriterionEvaluation | None) -> dict[str, object] | None:
+    if evaluation is None:
+        return None
+    # CriterionEvaluation is recursive; keeping this helper local avoids
+    # exposing an internal serializer as part of the core package API.
+    return {
+        "criterion_id": evaluation.criterion_id,
+        "status": evaluation.status.value,
+        "evidence_refs": [
+            {"kind": ref.kind, "uri": ref.uri, "sha256": ref.sha256}
+            for ref in evaluation.evidence_refs
+        ],
+        "children": [_criterion_evaluation_public(child) for child in evaluation.children],
+    }
+
+
+def _policy_public(policy: PolicyCriterion | None) -> dict[str, object] | None:
+    """Expose versioned criteria while withholding quoted source prose."""
+
+    if policy is None:
+        return None
+    return {
+        "policy_id": policy.policy_id,
+        "payer": policy.payer,
+        "section_ref": policy.section_ref,
+        "effective_date": policy.effective_date,
+        "criterion_id": policy.criterion_id,
+        "text": policy.text,
+        "logic": policy.logic.value,
+        "satisfied_by": list(policy.satisfied_by),
+        "source_hash": policy.source_hash,
+        "source_span": {
+            "source_hash": policy.source_span.source_hash,
+            "start_offset": policy.source_span.start_offset,
+            "end_offset": policy.source_span.end_offset,
+        },
+        "children": [_policy_public(child) for child in policy.children],
+    }
+
+
+def _review_public(context: WorkflowContext | None, draft: DraftPackage | None) -> dict[str, object]:
+    """Build the clinician decision record without crossing the prose boundary."""
+
+    if context is None:
+        return {
+            "denial": None,
+            "policy": None,
+            "criterion_evaluation": None,
+            "observations": [],
+            "claims": [],
+        }
+    denial = context.denial_parse
+    return {
+        "denial": (
+            {
+                "reason_code": denial.reason_code,
+                "policy_reference": denial.policy_reference,
+                "source_spans": [
+                    {
+                        "source_hash": span.source_hash,
+                        "start_offset": span.start_offset,
+                        "end_offset": span.end_offset,
+                    }
+                    for span in denial.spans
+                ],
+            }
+            if denial is not None
+            else None
+        ),
+        "policy": _policy_public(context.input.policy),
+        "criterion_evaluation": _criterion_evaluation_public(context.criterion_evaluation),
+        "observations": [
+            {
+                "observation_id": observation.observation_id,
+                "criterion_id": observation.leaf_criterion_id,
+                "disposition": observation.disposition.value,
+                "evidence_type": observation.evidence_type,
+                "references": [
+                    {"kind": ref.kind, "uri": ref.uri, "sha256": ref.sha256}
+                    for ref in observation.references
+                ],
+            }
+            for observation in context.observations
+        ],
+        "claims": [
+            {
+                "claim_id": claim.claim_id,
+                "criterion_id": claim.criterion_id,
+                "kind": claim.kind,
+                "observation_ids": list(claim.observation_ids),
+            }
+            for claim in (draft.claims if draft is not None else ())
+        ],
+    }
 
 
 class SubmissionGate:

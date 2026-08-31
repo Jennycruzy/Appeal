@@ -69,6 +69,44 @@ function stateClass(state) {
   return `state-${String(state).toLowerCase().replaceAll("_", "-")}`;
 }
 
+function flattenCriteria(node, depth = 0) {
+  if (!node) return [];
+  return [{ ...node, depth }, ...(node.children || []).flatMap((child) => flattenCriteria(child, depth + 1))];
+}
+
+function evaluationStatuses(node, result = new Map()) {
+  if (!node) return result;
+  result.set(node.criterion_id, node.status);
+  (node.children || []).forEach((child) => evaluationStatuses(child, result));
+  return result;
+}
+
+function renderReview(review) {
+  if (!review) return '<section><h3>Decision record</h3><p class="muted">Structured review data is not available for this persisted state.</p></section>';
+  const policy = review.policy;
+  const statuses = evaluationStatuses(review.criterion_evaluation);
+  const criteria = flattenCriteria(policy);
+  const observations = review.observations || [];
+  const claims = review.claims || [];
+  const denial = review.denial;
+  const denialHtml = denial ? `<dl class="review-facts">
+    <div><dt>Denial reason</dt><dd>${escapeHtml(denial.reason_code)}</dd></div>
+    <div><dt>Policy reference</dt><dd>${escapeHtml(denial.policy_reference)}</dd></div>
+    <div><dt>Source bindings</dt><dd>${escapeHtml(denial.source_spans?.length || 0)} verified span(s)</dd></div>
+  </dl>` : '<p class="muted">The durable session deliberately omits the denial body; source-bound parsing metadata is shown during the active intake request.</p>';
+  const policyHtml = policy ? `<div class="policy-heading"><strong>${escapeHtml(policy.policy_id)}</strong><span>${escapeHtml(policy.payer)} · effective ${escapeHtml(policy.effective_date)}</span></div>
+    <ul class="criterion-list">${criteria.map((criterion) => {
+      const status = statuses.get(criterion.criterion_id) || "not_evaluated";
+      return `<li style="--criterion-depth:${criterion.depth}"><div><span class="pill ${stateClass(status)}">${escapeHtml(status)}</span><strong>${escapeHtml(criterion.criterion_id)}</strong></div><p>${escapeHtml(criterion.text)}</p><small>${escapeHtml(criterion.section_ref)} · ${escapeHtml(criterion.logic)}</small></li>`;
+    }).join("")}</ul>` : '<p class="muted">No versioned policy criterion is attached.</p>';
+  const evidenceHtml = observations.length ? `<ul class="evidence-list">${observations.map((item) => `<li><div><span class="pill ${stateClass(item.disposition)}">${escapeHtml(item.disposition)}</span><strong>${escapeHtml(item.criterion_id)}</strong></div><p>${escapeHtml(item.evidence_type)} · ${escapeHtml(item.references?.length || 0)} admitted reference(s)</p><small>${escapeHtml(item.observation_id)}</small></li>`).join("")}</ul>` : '<p class="muted">No evidence observations were admitted.</p>';
+  const claimsHtml = claims.length ? `<ul class="evidence-list">${claims.map((claim) => `<li><div><span class="pill">${escapeHtml(claim.kind)}</span><strong>${escapeHtml(claim.claim_id)}</strong></div><p>Criterion: ${escapeHtml(claim.criterion_id)}</p><small>Evidence observations: ${escapeHtml((claim.observation_ids || []).join(", "))}</small></li>`).join("")}</ul>` : '<p class="muted">No supportable draft claims are available.</p>';
+  return `<section class="review-section"><h3>Denial interpretation</h3>${denialHtml}</section>
+    <section class="review-section"><h3>Policy criterion tree</h3>${policyHtml}</section>
+    <section class="review-section"><h3>Evidence by criterion</h3>${evidenceHtml}</section>
+    <section class="review-section"><h3>Draft claim provenance</h3>${claimsHtml}</section>`;
+}
+
 function renderBoard() {
   caseCount.textContent = String(cases.length);
   if (!cases.length) {
@@ -105,6 +143,7 @@ function renderDetail() {
   const transitions = view.case?.transitions || [];
   const events = view.events || [];
   const payerDecision = view.payer_decision?.decision || "—";
+  const review = view.review;
   const actionButtons = [];
   if (state === "AWAITING_CLINICIAN") {
     actionButtons.push('<button id="approve-button" class="primary">Approve submission</button>');
@@ -129,6 +168,7 @@ function renderDetail() {
     <section><h3>Failure / safety reason</h3><p class="muted">${escapeHtml(view.failure_reason || "None recorded")}</p></section>
     <section><h3>State transitions</h3><ul class="compact-list">${transitions.length ? transitions.map((item) => `<li><strong>${escapeHtml(item.to_state || item.state || "transition")}</strong><span>${escapeHtml(item.reason || item.actor || "")}</span></li>`).join("") : '<li class="muted">No transitions returned.</li>'}</ul></section>
   </div>
+  <div class="review-grid">${renderReview(review)}</div>
   <details><summary>View live response (references and metadata only)</summary><pre>${escapeHtml(JSON.stringify(view, null, 2))}</pre></details>`;
 
   document.querySelector("#approve-button")?.addEventListener("click", () => runAction("approve"));
