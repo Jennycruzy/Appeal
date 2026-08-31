@@ -131,11 +131,11 @@ function renderReview(review) {
 function renderBoard() {
   caseCount.textContent = String(cases.length);
   if (!cases.length) {
-    caseList.innerHTML = '<p class="muted">No cases yet. Load the evaluation case set to exercise the operating paths.</p>';
+    caseList.innerHTML = '<p class="muted">No cases yet. Load cases to exercise the operating paths.</p>';
     caseDetail.innerHTML = '<div class="empty-state"><p class="eyebrow">Case detail</p><h2>No cases</h2><p class="muted">Load the governed evaluation cases into this tenant-scoped board.</p></div>';
     return;
   }
-  caseList.innerHTML = cases.map((view) => {
+  caseList.innerHTML = cases.map((view, index) => {
     const id = caseIdFor(view);
     const state = stateFor(view);
     const active = id === selectedCaseId ? " active" : "";
