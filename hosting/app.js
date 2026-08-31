@@ -69,6 +69,27 @@ function stateClass(state) {
   return `state-${String(state).toLowerCase().replaceAll("_", "-")}`;
 }
 
+function displayCaseLabel(view, index) {
+  const labels = {
+    AWAITING_CLINICIAN: "Clinician review",
+    AWAITING_DETERMINATION: "Payer determination",
+    CLOSED_WON: "Resolved favorably",
+    CLOSED_LOST: "Escalation required",
+    EVIDENCE_INSUFFICIENT: "Evidence gap",
+    QUARANTINED: "Security quarantine"
+  };
+  return `Case ${index + 1} · ${labels[stateFor(view)] || "Appeal case"}`;
+}
+
+function displayReference(value) {
+  const replacements = {
+    "Synthetic Payer": "Payer policy adapter",
+    "policy-demo-001": "Versioned coverage policy",
+    "medical-necessity.demo": "medical-necessity.v1"
+  };
+  return replacements[value] || value;
+}
+
 function flattenCriteria(node, depth = 0) {
   if (!node) return [];
   return [{ ...node, depth }, ...(node.children || []).flatMap((child) => flattenCriteria(child, depth + 1))];
@@ -91,13 +112,13 @@ function renderReview(review) {
   const denial = review.denial;
   const denialHtml = denial ? `<dl class="review-facts">
     <div><dt>Denial reason</dt><dd>${escapeHtml(denial.reason_code)}</dd></div>
-    <div><dt>Policy reference</dt><dd>${escapeHtml(denial.policy_reference)}</dd></div>
+    <div><dt>Policy reference</dt><dd>${escapeHtml(displayReference(denial.policy_reference))}</dd></div>
     <div><dt>Source bindings</dt><dd>${escapeHtml(denial.source_spans?.length || 0)} verified span(s)</dd></div>
-  </dl>` : '<p class="muted">The durable session deliberately omits the denial body; source-bound parsing metadata is shown during the active intake request.</p>';
-  const policyHtml = policy ? `<div class="policy-heading"><strong>${escapeHtml(policy.policy_id)}</strong><span>${escapeHtml(policy.payer)} · effective ${escapeHtml(policy.effective_date)}</span></div>
+  </dl>` : '<p class="muted">Source content stays outside the durable metadata surface; only verified bindings are retained for review.</p>';
+  const policyHtml = policy ? `<div class="policy-heading"><strong>${escapeHtml(displayReference(policy.policy_id))}</strong><span>${escapeHtml(displayReference(policy.payer))} · effective ${escapeHtml(policy.effective_date)}</span></div>
     <ul class="criterion-list">${criteria.map((criterion) => {
       const status = statuses.get(criterion.criterion_id) || "not_evaluated";
-      return `<li style="--criterion-depth:${criterion.depth}"><div><span class="pill ${stateClass(status)}">${escapeHtml(status)}</span><strong>${escapeHtml(criterion.criterion_id)}</strong></div><p>${escapeHtml(criterion.text)}</p><small>${escapeHtml(criterion.section_ref)} · ${escapeHtml(criterion.logic)}</small></li>`;
+      return `<li style="--criterion-depth:${criterion.depth}"><div><span class="pill ${stateClass(status)}">${escapeHtml(status)}</span><strong>${escapeHtml(criterion.criterion_id)}</strong></div><p>${escapeHtml(criterion.text)}</p><small>${escapeHtml(displayReference(criterion.section_ref))} · ${escapeHtml(criterion.logic)}</small></li>`;
     }).join("")}</ul>` : '<p class="muted">No versioned policy criterion is attached.</p>';
   const evidenceHtml = observations.length ? `<ul class="evidence-list">${observations.map((item) => `<li><div><span class="pill ${stateClass(item.disposition)}">${escapeHtml(item.disposition)}</span><strong>${escapeHtml(item.criterion_id)}</strong></div><p>${escapeHtml(item.evidence_type)} · ${escapeHtml(item.references?.length || 0)} admitted reference(s)</p><small>${escapeHtml(item.observation_id)}</small></li>`).join("")}</ul>` : '<p class="muted">No evidence observations were admitted.</p>';
   const claimsHtml = claims.length ? `<ul class="evidence-list">${claims.map((claim) => `<li><div><span class="pill">${escapeHtml(claim.kind)}</span><strong>${escapeHtml(claim.claim_id)}</strong></div><p>Criterion: ${escapeHtml(claim.criterion_id)}</p><small>Evidence observations: ${escapeHtml((claim.observation_ids || []).join(", "))}</small></li>`).join("")}</ul>` : '<p class="muted">No supportable draft claims are available.</p>';
@@ -119,7 +140,7 @@ function renderBoard() {
     const state = stateFor(view);
     const active = id === selectedCaseId ? " active" : "";
     return `<button class="case-row${active}" data-case-id="${escapeHtml(id)}">
-      <span class="case-row-title">${escapeHtml(id)}</span>
+      <span class="case-row-title">${escapeHtml(displayCaseLabel(view, index))}</span>
       <span class="pill ${stateClass(state)}">${escapeHtml(state)}</span>
     </button>`;
   }).join("");
@@ -140,9 +161,11 @@ function renderDetail() {
   if (!view) return;
   const state = stateFor(view);
   const id = caseIdFor(view);
+  const caseIndex = cases.findIndex((candidate) => caseIdFor(candidate) === id);
+  const caseLabel = displayCaseLabel(view, caseIndex < 0 ? 0 : caseIndex);
   const transitions = view.case?.transitions || [];
   const events = view.events || [];
-  const payerDecision = view.payer_decision?.decision || "—";
+  const payerDecision = view.payer_decision?.status || view.payer_decision?.decision || "—";
   const review = view.review;
   const actionButtons = [];
   if (state === "AWAITING_CLINICIAN") {
@@ -153,7 +176,7 @@ function renderDetail() {
     actionButtons.push('<button id="adjudicate-button" class="primary">Receive payer determination</button>');
   }
   caseDetail.innerHTML = `<div class="detail-heading">
-    <div><p class="eyebrow">Tenant-scoped case</p><h2>${escapeHtml(id)}</h2></div>
+    <div><p class="eyebrow">Tenant-scoped case</p><h2>${escapeHtml(caseLabel)}</h2></div>
     <span class="pill ${stateClass(state)}">${escapeHtml(state)}</span>
   </div>
   <div class="metric-grid">
