@@ -1,11 +1,11 @@
 {
   "schema_version": "0.1",
-  "recorded_at": "2026-08-31T10:36:19Z",
+  "recorded_at": "2026-08-31T15:58:25Z",
   "kind": "hosted_pubsub_workflow_wake",
   "project_id": "onyx-yeti-506606-i9",
   "region": "europe-west2",
   "service": "appeal-backend",
-  "revision": "appeal-backend-00022-952",
+  "revision": "appeal-backend-00026-42q",
   "traffic_percent": 100,
   "service_url": "https://appeal-backend-hhcjpefk2q-nw.a.run.app",
   "health": {
@@ -23,8 +23,8 @@
     "oidc_audience": "https://appeal-backend-835653516606.europe-west2.run.app/api/events/pubsub",
     "ack_deadline_seconds": 60,
     "event_topic": "payer.determination.received",
-    "event_id": "44e26ca38f3b87ce0ff39ffd939520670303f86088be744e0b0cd49c9ffd6e12",
-    "message_id": "20743058670775714",
+    "event_id": "32f799354487c7efb655788287790c85efb451e2e7c6bfc7af5b207296db2063",
+    "message_id": "21422872563047091",
     "payload_fields": [
       "criterion_status",
       "decision",
@@ -33,8 +33,8 @@
     "payload_policy": "reference_only_scalar_metadata"
   },
   "synthetic_case": {
-    "tenant_id": "tenant-demo-hosted-payer-clean-20260831",
-    "case_id": "case-hosted-payer-clean-20260831",
+    "tenant_id": "tenant-demo-hosted-payer-clean-20260831-revision26-155327",
+    "case_id": "case-hosted-payer-clean-20260831-revision26-155327",
     "data_class": "synthetic",
     "before": {
       "case_state": "AWAITING_DETERMINATION",
@@ -49,14 +49,20 @@
       "event_count": 22,
       "processed_event_count": 1
     },
+    "durable_boundary": {
+      "case_fingerprint": "38656c5549cd80755201ede38963d140683f103448d37c8028ded7fb84bd9076",
+      "session_case_fingerprint": "38656c5549cd80755201ede38963d140683f103448d37c8028ded7fb84bd9076",
+      "case_session_fingerprints_match": true,
+      "session_mutation_count": 1
+    },
     "first_delivery": {
-      "observed_at": "2026-08-31T10:31:56.067860Z",
+      "observed_at": "2026-08-31T15:54:28.117269Z",
       "http_status": 200,
-      "latency_seconds": 1.775177711
+      "latency_seconds": 1.780871236
     },
     "duplicate_delivery": {
-      "published_message_id": "20744146178458308",
-      "observed_at": "2026-08-31T10:35:29.804325Z",
+      "published_message_id": "21114697008430449",
+      "observed_at": "2026-08-31T15:58:25.677131Z",
       "http_status": 200,
       "case_state_after": "CLOSED_WON",
       "external_mutation_count_after": 1
@@ -68,5 +74,5 @@
     "no_clinical_or_payer_content_sent": true
   },
   "real_case_data_uploaded": false,
-  "source_commit": "ec56026"
+  "source_commit": "f0c1a1f"
 }

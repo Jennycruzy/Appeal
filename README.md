@@ -121,13 +121,14 @@ and its decision input stays outside the repository.
 ## Google Cloud status
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
-`onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00022-952`, with 100% traffic on that revision. The verified
-service URL is
+`onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`; the
+latest ready revision is `appeal-backend-00026-42q` with 100% traffic. The
+verified service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. Its `/api/healthz` endpoint
-returned `status: ok` with `storage: firestore`, `event_spine: pubsub_firestore`,
-`security: managed_model_armor_gemma`, and
-`agent_runtime: managed_subscriber_synthetic_only`. A fresh synthetic case passed the
+returned `status: ok` on the preceding verified revision with `storage:
+firestore`, `event_spine: pubsub_firestore`, `security:
+managed_model_armor_gemma`, and `agent_runtime:
+managed_subscriber_synthetic_only`. A fresh synthetic case passed the
 managed Model Armor -> Gemma boundary on inbound, egress, and memory surfaces,
 then completed clinician approval, one submission mutation, and payer
 adjudication to `CLOSED_WON`. A synthetic injection was blocked at inbound
@@ -137,6 +138,12 @@ The aggregate deployment record is
 [`evidence/cloud-run-deployment.json`](evidence/cloud-run-deployment.json),
 with the persistence audit in
 [`docs/audits/cloud-persistence.md`](docs/audits/cloud-persistence.md).
+The hosted payer wake artifact is the authoritative end-to-end Pub/Sub trace
+on revision `appeal-backend-00026-42q`: the authenticated reference-only payer
+event resumed the Firestore session to `CLOSED_WON`, preserved one external
+mutation, and remained idempotent on duplicate delivery. The implementation
+also writes case state and its resumable session atomically, so concurrent
+delivery cannot leave a stale session fingerprint.
 The managed-security audit is
 [`docs/audits/managed-security-cloud-run.md`](docs/audits/managed-security-cloud-run.md).
 The Pub/Sub audit is

@@ -15,8 +15,9 @@ complete.
   project `.venv`, and the graph wiring is present behind
   `src/appeal_agents/adk_workflow.py`.
 - A synthetic-only Cloud Run service is deployed in project
-  `onyx-yeti-506606-i9`, region `europe-west2`, revision
-  `appeal-backend-00022-952`. Its health endpoint, Firestore-backed state,
+  `onyx-yeti-506606-i9`, region `europe-west2`; latest ready revision
+  `appeal-backend-00026-42q` carries the tested atomic persistence and
+  Pub/Sub receiver fixes. Its health endpoint, Firestore-backed state,
   managed Model Armor -> Gemma boundary, and synthetic case lifecycle were
   verified; the aggregate record is
   [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json).
@@ -66,6 +67,11 @@ complete.
   and the audit is in [`docs/audits/cloud-persistence.md`](audits/cloud-persistence.md).
   The hosted security integration audit is in
   [`docs/audits/managed-security-cloud-run.md`](audits/managed-security-cloud-run.md).
+  The end-to-end hosted payer wake is verified on revision
+  `appeal-backend-00026-42q`: an authenticated reference-only Pub/Sub event
+  resumed a Firestore session to `CLOSED_WON`, preserved one external
+  mutation, and remained idempotent on duplicate delivery. The aggregate
+  trace is in [`evidence/cloud-run-async-workflow.json`](../evidence/cloud-run-async-workflow.json).
   Local fallback seams for event delivery, scoped memory, payer adjudication,
   and reversibility are present under `src/appeal_platform/`.
 - The current seven-agent implementation demonstrates the role boundaries and
