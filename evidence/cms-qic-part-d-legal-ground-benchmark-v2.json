@@ -1,0 +1,132 @@
+{
+  "artifact": {
+    "contains_narrative": true,
+    "file_name": "cms-qic-part-d-legal-ground-benchmark-v2.jsonl",
+    "location": "outside_repository_only",
+    "outcome_hidden_from_annotation_input": true,
+    "sha256": "8b0d24bed8b7e57576c189d146502d9629c045e3ed0320e769b924ce8a92f381"
+  },
+  "claim_boundary": {
+    "clinical_ground_truth": false,
+    "complete_denial_package": false,
+    "full_appeal_evaluation": false,
+    "legal_ground_track": "requires_two_direct_human_reviews_and_adjudication",
+    "regulator_outcome_track": true
+  },
+  "sampling": {
+    "algorithm": "screen_then_proportional_stratified_minimum_one_then_policy_diversity_rank",
+    "eligible_policy_context_unique_count": 1110,
+    "locked_test_size": 50,
+    "policy_context_repeat_cap_preference": 2,
+    "population_stratum_count": 63,
+    "sample_identity_sha256": "a5d70360324d7280d8b2f3538f9272d8b1d0248af282341458b043bf181d5012",
+    "sample_size": 150,
+    "seed_sha256": "47201377d2e07b9b77852d7d2c85016e44b3920f6d752c4cd21a76e4bee028be",
+    "selected_policy_context_repeat_counts": {
+      "03f53455b92114f16d12de4d530060c284a5fa51a5a5dd34b7c4be3b3b0e675f": 2,
+      "0e5bb6035bc937458fafc45c9bab17370483b4432fc89a04ed0ceb908e94933d": 2,
+      "0f0408071aef2f7869a689a82b27d8a676c21daf926f71e565850146474138ad": 2,
+      "131e6802e97218784cbde06eb89a7d0fbf1a016be53725cb3b8a26e5ade4cef7": 2,
+      "188fd171e2d5a2fca6f249d0f52535dd50f184afa418230ce65a772ceea156a2": 2,
+      "1bf57f7dec247e472ab123abc788c184e316db0915d985c25ac5d8381bf8efb8": 5,
+      "1f1f36486c77ab4d240c2a89684283ffa434e3d0414756e5e5e6a7296a9a347b": 2,
+      "1f9e9b065adc92157c713fe663db700a4b1fb8af871fe8cf8f3f46a341d4fc5a": 2,
+      "226721f4407c09975eaf61e3b1fd599272f3ebb0f3983a34b457ef2ec4727218": 2,
+      "28c6b5c58112561feb6942c23bd7354b3f99f7646c9ba5647462925c7045d796": 2,
+      "3644dddeeb874d2d4a78427fb4cae00fd94a1a1177ce9699117bbf6c73016295": 2,
+      "3b0647bdbb94b7c97e5e0dacc1a2a6732dd6a72cedb9f0700945b8125e979c4c": 2,
+      "42882298741e3bdbd661d1d7d5cd44308939ecddcc9dbab9deb23d903a7f7342": 4,
+      "4b780a22e248064fc5e6516f110824b1e49aa2803595a5976ba93e6841c2188f": 2,
+      "4cbe76533013aca3d46707f72e672f16aaaf57282f601c17830abcf7f071239a": 2,
+      "5a118278e2a152a74ecbf689eabd356473546e383909a0f0597f4fa57f50d2ed": 2,
+      "63de6dd8f1f24e90d6a0b6589cea1bb48fafd5d07e9e404f8440a086c77a3263": 2,
+      "66ff42fa7a944d72253125d0dba4bbc74cf770340135ad5e566ba96e8fd47cd5": 2,
+      "69629d24c887445805fc0b81dfec541edf58aa648b37a7649518ebba086ea719": 7,
+      "6c714f8fa986b3c1da77c4b782f9616e4b207b0eb39915f87d81ffb4cbfff5a8": 7,
+      "75b498c78a535c10a8e06aa6c8027cff681151552aca286afad1dbf4b95a6050": 2,
+      "7752f5595f50ab7503d61e84c1905f5fd09baf8d83a923d04ae591aaf6966342": 2,
+      "77d78fa311774a36a754505d1c7fba50de8bebd179e56a69d6e78d25656283bd": 10,
+      "7b4af35ae81f1ee09878d9be4f3e9686091ac1ce74b968fcf7cc8a258259a14e": 2,
+      "7cf46f7184d7636b30f3d5922cc6278816d3f38172e5c4d666e5d609185e7e95": 2,
+      "800aa1e7aabceac5e5e19d00e409b878ef418d81c10eb0563dcdd37687bd6a68": 2,
+      "80d9a9cd878684bcb160098b67773fde463a620fdae037ccbf7cd8b1ff894556": 2,
+      "818eb46bae4bf0195f06c8f60222989e49ba8a68607370b81f1daa554c587884": 3,
+      "84efbdde64381f2e65719d59126de5352d25d3fd7c1f3bc13ff6f2588649b53b": 2,
+      "8b5fa7a1b96213682c431bc5c8c0cdf0935aa0613631db32f6f5c190f6b01f50": 2,
+      "92a3b110529e815c4f533fef116a6621bef9b9c4dec3e606dc7dab0801b6a26c": 4,
+      "9bb09adb1e0a351b904d97654554885c4c3ba8b8aff18b9c38eaf91c1d40c133": 2,
+      "a00999f27e7763697c6079d951cca3937779c1cfc95625888d26bccbab797584": 2,
+      "a77d0987dff77bc824169e7adadf2993139d184f393da73f061e2ec08a79ca10": 3,
+      "b1f862d931c551da12d9375a33b5ce0c55d68dae0c008e7fb8210eb07a72dc6f": 2,
+      "b32c2f71de4877c3f59fa528fc0a947005896310bfe7db1fdaa59d3a45e542dc": 15,
+      "b431d495d8646c48d1a2941c84a827fc4ebd11e739e31386a7b9106f58e3555d": 2,
+      "b598bb5f92e29d65d0fe6893ecc71fdfe4e0d28a11a5ac868bcde8beab33ed15": 2,
+      "c32a8273cdceb2d0c4d000ab3fa349870d6637c34c75528fbeaa6b1109375d80": 2,
+      "c877b70556dc56dc0b5105940a6c252de8969330e6e3f7402231348405fdfd65": 2,
+      "ca2ac123367560026b295fd2a5e1dd777128619bbcc903f7d9458628baf935b4": 2,
+      "d24f2c1060ee84b5c83f363904c7b6376e9fe50b2c4e7958df3991baef682667": 3,
+      "d75dbd1800a4a55ca2235013645f9c4f8f5597afa67f6e190b25533e66c22278": 2,
+      "f91f001f6739b2f8edbd940a11ed7f407c6d506e0ffea9297abb4fcf80c3eef3": 2
+    },
+    "selected_policy_context_unique_count": 65,
+    "split_counts": {
+      "development": 100,
+      "locked_test": 50
+    },
+    "stratum_fields": [
+      "decision",
+      "appeal_type",
+      "decision_year",
+      "rationale_policy_completeness",
+      "rationale_length_bucket"
+    ]
+  },
+  "schema_version": "2.0",
+  "screening": {
+    "eligible_population": 188102,
+    "eligible_population_fingerprint": "3fd0e2a555a896c896cda3827d81f9c1dcc7ff9e79cb8c3b88a268d345f86456",
+    "empty_policy_context_excluded_before_sampling": 0,
+    "empty_rationale_excluded_before_sampling": 14,
+    "privacy_blocked_before_sampling": 52803,
+    "privacy_candidate_counts": {
+      "date_of_birth_label": 7,
+      "member_id_label": 246,
+      "person_name_context": 52466,
+      "physical_address_shape": 161
+    },
+    "privacy_detector": "technical_patterns_plus_person_name_context",
+    "raw_values_in_report": false,
+    "screened_out_by_reason": {
+      "empty_rationale": 14,
+      "privacy_blocked": 52803
+    }
+  },
+  "source": {
+    "accepted_population": 240916,
+    "file_sha256": "e32b4f10eb51df1882fc3b9084807e448d4924c0605518afd71a7e85ebb9759f",
+    "narratives_committed": false,
+    "part": "part_d",
+    "source_class": "regulator_summary",
+    "source_id": "cms_qic_decision_summaries",
+    "source_manifest_exclusions": 42
+  },
+  "status": "cms_qic_legal_ground_benchmark_sample_ready",
+  "tracks": {
+    "legal_ground": {
+      "assistant_prefill_allowed": false,
+      "gold_source": "two_direct_human_reviews_of_operative_holdings",
+      "label_status": "pending_direct_human_review",
+      "reviewer_required": true,
+      "source_fields": [
+        "decision_rationale",
+        "policy_context"
+      ]
+    },
+    "regulator_outcome": {
+      "gold_source": "hidden_labels.regulator_outcome",
+      "label_status": "explicit_CMS_field",
+      "reviewer_required": false,
+      "source_field": "Decision"
+    }
+  }
+}

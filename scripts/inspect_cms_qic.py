@@ -75,6 +75,17 @@ ADDRESS = re.compile(
     r"lane|ln|court|ct|way|highway|hwy)\b",
     re.I,
 )
+PERSON_CONTEXT = re.compile(
+    r"\b(?:new\s+)?(?:prescriber|physician|doctor|provider|clinician|pharmacist)\b",
+    re.I,
+)
+PERSON_NAME = re.compile(
+    r"\b[A-Z][a-z]{2,}(?:[-'][A-Za-z]+)?\s+[A-Z][a-z]{2,}(?:[-'][A-Za-z]+)?\b"
+)
+PROFESSIONAL_NAME = re.compile(
+    r"\b(?:Dr\.?|Doctor)\s+[A-Z][a-z]{2,}(?:[-'][A-Za-z]+)?\s+"
+    r"[A-Z][a-z]{2,}(?:[-'][A-Za-z]+)?\b"
+)
 
 
 def now_iso() -> str:
@@ -207,7 +218,26 @@ def privacy_categories(value: str) -> tuple[str, ...]:
         categories.append("date_of_birth_label")
     if ADDRESS.search(value):
         categories.append("physical_address_shape")
+    if person_name_context(value):
+        categories.append("person_name_context")
     return tuple(categories)
+
+
+def person_name_context(value: str) -> bool:
+    """Flag likely professional names for human privacy review.
+
+    This is intentionally a high-signal context detector, not an identity
+    classifier. It only produces a candidate when a name-shaped phrase occurs
+    next to a clinical-professional marker or an explicit honorific.
+    """
+
+    if PROFESSIONAL_NAME.search(value):
+        return True
+    for marker in PERSON_CONTEXT.finditer(value):
+        window = value[marker.end() : marker.end() + 160]
+        if PERSON_NAME.search(window):
+            return True
+    return False
 
 
 def privacy_scan(rows: list[dict[str, Any]]) -> dict[str, Any]:

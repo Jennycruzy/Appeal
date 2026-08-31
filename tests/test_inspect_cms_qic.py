@@ -15,6 +15,7 @@ from inspect_cms_qic import (  # noqa: E402
     PART_C_FIELDS,
     PART_C_TITLE,
     catalog_metadata,
+    privacy_categories,
     public_query_template,
     summarize_query,
 )
@@ -97,6 +98,14 @@ class CmsQicInspectorTests(unittest.TestCase):
         self.assertIn("{offset}", template)
         self.assertIn("{limit}", template)
         self.assertNotIn("ACA", template)
+
+    def test_privacy_scan_flags_name_shaped_professional_context(self) -> None:
+        value = "The enrollee obtained the drug from a pharmacy under a new prescriber (Linda Soldavini)."
+        self.assertIn("person_name_context", privacy_categories(value))
+
+    def test_privacy_scan_does_not_flag_generic_prescriber_language(self) -> None:
+        value = "The prescriber provided patient specific clinical rationale."
+        self.assertNotIn("person_name_context", privacy_categories(value))
 
     def test_missing_expected_field_is_reported_fail_closed(self) -> None:
         payload = {

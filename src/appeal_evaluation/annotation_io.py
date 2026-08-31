@@ -18,6 +18,7 @@ from .annotations import (
     OperationalRoute,
     RationaleCategory,
     SourceSpanLabel,
+    SpanRole,
     gold_from_consensus,
     requires_adjudication,
 )
@@ -94,12 +95,15 @@ def _span_array(value: object, label: str) -> tuple[SourceSpanLabel, ...]:
         end = item.get("end")
         if not isinstance(start, int) or isinstance(start, bool) or not isinstance(end, int) or isinstance(end, bool):
             raise ValueError(f"{label}[{index}] offsets must be integers")
+        source_field = _text(item.get("source_field"), f"{label}[{index}].source_field")
+        default_role = "operative_holding" if source_field == "decision_rationale" else "policy_context"
         spans.append(
             SourceSpanLabel(
-                source_field=_text(item.get("source_field"), f"{label}[{index}].source_field"),
+                source_field=source_field,
                 start=start,
                 end=end,
                 source_sha256=_text(item.get("source_sha256"), f"{label}[{index}].source_sha256"),
+                span_role=_enum(SpanRole, item.get("span_role", default_role), f"{label}[{index}].span_role"),
             )
         )
     return tuple(spans)
@@ -202,6 +206,7 @@ def annotation_to_json(annotation: CaseAnnotation) -> dict[str, object]:
                 "start": span.start,
                 "end": span.end,
                 "source_sha256": span.source_sha256,
+                "span_role": span.span_role.value,
             }
             for span in annotation.rationale_spans
         ],
@@ -211,6 +216,7 @@ def annotation_to_json(annotation: CaseAnnotation) -> dict[str, object]:
                 "start": span.start,
                 "end": span.end,
                 "source_sha256": span.source_sha256,
+                "span_role": span.span_role.value,
             }
             for span in annotation.policy_spans
         ],
@@ -227,6 +233,11 @@ class QueueRow:
     source_hashes: Mapping[str, object]
     annotation: CaseAnnotation | None
     human_reviewed: bool
+    review_mode: str | None
+
+    @property
+    def gold_eligible(self) -> bool:
+        return self.annotation is not None and self.human_reviewed and self.review_mode == "human_entered"
 
 
 @dataclass(frozen=True)
@@ -238,12 +249,17 @@ class QueueInspection:
     pending_count: int
     partial_count: int
     unreviewed_count: int
+    gold_ineligible_count: int
     split_counts: dict[str, int]
     rows: tuple[QueueRow, ...]
 
     @property
     def complete(self) -> bool:
         return self.pending_count == 0 and self.partial_count == 0 and self.unreviewed_count == 0
+
+    @property
+    def gold_complete(self) -> bool:
+        return self.complete and self.gold_ineligible_count == 0
 
     @property
     def order_fingerprint(self) -> str:
@@ -294,6 +310,7 @@ def inspect_queue(
     pending_count = 0
     partial_count = 0
     unreviewed_count = 0
+    gold_ineligible_count = 0
     with path.open(encoding="utf-8") as handle:
         for line_number, line in enumerate(handle, start=1):
             try:
@@ -324,6 +341,9 @@ def inspect_queue(
                 annotation: CaseAnnotation | None = None
                 review_meta = raw.get("review_meta")
                 human_reviewed = isinstance(review_meta, dict) and review_meta.get("human_reviewed") is True
+                review_mode: str | None = None
+                if isinstance(review_meta, dict) and isinstance(review_meta.get("review_mode"), str):
+                    review_mode = review_meta["review_mode"]
                 if has_values and has_missing:
                     partial_count += 1
                 elif not has_values:
@@ -341,8 +361,10 @@ def inspect_queue(
                     complete_count += 1
                     if not human_reviewed:
                         unreviewed_count += 1
+                    elif review_mode != "human_entered":
+                        gold_ineligible_count += 1
                 split_counts[split] += 1
-                rows.append(QueueRow(case_ref, split, context_fingerprint, context, source_hashes, annotation, human_reviewed))
+                rows.append(QueueRow(case_ref, split, context_fingerprint, context, source_hashes, annotation, human_reviewed, review_mode))
             except (TypeError, ValueError, json.JSONDecodeError) as error:
                 raise ValueError(f"invalid annotation queue row {line_number}: {error}") from error
     return QueueInspection(
@@ -353,6 +375,7 @@ def inspect_queue(
         pending_count=pending_count,
         partial_count=partial_count,
         unreviewed_count=unreviewed_count,
+        gold_ineligible_count=gold_ineligible_count,
         split_counts=dict(sorted(split_counts.items())),
         rows=tuple(rows),
     )
@@ -377,8 +400,8 @@ def build_gold_labels(
     second_by_case = _rows_by_case(second, split="locked_test")
     if set(first_by_case) != set(second_by_case):
         raise ValueError("independent queues do not contain the same case set")
-    if any(row.annotation is None or not row.human_reviewed for row in first_by_case.values()) or any(
-        row.annotation is None or not row.human_reviewed for row in second_by_case.values()
+    if any(not row.gold_eligible for row in first_by_case.values()) or any(
+        not row.gold_eligible for row in second_by_case.values()
     ):
         raise ValueError("both independent annotation queues must be complete for locked_test")
     for case_ref, first_row in first_by_case.items():
@@ -516,6 +539,7 @@ def gold_to_json(label: GoldLabel) -> dict[str, object]:
                 "start": span.start,
                 "end": span.end,
                 "source_sha256": span.source_sha256,
+                "span_role": span.span_role.value,
             }
             for span in label.rationale_spans
         ],
@@ -525,6 +549,7 @@ def gold_to_json(label: GoldLabel) -> dict[str, object]:
                 "start": span.start,
                 "end": span.end,
                 "source_sha256": span.source_sha256,
+                "span_role": span.span_role.value,
             }
             for span in label.policy_spans
         ],
@@ -559,8 +584,8 @@ def annotation_status(
                 disagreements += 1
     locked_complete_pair = (
         same_locked_case_set
-        and all(row.annotation is not None and row.human_reviewed for row in first_locked.values())
-        and all(row.annotation is not None and row.human_reviewed for row in second_locked.values())
+        and all(row.gold_eligible for row in first_locked.values())
+        and all(row.gold_eligible for row in second_locked.values())
     )
     adjudication_exists = adjudication_path is not None and adjudication_path.exists()
     status = "ready_for_gold_build" if locked_complete_pair and disagreements == 0 else "pending_human_annotation"
@@ -589,6 +614,7 @@ def annotation_status(
                 "pending": first.pending_count,
                 "partial": first.partial_count,
                 "unreviewed": first.unreviewed_count,
+                "gold_ineligible": first.gold_ineligible_count,
                 "splits": first.split_counts,
             },
             "queue_b": {
@@ -596,6 +622,7 @@ def annotation_status(
                 "pending": second.pending_count,
                 "partial": second.partial_count,
                 "unreviewed": second.unreviewed_count,
+                "gold_ineligible": second.gold_ineligible_count,
                 "splits": second.split_counts,
             },
             "locked_test": {
@@ -604,6 +631,8 @@ def annotation_status(
                 "queue_b_complete": sum(row.annotation is not None for row in second_locked.values()),
                 "queue_a_human_reviewed": sum(row.annotation is not None and row.human_reviewed for row in first_locked.values()),
                 "queue_b_human_reviewed": sum(row.annotation is not None and row.human_reviewed for row in second_locked.values()),
+                "queue_a_gold_eligible": sum(row.gold_eligible for row in first_locked.values()),
+                "queue_b_gold_eligible": sum(row.gold_eligible for row in second_locked.values()),
                 "complete_pair": locked_complete_pair,
             },
             "independent_disagreements": disagreements,

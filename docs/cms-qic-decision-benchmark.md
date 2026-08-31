@@ -156,6 +156,30 @@ evidence, the internal appeal submission/decision, or the original plan-policy
 version. Therefore the project must still report zero full-case Appeal
 evaluations until an authorized complete package is supplied.
 
+## Current evaluation rebuild
+
+The active Part D quality artifact is the separate
+`cms_part_d_legal_ground_v2` sample. It screens the accepted bulk population
+for empty rationale/policy fields and privacy candidates before sampling 150
+rows, including a 50-row locked test. It uses the source's explicit
+`Decision` only for the official regulator-outcome track. Legal-ground labels
+are not inferred from `Decision`: they come from two direct, outcome-blinded
+human reviews of the operative holding, with a third human only when the
+reviewers disagree.
+
+The implementation and category guide are:
+
+- [`config/cms_part_d_legal_ground_taxonomy_v2.json`](../config/cms_part_d_legal_ground_taxonomy_v2.json)
+- [`docs/CMS_LEGAL_GROUND_REVIEW.md`](CMS_LEGAL_GROUND_REVIEW.md)
+- `make sample-cms-qic-legal-benchmark`
+- `make audit-cms-qic-legal-benchmark`
+
+The official-outcome scorer and legal-ground scorer write different reports
+and never share a denominator. The locked set remains ineligible for a
+legal-ground score until blank human sheets are completed and imported. This
+is still regulator-summary evaluation, not a complete denial-package or
+clinical-efficacy claim.
+
 ## Next implementation boundary
 
 1. Use `scripts/fetch_cms_qic_summary.py` to create the local-only paginated

@@ -77,7 +77,7 @@ def queue_row(category: RationaleCategory = RationaleCategory.PRIOR_AUTHORIZATIO
             "policy_spans": [],
             "confidence": 4,
         },
-        "review_meta": {"human_reviewed": True},
+        "review_meta": {"human_reviewed": True, "review_mode": "human_entered"},
     }
 
 
@@ -185,6 +185,25 @@ class EvaluationAnnotationTests(unittest.TestCase):
         self.assertEqual(inspection.complete_count, 1)
         self.assertEqual(inspection.unreviewed_count, 1)
         self.assertFalse(inspection.complete)
+
+    def test_assistant_assisted_review_is_not_gold_eligible(self) -> None:
+        row = queue_row()
+        row["review_meta"] = {
+            "human_reviewed": True,
+            "review_mode": "human_reviewed_assistant_proposal",
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "queue.jsonl"
+            path.write_text(json.dumps(row) + "\n", encoding="utf-8")
+            inspection = inspect_queue(
+                path,
+                taxonomy_version="cms_part_d_rationale_v1",
+                annotator_id="reviewer-a",
+                annotator_role="researcher",
+                require_locked_test=False,
+            )
+        self.assertFalse(inspection.gold_complete)
+        self.assertEqual(inspection.gold_ineligible_count, 1)
 
     def test_agreeing_locked_queues_produce_consensus_gold(self) -> None:
         row = queue_row()

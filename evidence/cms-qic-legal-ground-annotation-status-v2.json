@@ -1,0 +1,60 @@
+{
+  "gold_claim_allowed": false,
+  "gold_policy": {
+    "disagreement_requires_third_human": true,
+    "gold_status": "pending_human_annotation",
+    "minimum_independent_annotations": 2,
+    "model_generated_label_can_be_gold": false
+  },
+  "manifest_sha256": "8738d38e64f8ff667aea3aadcf799145acce1223045a6499769c158dc8a22495",
+  "review_progress": {
+    "adjudication_file_present": false,
+    "independent_disagreements": 0,
+    "locked_test": {
+      "complete_pair": false,
+      "queue_a_complete": 0,
+      "queue_a_gold_eligible": 0,
+      "queue_a_human_reviewed": 0,
+      "queue_b_complete": 0,
+      "queue_b_gold_eligible": 0,
+      "queue_b_human_reviewed": 0,
+      "rows": 50
+    },
+    "queue_a": {
+      "complete": 0,
+      "gold_ineligible": 0,
+      "partial": 0,
+      "pending": 150,
+      "splits": {
+        "development": 100,
+        "locked_test": 50
+      },
+      "unreviewed": 0
+    },
+    "queue_b": {
+      "complete": 0,
+      "gold_ineligible": 0,
+      "partial": 0,
+      "pending": 150,
+      "splits": {
+        "development": 100,
+        "locked_test": 50
+      },
+      "unreviewed": 0
+    }
+  },
+  "schema_version": "1.0",
+  "source": {
+    "outcome_labels_seen": false,
+    "queue_a_rows": 150,
+    "queue_a_sha256": "717a6dd39f959644058bbcb4c934c92ffd48bb619329ff1882bb3f6b6c9b440e",
+    "queue_b_rows": 150,
+    "queue_b_sha256": "e7f6264ce0ea10b365ed4a959dbb2b0cfb2c3e4b8119ecd8280e86ce8fa22b75",
+    "same_case_set": true,
+    "same_locked_test_case_set": true,
+    "source_narratives_emitted": false,
+    "taxonomy_version": "cms_part_d_legal_ground_v2"
+  },
+  "status": "pending_human_annotation",
+  "taxonomy_sha256": "0aefb245a566c08274c133f20ce71a78a7d584039654ddcb09a2fc6a45222293"
+}

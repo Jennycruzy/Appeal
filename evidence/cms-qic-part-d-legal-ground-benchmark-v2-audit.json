@@ -1,0 +1,29 @@
+{
+  "claim_boundary": {
+    "complete_denial_package": false,
+    "full_appeal_evaluation": false,
+    "human_legal_ground_gold_available": false,
+    "official_CMS_outcome_track_available": true
+  },
+  "schema_version": "1.0",
+  "screen_audit": {
+    "empty_policy_rows": 0,
+    "empty_rationale_rows": 0,
+    "outcome_hidden_from_model_input": true,
+    "privacy_candidate_counts": {},
+    "privacy_detector": "technical_patterns_plus_person_name_context",
+    "raw_values_in_report": false
+  },
+  "source": {
+    "benchmark_manifest_sha256": "0c17efdbdc72b3ccf1f246dcedbcdcc293025de6666ece539271d512ad8feb45",
+    "benchmark_sha256": "8b0d24bed8b7e57576c189d146502d9629c045e3ed0320e769b924ce8a92f381",
+    "case_identity_sha256": "a5d70360324d7280d8b2f3538f9272d8b1d0248af282341458b043bf181d5012",
+    "locked_test_count": 50,
+    "sample_count": 150,
+    "split_counts": {
+      "development": 100,
+      "locked_test": 50
+    }
+  },
+  "status": "cms_qic_legal_ground_benchmark_audit_ready"
+}

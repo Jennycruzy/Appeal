@@ -12,6 +12,26 @@ statutory deadlines arrive hours or weeks later.
 [Follow the judge evidence map](docs/JUDGING.md) ·
 [Read the evaluation protocol](docs/EVALUATION.md)
 
+## Judge route
+
+Appeal is easiest to evaluate in this order:
+
+1. Open the clinician board and follow one case from intake to the approval
+   boundary.
+2. Read the [judge evidence map](docs/JUDGING.md) for the hosted control-plane
+   proofs and their exact aggregate artifacts.
+3. Inspect the [CMS evaluation rebuild](docs/CMS_LEGAL_GROUND_REVIEW.md): real
+   regulator summaries are screened before sampling, official outcomes are
+   scored separately, and legal-ground gold is gated on independent human
+   review.
+4. Trace the [architecture](docs/ARCHITECTURE.md) from untrusted intake,
+   through policy/evidence controls, to the single mutation gate and durable
+   payer wake.
+
+The central design claim is precise: Gemini can analyze ambiguity, while
+deterministic policy, evidence sufficiency, tenant scope, and clinician
+authorization control authority.
+
 ## What is running
 
 - An authenticated, tenant-scoped clinician board and signed mobile approval
@@ -80,12 +100,24 @@ internal appeal, and original plan-policy version are not exposed in the API.
 The project therefore accepts it for regulator-summary benchmarking while
 keeping full-case Appeal evaluations at zero.
 
-The next quality gate is independently reviewed CMS gold labels. Two
-outcome-blinded queues cover the 100 locked-test records, with strict source
-span validation and third-party adjudication for disagreements. Their current
-aggregate status is [`evidence/cms-qic-annotation-status.json`](evidence/cms-qic-annotation-status.json);
-the labels are not counted until two human reviews are complete. The full
-protocol and import commands are in [`docs/EVALUATION.md`](docs/EVALUATION.md).
+The active quality track is a separate, screened CMS legal-ground benchmark.
+It resamples the accepted Part D population only after excluding empty
+rationales, empty policy context, technical privacy candidates, and likely
+professional names. The generated artifact has 188,102 eligible rows after
+screening, with 150 sampled rows and a 50-row locked test. Its official CMS
+`Decision` outcome remains hidden from review and is scored separately from
+the inferred legal ground. The legal-ground locked set uses two blank,
+independently ordered human-review sheets; assistant-proposed labels are not
+eligible for gold. The [sample manifest](evidence/cms-qic-part-d-legal-ground-benchmark-v2.json),
+[post-write audit](evidence/cms-qic-part-d-legal-ground-benchmark-v2-audit.json),
+current [human-review status](evidence/cms-qic-legal-ground-annotation-status-v2.json),
+and [track guide](docs/CMS_LEGAL_GROUND_REVIEW.md) make the boundary inspectable.
+
+The repository's current evidence records the protocol and artifact hashes;
+human gold and narrative-bearing queues remain outside Git until both reviews
+are complete. The public status must therefore distinguish `official CMS
+outcome scoring`, `inferred legal-ground scoring`, and `full Appeal evaluation`
+instead of collapsing them into one accuracy number.
 
 The dated official Part D bulk CSV was also preserved unchanged outside the
 repository as a fallback inspection artifact. Its streaming inspection covered

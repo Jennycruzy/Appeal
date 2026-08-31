@@ -22,6 +22,8 @@ class RationaleCategory(str, Enum):
     QUANTITY_LIMIT = "quantity_limit"
     MEDICALLY_ACCEPTED_INDICATION = "medically_accepted_indication"
     PAYMENT_OR_COST_SHARING = "payment_or_cost_sharing"
+    COVERAGE_EXCLUSION = "coverage_exclusion"
+    PART_B_PART_D_COORDINATION = "part_b_part_d_coordination"
     AT_RISK_DRUG_MANAGEMENT = "at_risk_drug_management"
     PROCEDURAL_OR_JURISDICTIONAL = "procedural_or_jurisdictional"
     OTHER_COVERAGE_RULE = "other_coverage_rule"
@@ -36,6 +38,7 @@ class OperationalRoute(str, Enum):
     AUTOMATIC_IRE_REVIEW = "automatic_ire_review"
     PROCEDURAL_HUMAN_REVIEW = "procedural_human_review"
     COVERAGE_RULE_REVIEW = "coverage_rule_review"
+    BENEFIT_COORDINATION_REVIEW = "benefit_coordination_review"
     REQUEST_ADDITIONAL_INFORMATION = "request_additional_information"
 
 
@@ -49,12 +52,18 @@ class GoldResolution(str, Enum):
     ADJUDICATED = "adjudicated"
 
 
+class SpanRole(str, Enum):
+    OPERATIVE_HOLDING = "operative_holding"
+    POLICY_CONTEXT = "policy_context"
+
+
 @dataclass(frozen=True)
 class SourceSpanLabel:
     source_field: str
     start: int
     end: int
     source_sha256: str
+    span_role: SpanRole = SpanRole.OPERATIVE_HOLDING
 
     def __post_init__(self) -> None:
         if self.source_field not in {"decision_rationale", "policy_context"}:
@@ -63,6 +72,13 @@ class SourceSpanLabel:
             raise ValueError("annotation span offsets must be non-empty")
         if _SHA256.fullmatch(self.source_sha256) is None:
             raise ValueError("annotation source hash must be a lowercase SHA-256")
+        expected_role = (
+            SpanRole.OPERATIVE_HOLDING
+            if self.source_field == "decision_rationale"
+            else SpanRole.POLICY_CONTEXT
+        )
+        if self.span_role is not expected_role:
+            raise ValueError("annotation span role does not match its source field")
 
 
 @dataclass(frozen=True)
@@ -97,6 +113,8 @@ class CaseAnnotation:
             raise ValueError("secondary categories must not contain duplicates")
         if self.primary_category in self.secondary_categories:
             raise ValueError("primary category cannot also be secondary")
+        if RationaleCategory.INSUFFICIENT_INFORMATION in self.secondary_categories:
+            raise ValueError("insufficient_information cannot be a secondary category")
         if self.route is not route_for(self.primary_category):
             raise ValueError("route does not match the frozen taxonomy policy")
         if self.disposition is AnnotationDisposition.ABSTAINED:
@@ -116,6 +134,8 @@ ROUTE_POLICY: dict[RationaleCategory, OperationalRoute] = {
     RationaleCategory.QUANTITY_LIMIT: OperationalRoute.UTILIZATION_MANAGEMENT_EXCEPTION,
     RationaleCategory.MEDICALLY_ACCEPTED_INDICATION: OperationalRoute.MEDICALLY_ACCEPTED_INDICATION_REVIEW,
     RationaleCategory.PAYMENT_OR_COST_SHARING: OperationalRoute.PAYMENT_APPEAL,
+    RationaleCategory.COVERAGE_EXCLUSION: OperationalRoute.COVERAGE_RULE_REVIEW,
+    RationaleCategory.PART_B_PART_D_COORDINATION: OperationalRoute.BENEFIT_COORDINATION_REVIEW,
     RationaleCategory.AT_RISK_DRUG_MANAGEMENT: OperationalRoute.AUTOMATIC_IRE_REVIEW,
     RationaleCategory.PROCEDURAL_OR_JURISDICTIONAL: OperationalRoute.PROCEDURAL_HUMAN_REVIEW,
     RationaleCategory.OTHER_COVERAGE_RULE: OperationalRoute.COVERAGE_RULE_REVIEW,
@@ -153,8 +173,8 @@ def annotation_signature(annotation: CaseAnnotation) -> tuple[object, ...]:
     )
 
 
-def _span_signature(spans: tuple[SourceSpanLabel, ...]) -> tuple[tuple[str, int, int, str], ...]:
-    return tuple(sorted((span.source_field, span.start, span.end, span.source_sha256) for span in spans))
+def _span_signature(spans: tuple[SourceSpanLabel, ...]) -> tuple[tuple[str, int, int, str, str], ...]:
+    return tuple(sorted((span.source_field, span.start, span.end, span.source_sha256, span.span_role.value) for span in spans))
 
 
 @dataclass(frozen=True)
@@ -203,6 +223,8 @@ class GoldLabel:
             raise ValueError("gold secondary categories must not contain duplicates")
         if self.primary_category in self.secondary_categories:
             raise ValueError("gold primary category cannot also be secondary")
+        if RationaleCategory.INSUFFICIENT_INFORMATION in self.secondary_categories:
+            raise ValueError("gold insufficient_information cannot be a secondary category")
         if self.route is not route_for(self.primary_category):
             raise ValueError("gold route does not match the frozen taxonomy policy")
         if self.disposition is AnnotationDisposition.ABSTAINED:

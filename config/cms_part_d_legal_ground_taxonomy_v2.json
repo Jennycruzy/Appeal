@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "taxonomy_id": "cms_part_d_legal_ground_v2",
+  "objective": "Outcome-blinded human annotation of the operative legal/coverage holdings in a Part D QIC decision summary, including a primary route-driving issue and any additional material issues.",
+  "official_sources": [
+    {
+      "title": "CMS Coverage Determinations",
+      "url": "https://www.cms.gov/medicare/appeals-grievances/prescription-drug/coverage-determinations"
+    },
+    {
+      "title": "CMS Exceptions",
+      "url": "https://www.cms.gov/medicare/appeals-grievances/prescription-drug/exceptions"
+    },
+    {
+      "title": "CMS Reconsideration by the Part D Independent Review Entity",
+      "url": "https://www.cms.gov/medicare/appeals-grievances/prescription-drug/reconsiderations"
+    }
+  ],
+  "annotation_rules": {
+    "outcome_blinded": true,
+    "primary_issue_required": true,
+    "secondary_categories_allowed": true,
+    "secondary_categories_required_when_material_holdings_are_multiple": true,
+    "operative_holding_span_required": true,
+    "policy_span_is_optional_when_attached_policy_context_is_generic_or_misaligned": true,
+    "source_span_required": true,
+    "minimum_independent_annotations_locked_test": 2,
+    "disagreement_requires_adjudication": true,
+    "direct_human_entry_required_for_gold": true,
+    "model_generated_label_can_be_gold": false
+  },
+  "categories": {
+    "non_formulary_exception": "The requested drug is absent from the plan formulary and the operative holding turns on whether a non-formulary exception is supported.",
+    "tiering_exception": "Request seeks preferred-tier cost sharing for a non-preferred drug.",
+    "prior_authorization": "Coverage turns on satisfying or waiving a prior-authorization requirement.",
+    "step_therapy": "Coverage turns on trying another drug before the requested drug.",
+    "quantity_limit": "Coverage turns on a quantity, dose, or frequency restriction.",
+    "medically_accepted_indication": "Coverage turns on FDA labeling, compendia support, or another medically accepted/off-label indication rule.",
+    "payment_or_cost_sharing": "The operative issue is reimbursement, payment, copay, coinsurance, or enrollee cost sharing after coverage eligibility is established; do not use for stock language saying payment cannot be made under Part D.",
+    "coverage_exclusion": "The operative holding excludes the item or drug from Part D because of a statutory or benefit definition, including bulk powder, compound, device, weight-loss exclusion, or another categorical coverage exclusion.",
+    "part_b_part_d_coordination": "The operative holding turns on whether Part A, Part B, or Part D is the responsible benefit, including coordination or benefit-bucket eligibility.",
+    "at_risk_drug_management": "Case concerns an at-risk determination under a Part D drug-management program.",
+    "procedural_or_jurisdictional": "Disposition turns on timeliness, representation, dismissal, jurisdiction, or another procedural requirement.",
+    "other_coverage_rule": "A supported Part D coverage issue does not fit a more specific category.",
+    "insufficient_information": "The summary does not support a reliable principal category. Annotator must abstain."
+  },
+  "route_policy": {
+    "non_formulary_exception": "formulary_exception_review",
+    "tiering_exception": "formulary_exception_review",
+    "prior_authorization": "utilization_management_exception",
+    "step_therapy": "utilization_management_exception",
+    "quantity_limit": "utilization_management_exception",
+    "medically_accepted_indication": "medically_accepted_indication_review",
+    "payment_or_cost_sharing": "payment_appeal",
+    "coverage_exclusion": "coverage_rule_review",
+    "part_b_part_d_coordination": "benefit_coordination_review",
+    "at_risk_drug_management": "automatic_ire_review",
+    "procedural_or_jurisdictional": "procedural_human_review",
+    "other_coverage_rule": "coverage_rule_review",
+    "insufficient_information": "request_additional_information"
+  }
+}

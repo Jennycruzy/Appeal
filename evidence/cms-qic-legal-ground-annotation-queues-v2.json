@@ -1,0 +1,42 @@
+{
+  "gold_policy": {
+    "disagreement_requires_adjudication": true,
+    "gold_status": "pending_human_annotation",
+    "locked_test_independent_annotations_required": 2,
+    "model_generated_label_can_be_gold": false
+  },
+  "queues": {
+    "independent_order": true,
+    "reviewer_a": {
+      "context_fingerprint": "9526e53f8dc59bfd9d92895f9974c6b496f5fcdd613cc95420a003b064ef65f8",
+      "location": "outside_repository_only",
+      "order_fingerprint": "273852edff3fc9dc0a5386186469fb10b34cf99faf61479bdfa03475e888f8c1",
+      "sha256": "717a6dd39f959644058bbcb4c934c92ffd48bb619329ff1882bb3f6b6c9b440e"
+    },
+    "reviewer_b": {
+      "context_fingerprint": "9526e53f8dc59bfd9d92895f9974c6b496f5fcdd613cc95420a003b064ef65f8",
+      "location": "outside_repository_only",
+      "order_fingerprint": "73f3579e287333d7611e55ff60cae1ecb40f45cde907ae4183d05d54c80a115d",
+      "sha256": "e7f6264ce0ea10b365ed4a959dbb2b0cfb2c3e4b8119ecd8280e86ce8fa22b75"
+    }
+  },
+  "recorded_at": "2026-08-31T19:38:38.730929Z",
+  "schema_version": "1.0",
+  "source": {
+    "benchmark_sha256": "8b0d24bed8b7e57576c189d146502d9629c045e3ed0320e769b924ce8a92f381",
+    "narratives_in_repository": false,
+    "outcomes_in_queues": false,
+    "record_count": 150,
+    "split_counts": {
+      "development": 100,
+      "locked_test": 50
+    }
+  },
+  "status": "outcome_blinded_annotation_queues_ready",
+  "taxonomy": {
+    "category_count": 13,
+    "official_source_count": 3,
+    "sha256": "0aefb245a566c08274c133f20ce71a78a7d584039654ddcb09a2fc6a45222293",
+    "taxonomy_id": "cms_part_d_legal_ground_v2"
+  }
+}

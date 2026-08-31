@@ -12,7 +12,64 @@ Appeal reports two different kinds of evidence:
 This document defines the current CMS QIC decision-summary benchmark and the
 point at which its labels become eligible for a quality claim.
 
-## Benchmark boundary
+## Active benchmark track: legal ground v2
+
+The active rebuild is the screened `cms_part_d_legal_ground_v2` track. It
+resamples the accepted CMS Part D population after excluding empty rationale,
+empty policy context, all privacy candidates, and likely professional names.
+The default artifact is 150 rows with 50 `locked_test` rows. The locked set is
+blank for human entry and is not eligible for gold until two independent human
+reviews are imported and disagreements are adjudicated.
+
+The generated aggregate artifacts are the [sample manifest](../evidence/cms-qic-part-d-legal-ground-benchmark-v2.json),
+[post-write audit](../evidence/cms-qic-part-d-legal-ground-benchmark-v2-audit.json),
+and [independent queue manifest](../evidence/cms-qic-legal-ground-annotation-queues-v2.json).
+
+The explicit CMS `Decision` remains a separate official-outcome target in the
+same benchmark artifact. It is never used as the legal-ground label. Use the
+dedicated [CMS legal-ground review guide](CMS_LEGAL_GROUND_REVIEW.md) for the
+category definitions and operative-holding span rule.
+
+Generate and audit the current artifacts:
+
+```bash
+make sample-cms-qic-legal-benchmark
+make audit-cms-qic-legal-benchmark
+make create-cms-qic-legal-annotation-queues
+make create-cms-qic-legal-review-sheets
+```
+
+The two sheets are:
+
+- `/Users/user/Downloads/cms-qic-legal-ground-reviewer-a.csv`
+- `/Users/user/Downloads/cms-qic-legal-ground-reviewer-b.csv`
+
+They contain no assistant proposals and no outcome labels. Import each sheet
+with its own queue key, validate the pair, then build gold only after the human
+reviews are complete:
+
+```bash
+make import-cms-qic-legal-reviewer-a
+make import-cms-qic-legal-reviewer-b
+make validate-cms-qic-legal-annotations
+make import-cms-qic-legal-annotations \
+  CMS_QIC_LEGAL_ADJUDICATION=../Downloads/cms-qic-legal-ground-adjudication-v2.jsonl \
+  CMS_QIC_ADJUDICATOR_ID=reviewer-c \
+  CMS_QIC_ADJUDICATOR_ROLE="utilization review professional"
+```
+
+Score the targets independently:
+
+```bash
+make score-cms-qic-official-outcome
+make score-cms-qic-legal-ground
+```
+
+The outcome scorer is valid as soon as an outcome-prediction JSONL exists. The
+legal-ground scorer remains blocked until human gold exists. Neither scorer
+claims a complete Appeal evaluation.
+
+## Historical v1 benchmark (retired)
 
 The pinned CMS Part D decision-summary file contains 240,958 source rows. The
 accepted local-evaluation population excludes 42 rows under the repository's
@@ -38,7 +95,13 @@ The source and sample manifests are:
 - [`evidence/cms-qic-part-d-benchmark-sample.json`](../evidence/cms-qic-part-d-benchmark-sample.json)
 - [`evidence/cms-qic-benchmark-baselines.json`](../evidence/cms-qic-benchmark-baselines.json)
 
-## Human gold-label protocol
+## Historical v1 human-gold protocol (retired; do not use)
+
+The following v1 queue and sheet paths are retained only to explain the
+earlier audit trail. They are not the active locked set. In particular, the
+old assistant-prefilled review sheet is not a human-gold artifact and the
+importer now rejects its `assistant_proposal_*` columns. Use the v2 commands
+above.
 
 The locked-test records are distributed in two independently ordered queues:
 
@@ -71,7 +134,7 @@ route from the frozen taxonomy, and writes a recoverable checkpoint after each
 validated case. It never edits the source queue and never displays the hidden
 outcome.
 
-### Spreadsheet review for the full locked set
+### Retired spreadsheet workflow
 
 If a reviewer needs to work through all cases in one sitting, create the
 reviewer-A sheet:
@@ -85,14 +148,8 @@ The sheet contains all 100 locked-test cases—the only rows used for the
 reported quality benchmark. The 200 development rows remain in the original
 queue for calibration and are carried through unchanged by the importer.
 
-Each row has the full outcome-blinded regulator rationale and policy context,
-protected source hashes, an assistant proposal, and editable reviewer fields.
-The proposal is a review aid only. Inspect it against the visible text, edit
-the `disposition`, `primary_category`, `secondary_categories`, `route`, and
-source-span fields as needed, add a `review_note` when useful, and set
-`human_reviewed` to `TRUE` after reviewing the row. Do not edit the protected
-context or the `assistant_proposal_*` reference columns. The sheet contains no
-regulator outcomes.
+This retired sheet included an assistant proposal and therefore cannot support
+independent direct-human gold. Do not edit or import it.
 
 After saving the edited copy, convert it back into the queue:
 
@@ -141,13 +198,11 @@ called consensus. Any disagreement requires a third human adjudicator who is
 not either reviewer. The adjudication note is retained outside Git and only
 its SHA-256 is emitted in the aggregate gold report.
 
-Assistant proposals cannot become gold labels by themselves. A proposal may
-be used as a starting point only when a named human reviewer inspects every
-row, edits or accepts the fields, and the provenance is retained. The final
-gold file still requires two distinct reviewer identities and adjudication of
-every disagreement.
+The v2 active track removes assistant proposals entirely. A model-generated or
+assistant-prefilled label cannot become gold, even if a reviewer later edits
+some rows. The direct-human sheet is the only accepted starting point.
 
-## Commands
+## Historical v1 commands (retired)
 
 Check progress without revealing labels or writing source narratives:
 
@@ -222,7 +277,7 @@ operational-route, abstention, and source-span agreement metrics on the 100
 locked-test cases. Outcome prediction remains a separately stratified,
 exploratory task because regulator rationale can contain semantic outcome cues.
 
-No result from this benchmark should be described as a full Appeal clinical
+No result from either CMS track should be described as a full Appeal clinical
 evaluation until an authorized complete denial package has been acquired,
 reconstructed under the documented provenance rules, and run blind through the
 full criterion/evidence workflow.

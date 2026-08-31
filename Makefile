@@ -51,6 +51,28 @@ CMS_QIC_REVIEWER_B_ID ?= reviewer-b
 CMS_QIC_REVIEWER_B_ROLE ?= researcher
 CMS_QIC_ADJUDICATOR_ID ?=
 CMS_QIC_ADJUDICATOR_ROLE ?=
+CMS_QIC_LEGAL_TAXONOMY ?= config/cms_part_d_legal_ground_taxonomy_v2.json
+CMS_QIC_LEGAL_SAMPLE_SIZE ?= 150
+CMS_QIC_LEGAL_LOCKED_SIZE ?= 50
+CMS_QIC_LEGAL_POLICY_REPEAT_CAP ?= 2
+CMS_QIC_LEGAL_BENCHMARK_OUTPUT ?= ../Downloads/cms-qic-part-d-legal-ground-benchmark-v2.jsonl
+CMS_QIC_LEGAL_BENCHMARK_MANIFEST ?= evidence/cms-qic-part-d-legal-ground-benchmark-v2.json
+CMS_QIC_LEGAL_BENCHMARK_AUDIT ?= evidence/cms-qic-part-d-legal-ground-benchmark-v2-audit.json
+CMS_QIC_LEGAL_ANNOTATION_QUEUE_A ?= ../Downloads/cms-qic-legal-ground-reviewer-a.jsonl
+CMS_QIC_LEGAL_ANNOTATION_QUEUE_B ?= ../Downloads/cms-qic-legal-ground-reviewer-b.jsonl
+CMS_QIC_LEGAL_ANNOTATION_MANIFEST ?= evidence/cms-qic-legal-ground-annotation-queues-v2.json
+CMS_QIC_LEGAL_ANNOTATION_STATUS ?= evidence/cms-qic-legal-ground-annotation-status-v2.json
+CMS_QIC_LEGAL_REVIEW_SHEET_A ?= ../Downloads/cms-qic-legal-ground-reviewer-a.csv
+CMS_QIC_LEGAL_REVIEW_SHEET_B ?= ../Downloads/cms-qic-legal-ground-reviewer-b.csv
+CMS_QIC_LEGAL_FILLED_QUEUE_A ?= ../Downloads/cms-qic-legal-ground-reviewer-a-filled.jsonl
+CMS_QIC_LEGAL_FILLED_QUEUE_B ?= ../Downloads/cms-qic-legal-ground-reviewer-b-filled.jsonl
+CMS_QIC_LEGAL_ADJUDICATION ?=
+CMS_QIC_LEGAL_GOLD_OUTPUT ?= ../Downloads/cms-qic-legal-ground-locked-test-gold-v2.jsonl
+CMS_QIC_LEGAL_ANNOTATION_REPORT ?= evidence/cms-qic-legal-ground-gold-v2.json
+CMS_QIC_LEGAL_PREDICTIONS ?= ../Downloads/cms-qic-legal-ground-predictions-v2.jsonl
+CMS_QIC_LEGAL_SCORE_REPORT ?= evidence/cms-qic-legal-ground-score-v2.json
+CMS_QIC_OUTCOME_PREDICTIONS ?= ../Downloads/cms-qic-official-outcome-predictions-v2.jsonl
+CMS_QIC_OUTCOME_SCORE_REPORT ?= evidence/cms-qic-official-outcome-score-v2.json
 LOCAL_WORKFLOW_LEDGER ?= ../Downloads/appeal-local-receipts-v0.2.jsonl
 LOCAL_WORKFLOW_OUTPUT ?= ../Downloads/appeal-local-workflow-result.json
 LOCAL_RUNTIME_LEDGER ?= ../Downloads/appeal-local-runtime-receipts.jsonl
@@ -121,7 +143,7 @@ SENTINEL_CASE ?= case-sentinel-expired-001
 SENTINEL_ENTERED_AT ?= 2026-08-18T12:00:00Z
 SENTINEL_SEED_OUTPUT ?= evidence/sentinel-seed.json
 
-.PHONY: verify-ledger test typecheck run-evaluation-fixture sample-cms-qic-benchmark audit-cms-qic-benchmark create-cms-qic-annotation-queues create-cms-qic-review-sheet import-cms-qic-review-sheet validate-cms-qic-annotations import-cms-qic-annotations run-local-workflow run-local-runtime run-async-workflow-proof measure-operational-utility seed-demo-cases measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run build-payer-service deploy-payer-service run-payer-service run-mcp-server run-mcp-probe deploy-mcp-cloud-run sync-mcp-registry seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck run-evaluation-fixture sample-cms-qic-benchmark audit-cms-qic-benchmark create-cms-qic-annotation-queues create-cms-qic-review-sheet import-cms-qic-review-sheet validate-cms-qic-annotations import-cms-qic-annotations sample-cms-qic-legal-benchmark audit-cms-qic-legal-benchmark create-cms-qic-legal-annotation-queues create-cms-qic-legal-review-sheets import-cms-qic-legal-reviewer-a import-cms-qic-legal-reviewer-b validate-cms-qic-legal-annotations import-cms-qic-legal-annotations score-cms-qic-official-outcome score-cms-qic-legal-ground run-local-workflow run-local-runtime run-async-workflow-proof measure-operational-utility seed-demo-cases measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run build-payer-service deploy-payer-service run-payer-service run-mcp-server run-mcp-probe deploy-mcp-cloud-run sync-mcp-registry seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -155,6 +177,37 @@ validate-cms-qic-annotations:
 
 import-cms-qic-annotations:
 	PYTHONPATH=src $(PYTHON) $(CURDIR)/scripts/import_cms_qic_annotations.py --queue-a "$(CMS_QIC_ANNOTATION_QUEUE_A)" --queue-b "$(CMS_QIC_ANNOTATION_QUEUE_B)" --manifest "$(CMS_QIC_ANNOTATION_MANIFEST)" --taxonomy config/cms_part_d_annotation_taxonomy.json --reviewer-a-id "$(CMS_QIC_REVIEWER_A_ID)" --reviewer-a-role "$(CMS_QIC_REVIEWER_A_ROLE)" --reviewer-b-id "$(CMS_QIC_REVIEWER_B_ID)" --reviewer-b-role "$(CMS_QIC_REVIEWER_B_ROLE)" $(if $(CMS_QIC_ADJUDICATION),--adjudication "$(CMS_QIC_ADJUDICATION)",) $(if $(CMS_QIC_ADJUDICATOR_ID),--adjudicator-id "$(CMS_QIC_ADJUDICATOR_ID)",) $(if $(CMS_QIC_ADJUDICATOR_ROLE),--adjudicator-role "$(CMS_QIC_ADJUDICATOR_ROLE)",) --gold-output "$(CMS_QIC_GOLD_OUTPUT)" --report-output "$(CMS_QIC_ANNOTATION_REPORT)"
+
+sample-cms-qic-legal-benchmark:
+	PYTHONPATH=src:scripts $(PYTHON) scripts/sample_cms_qic_legal_benchmark.py --csv "$(CMS_QIC_BULK_INPUT)" --acceptance "$(CMS_QIC_BULK_ACCEPTANCE_MANIFEST)" --output "$(CMS_QIC_LEGAL_BENCHMARK_OUTPUT)" --manifest-output "$(CMS_QIC_LEGAL_BENCHMARK_MANIFEST)" --sample-size "$(CMS_QIC_LEGAL_SAMPLE_SIZE)" --locked-size "$(CMS_QIC_LEGAL_LOCKED_SIZE)" --policy-repeat-cap "$(CMS_QIC_LEGAL_POLICY_REPEAT_CAP)"
+
+audit-cms-qic-legal-benchmark:
+	PYTHONPATH=src:scripts $(PYTHON) scripts/audit_cms_qic_legal_benchmark.py --benchmark "$(CMS_QIC_LEGAL_BENCHMARK_OUTPUT)" --manifest "$(CMS_QIC_LEGAL_BENCHMARK_MANIFEST)" --output "$(CMS_QIC_LEGAL_BENCHMARK_AUDIT)"
+
+create-cms-qic-legal-annotation-queues:
+	PYTHONPATH=src:scripts $(PYTHON) scripts/create_cms_qic_annotation_queues.py --benchmark "$(CMS_QIC_LEGAL_BENCHMARK_OUTPUT)" --sample-manifest "$(CMS_QIC_LEGAL_BENCHMARK_MANIFEST)" --taxonomy "$(CMS_QIC_LEGAL_TAXONOMY)" --queue-a "$(CMS_QIC_LEGAL_ANNOTATION_QUEUE_A)" --queue-b "$(CMS_QIC_LEGAL_ANNOTATION_QUEUE_B)" --output "$(CMS_QIC_LEGAL_ANNOTATION_MANIFEST)"
+
+create-cms-qic-legal-review-sheets:
+	PYTHONPATH=src:scripts $(PYTHON) scripts/create_cms_qic_human_review_sheet.py --queue "$(CMS_QIC_LEGAL_ANNOTATION_QUEUE_A)" --queue-key reviewer_a --manifest "$(CMS_QIC_LEGAL_ANNOTATION_MANIFEST)" --taxonomy "$(CMS_QIC_LEGAL_TAXONOMY)" --output "$(CMS_QIC_LEGAL_REVIEW_SHEET_A)"
+	PYTHONPATH=src:scripts $(PYTHON) scripts/create_cms_qic_human_review_sheet.py --queue "$(CMS_QIC_LEGAL_ANNOTATION_QUEUE_B)" --queue-key reviewer_b --manifest "$(CMS_QIC_LEGAL_ANNOTATION_MANIFEST)" --taxonomy "$(CMS_QIC_LEGAL_TAXONOMY)" --output "$(CMS_QIC_LEGAL_REVIEW_SHEET_B)"
+
+import-cms-qic-legal-reviewer-a:
+	PYTHONPATH=src:scripts $(PYTHON) scripts/import_cms_qic_review_sheet.py --queue "$(CMS_QIC_LEGAL_ANNOTATION_QUEUE_A)" --queue-key reviewer_a --sheet "$(CMS_QIC_LEGAL_REVIEW_SHEET_A)" --manifest "$(CMS_QIC_LEGAL_ANNOTATION_MANIFEST)" --taxonomy "$(CMS_QIC_LEGAL_TAXONOMY)" --output "$(CMS_QIC_LEGAL_FILLED_QUEUE_A)" --reviewer-id "$(CMS_QIC_REVIEWER_A_ID)" --reviewer-role "$(CMS_QIC_REVIEWER_A_ROLE)"
+
+import-cms-qic-legal-reviewer-b:
+	PYTHONPATH=src:scripts $(PYTHON) scripts/import_cms_qic_review_sheet.py --queue "$(CMS_QIC_LEGAL_ANNOTATION_QUEUE_B)" --queue-key reviewer_b --sheet "$(CMS_QIC_LEGAL_REVIEW_SHEET_B)" --manifest "$(CMS_QIC_LEGAL_ANNOTATION_MANIFEST)" --taxonomy "$(CMS_QIC_LEGAL_TAXONOMY)" --output "$(CMS_QIC_LEGAL_FILLED_QUEUE_B)" --reviewer-id "$(CMS_QIC_REVIEWER_B_ID)" --reviewer-role "$(CMS_QIC_REVIEWER_B_ROLE)"
+
+validate-cms-qic-legal-annotations:
+	PYTHONPATH=src:scripts $(PYTHON) scripts/validate_cms_qic_annotations.py --queue-a "$(CMS_QIC_LEGAL_FILLED_QUEUE_A)" --queue-b "$(CMS_QIC_LEGAL_FILLED_QUEUE_B)" --manifest "$(CMS_QIC_LEGAL_ANNOTATION_MANIFEST)" --taxonomy "$(CMS_QIC_LEGAL_TAXONOMY)" --output "$(CMS_QIC_LEGAL_ANNOTATION_STATUS)" --reviewer-a-id "$(CMS_QIC_REVIEWER_A_ID)" --reviewer-a-role "$(CMS_QIC_REVIEWER_A_ROLE)" --reviewer-b-id "$(CMS_QIC_REVIEWER_B_ID)" --reviewer-b-role "$(CMS_QIC_REVIEWER_B_ROLE)"
+
+import-cms-qic-legal-annotations:
+	PYTHONPATH=src:scripts $(PYTHON) scripts/import_cms_qic_annotations.py --queue-a "$(CMS_QIC_LEGAL_FILLED_QUEUE_A)" --queue-b "$(CMS_QIC_LEGAL_FILLED_QUEUE_B)" --manifest "$(CMS_QIC_LEGAL_ANNOTATION_MANIFEST)" --taxonomy "$(CMS_QIC_LEGAL_TAXONOMY)" --reviewer-a-id "$(CMS_QIC_REVIEWER_A_ID)" --reviewer-a-role "$(CMS_QIC_REVIEWER_A_ROLE)" --reviewer-b-id "$(CMS_QIC_REVIEWER_B_ID)" --reviewer-b-role "$(CMS_QIC_REVIEWER_B_ROLE)" $(if $(CMS_QIC_LEGAL_ADJUDICATION),--adjudication "$(CMS_QIC_LEGAL_ADJUDICATION)",) $(if $(CMS_QIC_ADJUDICATOR_ID),--adjudicator-id "$(CMS_QIC_ADJUDICATOR_ID)",) $(if $(CMS_QIC_ADJUDICATOR_ROLE),--adjudicator-role "$(CMS_QIC_ADJUDICATOR_ROLE)",) --gold-output "$(CMS_QIC_LEGAL_GOLD_OUTPUT)" --report-output "$(CMS_QIC_LEGAL_ANNOTATION_REPORT)"
+
+score-cms-qic-official-outcome:
+	PYTHONPATH=src:scripts $(PYTHON) scripts/score_cms_qic_outcomes.py --benchmark "$(CMS_QIC_LEGAL_BENCHMARK_OUTPUT)" --manifest "$(CMS_QIC_LEGAL_BENCHMARK_MANIFEST)" --predictions "$(CMS_QIC_OUTCOME_PREDICTIONS)" --output "$(CMS_QIC_OUTCOME_SCORE_REPORT)"
+
+score-cms-qic-legal-ground:
+	PYTHONPATH=src:scripts $(PYTHON) scripts/score_cms_qic_legal_ground.py --benchmark "$(CMS_QIC_LEGAL_BENCHMARK_OUTPUT)" --sample-manifest "$(CMS_QIC_LEGAL_BENCHMARK_MANIFEST)" --gold "$(CMS_QIC_LEGAL_GOLD_OUTPUT)" --gold-report "$(CMS_QIC_LEGAL_ANNOTATION_REPORT)" --predictions "$(CMS_QIC_LEGAL_PREDICTIONS)" --taxonomy "$(CMS_QIC_LEGAL_TAXONOMY)" --output "$(CMS_QIC_LEGAL_SCORE_REPORT)"
 
 run-local-workflow:
 	PYTHONPATH=src $(PYTHON) scripts/run_local_workflow.py --ledger "$(LOCAL_WORKFLOW_LEDGER)" --output "$(LOCAL_WORKFLOW_OUTPUT)"

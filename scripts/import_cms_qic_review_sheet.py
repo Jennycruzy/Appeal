@@ -44,11 +44,20 @@ def parse_spans(value: str, field: str, source_hash: str, label: str) -> list[di
             start, end = (int(piece.strip()) for piece in pieces)
         except ValueError as error:
             raise ValueError(f"{label}[{index}] offsets must be integers") from error
-        result.append({"source_field": field, "start": start, "end": end, "source_sha256": source_hash})
+        result.append({
+            "source_field": field,
+            "start": start,
+            "end": end,
+            "source_sha256": source_hash,
+            "span_role": "operative_holding" if field == "decision_rationale" else "policy_context",
+        })
     return result
 
 
-def parse_annotation(row: dict[str, str]) -> dict[str, object]:
+def parse_annotation(row: dict[str, str], *, holding_span_column: str = "rationale_spans") -> dict[str, object]:
+    row = dict(row)
+    if holding_span_column != "rationale_spans":
+        row["rationale_spans"] = row[holding_span_column]
     category = row["primary_category"].strip()
     try:
         category_enum = RationaleCategory(category)
@@ -86,6 +95,7 @@ def import_sheet(
     taxonomy_path: Path,
     output_path: Path,
     *,
+    queue_key: str,
     reviewer_id: str,
     reviewer_role: str,
 ) -> dict[str, object]:
@@ -98,7 +108,8 @@ def import_sheet(
     taxonomy = load_object(taxonomy_path, "annotation taxonomy")
     taxonomy_id = taxonomy.get("taxonomy_id")
     expected = manifest.get("queues")
-    if not isinstance(taxonomy_id, str) or not isinstance(expected, dict) or not isinstance(expected.get("reviewer_a"), dict):
+    expected_queue = expected.get(queue_key) if isinstance(expected, dict) else None
+    if not isinstance(taxonomy_id, str) or not isinstance(expected_queue, dict):
         raise ValueError("taxonomy or queue manifest is incomplete")
     original_rows = read_rows(queue_path)
     inspection = inspect_queue(
@@ -108,8 +119,7 @@ def import_sheet(
         annotator_role=reviewer_role,
         require_locked_test=False,
     )
-    expected_a = expected["reviewer_a"]
-    if inspection.order_fingerprint != expected_a.get("order_fingerprint") or inspection.context_fingerprint != expected_a.get("context_fingerprint"):
+    if inspection.order_fingerprint != expected_queue.get("order_fingerprint") or inspection.context_fingerprint != expected_queue.get("context_fingerprint"):
         raise ValueError("source queue identity does not match the committed manifest")
     by_case = {row["case_ref"]: row for row in original_rows}
     seen: set[str] = set()
@@ -122,7 +132,20 @@ def import_sheet(
     }
     with sheet_path.open(encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
-        if reader.fieldnames is None or not required_columns.issubset(reader.fieldnames):
+        if reader.fieldnames is None:
+            raise ValueError("review sheet has no header")
+        if any(field.startswith("assistant_proposal_") for field in reader.fieldnames):
+            raise ValueError(
+                "assistant-prefilled review sheets are not eligible for direct-human gold; "
+                "create a blank sheet with create_cms_qic_human_review_sheet.py"
+            )
+        forbidden_columns = {"regulator_outcome", "hidden_labels", "final_outcome", "outcome_label"}
+        if forbidden_columns.intersection(reader.fieldnames):
+            raise ValueError("review sheet contains a forbidden outcome column")
+        holding_span_column = "holding_spans" if "holding_spans" in reader.fieldnames else "rationale_spans"
+        required_columns.discard("rationale_spans")
+        required_columns.add(holding_span_column)
+        if not required_columns.issubset(reader.fieldnames):
             raise ValueError("review sheet is missing required columns")
         for line_number, raw in enumerate(reader, start=2):
             row = {key: value or "" for key, value in raw.items() if key is not None}
@@ -134,7 +157,7 @@ def import_sheet(
                 raise ValueError(f"sheet row {line_number} is not locked_test")
             original = by_case.get(case_ref)
             if original is None:
-                raise ValueError(f"sheet row {line_number} is not in reviewer A queue")
+                raise ValueError(f"sheet row {line_number} is not in {queue_key} queue")
             context = original["context"]
             hashes = original["source_hashes"]
             checks = {
@@ -152,11 +175,11 @@ def import_sheet(
                     raise ValueError(f"sheet row {line_number} changed protected field {key}")
             if not parse_bool(row["human_reviewed"], f"sheet row {line_number}.human_reviewed"):
                 raise ValueError(f"sheet row {line_number} is not marked human_reviewed")
-            parse_annotation(row)
+            parse_annotation(row, holding_span_column=holding_span_column)
             edited[case_ref] = row
     locked_refs = {row["case_ref"] for row in original_rows if row.get("split") == "locked_test"}
     if seen != locked_refs:
-        raise ValueError("review sheet must contain exactly all 100 locked_test cases")
+        raise ValueError("review sheet must contain exactly all locked_test cases")
 
     output_rows: list[dict[str, Any]] = []
     for original in original_rows:
@@ -164,11 +187,11 @@ def import_sheet(
         case_ref = str(original["case_ref"])
         if case_ref in edited:
             row = edited[case_ref]
-            copy["annotation"] = parse_annotation(row)
+            copy["annotation"] = parse_annotation(row, holding_span_column=holding_span_column)
             copy["review_meta"] = {
                 "human_reviewed": True,
-                "review_mode": "human_reviewed_assistant_proposal",
-                "proposal_source": row.get("proposal_source", "appeal-rationale-cue-review-v1"),
+                "review_mode": "human_entered",
+                "span_definition": "operative_holding",
                 "reviewer_id": reviewer_id,
                 "reviewer_role": reviewer_role,
             }
@@ -185,7 +208,7 @@ def import_sheet(
         require_locked_test=False,
     )
     locked_validated = [row for row in validated.rows if row.split == "locked_test"]
-    if len(locked_validated) != 100 or any(row.annotation is None or not row.human_reviewed for row in locked_validated):
+    if len(locked_validated) != len(locked_refs) or any(row.annotation is None or not row.gold_eligible for row in locked_validated):
         raise ValueError("converted queue did not pass complete locked-test human-review validation")
     return {
         "status": "cms_qic_human_reviewed_queue_ready",
@@ -193,7 +216,10 @@ def import_sheet(
         "locked_test_rows": len(edited),
         "human_reviewed_rows": len(edited),
         "outcomes_in_output": False,
-        "review_mode": "human_reviewed_assistant_proposal",
+        "review_mode": "human_entered",
+        "direct_human_entry": True,
+        "queue_key": queue_key,
+        "reviewer_id": reviewer_id,
     }
 
 
@@ -204,6 +230,7 @@ def main() -> int:
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--taxonomy", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--queue-key", choices=("reviewer_a", "reviewer_b"), default="reviewer_a")
     parser.add_argument("--reviewer-id", required=True)
     parser.add_argument("--reviewer-role", required=True)
     args = parser.parse_args()
@@ -213,6 +240,7 @@ def main() -> int:
         args.manifest,
         args.taxonomy,
         args.output,
+        queue_key=args.queue_key,
         reviewer_id=args.reviewer_id,
         reviewer_role=args.reviewer_role,
     ), indent=2, sort_keys=True))
