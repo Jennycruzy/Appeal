@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "taxonomy_id": "cms_part_d_rationale_v1",
+  "objective": "Outcome-blinded classification of the principal Part D coverage or procedural issue described in a QIC decision summary.",
+  "official_sources": [
+    {
+      "title": "CMS Coverage Determinations",
+      "url": "https://www.cms.gov/medicare/appeals-grievances/prescription-drug/coverage-determinations"
+    },
+    {
+      "title": "CMS Exceptions",
+      "url": "https://www.cms.gov/medicare/appeals-grievances/prescription-drug/exceptions"
+    },
+    {
+      "title": "CMS Reconsideration by the Part D Independent Review Entity",
+      "url": "https://www.cms.gov/medicare/appeals-grievances/prescription-drug/reconsiderations"
+    }
+  ],
+  "annotation_rules": {
+    "outcome_blinded": true,
+    "principal_issue_only": true,
+    "secondary_categories_allowed": true,
+    "source_span_required": true,
+    "minimum_independent_annotations_locked_test": 2,
+    "disagreement_requires_adjudication": true,
+    "model_generated_label_can_be_gold": false
+  },
+  "categories": {
+    "non_formulary_exception": "Drug is absent from the plan formulary or formulary status is the principal issue.",
+    "tiering_exception": "Request seeks preferred-tier cost sharing for a non-preferred drug.",
+    "prior_authorization": "Coverage turns on satisfying or waiving a prior-authorization requirement.",
+    "step_therapy": "Coverage turns on trying another drug before the requested drug.",
+    "quantity_limit": "Coverage turns on a quantity, dose, or frequency restriction.",
+    "medically_accepted_indication": "Coverage turns on FDA labeling, compendia support, or another medically accepted/off-label indication rule.",
+    "payment_or_cost_sharing": "Principal issue is reimbursement, payment, or enrollee cost sharing rather than prospective drug coverage.",
+    "at_risk_drug_management": "Case concerns an at-risk determination under a Part D drug-management program.",
+    "procedural_or_jurisdictional": "Disposition turns on timeliness, representation, dismissal, jurisdiction, or another procedural requirement.",
+    "other_coverage_rule": "A supported Part D coverage issue does not fit a more specific category.",
+    "insufficient_information": "The summary does not support a reliable principal category. Annotator must abstain."
+  },
+  "route_policy": {
+    "non_formulary_exception": "formulary_exception_review",
+    "tiering_exception": "formulary_exception_review",
+    "prior_authorization": "utilization_management_exception",
+    "step_therapy": "utilization_management_exception",
+    "quantity_limit": "utilization_management_exception",
+    "medically_accepted_indication": "medically_accepted_indication_review",
+    "payment_or_cost_sharing": "payment_appeal",
+    "at_risk_drug_management": "automatic_ire_review",
+    "procedural_or_jurisdictional": "procedural_human_review",
+    "other_coverage_rule": "coverage_rule_review",
+    "insufficient_information": "request_additional_information"
+  }
+}

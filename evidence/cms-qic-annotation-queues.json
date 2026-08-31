@@ -1,0 +1,40 @@
+{
+  "gold_policy": {
+    "disagreement_requires_adjudication": true,
+    "gold_status": "pending_human_annotation",
+    "locked_test_independent_annotations_required": 2,
+    "model_generated_label_can_be_gold": false
+  },
+  "queues": {
+    "independent_order": true,
+    "reviewer_a": {
+      "location": "outside_repository_only",
+      "order_fingerprint": "c7ee152ce640e9637b8eaed903e481783c4a15150f6f106b7c097012c487c93c",
+      "sha256": "bd1670e39a23c919ac9965b768c95ae9dc3cf74038fef7a552ab81dd0a79fae9"
+    },
+    "reviewer_b": {
+      "location": "outside_repository_only",
+      "order_fingerprint": "adbdff6a6a01773a159a93579618a0327b30fb13e507d0d83a1fb50c89b24bfa",
+      "sha256": "ea56c9a1e861489745465c9be7d8c946bb330268a75704929aa9dea73108b5d1"
+    }
+  },
+  "recorded_at": "2026-08-31T17:42:07.241169Z",
+  "schema_version": "1.0",
+  "source": {
+    "benchmark_sha256": "565e4c948d791df8da3eea9a0368565143b40b9c8f34bdca1f0e4ca3d28e92ed",
+    "narratives_in_repository": false,
+    "outcomes_in_queues": false,
+    "record_count": 300,
+    "split_counts": {
+      "development": 200,
+      "locked_test": 100
+    }
+  },
+  "status": "outcome_blinded_annotation_queues_ready",
+  "taxonomy": {
+    "category_count": 11,
+    "official_source_count": 3,
+    "sha256": "2fee95b5682ac449cf450421a39cc53548cb0d798fcbae576355201d1234dea9",
+    "taxonomy_id": "cms_part_d_rationale_v1"
+  }
+}

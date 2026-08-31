@@ -36,6 +36,10 @@ class EvaluationTask(str, Enum):
     ROUTE = "route"
     REGULATOR_OUTCOME = "regulator_outcome"
     CLAIM_SUPPORT = "claim_support"
+    RATIONALE_CATEGORY = "rationale_category"
+    CITATION_GROUNDING = "citation_grounding"
+    OPERATIONAL_ROUTE = "operational_route"
+    ABSTENTION_DECISION = "abstention_decision"
 
 
 def _require_text(value: str, label: str) -> None:

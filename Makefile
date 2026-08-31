@@ -35,6 +35,9 @@ CMS_QIC_BULK_ACCEPTANCE_MANIFEST ?= evidence/cms-qic-part-d-bulk-acceptance.json
 CMS_QIC_BENCHMARK_OUTPUT ?= ../Downloads/cms-qic-part-d-benchmark-v1.jsonl
 CMS_QIC_BENCHMARK_MANIFEST ?= evidence/cms-qic-part-d-benchmark-sample.json
 CMS_QIC_BENCHMARK_BASELINES ?= evidence/cms-qic-benchmark-baselines.json
+CMS_QIC_ANNOTATION_QUEUE_A ?= ../Downloads/cms-qic-annotation-reviewer-a.jsonl
+CMS_QIC_ANNOTATION_QUEUE_B ?= ../Downloads/cms-qic-annotation-reviewer-b.jsonl
+CMS_QIC_ANNOTATION_MANIFEST ?= evidence/cms-qic-annotation-queues.json
 LOCAL_WORKFLOW_LEDGER ?= ../Downloads/appeal-local-receipts-v0.2.jsonl
 LOCAL_WORKFLOW_OUTPUT ?= ../Downloads/appeal-local-workflow-result.json
 LOCAL_RUNTIME_LEDGER ?= ../Downloads/appeal-local-runtime-receipts.jsonl
@@ -105,7 +108,7 @@ SENTINEL_CASE ?= case-sentinel-expired-001
 SENTINEL_ENTERED_AT ?= 2026-08-18T12:00:00Z
 SENTINEL_SEED_OUTPUT ?= evidence/sentinel-seed.json
 
-.PHONY: verify-ledger test typecheck run-evaluation-fixture sample-cms-qic-benchmark audit-cms-qic-benchmark run-local-workflow run-local-runtime run-async-workflow-proof measure-operational-utility seed-demo-cases measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run build-payer-service deploy-payer-service run-payer-service run-mcp-server run-mcp-probe deploy-mcp-cloud-run sync-mcp-registry seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck run-evaluation-fixture sample-cms-qic-benchmark audit-cms-qic-benchmark create-cms-qic-annotation-queues run-local-workflow run-local-runtime run-async-workflow-proof measure-operational-utility seed-demo-cases measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run build-payer-service deploy-payer-service run-payer-service run-mcp-server run-mcp-probe deploy-mcp-cloud-run sync-mcp-registry seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -124,6 +127,9 @@ sample-cms-qic-benchmark:
 
 audit-cms-qic-benchmark:
 	PYTHONPATH=src $(PYTHON) scripts/audit_cms_qic_benchmark.py --input "$(CMS_QIC_BENCHMARK_OUTPUT)" --manifest "$(CMS_QIC_BENCHMARK_MANIFEST)" --output "$(CMS_QIC_BENCHMARK_BASELINES)"
+
+create-cms-qic-annotation-queues:
+	PYTHONPATH=src $(PYTHON) scripts/create_cms_qic_annotation_queues.py --benchmark "$(CMS_QIC_BENCHMARK_OUTPUT)" --sample-manifest "$(CMS_QIC_BENCHMARK_MANIFEST)" --taxonomy config/cms_part_d_annotation_taxonomy.json --queue-a "$(CMS_QIC_ANNOTATION_QUEUE_A)" --queue-b "$(CMS_QIC_ANNOTATION_QUEUE_B)" --output "$(CMS_QIC_ANNOTATION_MANIFEST)"
 
 run-local-workflow:
 	PYTHONPATH=src $(PYTHON) scripts/run_local_workflow.py --ledger "$(LOCAL_WORKFLOW_LEDGER)" --output "$(LOCAL_WORKFLOW_OUTPUT)"
