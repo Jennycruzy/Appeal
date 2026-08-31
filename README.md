@@ -181,8 +181,15 @@ requests; its authenticated synthetic probe is recorded in
 audit in [`docs/audits/payer-service.md`](docs/audits/payer-service.md).
 The managed Agent Runtime remains advisory and synthetic-only; a later
 checkpoint may be recorded as failed/retryable when Vertex shared capacity is
-exhausted, without redelivering the durable workflow event. Firebase Auth and
-the authenticated dashboard remain unverified or not deployed. The governance audit is
+exhausted, without redelivering the durable workflow event. Firebase Management,
+Identity Toolkit, and Hosting APIs are enabled, but the project is not yet
+Firebase-linked: the owner account's `addFirebase` request returned
+`PERMISSION_DENIED`, and Firebase reports no available project. The likely
+remaining operator step is accepting the Firebase Terms once in the Firebase
+Console, then retrying the link. No Auth users, Hosting site, dashboard, or
+mobile approval route has been created. The read-only boundary check is
+[`evidence/firebase-auth-boundary.json`](evidence/firebase-auth-boundary.json).
+The governance audit is
 [`docs/audits/agent-gateway.md`](docs/audits/agent-gateway.md), with aggregate
 evidence in
 [`evidence/agent-gateway-governance.json`](evidence/agent-gateway-governance.json).
@@ -283,7 +290,10 @@ The aggregate board manifest is
 [`evidence/seeded-demo-tenant.json`](evidence/seeded-demo-tenant.json). It is
 local synthetic evidence; hosted Firebase Auth, dashboard access, and hosted
 six-case seeding remain open. The hosted payer continuation proof is separate
-and does not imply that the full dashboard exists.
+and does not imply that the full dashboard exists. The fail-closed
+Firebase/tenant verifier and signed mobile-link contract are implemented and
+tested locally; hosted rollout is blocked before Firebase linking (see
+[`docs/audits/auth-dashboard-contract.md`](docs/audits/auth-dashboard-contract.md)).
 
 Run the synthetic Stage B case through the real ADK `Runner` and Gemini vision
 path with:

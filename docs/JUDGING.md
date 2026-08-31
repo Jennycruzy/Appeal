@@ -37,7 +37,7 @@ to reproduce the local proofs.
 | Operational utility and controls | `make measure-operational-utility` | [`evidence/operational-utility-measurement.json`](../evidence/operational-utility-measurement.json), [`docs/audits/operational-utility.md`](audits/operational-utility.md). Metrics are aggregate synthetic workflow measures; the Oregon rate is an external-review proxy, and recoverable dollars are sensitivity-only. |
 | Six seeded operating stories | `make seed-demo-cases` | [`evidence/seeded-demo-tenant.json`](../evidence/seeded-demo-tenant.json). Six local synthetic states are visible (clean, quarantine, abstention, evidence wake, deadline, escalation); hosted seeding and dashboard access remain open. |
 | Receipts and observability | Local receipt verification; hosted Cloud Trace/Firestore audits | [`docs/audits/cloud-persistence.md`](audits/cloud-persistence.md), [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json). A complete hosted case trace across all roles is not yet captured. |
-| Authenticated console and mobile approval | No verified route yet | Firebase Auth, tenant authorization, dashboard, signed notification links, and phone approval remain open. Do not use the unauthenticated demo endpoint for real data. |
+| Authenticated console and mobile approval | Blocked before Firebase link | Firebase APIs are enabled, but `addFirebase` is still denied and no Auth users, Hosting site, dashboard, signed notification links, or phone approval route exist. See [`evidence/firebase-auth-boundary.json`](../evidence/firebase-auth-boundary.json). Do not use the unauthenticated demo endpoint for real data. |
 
 ## Reproduce the local proof package
 
@@ -61,7 +61,9 @@ do not prove clinical quality, payer agreement, or production throughput.
   truth label.
 - No PHI is uploaded, and no real payer submission or withdrawal occurs.
 - No hosted Firebase-authenticated dashboard or mobile clinician approval is
-  represented as complete. The separate payer service is deployed and
+  represented as complete. The fail-closed Firebase/tenant verifier and signed
+  mobile-link contract are implemented and tested locally; hosted rollout is
+  blocked before Firebase linking. The separate payer service is deployed and
   authenticated, but remains synthetic-only with no real payer API.
 - The utility report does not invent a dollar amount. Supply an authorized
   allowed amount before applying its sensitivity formula.

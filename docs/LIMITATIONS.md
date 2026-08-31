@@ -88,8 +88,19 @@ complete.
 
 ## Operational features
 
-- The repository does not yet provide a web console or Firebase
-  authentication. Cloud Scheduler now invokes the protected Deadline
+- The repository does not yet provide a web console or hosted Firebase
+  authentication. A fail-closed Firebase ID-token/tenant verifier and signed
+  mobile approval-link contract are implemented and locally tested in
+  [`docs/audits/auth-dashboard-contract.md`](audits/auth-dashboard-contract.md),
+  but they are not deployed. Firebase Management, Identity Toolkit, and Hosting APIs are
+  enabled in the active project, but the project is not Firebase-linked: the
+  owner-account `addFirebase` call returned `PERMISSION_DENIED`, and the
+  read-only Firebase project lookup returned `NOT_FOUND`. Firebase documents
+  accepting its Terms in the Firebase Console as a prerequisite for this
+  operation. No Auth users, Hosting site, dashboard, signed notification link,
+  or mobile approval route has been created; the boundary evidence is in
+  [`evidence/firebase-auth-boundary.json`](../evidence/firebase-auth-boundary.json).
+  Cloud Scheduler now invokes the protected Deadline
   Sentinel route hourly; Cloud Run case state, safe references,
   reference-only workflow sessions, and hash-chained receipts are persisted in
   Firestore, and reference-only workflow events publish through the managed

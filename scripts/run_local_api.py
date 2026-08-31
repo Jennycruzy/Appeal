@@ -154,6 +154,13 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
         pubsub_service_account=os.getenv("APPEAL_PUBSUB_PUSH_SERVICE_ACCOUNT"),
         pubsub_audience=os.getenv("APPEAL_PUBSUB_AUDIENCE"),
         agent_runtime=agent_runtime_name,
+        firebase_auth_required=os.getenv("APPEAL_FIREBASE_AUTH_REQUIRED", "false").lower() == "true",
+        firebase_project_id=(
+            os.getenv("APPEAL_FIREBASE_PROJECT_ID", os.getenv("GOOGLE_CLOUD_PROJECT", "")).strip()
+            or None
+        ),
+        mobile_link_secret=os.getenv("APPEAL_MOBILE_LINK_SECRET"),
+        mobile_link_ttl_seconds=int(os.getenv("APPEAL_MOBILE_LINK_TTL_SECONDS", "900")),
     )
 
 
