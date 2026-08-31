@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "status": "clinician_review_workspace_deployed",
+  "recorded_at": "2026-08-31T18:18:35Z",
+  "cloud_run": {
+    "service": "appeal-backend",
+    "region": "europe-west2",
+    "revision": "appeal-backend-00029-sxw",
+    "traffic_percent": 100,
+    "url": "https://appeal-backend-835653516606.europe-west2.run.app",
+    "health_status": "ok",
+    "health_contract": {
+      "auth_mode": "firebase_id_token",
+      "storage": "firestore",
+      "event_spine": "pubsub_firestore",
+      "security": "managed_model_armor_gemma",
+      "mobile_approval": true,
+      "managed_runtime": "allowlisted_checkpoint"
+    }
+  },
+  "firebase_hosting": {
+    "site": "onyx-yeti-506606-i9",
+    "url": "https://onyx-yeti-506606-i9.web.app",
+    "release_verified": true,
+    "review_surface": [
+      "denial reason code and policy reference",
+      "versioned policy criterion tree",
+      "criterion evaluation status",
+      "evidence observations and reference hashes",
+      "draft claim provenance"
+    ]
+  },
+  "claim_boundary": {
+    "deployment_verified": true,
+    "authenticated_case_review_verified_in_browser": false,
+    "human_gold_labels_ready": false,
+    "clinical_efficacy_claim": false,
+    "source_narratives_in_repository": false
+  }
+}

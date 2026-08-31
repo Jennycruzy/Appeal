@@ -190,6 +190,8 @@ The aggregate deployment record is
 [`evidence/cloud-run-deployment.json`](evidence/cloud-run-deployment.json),
 with the persistence audit in
 [`docs/audits/cloud-persistence.md`](docs/audits/cloud-persistence.md).
+The current clinician-review deployment check is recorded in
+[`evidence/clinician-review-deployment.json`](evidence/clinician-review-deployment.json).
 The hosted payer wake artifact is the authoritative end-to-end Pub/Sub trace
 on revision `appeal-backend-00026-42q`: the authenticated reference-only payer
 event resumed the Firestore session to `CLOSED_WON`, preserved one external
