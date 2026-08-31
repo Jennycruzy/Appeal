@@ -40,6 +40,9 @@ CMS_QIC_ANNOTATION_QUEUE_B ?= ../Downloads/cms-qic-annotation-reviewer-b.jsonl
 CMS_QIC_ANNOTATION_MANIFEST ?= evidence/cms-qic-annotation-queues.json
 CMS_QIC_ANNOTATION_STATUS ?= evidence/cms-qic-annotation-status.json
 CMS_QIC_ANNOTATION_REPORT ?= evidence/cms-qic-gold-labels.json
+CMS_QIC_REVIEW_SHEET ?= ../Downloads/cms-qic-reviewer-a-review-sheet.csv
+CMS_QIC_REVIEW_SHEET_EDITED ?= ../Downloads/cms-qic-reviewer-a-review-sheet-edited.csv
+CMS_QIC_FILLED_QUEUE_A ?= ../Downloads/cms-qic-annotation-reviewer-a-filled.jsonl
 CMS_QIC_ADJUDICATION ?=
 CMS_QIC_GOLD_OUTPUT ?= ../Downloads/cms-qic-locked-test-gold.jsonl
 CMS_QIC_REVIEWER_A_ID ?= reviewer-a
@@ -118,7 +121,7 @@ SENTINEL_CASE ?= case-sentinel-expired-001
 SENTINEL_ENTERED_AT ?= 2026-08-18T12:00:00Z
 SENTINEL_SEED_OUTPUT ?= evidence/sentinel-seed.json
 
-.PHONY: verify-ledger test typecheck run-evaluation-fixture sample-cms-qic-benchmark audit-cms-qic-benchmark create-cms-qic-annotation-queues validate-cms-qic-annotations import-cms-qic-annotations run-local-workflow run-local-runtime run-async-workflow-proof measure-operational-utility seed-demo-cases measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run build-payer-service deploy-payer-service run-payer-service run-mcp-server run-mcp-probe deploy-mcp-cloud-run sync-mcp-registry seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck run-evaluation-fixture sample-cms-qic-benchmark audit-cms-qic-benchmark create-cms-qic-annotation-queues create-cms-qic-review-sheet import-cms-qic-review-sheet validate-cms-qic-annotations import-cms-qic-annotations run-local-workflow run-local-runtime run-async-workflow-proof measure-operational-utility seed-demo-cases measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run build-payer-service deploy-payer-service run-payer-service run-mcp-server run-mcp-probe deploy-mcp-cloud-run sync-mcp-registry seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -140,6 +143,12 @@ audit-cms-qic-benchmark:
 
 create-cms-qic-annotation-queues:
 	PYTHONPATH=src $(PYTHON) scripts/create_cms_qic_annotation_queues.py --benchmark "$(CMS_QIC_BENCHMARK_OUTPUT)" --sample-manifest "$(CMS_QIC_BENCHMARK_MANIFEST)" --taxonomy config/cms_part_d_annotation_taxonomy.json --queue-a "$(CMS_QIC_ANNOTATION_QUEUE_A)" --queue-b "$(CMS_QIC_ANNOTATION_QUEUE_B)" --output "$(CMS_QIC_ANNOTATION_MANIFEST)"
+
+create-cms-qic-review-sheet:
+	PYTHONPATH=src:scripts $(PYTHON) scripts/create_cms_qic_review_sheet.py --queue "$(CMS_QIC_ANNOTATION_QUEUE_A)" --manifest "$(CMS_QIC_ANNOTATION_MANIFEST)" --taxonomy config/cms_part_d_annotation_taxonomy.json --output "$(CMS_QIC_REVIEW_SHEET)"
+
+import-cms-qic-review-sheet:
+	PYTHONPATH=src:scripts $(PYTHON) scripts/import_cms_qic_review_sheet.py --queue "$(CMS_QIC_ANNOTATION_QUEUE_A)" --sheet "$(CMS_QIC_REVIEW_SHEET_EDITED)" --manifest "$(CMS_QIC_ANNOTATION_MANIFEST)" --taxonomy config/cms_part_d_annotation_taxonomy.json --output "$(CMS_QIC_FILLED_QUEUE_A)" --reviewer-id "$(CMS_QIC_REVIEWER_A_ID)" --reviewer-role "$(CMS_QIC_REVIEWER_A_ROLE)"
 
 validate-cms-qic-annotations:
 	PYTHONPATH=src $(PYTHON) $(CURDIR)/scripts/validate_cms_qic_annotations.py --queue-a "$(CMS_QIC_ANNOTATION_QUEUE_A)" --queue-b "$(CMS_QIC_ANNOTATION_QUEUE_B)" --manifest "$(CMS_QIC_ANNOTATION_MANIFEST)" --taxonomy config/cms_part_d_annotation_taxonomy.json --output "$(CMS_QIC_ANNOTATION_STATUS)" --reviewer-a-id "$(CMS_QIC_REVIEWER_A_ID)" --reviewer-a-role "$(CMS_QIC_REVIEWER_A_ROLE)" --reviewer-b-id "$(CMS_QIC_REVIEWER_B_ID)" --reviewer-b-role "$(CMS_QIC_REVIEWER_B_ROLE)"

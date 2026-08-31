@@ -71,6 +71,45 @@ route from the frozen taxonomy, and writes a recoverable checkpoint after each
 validated case. It never edits the source queue and never displays the hidden
 outcome.
 
+### Spreadsheet review for the full locked set
+
+If a reviewer needs to work through all cases in one sitting, create the
+reviewer-A sheet:
+
+```bash
+make create-cms-qic-review-sheet \
+  CMS_QIC_REVIEW_SHEET=../Downloads/cms-qic-reviewer-a-review-sheet.csv
+```
+
+The sheet contains all 100 locked-test cases—the only rows used for the
+reported quality benchmark. The 200 development rows remain in the original
+queue for calibration and are carried through unchanged by the importer.
+
+Each row has the full outcome-blinded regulator rationale and policy context,
+protected source hashes, an assistant proposal, and editable reviewer fields.
+The proposal is a review aid only. Inspect it against the visible text, edit
+the `disposition`, `primary_category`, `secondary_categories`, `route`, and
+source-span fields as needed, add a `review_note` when useful, and set
+`human_reviewed` to `TRUE` after reviewing the row. Do not edit the protected
+context or the `assistant_proposal_*` reference columns. The sheet contains no
+regulator outcomes.
+
+After saving the edited copy, convert it back into the queue:
+
+```bash
+make import-cms-qic-review-sheet \
+  CMS_QIC_REVIEW_SHEET_EDITED=../Downloads/cms-qic-reviewer-a-review-sheet-edited.csv \
+  CMS_QIC_FILLED_QUEUE_A=../Downloads/cms-qic-annotation-reviewer-a-filled.jsonl \
+  CMS_QIC_REVIEWER_A_ID=reviewer-a \
+  CMS_QIC_REVIEWER_A_ROLE="utilization review researcher"
+```
+
+The converter verifies all 100 case identities, source hashes, category-to-
+route mappings, spans, and human-review flags. It records that reviewer A
+reviewed an assistant-assisted starting proposal. Reviewer B must continue to
+use queue B without seeing reviewer A's sheet or output; the two queues remain
+separate for agreement and adjudication.
+
 Each reviewer labels the principal issue described by the regulator rationale,
 without seeing the hidden outcome. The frozen taxonomy is grounded in CMS
 coverage-determination, exceptions, and reconsideration guidance:
@@ -102,7 +141,11 @@ called consensus. Any disagreement requires a third human adjudicator who is
 not either reviewer. The adjudication note is retained outside Git and only
 its SHA-256 is emitted in the aggregate gold report.
 
-Model-generated labels cannot become gold labels under this protocol.
+Assistant proposals cannot become gold labels by themselves. A proposal may
+be used as a starting point only when a named human reviewer inspects every
+row, edits or accepts the fields, and the provenance is retained. The final
+gold file still requires two distinct reviewer identities and adjudication of
+every disagreement.
 
 ## Commands
 

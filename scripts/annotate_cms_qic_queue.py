@@ -219,6 +219,12 @@ def main() -> int:
             continue
         try:
             row["annotation"] = annotated_payload(row, categories)
+            row["review_meta"] = {
+                "human_reviewed": True,
+                "review_mode": "human_entered",
+                "reviewer_id": args.reviewer_id,
+                "reviewer_role": args.reviewer_role,
+            }
             # Validate the row before checkpointing so a malformed span never
             # replaces the last valid checkpoint.
             checkpoint(

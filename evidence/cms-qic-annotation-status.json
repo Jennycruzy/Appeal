@@ -13,7 +13,9 @@
     "locked_test": {
       "complete_pair": false,
       "queue_a_complete": 0,
+      "queue_a_human_reviewed": 0,
       "queue_b_complete": 0,
+      "queue_b_human_reviewed": 0,
       "rows": 100
     },
     "queue_a": {
@@ -23,7 +25,8 @@
       "splits": {
         "development": 200,
         "locked_test": 100
-      }
+      },
+      "unreviewed": 0
     },
     "queue_b": {
       "complete": 0,
@@ -32,7 +35,8 @@
       "splits": {
         "development": 200,
         "locked_test": 100
-      }
+      },
+      "unreviewed": 0
     }
   },
   "schema_version": "1.0",

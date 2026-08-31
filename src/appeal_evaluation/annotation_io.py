@@ -226,6 +226,7 @@ class QueueRow:
     context: Mapping[str, object]
     source_hashes: Mapping[str, object]
     annotation: CaseAnnotation | None
+    human_reviewed: bool
 
 
 @dataclass(frozen=True)
@@ -236,12 +237,13 @@ class QueueInspection:
     complete_count: int
     pending_count: int
     partial_count: int
+    unreviewed_count: int
     split_counts: dict[str, int]
     rows: tuple[QueueRow, ...]
 
     @property
     def complete(self) -> bool:
-        return self.pending_count == 0 and self.partial_count == 0
+        return self.pending_count == 0 and self.partial_count == 0 and self.unreviewed_count == 0
 
     @property
     def order_fingerprint(self) -> str:
@@ -291,6 +293,7 @@ def inspect_queue(
     complete_count = 0
     pending_count = 0
     partial_count = 0
+    unreviewed_count = 0
     with path.open(encoding="utf-8") as handle:
         for line_number, line in enumerate(handle, start=1):
             try:
@@ -319,6 +322,8 @@ def inspect_queue(
                 has_values = any(value is not None and value != [] for value in values)
                 has_missing = any(value is None for value in values)
                 annotation: CaseAnnotation | None = None
+                review_meta = raw.get("review_meta")
+                human_reviewed = isinstance(review_meta, dict) and review_meta.get("human_reviewed") is True
                 if has_values and has_missing:
                     partial_count += 1
                 elif not has_values:
@@ -334,8 +339,10 @@ def inspect_queue(
                     _validate_spans(annotation.rationale_spans, context, source_hashes, f"queue row {line_number}.rationale_spans")
                     _validate_spans(annotation.policy_spans, context, source_hashes, f"queue row {line_number}.policy_spans")
                     complete_count += 1
+                    if not human_reviewed:
+                        unreviewed_count += 1
                 split_counts[split] += 1
-                rows.append(QueueRow(case_ref, split, context_fingerprint, context, source_hashes, annotation))
+                rows.append(QueueRow(case_ref, split, context_fingerprint, context, source_hashes, annotation, human_reviewed))
             except (TypeError, ValueError, json.JSONDecodeError) as error:
                 raise ValueError(f"invalid annotation queue row {line_number}: {error}") from error
     return QueueInspection(
@@ -345,6 +352,7 @@ def inspect_queue(
         complete_count=complete_count,
         pending_count=pending_count,
         partial_count=partial_count,
+        unreviewed_count=unreviewed_count,
         split_counts=dict(sorted(split_counts.items())),
         rows=tuple(rows),
     )
@@ -369,7 +377,9 @@ def build_gold_labels(
     second_by_case = _rows_by_case(second, split="locked_test")
     if set(first_by_case) != set(second_by_case):
         raise ValueError("independent queues do not contain the same case set")
-    if any(row.annotation is None for row in first_by_case.values()) or any(row.annotation is None for row in second_by_case.values()):
+    if any(row.annotation is None or not row.human_reviewed for row in first_by_case.values()) or any(
+        row.annotation is None or not row.human_reviewed for row in second_by_case.values()
+    ):
         raise ValueError("both independent annotation queues must be complete for locked_test")
     for case_ref, first_row in first_by_case.items():
         second_row = second_by_case[case_ref]
@@ -549,8 +559,8 @@ def annotation_status(
                 disagreements += 1
     locked_complete_pair = (
         same_locked_case_set
-        and all(row.annotation is not None for row in first_locked.values())
-        and all(row.annotation is not None for row in second_locked.values())
+        and all(row.annotation is not None and row.human_reviewed for row in first_locked.values())
+        and all(row.annotation is not None and row.human_reviewed for row in second_locked.values())
     )
     adjudication_exists = adjudication_path is not None and adjudication_path.exists()
     status = "ready_for_gold_build" if locked_complete_pair and disagreements == 0 else "pending_human_annotation"
@@ -578,18 +588,22 @@ def annotation_status(
                 "complete": first.complete_count,
                 "pending": first.pending_count,
                 "partial": first.partial_count,
+                "unreviewed": first.unreviewed_count,
                 "splits": first.split_counts,
             },
             "queue_b": {
                 "complete": second.complete_count,
                 "pending": second.pending_count,
                 "partial": second.partial_count,
+                "unreviewed": second.unreviewed_count,
                 "splits": second.split_counts,
             },
             "locked_test": {
                 "rows": len(first_locked),
                 "queue_a_complete": sum(row.annotation is not None for row in first_locked.values()),
                 "queue_b_complete": sum(row.annotation is not None for row in second_locked.values()),
+                "queue_a_human_reviewed": sum(row.annotation is not None and row.human_reviewed for row in first_locked.values()),
+                "queue_b_human_reviewed": sum(row.annotation is not None and row.human_reviewed for row in second_locked.values()),
                 "complete_pair": locked_complete_pair,
             },
             "independent_disagreements": disagreements,

@@ -77,6 +77,7 @@ def queue_row(category: RationaleCategory = RationaleCategory.PRIOR_AUTHORIZATIO
             "policy_spans": [],
             "confidence": 4,
         },
+        "review_meta": {"human_reviewed": True},
     }
 
 
@@ -167,6 +168,23 @@ class EvaluationAnnotationTests(unittest.TestCase):
             report = annotation_status(inspection, inspection, taxonomy_version="cms_part_d_rationale_v1", adjudication_path=None)
         self.assertEqual(report["status"], "pending_human_annotation")
         self.assertFalse(report["gold_claim_allowed"])
+
+    def test_complete_annotation_without_review_flag_is_not_complete(self) -> None:
+        row = queue_row()
+        del row["review_meta"]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "queue.jsonl"
+            path.write_text(json.dumps(row) + "\n", encoding="utf-8")
+            inspection = inspect_queue(
+                path,
+                taxonomy_version="cms_part_d_rationale_v1",
+                annotator_id="reviewer-a",
+                annotator_role="researcher",
+                require_locked_test=False,
+            )
+        self.assertEqual(inspection.complete_count, 1)
+        self.assertEqual(inspection.unreviewed_count, 1)
+        self.assertFalse(inspection.complete)
 
     def test_agreeing_locked_queues_produce_consensus_gold(self) -> None:
         row = queue_row()
