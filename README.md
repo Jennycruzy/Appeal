@@ -1,9 +1,54 @@
 # Appeal
 
-Appeal is a policy-grounded denial-appeal workflow with explicit evidence,
-human-signature, deadline, and audit controls.
+**Appeal is an autonomous, policy-grounded operations fleet for recovering
+health-insurance denials without surrendering clinical or mutation authority
+to a model.** Seven specialized agents turn an untrusted denial into a
+criterion-linked evidence package, pause for clinician authorization, submit
+exactly once, and continue working when payer responses, new evidence, or
+statutory deadlines arrive hours or weeks later.
 
-## Reviewer status
+[Open the clinician operations board](https://onyx-yeti-506606-i9.web.app) ·
+[Inspect the architecture](docs/ARCHITECTURE.md) ·
+[Follow the judge evidence map](docs/JUDGING.md)
+
+## What is running
+
+- An authenticated, tenant-scoped clinician board and signed mobile approval
+  route on Firebase Hosting and Firebase Authentication.
+- A durable Cloud Run workflow backed by Firestore, authenticated Pub/Sub
+  continuation, and an OIDC-protected Cloud Scheduler deadline sentinel.
+- A seven-role Google ADK graph on managed Agent Runtime with Agent Identity,
+  Agent Registry, scoped Memory Bank state, and Cloud Trace telemetry.
+- A fail-closed Agent Gateway and IAP policy that permits scoped evidence reads
+  while denying a destructive canary before it reaches the tool service.
+- Inline Model Armor and Gemma screening at untrusted input, model egress, and
+  memory boundaries.
+- A single idempotent Submission Gate, clinician veto, tamper-evident receipts,
+  and a compensating-action journal.
+
+## Proven operating outcomes
+
+The deployed workflow has completed an authenticated payer-event wake from
+Pub/Sub, resumed the matching Firestore session, reached `CLOSED_WON`, and
+preserved exactly one external mutation under duplicate delivery. A hostile
+instruction was quarantined before denial parsing with zero mutations. The
+hosted clinician flow enforces Firebase tenant claims and a short-lived signed
+mobile approval capability. These are live service and control-plane results,
+not hard-coded UI states; the aggregate evidence is linked from
+[the judging map](docs/JUDGING.md).
+
+## Data and validation boundary
+
+Appeal is production-shaped infrastructure. The hosted evaluation environment
+uses composite cases and contains no PHI; the separate validation program uses
+de-identified material and public regulator data. Production payer connectivity
+and prospective clinical validation are still in progress, so Appeal does not
+claim to have filed a real payer appeal. Public CMS QIC decision summaries
+ground the regulator benchmark; complete case-level clinical efficacy remains
+deliberately unclaimed until an authorized denial, policy, chart, filed appeal,
+and outcome can be evaluated together.
+
+## Evidence and validation status
 
 The project has two separate real-data release tracks. The repository does
 **not** claim a completed full-case Appeal evaluation.

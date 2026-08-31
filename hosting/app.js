@@ -72,8 +72,8 @@ function stateClass(state) {
 function renderBoard() {
   caseCount.textContent = String(cases.length);
   if (!cases.length) {
-    caseList.innerHTML = '<p class="muted">No cases yet. Use the synthetic seed button to create a board.</p>';
-    caseDetail.innerHTML = '<div class="empty-state"><p class="eyebrow">Case detail</p><h2>No cases</h2><p class="muted">Create synthetic cases from this tenant-scoped board.</p></div>';
+    caseList.innerHTML = '<p class="muted">No cases yet. Load the evaluation case set to exercise the operating paths.</p>';
+    caseDetail.innerHTML = '<div class="empty-state"><p class="eyebrow">Case detail</p><h2>No cases</h2><p class="muted">Load the governed evaluation cases into this tenant-scoped board.</p></div>';
     return;
   }
   caseList.innerHTML = cases.map((view) => {
@@ -111,7 +111,7 @@ function renderDetail() {
     actionButtons.push('<button id="mobile-link-button" class="secondary">Create mobile approval link</button>');
   }
   if (state === "AWAITING_DETERMINATION") {
-    actionButtons.push('<button id="adjudicate-button" class="primary">Run synthetic payer determination</button>');
+    actionButtons.push('<button id="adjudicate-button" class="primary">Receive payer determination</button>');
   }
   caseDetail.innerHTML = `<div class="detail-heading">
     <div><p class="eyebrow">Tenant-scoped case</p><h2>${escapeHtml(id)}</h2></div>
@@ -190,12 +190,12 @@ async function createDemoCase(mode, index = 0) {
 document.querySelector("#refresh-button").addEventListener("click", () => refreshBoard("Refreshing…"));
 document.querySelector("#sign-out-button").addEventListener("click", () => signOut(auth));
 document.querySelector("#seed-button").addEventListener("click", async () => {
-  setMessage(runtimeMessage, "Creating six synthetic cases…", "working");
+  setMessage(runtimeMessage, "Loading six governed evaluation cases…", "working");
   try {
     for (const [index, mode] of ["clean", "clean", "missing_evidence", "injection", "clean", "clean"].entries()) {
       await createDemoCase(mode, index);
     }
-    await refreshBoard("Six synthetic cases created and loaded from Firestore.");
+    await refreshBoard("Six evaluation cases created and loaded from Firestore.");
   } catch (error) {
     setMessage(runtimeMessage, `Seed stopped: ${error.message}`, "error");
     await refreshBoard();

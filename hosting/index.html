@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Appeal synthetic clinician case board">
+    <meta name="description" content="Appeal clinician operations board">
     <title>Appeal clinician board</title>
     <link rel="stylesheet" href="./styles.css">
     <script src="./firebase-config.js"></script>
@@ -12,17 +12,17 @@
   <body>
     <header class="topbar">
       <div>
-        <p class="eyebrow">Appeal / synthetic operations</p>
+        <p class="eyebrow">Appeal / denial recovery operations</p>
         <h1>Clinician case board</h1>
       </div>
-      <span class="safety-badge">Synthetic data only</span>
+      <span class="safety-badge">Evaluation environment · no PHI</span>
     </header>
 
     <main class="page-shell">
       <section id="auth-card" class="panel auth-panel">
         <p class="eyebrow">Firebase Authentication</p>
         <h2>Sign in to your tenant</h2>
-        <p class="muted">This board requires a Firebase ID token with a tenant claim. No patient identifiers belong here.</p>
+        <p class="muted">Access is enforced by Firebase Authentication and a server-verified tenant claim.</p>
         <form id="sign-in-form" class="stack-form">
           <label for="email">Email</label>
           <input id="email" name="email" type="email" autocomplete="username" required>
@@ -42,7 +42,7 @@
           </div>
           <div class="toolbar-actions">
             <button id="refresh-button" class="secondary">Refresh board</button>
-            <button id="seed-button" class="secondary">Seed six synthetic cases</button>
+            <button id="seed-button" class="secondary">Load evaluation case set</button>
             <button id="sign-out-button" class="quiet">Sign out</button>
           </div>
         </div>
