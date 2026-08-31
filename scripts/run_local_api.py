@@ -18,6 +18,7 @@ from appeal_platform import (
     FirestoreCaseStore,
     FirestoreReceiptLedger,
     FirestoreWorkflowSessionStore,
+    FirestoreWorkflowPersistence,
     FirestorePubSubEventSpine,
     FirestoreAgentRuntimeInvocationStore,
     AgentRuntimeSubscriber,
@@ -84,6 +85,14 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
         if storage == "firestore"
         else None
     )
+    workflow_persistence = (
+        FirestoreWorkflowPersistence(
+            project=os.getenv("GOOGLE_CLOUD_PROJECT"),
+            database=os.getenv("APPEAL_FIRESTORE_DATABASE", "(default)"),
+        )
+        if storage == "firestore"
+        else None
+    )
     ledger = (
         FirestoreReceiptLedger(
             project=os.getenv("GOOGLE_CLOUD_PROJECT"),
@@ -141,6 +150,7 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
                 session_store=session_store,
                 spine=event_spine,
                 input_resolver=synthetic_input_resolver,
+                workflow_persistence=workflow_persistence,
             ),
             agent_runtime_subscriber=agent_runtime_subscriber,
         ),

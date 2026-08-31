@@ -54,6 +54,7 @@ from .sessions import (
     WorkflowSessionConflict,
 )
 from .store import CaseStore, CaseStoreConflict, CaseStoreScopeError, FirestoreCaseStore
+from .workflow_persistence import FirestoreWorkflowPersistence, WorkflowPersistence
 from .registry import AgentRegistration, AgentRegistry, default_agent_registry
 from .reversibility import (
     ActionStatus,
@@ -69,6 +70,7 @@ __all__ = [
     "CaseStoreConflict",
     "CaseStoreScopeError",
     "FirestoreCaseStore",
+    "FirestoreWorkflowPersistence",
     "AgentRegistration",
     "AgentRegistry",
     "default_agent_registry",
@@ -114,4 +116,5 @@ __all__ = [
     "ScopedMemoryBank",
     "WorkflowSession",
     "WorkflowSessionConflict",
+    "WorkflowPersistence",
 ]

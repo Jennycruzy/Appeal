@@ -22,6 +22,7 @@ from appeal_platform import (
     FirestoreCaseStore,
     FirestorePubSubEventSpine,
     FirestoreReceiptLedger,
+    FirestoreWorkflowPersistence,
     FirestoreWorkflowSessionStore,
     LocalCaseRuntime,
 )
@@ -263,6 +264,34 @@ class FirestoreStoreTests(unittest.TestCase):
         store.save(second, expected_fingerprint=first.fingerprint())
         self.assertEqual(store.get("tenant-a", "case-b"), second)
 
+    def test_atomic_workflow_persistence_keeps_case_and_session_at_one_version(self) -> None:
+        client = FakeFirestoreClient()
+        store = FirestoreCaseStore(client=client)
+        sessions = FirestoreWorkflowSessionStore(client=client)
+        persistence = FirestoreWorkflowPersistence(client=client)
+        runtime = LocalCaseRuntime(
+            AppealWorkflow(MACHINE),
+            store=store,
+            session_store=sessions,
+            workflow_persistence=persistence,
+        )
+
+        waiting = runtime.start(demo_input(case_id="case-atomic", tenant_id="tenant-atomic"), at=TIME)
+        session = sessions.get("tenant-atomic", "case-atomic")
+        case = store.get("tenant-atomic", "case-atomic")
+        assert session is not None
+        assert case is not None
+        self.assertEqual(session.case_fingerprint, case.fingerprint())
+        self.assertEqual(waiting.workflow.case.fingerprint(), case.fingerprint())
+
+        approved = runtime.approve(waiting, at=TIME)
+        session_after = sessions.get("tenant-atomic", "case-atomic")
+        case_after = store.get("tenant-atomic", "case-atomic")
+        assert session_after is not None
+        assert case_after is not None
+        self.assertEqual(session_after.case_fingerprint, case_after.fingerprint())
+        self.assertEqual(approved.workflow.case.fingerprint(), case_after.fingerprint())
+
     def test_firestore_fingerprint_tampering_fails_closed(self) -> None:
         client = FakeFirestoreClient()
         store = FirestoreCaseStore(client=client)
@@ -274,6 +303,36 @@ class FirestoreStoreTests(unittest.TestCase):
         client.documents[document_path] = tampered
         with self.assertRaises(CaseStoreConflict):
             store.get("tenant-a", "case-c")
+
+    def test_service_refreshes_a_cached_result_from_durable_state(self) -> None:
+        client = FakeFirestoreClient()
+        store = FirestoreCaseStore(client=client)
+        sessions = FirestoreWorkflowSessionStore(client=client)
+        persistence = FirestoreWorkflowPersistence(client=client)
+        first_service = LocalAppealService(
+            LocalCaseRuntime(
+                AppealWorkflow(MACHINE),
+                store=store,
+                session_store=sessions,
+                workflow_persistence=persistence,
+            )
+        )
+        first_service.open_demo_case(at=TIME)
+        submitted = first_service.approve("tenant-demo", "case-demo-001", at=TIME)
+        self.assertEqual(submitted.to_public_json()["case_state"], "AWAITING_DETERMINATION")
+
+        restarted = LocalAppealService(
+            LocalCaseRuntime(
+                AppealWorkflow(MACHINE),
+                store=store,
+                session_store=sessions,
+                workflow_persistence=persistence,
+            )
+        )
+        closed = restarted.adjudicate("tenant-demo", "case-demo-001", at=TIME)
+        self.assertEqual(closed.to_public_json()["case_state"], "CLOSED_WON")
+        refreshed = first_service.get("tenant-demo", "case-demo-001")
+        self.assertEqual(refreshed.to_public_json()["case_state"], "CLOSED_WON")
 
     def test_service_reads_persisted_metadata_after_process_restart(self) -> None:
         client = FakeFirestoreClient()

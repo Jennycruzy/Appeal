@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 import importlib
 import json
+import logging
 from datetime import UTC, datetime
 from collections.abc import Callable, Mapping
 from typing import cast
@@ -15,6 +16,9 @@ from appeal_platform import DomainEvent, default_agent_registry
 from .approval_links import ApprovalLink, ApprovalLinkError, ApprovalLinkSigner
 from .auth import AuthenticationError, FirebaseIdTokenVerifier, PrincipalVerifier
 from .service import CaseNotFound, LocalAppealService
+
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class LocalHttpApi:
@@ -116,7 +120,18 @@ class LocalHttpApi:
             if method == "POST" and segments == ("api", "events", "pubsub"):
                 if not self._pubsub_authorized(request_headers):
                     return 401, {"error": "pubsub_auth_required"}
-                return 200, self.service.accept_event(self._event_from_push(payload or {}))
+                try:
+                    event = self._event_from_push(payload or {})
+                except ValueError as error:
+                    # Keep diagnostics aggregate-only. The event body can
+                    # contain tenant-scoped identifiers, so never log it or
+                    # the parser message in a hosted request.
+                    _LOGGER.warning(
+                        "reference_only_pubsub_event_rejected error_type=%s",
+                        type(error).__name__,
+                    )
+                    raise
+                return 200, self.service.accept_event(event)
             if method == "GET" and len(segments) == 3 and segments[:2] == ("api", "agents"):
                 role = segments[2]
                 try:
@@ -282,16 +297,21 @@ class LocalHttpApi:
     @staticmethod
     def _event_from_push(payload: Mapping[str, object]) -> DomainEvent:
         message = payload.get("message")
-        if not isinstance(message, Mapping):
-            raise ValueError("Pub/Sub push message is required")
-        encoded = message.get("data")
-        if not isinstance(encoded, str) or not encoded:
-            raise ValueError("Pub/Sub push data is required")
-        try:
-            raw = base64.b64decode(encoded, validate=True)
-            decoded: object = json.loads(raw.decode("utf-8"))
-        except (ValueError, UnicodeDecodeError, json.JSONDecodeError) as error:
-            raise ValueError("Pub/Sub push data must contain a valid event JSON object") from error
+        if isinstance(message, Mapping):
+            encoded = message.get("data")
+            if not isinstance(encoded, str) or not encoded:
+                raise ValueError("Pub/Sub push data is required")
+            try:
+                raw = base64.b64decode(encoded, validate=True)
+                decoded: object = json.loads(raw.decode("utf-8"))
+            except (ValueError, UnicodeDecodeError, json.JSONDecodeError) as error:
+                raise ValueError("Pub/Sub push data must contain a valid event JSON object") from error
+        else:
+            # Pub/Sub can be configured with noWrapper, in which case the
+            # authenticated request body is the reference-only event itself.
+            # Supporting both forms keeps the contract aligned with the
+            # subscription setting without accepting unvalidated content.
+            decoded = payload
         if not isinstance(decoded, Mapping):
             raise ValueError("Pub/Sub event must be a JSON object")
         return DomainEvent.from_json(decoded)

@@ -11,7 +11,7 @@ from appeal_agents.models import AGENT_IDENTITIES, WorkflowEvent
 from appeal_core import Actor, ActorKind, CaseState, CriterionStatus, DecisionSource, ReceiptDraft
 
 from .events import DomainEvent, LocalEventSpine
-from .memory import ScopedMemoryBank
+from .memory import MemoryWriteBlocked, ScopedMemoryBank
 from .payer import PayerAdjudicator, PayerDecision, PayerDecisionStatus
 from .reversibility import ReversibleAction, ReversibilityLedger
 from .sessions import (
@@ -21,6 +21,7 @@ from .sessions import (
     WorkflowSessionStore,
 )
 from .store import CaseStore, CaseStoreConflict
+from .workflow_persistence import WorkflowPersistence
 
 
 PAYER_DETERMINATION_TOPIC = "payer.determination.received"
@@ -72,6 +73,7 @@ class LocalCaseRuntime:
         reversibility: ReversibilityLedger | None = None,
         session_store: WorkflowSessionStore | None = None,
         input_resolver: InputResolver | None = None,
+        workflow_persistence: WorkflowPersistence | None = None,
     ) -> None:
         self.workflow = workflow
         self.store = store or CaseStore()
@@ -80,6 +82,7 @@ class LocalCaseRuntime:
         self.reversibility = reversibility or ReversibilityLedger()
         self.session_store = session_store or LocalWorkflowSessionStore()
         self.input_resolver = input_resolver
+        self.workflow_persistence = workflow_persistence
         self._inputs: dict[tuple[str, str], AppealInput] = {}
 
     def start(
@@ -428,7 +431,19 @@ class LocalCaseRuntime:
 
     def _persist(self, result: RuntimeResult, *, expected_fingerprint: str | None = None) -> None:
         workflow_result = result.workflow
-        self.store.save(workflow_result.case, expected_fingerprint=expected_fingerprint)
+        session = (
+            WorkflowSession.from_result(workflow_result, result.payer_decision)
+            if workflow_result.context is not None
+            else None
+        )
+        if self.workflow_persistence is not None and session is not None:
+            self.workflow_persistence.save_case_and_session(
+                workflow_result.case,
+                session,
+                expected_fingerprint=expected_fingerprint,
+            )
+        else:
+            self.store.save(workflow_result.case, expected_fingerprint=expected_fingerprint)
         for index, event in enumerate(workflow_result.events, start=1):
             self.spine.publish(
                 DomainEvent.create(
@@ -444,19 +459,25 @@ class LocalCaseRuntime:
                     },
                 )
             )
-        self.memory.write(
-            workflow_result.case.tenant_id,
-            workflow_result.case.case_id,
-            "local_case_runtime",
-            "workflow_status",
-            f"outcome={workflow_result.outcome.value};state={workflow_result.case.state.value};events={len(workflow_result.events)}",
-            workflow_result.case.entered_at,
-        )
-        if workflow_result.context is not None:
-            self.session_store.save(
-                WorkflowSession.from_result(workflow_result, result.payer_decision),
-                expected_fingerprint=expected_fingerprint,
+        try:
+            self.memory.write(
+                workflow_result.case.tenant_id,
+                workflow_result.case.case_id,
+                "local_case_runtime",
+                "workflow_status",
+                f"outcome={workflow_result.outcome.value};state={workflow_result.case.state.value};events={len(workflow_result.events)}",
+                workflow_result.case.entered_at,
             )
+        except MemoryWriteBlocked as error:
+            # The workflow state and reference-only session have already been
+            # committed. A provider outage while inspecting this bounded,
+            # generated status capsule must not turn a fail-closed quarantine
+            # into a client-visible write failure. Unsafe case content remains
+            # blocked by the workflow's own inspection result.
+            if "provider_unavailable" not in error.inspection.categories:
+                raise
+        if session is not None and self.workflow_persistence is None:
+            self.session_store.save(session, expected_fingerprint=expected_fingerprint)
         if workflow_result.mutation_count:
             submission_transition = next(
                 transition

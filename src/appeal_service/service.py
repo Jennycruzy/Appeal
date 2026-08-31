@@ -190,15 +190,15 @@ class LocalAppealService:
         return result
 
     def get(self, tenant_id: str, case_id: str) -> RuntimeResult | PersistedCaseView:
-        current = self._results.get((tenant_id, case_id))
-        if current is not None:
-            return current
         resumed = self.runtime.resume(tenant_id, case_id)
         if resumed is not None:
             self._results[(tenant_id, case_id)] = resumed
             return resumed
         case = self.runtime.store.get(tenant_id, case_id)
         if case is None:
+            current = self._results.get((tenant_id, case_id))
+            if current is not None:
+                return current
             raise CaseNotFound(f"case {case_id!r} was not found for tenant {tenant_id!r}")
         return self._persisted_view(case)
 
@@ -206,20 +206,14 @@ class LocalAppealService:
         tenant_id = tenant_id.strip()
         if not tenant_id:
             raise ValueError("tenant ID must not be empty")
-        live = {
-            key: result
-            for key, result in self._results.items()
-            if key[0] == tenant_id
-        }
-        views: list[dict[str, object]] = [result.to_public_json() for result in live.values()]
+        views: list[dict[str, object]] = []
         for case in self.runtime.store.list_tenant(tenant_id):
-            if (tenant_id, case.case_id) not in live:
-                resumed = self.runtime.resume(tenant_id, case.case_id)
-                if resumed is not None:
-                    self._results[(tenant_id, case.case_id)] = resumed
-                    views.append(resumed.to_public_json())
-                else:
-                    views.append(self._persisted_view(case).to_public_json())
+            resumed = self.runtime.resume(tenant_id, case.case_id)
+            if resumed is not None:
+                self._results[(tenant_id, case.case_id)] = resumed
+                views.append(resumed.to_public_json())
+            else:
+                views.append(self._persisted_view(case).to_public_json())
         return tuple(views)
 
     def _require_live(self, tenant_id: str, case_id: str) -> RuntimeResult:

@@ -11,7 +11,7 @@ from pathlib import Path
 from appeal_agents.demo import demo_input
 from appeal_agents import ManagedSecurityBoundary, default_local_security_cases, measure_security_boundary
 from appeal_agents import AgentPolicyRegistry, CapabilityDenied
-from appeal_agents.security import LocalSecurityBoundary
+from appeal_agents.security import InspectionResult, InspectionStatus, LocalSecurityBoundary
 from appeal_agents.workflow import AppealWorkflow
 from appeal_core import Actor, ActorKind, CaseState, CaseStateMachine, DecisionSource, DeadlineCatalog, EvidenceRef
 from appeal_platform import (
@@ -40,6 +40,34 @@ def workflow() -> AppealWorkflow:
 
 
 class PlatformTests(unittest.TestCase):
+    def test_provider_outage_persists_fail_closed_quarantine(self) -> None:
+        class UnavailableSecurity(LocalSecurityBoundary):
+            def inspect_inbound(self, content: str) -> InspectionResult:
+                return InspectionResult(
+                    "inbound_document",
+                    InspectionStatus.BLOCKED,
+                    "managed_model_armor_gemma",
+                    ("provider_unavailable",),
+                    "synthetic provider outage",
+                )
+
+            def inspect_memory(self, content: str) -> InspectionResult:
+                return InspectionResult(
+                    "memory_bank",
+                    InspectionStatus.BLOCKED,
+                    "managed_model_armor_gemma",
+                    ("provider_unavailable",),
+                    "synthetic provider outage",
+                )
+
+        runtime = LocalCaseRuntime(
+            AppealWorkflow(CaseStateMachine(DeadlineCatalog.from_path(ROOT / "config" / "deadlines.yaml")), security=UnavailableSecurity())
+        )
+        result = runtime.start(demo_input(case_id="case-provider-outage", tenant_id="tenant-provider-outage"), at=NOW)
+        self.assertEqual(result.workflow.case_state, CaseState.QUARANTINED)
+        self.assertEqual(result.workflow.outcome.value, "quarantined")
+        self.assertEqual(runtime.store.require("tenant-provider-outage", "case-provider-outage").state, CaseState.QUARANTINED)
+
     def test_managed_security_boundary_keeps_model_armor_before_gemma(self) -> None:
         class StubBoundary(ManagedSecurityBoundary):
             def __init__(self, armor_blocked: bool = False, gemma_blocked: bool = False, fail: bool = False) -> None:
@@ -113,6 +141,7 @@ class PlatformTests(unittest.TestCase):
         encoded = base64.b64encode(json.dumps(event.to_json()).encode("utf-8")).decode("ascii")
         restored = LocalHttpApi._event_from_push({"message": {"data": encoded}})
         self.assertEqual(restored, event)
+        self.assertEqual(LocalHttpApi._event_from_push(event.to_json()), event)
         with self.assertRaises(ValueError):
             LocalHttpApi._event_from_push({"message": {"data": "not-base64"}})
 
