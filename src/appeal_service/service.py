@@ -142,9 +142,38 @@ class LocalAppealService:
             "case_id": event.case_id,
             "topic": event.topic,
         }
-        result["workflow"] = self.runtime.handle_event(event)
+        try:
+            result["workflow"] = self.runtime.handle_event(event)
+        except Exception:
+            # A push can be delivered concurrently while the first worker is
+            # persisting a terminal transition. The case write is optimistic,
+            # so a losing worker may observe a conflict after the durable
+            # terminal state is already committed. A terminal case is safe to
+            # acknowledge as a duplicate; non-terminal failures must still
+            # propagate so Pub/Sub retries them.
+            current = self.runtime.resume(event.tenant_id, event.case_id)
+            if current is None or current.workflow.case.state not in {
+                CaseState.CLOSED_WON,
+                CaseState.CLOSED_LOST,
+                CaseState.CLOSED_ABANDONED_DEADLINE,
+                CaseState.QUARANTINED,
+            }:
+                raise
+            result["workflow"] = {
+                "status": "duplicate",
+                "event_id": event.event_id,
+                "reason": "terminal state was committed by a concurrent delivery",
+                "case_state": current.workflow.case.state.value,
+            }
         if self.agent_runtime_subscriber is not None:
             result["agent_runtime"] = self.agent_runtime_subscriber.handle(event)
+        # An external wake may arrive on a different request/instance than
+        # the one that opened the case. Refresh the process-local board cache
+        # from the durable session so a subsequent GET cannot show stale
+        # pre-wake metadata.
+        resumed = self.runtime.resume(event.tenant_id, event.case_id)
+        if resumed is not None:
+            self._results[(event.tenant_id, event.case_id)] = resumed
         return result
 
     def get(self, tenant_id: str, case_id: str) -> RuntimeResult | PersistedCaseView:

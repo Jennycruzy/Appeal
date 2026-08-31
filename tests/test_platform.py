@@ -593,6 +593,32 @@ class PlatformTests(unittest.TestCase):
         self.assertEqual(value["case"]["case_id"], "case-demo-variant")  # type: ignore[index]
         self.assertEqual(value["case"]["tenant_id"], "tenant-demo-variant")  # type: ignore[index]
 
+    def test_external_payer_event_refreshes_board_cache_and_is_idempotent(self) -> None:
+        service = LocalAppealService(workflow_runtime())
+        waiting = service.open_demo_case(
+            case_id="case-demo-payer-event",
+            tenant_id="tenant-demo-payer-event",
+            at=NOW,
+        )
+        service.approve("tenant-demo-payer-event", "case-demo-payer-event", at=NOW)
+        event = DomainEvent.create(
+            "tenant-demo-payer-event",
+            "case-demo-payer-event",
+            PAYER_DETERMINATION_TOPIC,
+            "case-demo-payer-event:payer:1",
+            NOW + timedelta(hours=1),
+            {"decision": "favorable", "criterion_status": "satisfied", "evidence_ref_count": 2},
+        )
+
+        first = service.accept_event(event)
+        self.assertEqual(first["workflow"]["status"], "resumed")  # type: ignore[index]
+        self.assertEqual(service.get("tenant-demo-payer-event", "case-demo-payer-event").workflow.case_state, CaseState.CLOSED_WON)  # type: ignore[union-attr]
+
+        second = service.accept_event(event)
+        self.assertEqual(second["workflow"]["status"], "duplicate")  # type: ignore[index]
+        self.assertEqual(service.runtime.store.require("tenant-demo-payer-event", "case-demo-payer-event").state, CaseState.CLOSED_WON)
+        self.assertEqual(waiting.workflow.mutation_count, 0)
+
     def test_local_http_contract_quarantines_synthetic_injection(self) -> None:
         service = LocalAppealService(workflow_runtime())
         api = LocalHttpApi(service)

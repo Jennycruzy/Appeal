@@ -180,6 +180,17 @@ class FirestoreStoreTests(unittest.TestCase):
         second_spine.accept(event)
         self.assertEqual(len(publisher.messages), 1)
 
+        # A Pub/Sub push is already delivered. Accepting it must not publish
+        # the same message back to the topic and create a delivery loop.
+        third_spine = FirestorePubSubEventSpine(
+            project="project-a",
+            topic="appeal-events",
+            client=client,
+            publisher=publisher,
+        )
+        third_spine.accept(event)
+        self.assertEqual(len(publisher.messages), 1)
+
         with self.assertRaises(ValueError):
             DomainEvent.create(
                 "tenant-a",
