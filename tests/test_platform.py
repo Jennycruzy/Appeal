@@ -619,6 +619,26 @@ class PlatformTests(unittest.TestCase):
         self.assertEqual(service.runtime.store.require("tenant-demo-payer-event", "case-demo-payer-event").state, CaseState.CLOSED_WON)
         self.assertEqual(waiting.workflow.mutation_count, 0)
 
+    def test_advisory_runtime_failure_does_not_redeliver_workflow_event(self) -> None:
+        class FailingSubscriber:
+            def handle(self, event: DomainEvent) -> dict[str, object]:
+                raise RuntimeError("synthetic quota exhaustion")
+
+        service = LocalAppealService(workflow_runtime(), agent_runtime_subscriber=FailingSubscriber())  # type: ignore[arg-type]
+        event = DomainEvent.create(
+            "tenant-demo-advisory-failure",
+            "case-demo-advisory-failure",
+            "appeal.workflow.event",
+            "case-demo-advisory-failure:event:1",
+            NOW,
+            {"agent": "intake", "status": "clear", "evidence_ref_count": 0},
+        )
+
+        accepted = service.accept_event(event)
+        self.assertEqual(accepted["status"], "accepted")
+        self.assertEqual(accepted["agent_runtime"]["status"], "failed")  # type: ignore[index]
+        self.assertTrue(accepted["agent_runtime"]["retryable"])  # type: ignore[index]
+
     def test_local_http_contract_quarantines_synthetic_injection(self) -> None:
         service = LocalAppealService(workflow_runtime())
         api = LocalHttpApi(service)

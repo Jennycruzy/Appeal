@@ -166,7 +166,20 @@ class LocalAppealService:
                 "case_state": current.workflow.case.state.value,
             }
         if self.agent_runtime_subscriber is not None:
-            result["agent_runtime"] = self.agent_runtime_subscriber.handle(event)
+            try:
+                result["agent_runtime"] = self.agent_runtime_subscriber.handle(event)
+            except Exception as error:
+                # The managed Runtime checkpoint is advisory. A quota or
+                # capacity failure must not turn a successfully persisted
+                # workflow wake into a Pub/Sub retry storm. The subscriber
+                # records the failed attempt; a separate operator retry can
+                # safely use that durable invocation record.
+                result["agent_runtime"] = {
+                    "status": "failed",
+                    "event_id": event.event_id,
+                    "error_type": type(error).__name__,
+                    "retryable": True,
+                }
         # An external wake may arrive on a different request/instance than
         # the one that opened the case. Refresh the process-local board cache
         # from the durable session so a subsequent GET cannot show stale
