@@ -19,7 +19,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from appeal_agents.adk_workflow import build_adk_workflow
+from appeal_agents.adk_workflow import (
+    MCP_GOVERNANCE_PROBE_MARKER,
+    MCP_GOVERNANCE_PROBE_STATE_KEY,
+    build_adk_workflow,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -69,21 +73,36 @@ def _event_author(event: Any) -> str | None:
     return value if isinstance(value, str) and value else None
 
 
+def _event_state_delta(event: Any) -> Mapping[str, object]:
+    actions = event.get("actions") if isinstance(event, Mapping) else getattr(event, "actions", None)
+    if actions is None:
+        return {}
+    state_delta = (
+        actions.get("state_delta")
+        if isinstance(actions, Mapping)
+        else getattr(actions, "state_delta", None)
+    )
+    return state_delta if isinstance(state_delta, Mapping) else {}
+
+
 async def _query_remote(remote_agent: Any) -> dict[str, Any]:
     authors: set[str] = set()
     error_codes: set[str] = set()
+    governance_probe: Mapping[str, object] | None = None
     event_count = 0
     stream = remote_agent.async_stream_query(
         user_id=DEFAULT_USER_ID,
         message=(
-            "Synthetic Appeal Agent Runtime MCP smoke only. No real patient, "
+            f"{MCP_GOVERNANCE_PROBE_MARKER}. Synthetic Appeal Agent Runtime "
+            "MCP smoke only. No real patient, "
             "denial, chart, or payer data is present. Ask Evidence Miner to "
             "call the registered scoped-evidence MCP tool exactly once with "
             "tenant_id tenant-demo-agent-gateway-mcp, case_id "
             "case-demo-agent-gateway-mcp, and patient_id "
             "patient-demo-agent-gateway-mcp. Return one concise advisory "
             "note based only on the reference-only result. Do not approve or "
-            "file an appeal and do not call any mutation."
+            "file an appeal. The deterministic governance node, not the "
+            "model, will invoke the non-executing mutation canary."
         ),
     )
     if not isinstance(stream, AsyncIterable):
@@ -100,12 +119,17 @@ async def _query_remote(remote_agent: Any) -> dict[str, Any]:
         )
         if isinstance(error_code, str) and error_code:
             error_codes.add(error_code)
+        state_delta = _event_state_delta(event)
+        probe_value = state_delta.get(MCP_GOVERNANCE_PROBE_STATE_KEY)
+        if isinstance(probe_value, Mapping):
+            governance_probe = probe_value
     return {
         "query_user_id": DEFAULT_USER_ID,
         "query_event_count": event_count,
         "query_authors": sorted(authors),
         "query_error_codes": sorted(error_codes),
-        "query_succeeded": not error_codes,
+        "query_succeeded": not error_codes and governance_probe is not None,
+        "governance_probe": dict(governance_probe or {}),
         "response_content_persisted": False,
     }
 
@@ -265,13 +289,16 @@ def main() -> int:
         "existing_resource_updated": bool(args.existing_resource),
         **_resource_metadata(remote_agent),
     }
+    smoke_succeeded = True
     if not args.skip_query:
-        report["smoke"] = asyncio.run(_query_remote(remote_agent))
+        smoke = asyncio.run(_query_remote(remote_agent))
+        report["smoke"] = smoke
+        smoke_succeeded = smoke["query_succeeded"] is True
     args.output.write_text(
         json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
     print(json.dumps(report, indent=2, sort_keys=True))
-    return 0
+    return 0 if smoke_succeeded else 1
 
 
 if __name__ == "__main__":

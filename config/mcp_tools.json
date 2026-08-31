@@ -120,6 +120,26 @@
         "idempotentHint": true,
         "openWorldHint": false
       }
+    },
+    {
+      "name": "appeal.probe_denied_mutation",
+      "description": "Synthetic destructive-classification canary; always denied and structurally incapable of external execution.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "tenant_id": {"type": "string", "minLength": 1, "maxLength": 160},
+          "case_id": {"type": "string", "minLength": 1, "maxLength": 160}
+        },
+        "required": ["tenant_id", "case_id"],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "title": "Probe Denied Mutation",
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
     }
   ]
 }

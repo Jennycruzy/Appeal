@@ -1,5 +1,5 @@
 {
-  "etag": "ACAB",
+  "etag": "BwZaUEb_9Ws=",
   "bindings": [
     {
       "role": "roles/iap.egressor",
@@ -8,8 +8,8 @@
       ],
       "condition": {
         "title": "Appeal agent read-only egress",
-        "description": "Permit only read-only, non-destructive, closed-world MCP operations; mutation and open-world operations remain outside the allow condition.",
-        "expression": "api.getAttribute('iap.googleapis.com/mcp.tool.isReadOnly', false) == true && api.getAttribute('iap.googleapis.com/mcp.tool.isDestructive', true) == false && api.getAttribute('iap.googleapis.com/mcp.tool.isOpenWorld', true) == false"
+        "description": "Permit base MCP protocol traffic and only the six explicitly approved bounded read tools; all other tool names remain outside the allow condition.",
+        "expression": "api.getAttribute('iap.googleapis.com/mcp.toolName', '') in ['', 'appeal.read_denial_reference', 'appeal.read_case_state', 'appeal.read_case_metadata', 'appeal.read_scoped_evidence', 'appeal.read_policy_clause', 'appeal.read_payer_determination']"
       }
     }
   ]

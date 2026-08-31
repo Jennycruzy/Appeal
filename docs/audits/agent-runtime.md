@@ -43,10 +43,19 @@ aggregate result. The current revision's invocation evidence is recorded in
 
 This audit proves a managed Agent Runtime, Registry, and Agent Identity
 deployment boundary for the seven-role graph plus one controlled synthetic
-subscriber invocation. The separate Gateway and dry-run Agent Policy path is
-recorded in [`agent-gateway.md`](agent-gateway.md); it does not claim MCP
-mutation enforcement, Firebase Auth, broader subscriber-driven workflow
-execution, a separate payer service, a hosted console, or a complete Appeal
-evaluation.
+subscriber invocation. On 2026-08-31, a marker-gated governance node also
+completed an enforced Gateway probe: one registered read returned HTTP 200,
+and one non-executing destructive canary was denied at Agent Gateway with HTTP
+403. Runtime state records the Gateway denial and zero mutations in
+[`evidence/agent-runtime-deployment.json`](../../evidence/agent-runtime-deployment.json),
+with matching Gateway evidence in
+[`evidence/agent-gateway-mcp-enforcement.json`](../../evidence/agent-gateway-mcp-enforcement.json).
+
+The advisory model sequence after that governance proof hit
+`_ResourceExhaustedError`, so the latest deployment smoke is not represented as
+a clean seven-role completion. Earlier seven-role completion evidence remains
+valid. This audit does not claim Firebase Auth, broader subscriber-driven
+workflow execution, a separate payer service, a hosted console, or a complete
+Appeal evaluation.
 The deployment and all smoke inputs are synthetic and aggregate-only; no real
 case data was uploaded.

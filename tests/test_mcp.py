@@ -44,7 +44,27 @@ class McpGovernanceTests(unittest.TestCase):
         names = {str(tool["name"]) for tool in server.list_tools()}
 
         self.assertIn("appeal.read_scoped_evidence", names)
+        self.assertIn("appeal.probe_denied_mutation", names)
         self.assertNotIn("appeal.request_external_mutation", names)
+
+    def test_gateway_mutation_canary_is_discoverable_but_never_executes(self) -> None:
+        server = mcp_server()
+
+        result = server.call_tool(
+            "appeal.probe_denied_mutation",
+            {
+                "agent_role": "evidence_miner",
+                "tenant_id": "tenant-demo-mcp",
+                "case_id": "case-demo-mcp-canary",
+            },
+            request_id="canary-001",
+            at=NOW,
+        )
+
+        self.assertEqual(result["decision"], "DENIED")
+        self.assertEqual(result["reason_code"], "governance_canary_never_executes")
+        self.assertEqual(result["mutation"], True)
+        self.assertEqual(server.audit_records[0].mutation, True)
 
     def test_evidence_miner_can_read_scoped_evidence(self) -> None:
         server = mcp_server()
@@ -140,7 +160,7 @@ class McpGovernanceTests(unittest.TestCase):
         initialized = rpc.handle({"jsonrpc": "2.0", "id": 1, "method": "initialize"})
         self.assertEqual(initialized["result"]["serverInfo"]["name"], "appeal-mcp")  # type: ignore[index]
         listed = rpc.handle({"jsonrpc": "2.0", "id": 2, "method": "tools/list"})
-        self.assertEqual(len(listed["result"]["tools"]), 6)  # type: ignore[index]
+        self.assertEqual(len(listed["result"]["tools"]), 7)  # type: ignore[index]
         denied_without_principal = rpc.handle(
             {
                 "jsonrpc": "2.0",

@@ -87,7 +87,7 @@ SENTINEL_CASE ?= case-sentinel-expired-001
 SENTINEL_ENTERED_AT ?= 2026-08-18T12:00:00Z
 SENTINEL_SEED_OUTPUT ?= evidence/sentinel-seed.json
 
-.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run run-mcp-server run-mcp-probe deploy-mcp-cloud-run seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
+.PHONY: verify-ledger test typecheck run-local-workflow run-local-runtime measure-local-security measure-model-armor measure-gemma run-adk-case deploy-agent-runtime run-local-api deploy-cloud-run run-mcp-server run-mcp-probe deploy-mcp-cloud-run sync-mcp-registry seed-sentinel-case load-hapi verify-hapi inspect-synthea prepare-ny-dfs-review review-ny-dfs-privacy validate-ny-dfs require-ny-dfs-ready inspect-dmhc-imr inspect-cms-qic fetch-cms-qic-summary run-cms-qic-summary scan-cms-qic-privacy inspect-cms-qic-bulk review-cms-qic-bulk propose-cms-qic-bulk accept-cms-qic-bulk inspect-oregon-iro prepare-oregon-local-evaluation run-oregon-local-evaluation
 
 verify-ledger:
 	PYTHONPATH=src $(PYTHON) scripts/verify_ledger.py --ledger "$(LEDGER)"
@@ -133,6 +133,9 @@ run-mcp-probe:
 
 deploy-mcp-cloud-run:
 	gcloud run deploy "$(MCP_SERVICE)" --source . --project "$(MCP_PROJECT)" --region "$(MCP_REGION)" --service-account "$(MCP_SERVICE_ACCOUNT)" --command python --args scripts/run_mcp_server.py --set-env-vars "MCP_IDENTITY_MODE=verified,MCP_AUDIENCE=$(MCP_AUDIENCE),MCP_RUNTIME_INVOKER_PRINCIPAL=$(MCP_INVOKER_SERVICE_ACCOUNT),MCP_RUNTIME_INVOKER_ROLE=evidence_miner" --no-allow-unauthenticated --min 0 --max 1 --memory 512Mi --cpu 1 --timeout 300 --quiet
+
+sync-mcp-registry:
+	GOOGLE_CLOUD_PROJECT="$(MCP_PROJECT)" .venv/bin/python scripts/sync_mcp_registry.py --service-resource "projects/835653516606/locations/$(MCP_REGION)/services/$(MCP_SERVICE)" --tool-spec "$(CURDIR)/config/mcp_tools.json"
 
 seed-sentinel-case:
 	GOOGLE_CLOUD_PROJECT="$(SENTINEL_PROJECT)" PYTHONPATH=src .venv/bin/python scripts/seed_sentinel_case.py --project "$(SENTINEL_PROJECT)" --tenant-id "$(SENTINEL_TENANT)" --case-id "$(SENTINEL_CASE)" --entered-at "$(SENTINEL_ENTERED_AT)" --output "$(SENTINEL_SEED_OUTPUT)"

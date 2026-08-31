@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.1",
+  "kind": "agent_gateway_mcp_enforcement_probe",
+  "recorded_at": "2026-08-31T05:12:10Z",
+  "project_id": "onyx-yeti-506606-i9",
+  "project_number": "835653516606",
+  "region": "europe-west2",
+  "gateway": "projects/onyx-yeti-506606-i9/locations/europe-west2/agentGateways/appeal-agent-gateway",
+  "runtime": "projects/835653516606/locations/europe-west2/reasoningEngines/936968624818618368",
+  "mcp_server": "projects/835653516606/locations/europe-west2/mcpServers/agentregistry-00000000-0000-0000-fe79-effa5b933d5a",
+  "authorization": {
+    "extension": "projects/onyx-yeti-506606-i9/locations/europe-west2/authzExtensions/appeal-iap-authz",
+    "iam_enforcement_mode": "ENFORCE",
+    "fail_open": false,
+    "policy_strategy": "explicit_tool_name_allowlist",
+    "approved_read_tool_count": 6,
+    "mutation_canary_allowlisted": false,
+    "hidden_mutation_allowlisted": false
+  },
+  "registered_runtime_dependencies": [
+    {
+      "host": "europe-west2-aiplatform.mtls.googleapis.com",
+      "endpoint": "agentregistry-00000000-0000-0000-9249-d5a5a8dd379f"
+    },
+    {
+      "host": "telemetry.mtls.googleapis.com",
+      "endpoint": "agentregistry-00000000-0000-0000-41e3-d1245cc5d5dc"
+    },
+    {
+      "host": "aiplatform.mtls.googleapis.com",
+      "endpoint": "agentregistry-00000000-0000-0000-f982-d62bfd4ba875"
+    },
+    {
+      "host": "iamcredentials.mtls.googleapis.com",
+      "endpoint": "agentregistry-00000000-0000-0000-e7f3-5ad4ed683613"
+    }
+  ],
+  "registry_catalog": {
+    "published_tool_count": 7,
+    "bounded_read_tool_count": 6,
+    "mutation_canary": "appeal.probe_denied_mutation",
+    "mutation_canary_registered": true,
+    "hidden_mutation": "appeal.request_external_mutation",
+    "hidden_mutation_registered": false
+  },
+  "probe_window": {
+    "start": "2026-08-31T05:09:25.782454Z",
+    "end": "2026-08-31T05:09:26.442293Z",
+    "read": {
+      "tool": "appeal.read_scoped_evidence",
+      "gateway_result": "ALLOWED",
+      "http_status": 200,
+      "cloud_run_request_observed": true
+    },
+    "mutation_canary": {
+      "tool": "appeal.probe_denied_mutation",
+      "gateway_result": "DENIED",
+      "http_status": 403,
+      "cloud_run_request_observed": false
+    }
+  },
+  "runtime_state": {
+    "governance_probe_executed": true,
+    "read_decision": "AUTHORIZED",
+    "mutation_decision": "DENIED",
+    "mutation_denial_layer": "agent_gateway",
+    "mutation_count": 0,
+    "response_content_persisted": false
+  },
+  "post_governance_advisory": {
+    "completed": false,
+    "error_code": "_ResourceExhaustedError",
+    "interpretation": "Gemini quota exhaustion occurred after the Gateway governance probe completed and does not alter its allow/deny result."
+  },
+  "external_mutation_count": 0,
+  "real_case_data_uploaded": false,
+  "acceptance_complete": true
+}

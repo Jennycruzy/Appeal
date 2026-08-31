@@ -2,6 +2,8 @@
   "schema_version": "0.1",
   "kind": "agent_gateway_governance_smoke",
   "recorded_at": "2026-08-29T15:26:35Z",
+  "historical_checkpoint": true,
+  "superseded_by": "evidence/agent-gateway-mcp-enforcement.json",
   "project_id": "onyx-yeti-506606-i9",
   "project_number": "835653516606",
   "region": "europe-west2",

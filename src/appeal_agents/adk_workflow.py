@@ -9,6 +9,7 @@ dependency during local tests.
 from __future__ import annotations
 
 import os
+from collections.abc import Callable
 from collections.abc import Mapping
 from typing import Any, Final
 
@@ -16,6 +17,12 @@ from typing import Any, Final
 ADK_VERSION_RANGE: Final[str] = ">=2.0.0,<3.0.0"
 MCP_DEFAULT_PROJECT: Final[str] = "onyx-yeti-506606-i9"
 MCP_DEFAULT_LOCATION: Final[str] = "europe-west2"
+MCP_GOVERNANCE_PROBE_MARKER: Final[str] = "APPEAL_GATEWAY_MCP_PROBE_V1"
+MCP_GOVERNANCE_PROBE_STATE_KEY: Final[str] = "appeal_gateway_mcp_probe"
+
+
+McpRequester = Callable[[str, Mapping[str, str], Mapping[str, object]], tuple[int, object]]
+McpHeaderProvider = Callable[[object], dict[str, str]]
 
 
 class CloudRunIdTokenHeaderProvider:
@@ -63,6 +70,242 @@ class CloudRunIdTokenHeaderProvider:
             raise RuntimeError("MCP invoker ID-token minting returned no token")
         return {"Authorization": f"Bearer {token}"}
 
+
+class ManagedMcpGovernanceProbe:
+    """Deterministically exercise one allowed read and one denied canary.
+
+    The probe is inert unless the exact synthetic marker is present. The
+    destructive canary is published in Agent Registry so Gateway can evaluate
+    its annotations, but the MCP application always denies it before any role
+    or capability lookup. The real Submission Gate mutation stays absent from
+    ``tools/list``.
+    """
+
+    def __init__(
+        self,
+        *,
+        mcp_url: str,
+        header_provider: McpHeaderProvider,
+        requester: McpRequester | None = None,
+    ) -> None:
+        if not mcp_url.strip():
+            raise ValueError("MCP governance probe URL is required")
+        self.mcp_url = mcp_url
+        self.header_provider = header_provider
+        self.requester = requester
+
+    async def run(self, ctx: Any, node_input: str) -> str:
+        """Run the bounded synthetic probe and pass workflow input through."""
+
+        if MCP_GOVERNANCE_PROBE_MARKER not in node_input:
+            return node_input
+
+        headers = self.header_provider(None)
+        read_arguments = {
+            "tenant_id": "tenant-demo-agent-gateway-mcp",
+            "case_id": "case-demo-agent-gateway-mcp",
+            "patient_id": "patient-demo-agent-gateway-mcp",
+        }
+        canary_arguments = {
+            "tenant_id": "tenant-demo-agent-gateway-mcp",
+            "case_id": "case-demo-agent-gateway-mcp",
+        }
+        if self.requester is None:
+            read_status, read_body, canary_status, canary_body = (
+                await self._session_requests(
+                    headers=headers,
+                    read_arguments=read_arguments,
+                    canary_arguments=canary_arguments,
+                )
+            )
+        else:
+            read_status, read_body = self.requester(
+                self.mcp_url,
+                headers,
+                self._tool_call(
+                    request_id="managed-gateway-read-v1",
+                    name="appeal.read_scoped_evidence",
+                    arguments=read_arguments,
+                ),
+            )
+            canary_status, canary_body = self.requester(
+                self.mcp_url,
+                headers,
+                self._tool_call(
+                    request_id="managed-gateway-denied-canary-v1",
+                    name="appeal.probe_denied_mutation",
+                    arguments=canary_arguments,
+                ),
+            )
+        read_result = self._structured(read_body)
+        if read_status != 200 or read_result.get("decision") != "AUTHORIZED":
+            raise RuntimeError("managed MCP governance read was not authorized")
+
+        canary_result = self._structured(canary_body)
+        gateway_denied = canary_status in {401, 403}
+        application_denied = (
+            canary_status == 200 and canary_result.get("decision") == "DENIED"
+        )
+        if not gateway_denied and not application_denied:
+            raise RuntimeError("managed MCP mutation canary was not denied")
+
+        ctx.state[MCP_GOVERNANCE_PROBE_STATE_KEY] = {
+            "executed": True,
+            "read_http_status": read_status,
+            "read_decision": "AUTHORIZED",
+            "mutation_http_status": canary_status,
+            "mutation_decision": "DENIED",
+            "mutation_denial_layer": (
+                "agent_gateway" if gateway_denied else "application_capability"
+            ),
+            "mutation_count": 0,
+            "mutation_probe_tool": "appeal.probe_denied_mutation",
+            "mutation_probe_discoverable": True,
+            "hidden_mutation_discoverable": False,
+            "response_content_persisted": False,
+        }
+        return node_input
+
+    async def _session_requests(
+        self,
+        *,
+        headers: Mapping[str, str],
+        read_arguments: Mapping[str, object],
+        canary_arguments: Mapping[str, object],
+    ) -> tuple[int, object, int, object]:
+        """Use MCP semantics while forcing every request through Gateway.
+
+        Agent Gateway authorizes MCP at the HTTP request boundary. Reusing the
+        handshake connection can leave later ``tools/call`` messages inside
+        the existing upstream connection, which makes them unavailable as
+        independent authorization records. The synthetic governance probe
+        therefore disables HTTP keep-alive. It still uses the official MCP
+        client/session implementation, but every protocol message traverses
+        the Gateway separately and can be evaluated against Registry tool
+        annotations.
+        """
+
+        try:
+            import httpx
+            from mcp import ClientSession
+            from mcp.client.streamable_http import streamablehttp_client
+        except (ImportError, ModuleNotFoundError) as error:
+            raise AdkUnavailable(
+                "the MCP client package is required for the managed governance probe"
+            ) from error
+
+        def isolated_http_client(
+            headers: dict[str, str] | None = None,
+            timeout: httpx.Timeout | None = None,
+            auth: httpx.Auth | None = None,
+        ) -> httpx.AsyncClient:
+            request_headers = dict(headers or {})
+            request_headers["Connection"] = "close"
+            return httpx.AsyncClient(
+                headers=request_headers,
+                timeout=timeout,
+                auth=auth,
+                follow_redirects=True,
+                limits=httpx.Limits(max_keepalive_connections=0),
+            )
+
+        read_body: dict[str, object] | None = None
+        mutation_body: dict[str, object] | None = None
+        mutation_status = 200
+        try:
+            async with streamablehttp_client(
+                self.mcp_url,
+                headers=dict(headers),
+                timeout=30,
+                sse_read_timeout=30,
+                httpx_client_factory=isolated_http_client,
+            ) as (read_stream, write_stream, _session_id):
+                async with ClientSession(read_stream, write_stream) as session:
+                    await session.initialize()
+                    await session.list_tools()
+                    read = await session.call_tool(
+                        "appeal.read_scoped_evidence", dict(read_arguments)
+                    )
+                    read_body = {
+                        "result": {
+                            "structuredContent": read.structuredContent or {},
+                            "isError": read.isError,
+                        }
+                    }
+                    try:
+                        mutation = await session.call_tool(
+                            "appeal.probe_denied_mutation",
+                            dict(canary_arguments),
+                        )
+                    except Exception as error:
+                        denial_status = self._gateway_denial_status(error)
+                        if denial_status is None:
+                            raise
+                        mutation_status = denial_status
+                        mutation_body = {}
+                    else:
+                        mutation_body = {
+                            "result": {
+                                "structuredContent": mutation.structuredContent or {},
+                                "isError": mutation.isError,
+                            }
+                        }
+        except Exception as error:
+            # A denied Streamable HTTP request can surface once from
+            # ``call_tool`` and again as an ExceptionGroup when the transport
+            # task group closes. Preserve the completed read and classify the
+            # nested 401/403 instead of losing the governance state delta.
+            denial_status = self._gateway_denial_status(error)
+            if denial_status is None or read_body is None:
+                raise
+            mutation_status = denial_status
+            mutation_body = {}
+        if read_body is None or mutation_body is None:
+            raise RuntimeError("managed MCP governance probe did not complete")
+        return 200, read_body, mutation_status, mutation_body
+
+    @classmethod
+    def _gateway_denial_status(cls, error: BaseException) -> int | None:
+        nested = getattr(error, "exceptions", ())
+        if isinstance(nested, tuple):
+            statuses = [
+                status
+                for item in nested
+                if isinstance(item, BaseException)
+                for status in [cls._gateway_denial_status(item)]
+                if status is not None
+            ]
+            if 403 in statuses:
+                return 403
+            if 401 in statuses:
+                return 401
+        message = str(error).lower()
+        if "403" in message or "forbidden" in message:
+            return 403
+        if "401" in message or "unauthorized" in message:
+            return 401
+        return None
+
+    @staticmethod
+    def _tool_call(
+        *, request_id: str, name: str, arguments: Mapping[str, object]
+    ) -> dict[str, object]:
+        return {
+            "jsonrpc": "2.0",
+            "id": request_id,
+            "method": "tools/call",
+            "params": {"name": name, "arguments": dict(arguments)},
+        }
+
+    @staticmethod
+    def _structured(body: object) -> Mapping[str, object]:
+        if not isinstance(body, Mapping):
+            return {}
+        result = body.get("result")
+        if not isinstance(result, Mapping):
+            return {}
+        structured = result.get("structuredContent")
+        return structured if isinstance(structured, Mapping) else {}
 
 class AdkUnavailable(RuntimeError):
     """Raised when the optional ADK integration is requested but not installed."""
@@ -190,7 +433,7 @@ def build_adk_workflow(
 
     try:
         from google.adk import Agent, Workflow
-        from google.adk.workflow import START
+        from google.adk.workflow import FunctionNode, START
     except ModuleNotFoundError as error:
         raise AdkUnavailable(
             "google-adk is not installed; install appeal[adk] to build the ADK graph"
@@ -219,6 +462,22 @@ def build_adk_workflow(
         invoker_service_account=selected_mcp_invoker,
         audience=selected_mcp_audience,
     )
+    governance_probe = None
+    if mcp_tools:
+        governance_probe = FunctionNode(
+            name="managed_mcp_governance_probe",
+            func=ManagedMcpGovernanceProbe(
+                mcp_url=_registered_mcp_url(
+                    server_resource=selected_mcp_resource or "",
+                    project=selected_mcp_project,
+                    location=selected_mcp_location,
+                ),
+                header_provider=CloudRunIdTokenHeaderProvider(
+                    target_service_account=selected_mcp_invoker or "",
+                    audience=selected_mcp_audience or "",
+                ),
+            ).run,
+        )
     intake = Agent(
         name="intake",
         model=selected_model,
@@ -255,18 +514,21 @@ def build_adk_workflow(
         model=selected_model,
         instruction="Re-derive the argument for the new review level from current evidence; never resubmit old prose and never grant permission to file.",
     )
+    graph_nodes: list[object] = [START]
+    if governance_probe is not None:
+        graph_nodes.append(governance_probe)
+    graph_nodes.extend(
+        [
+            intake,
+            denial_parser,
+            policy_analyst,
+            evidence_miner,
+            argument_builder,
+            deadline_sentinel,
+            escalation_strategist,
+        ]
+    )
     return Workflow(
         name="appeal_agent_fleet",
-        edges=[
-            (
-                START,
-                intake,
-                denial_parser,
-                policy_analyst,
-                evidence_miner,
-                argument_builder,
-                deadline_sentinel,
-                escalation_strategist,
-            )
-        ],
+        edges=[tuple(graph_nodes)],
     )

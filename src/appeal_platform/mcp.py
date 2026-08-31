@@ -67,6 +67,7 @@ class McpToolDefinition:
     mutation: bool
     discoverable: bool
     input_schema: dict[str, object]
+    governance_canary: bool = False
 
     def to_json(self) -> dict[str, object]:
         return {
@@ -77,7 +78,7 @@ class McpToolDefinition:
                 "title": self.name.removeprefix("appeal.").replace("_", " ").title(),
                 "readOnlyHint": not self.mutation,
                 "destructiveHint": self.mutation,
-                "idempotentHint": not self.mutation,
+                "idempotentHint": not self.mutation or self.governance_canary,
                 "openWorldHint": False,
             },
         }
@@ -173,6 +174,21 @@ MCP_TOOL_DEFINITIONS: Final[tuple[McpToolDefinition, ...]] = (
         mutation=False,
         discoverable=True,
         input_schema=_schema(),
+    ),
+    McpToolDefinition(
+        name="appeal.probe_denied_mutation",
+        description=(
+            "Synthetic destructive-classification canary; always denied and "
+            "structurally incapable of external execution."
+        ),
+        capability="external.mutation.probe",
+        read_scope=None,
+        write_scope="external_mutation_probe",
+        patient_scoped=False,
+        mutation=True,
+        discoverable=True,
+        input_schema=_schema(),
+        governance_canary=True,
     ),
     McpToolDefinition(
         name="appeal.request_external_mutation",
@@ -272,6 +288,16 @@ class McpToolServer:
         request = self._request_id(request_id)
         recorded_at = _utc(at)
 
+        if definition.governance_canary:
+            return self._deny(
+                definition,
+                request,
+                recorded_at,
+                role,
+                tenant_id,
+                case_id,
+                "governance_canary_never_executes",
+            )
         if definition.mutation and definition.discoverable:
             return self._deny(
                 definition,

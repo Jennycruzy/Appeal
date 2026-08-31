@@ -1,13 +1,13 @@
 # MCP governance audit
 
-Recorded: 2026-08-29
+Recorded: 2026-08-31
 
 The Appeal MCP service is deployed privately on Cloud Run in `europe-west2`:
 
 ```text
 projects/onyx-yeti-506606-i9/locations/europe-west2/services/appeal-mcp
-revision: appeal-mcp-00005-6mv
-url: https://appeal-mcp-hhcjpefk2q-nw.a.run.app/api/mcp
+revision: appeal-mcp-00007-5qn
+url: https://appeal-mcp-hhcjpefk2q-nw.a.run.app/mcp
 ```
 
 The service runs with the dedicated
@@ -25,9 +25,11 @@ The MCP service is registered in the regional Agent Registry as:
 projects/onyx-yeti-506606-i9/locations/europe-west2/mcpServers/agentregistry-00000000-0000-0000-fe79-effa5b933d5a
 ```
 
-Its published tool specification contains six read-only tools. The
-Submission Gate mutation seam is intentionally absent from `tools/list` and
-never executes a mutation through MCP. The manifest is
+Its published tool specification contains six read-only tools and one
+destructive governance canary. The canary is structurally non-executing and
+always denied by the application if reached. The real Submission Gate mutation
+seam is intentionally absent from `tools/list` and never executes a mutation
+through MCP. The manifest is
 [`config/mcp_tools.json`](../../config/mcp_tools.json).
 
 ## Live synthetic probe
@@ -45,23 +47,19 @@ The probe used real service-account ID tokens and no custom role header:
 The complete aggregate response and deployment identity are recorded in
 [`evidence/mcp-governance-live.json`](../../evidence/mcp-governance-live.json).
 
-## Boundary and next gate
+## Enforced Gateway probe
 
-This probe proves the private Cloud Run identity boundary, Registry tool
-catalog, verified-principal mapping, and application capability enforcement.
-It was a direct authenticated Cloud Run probe; it did **not** traverse the
-Agent Gateway. The separate Gateway/IAP extension therefore remains
-`DRY_RUN`/fail-open until the MCP endpoint is routed through that policy path
-and its audit records attribute both the authorized read and denied mutation.
+The direct probe above proves the private Cloud Run identity boundary,
+verified-principal mapping, and application capability enforcement. A separate
+managed Runtime probe now proves the Gateway boundary under
+`ENFORCE`/fail-closed operation:
 
-No external payer or submission mutation was attempted. The next governance
-step is to register the seven agent service records, connect the MCP path to
-the Gateway policy where required, run the gateway-routed probe, inspect the
-logs, and only then consider enforcement promotion.
+- the registered scoped-evidence read was allowed with HTTP 200;
+- the registered destructive canary was denied by Gateway with HTTP 403;
+- Cloud Run received the read but not the denied canary;
+- the real Submission Gate mutation remained hidden; and
+- no mutation or response content was persisted.
 
-On 2026-08-30, the managed Runtime successfully reached this registered MCP
-resource through Agent Gateway. Gateway attributed and allowed the MCP
-`initialize`, `notifications/initialized`, and `tools/list` methods, and the
-private Cloud Run service returned HTTP 200. No `tools/call` followed, so the
-routed authorized-read/denied-mutation acceptance test remains open. This
-checkpoint does not justify enforcement promotion.
+The aggregate enforced record is
+[`evidence/agent-gateway-mcp-enforcement.json`](../../evidence/agent-gateway-mcp-enforcement.json).
+No payer or submission mutation was attempted.

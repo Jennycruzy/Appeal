@@ -38,10 +38,13 @@ complete.
   synthetic `case_id` scope without persisting its fact content in the report.
   Telemetry was requested and Cloud Trace returned two matching Agent Runtime
   traces in the two-day verification window. A regional Agent Gateway and IAP
-  Agent Policies are deployed in `DRY_RUN`, and the two observed platform
-  destinations are registered with endpoint-specific egress permissions. No
-  MCP server or tool is registered, so mutation-denial enforcement and an
-  `ENFORCE` promotion are not verified. Firebase Auth and broader
+  Agent Policies now run in `ENFORCE`/fail-closed mode. Four exact managed
+  Runtime dependency hosts and the MCP server are registered with
+  endpoint-specific egress permissions. A registered read was allowed and a
+  non-executing destructive canary was denied by Gateway with HTTP 403; the
+  real Submission Gate mutation remains hidden. The latest advisory sequence
+  hit Gemini `_ResourceExhaustedError` after governance completed, so it is not
+  a clean seven-role smoke. Firebase Auth and broader
   subscriber-driven Agent Runtime workflow execution are also not yet
   deployed. The governance audit is in
   [`docs/audits/agent-gateway.md`](audits/agent-gateway.md), with aggregate
@@ -135,6 +138,6 @@ complete.
 - The named-catch report, control arms, adjudication ablation, and failure
   distribution are not yet available.
 
-These limitations are the current truth as of 2026-08-29. They should be
+These limitations are the current truth as of 2026-08-31. They should be
 replaced by evidence-backed results only after the corresponding capability
 has run successfully.

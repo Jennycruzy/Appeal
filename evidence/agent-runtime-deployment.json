@@ -19,7 +19,7 @@
   ],
   "min_instances": 0,
   "project_id": "onyx-yeti-506606-i9",
-  "recorded_at": "2026-08-30T19:31:09.176542+00:00",
+  "recorded_at": "2026-08-31T05:09:22.909837+00:00",
   "resource_limits": {
     "cpu": "1",
     "memory": "2Gi"
@@ -29,22 +29,37 @@
   "runtime": "agent_runtime",
   "schema_version": "0.1",
   "smoke": {
+    "governance_probe": {
+      "executed": true,
+      "hidden_mutation_discoverable": false,
+      "mutation_count": 0,
+      "mutation_decision": "DENIED",
+      "mutation_denial_layer": "agent_gateway",
+      "mutation_http_status": 403,
+      "mutation_probe_discoverable": true,
+      "mutation_probe_tool": "appeal.probe_denied_mutation",
+      "read_decision": "AUTHORIZED",
+      "read_http_status": 200,
+      "response_content_persisted": false
+    },
     "query_authors": [
+      "appeal_agent_fleet",
       "argument_builder",
       "deadline_sentinel",
       "denial_parser",
-      "escalation_strategist",
       "evidence_miner",
       "intake",
       "policy_analyst"
     ],
-    "query_error_codes": [],
-    "query_event_count": 7,
-    "query_succeeded": true,
+    "query_error_codes": [
+      "_ResourceExhaustedError"
+    ],
+    "query_event_count": 9,
+    "query_succeeded": false,
     "query_user_id": "synthetic-agent-runtime-smoke",
     "response_content_persisted": false
   },
-  "source_commit": "0bc8c1fba16d9610d2943e51d74d2cb92e9e11fd",
+  "source_commit": "257c22ba015e92491606f89f726e1a7e54103eee",
   "source_package": "src",
   "staging_bucket": "gs://appeal-agent-staging-onyx-yeti-506606-i9",
   "synthetic_only": true

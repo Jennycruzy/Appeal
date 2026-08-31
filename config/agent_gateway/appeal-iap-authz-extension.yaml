@@ -1,7 +1,7 @@
 name: appeal-iap-authz
 service: iap.googleapis.com
-failOpen: true
+failOpen: false
 timeout: 1s
 metadata:
-  iamEnforcementMode: "DRY_RUN"
+  iamEnforcementMode: "ENFORCE"
   iapPolicyVersion: "V1"
