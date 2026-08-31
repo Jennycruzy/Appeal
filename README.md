@@ -122,7 +122,7 @@ and its decision input stays outside the repository.
 
 The deterministic Appeal HTTP backend is deployed to Cloud Run in project
 `onyx-yeti-506606-i9` (display name `Appeal`), region `europe-west2`, revision
-`appeal-backend-00019-6zt`, with 100% traffic on that revision. The verified
+`appeal-backend-00022-952`, with 100% traffic on that revision. The verified
 service URL is
 <https://appeal-backend-hhcjpefk2q-nw.a.run.app>. Its `/api/healthz` endpoint
 returned `status: ok` with `storage: firestore`, `event_spine: pubsub_firestore`,
@@ -165,8 +165,18 @@ registered and endpoint-specific egress permissions are verified. A routed
 MCP read was allowed by the Gateway and a destructive canary was denied with
 HTTP 403 before Cloud Run, with zero mutation; the aggregate proof is
 [`evidence/agent-gateway-mcp-enforcement.json`](evidence/agent-gateway-mcp-enforcement.json).
-The broader subscriber-driven workflow and Firebase Auth remain unverified or
-not deployed. The governance audit is
+The hosted payer wake is now verified separately: a synthetic typed
+`payer.determination.received` event arrived through the authenticated Pub/Sub
+push, resumed the Firestore session, closed the case, and preserved exactly one
+mutation; replaying the same event ID returned HTTP 200 without another
+mutation. The aggregate trace is
+[`evidence/cloud-run-async-workflow.json`](evidence/cloud-run-async-workflow.json),
+with the audit in
+[`docs/audits/hosted-async-workflow.md`](docs/audits/hosted-async-workflow.md).
+The managed Agent Runtime remains advisory and synthetic-only; a later
+checkpoint may be recorded as failed/retryable when Vertex shared capacity is
+exhausted, without redelivering the durable workflow event. Firebase Auth and
+the authenticated dashboard remain unverified or not deployed. The governance audit is
 [`docs/audits/agent-gateway.md`](docs/audits/agent-gateway.md), with aggregate
 evidence in
 [`evidence/agent-gateway-governance.json`](evidence/agent-gateway-governance.json).
@@ -266,7 +276,8 @@ make seed-demo-cases
 The aggregate board manifest is
 [`evidence/seeded-demo-tenant.json`](evidence/seeded-demo-tenant.json). It is
 local synthetic evidence; hosted Firebase Auth, dashboard access, and hosted
-case seeding remain open.
+six-case seeding remain open. The hosted payer continuation proof is separate
+and does not imply that the full dashboard exists.
 
 Run the synthetic Stage B case through the real ADK `Runner` and Gemini vision
 path with:

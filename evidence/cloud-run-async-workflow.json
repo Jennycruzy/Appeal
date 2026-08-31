@@ -1,0 +1,72 @@
+{
+  "schema_version": "0.1",
+  "recorded_at": "2026-08-31T10:36:19Z",
+  "kind": "hosted_pubsub_workflow_wake",
+  "project_id": "onyx-yeti-506606-i9",
+  "region": "europe-west2",
+  "service": "appeal-backend",
+  "revision": "appeal-backend-00022-952",
+  "traffic_percent": 100,
+  "service_url": "https://appeal-backend-hhcjpefk2q-nw.a.run.app",
+  "health": {
+    "status": "ok",
+    "storage": "firestore",
+    "event_spine": "pubsub_firestore",
+    "security": "managed_model_armor_gemma",
+    "agent_runtime": "managed_subscriber_synthetic_only"
+  },
+  "pubsub": {
+    "topic": "projects/onyx-yeti-506606-i9/topics/appeal-events",
+    "subscription": "projects/onyx-yeti-506606-i9/subscriptions/appeal-events-to-backend",
+    "push_endpoint": "https://appeal-backend-835653516606.europe-west2.run.app/api/events/pubsub",
+    "push_service_account": "appeal-pubsub-push@onyx-yeti-506606-i9.iam.gserviceaccount.com",
+    "oidc_audience": "https://appeal-backend-835653516606.europe-west2.run.app/api/events/pubsub",
+    "ack_deadline_seconds": 60,
+    "event_topic": "payer.determination.received",
+    "event_id": "44e26ca38f3b87ce0ff39ffd939520670303f86088be744e0b0cd49c9ffd6e12",
+    "message_id": "20743058670775714",
+    "payload_fields": [
+      "criterion_status",
+      "decision",
+      "evidence_ref_count"
+    ],
+    "payload_policy": "reference_only_scalar_metadata"
+  },
+  "synthetic_case": {
+    "tenant_id": "tenant-demo-hosted-payer-clean-20260831",
+    "case_id": "case-hosted-payer-clean-20260831",
+    "data_class": "synthetic",
+    "before": {
+      "case_state": "AWAITING_DETERMINATION",
+      "outcome": "submitted",
+      "external_mutation_count": 1
+    },
+    "after_first_delivery": {
+      "case_state": "CLOSED_WON",
+      "outcome": "closed_won",
+      "payer_decision_status": "favorable",
+      "external_mutation_count": 1,
+      "event_count": 22,
+      "processed_event_count": 1
+    },
+    "first_delivery": {
+      "observed_at": "2026-08-31T10:31:56.067860Z",
+      "http_status": 200,
+      "latency_seconds": 1.775177711
+    },
+    "duplicate_delivery": {
+      "published_message_id": "20744146178458308",
+      "observed_at": "2026-08-31T10:35:29.804325Z",
+      "http_status": 200,
+      "case_state_after": "CLOSED_WON",
+      "external_mutation_count_after": 1
+    }
+  },
+  "advisory_boundary": {
+    "managed_runtime_is_advisory": true,
+    "quota_failure_behavior": "record_failed_retryable_checkpoint_and_ack_workflow_event",
+    "no_clinical_or_payer_content_sent": true
+  },
+  "real_case_data_uploaded": false,
+  "source_commit": "ec56026"
+}

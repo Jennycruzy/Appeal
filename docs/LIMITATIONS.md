@@ -16,7 +16,7 @@ complete.
   `src/appeal_agents/adk_workflow.py`.
 - A synthetic-only Cloud Run service is deployed in project
   `onyx-yeti-506606-i9`, region `europe-west2`, revision
-  `appeal-backend-00019-6zt`. Its health endpoint, Firestore-backed state,
+  `appeal-backend-00022-952`. Its health endpoint, Firestore-backed state,
   managed Model Armor -> Gemma boundary, and synthetic case lifecycle were
   verified; the aggregate record is
   [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json).
@@ -46,7 +46,11 @@ complete.
   resilience, the managed smoke completed all seven advisory roles with no
   provider error events. Firebase Auth and broader
   subscriber-driven Agent Runtime workflow execution are also not yet
-  deployed. The governance audit is in
+  deployed. A hosted synthetic payer determination now traverses the
+  authenticated Pub/Sub push into a Firestore session resume and closes one
+  case with one mutation; its aggregate record is
+  [`evidence/cloud-run-async-workflow.json`](../evidence/cloud-run-async-workflow.json).
+  The governance audit is in
   [`docs/audits/agent-gateway.md`](audits/agent-gateway.md), with aggregate
   evidence in
   [`evidence/agent-gateway-governance.json`](../evidence/agent-gateway-governance.json).
@@ -89,7 +93,10 @@ complete.
   Sentinel route hourly; Cloud Run case state, safe references,
   reference-only workflow sessions, and hash-chained receipts are persisted in
   Firestore, and reference-only workflow events publish through the managed
-  Pub/Sub topic. The managed Agent Runtime has a separately verified
+  Pub/Sub topic. A hosted synthetic payer wake now resumes a persisted case
+  through that push subscription; see
+  [`evidence/cloud-run-async-workflow.json`](../evidence/cloud-run-async-workflow.json).
+  The managed Agent Runtime has a separately verified
   reference-only session and Memory Bank write, and one allowlisted synthetic
   Pub/Sub checkpoint invokes it with Firestore idempotency. Memory Bank
   retrieval and the corresponding Cloud Trace export are verified only for
@@ -151,7 +158,7 @@ complete.
   distribution are not yet complete.
 - `make seed-demo-cases` creates six local synthetic board stories and records
   them in [`evidence/seeded-demo-tenant.json`](../evidence/seeded-demo-tenant.json).
-  The hosted tenant has only the previously recorded synthetic cases; this
+  The hosted tenant has only the recorded synthetic proof cases; this
   local manifest does not substitute for Firebase Auth, tenant authorization,
   or a deployed dashboard.
 
