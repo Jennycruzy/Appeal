@@ -38,7 +38,7 @@ were persisted. The aggregate results are recorded in
 The controlled synthetic Pub/Sub subscriber now invokes this resource for one
 allowlisted `intake/clear` checkpoint. Firestore claims the stable event ID,
 prevents duplicate delivery from re-running the query, and persists only the
-aggregate result. The current revision's invocation evidence is recorded in
+aggregate result. The revision-bound invocation evidence is recorded in
 [`evidence/agent-runtime-subscriber.json`](../../evidence/agent-runtime-subscriber.json).
 
 This audit proves a managed Agent Runtime, Registry, and Agent Identity

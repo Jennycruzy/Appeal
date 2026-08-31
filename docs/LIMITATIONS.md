@@ -16,7 +16,7 @@ complete.
   `src/appeal_agents/adk_workflow.py`.
 - A synthetic-only Cloud Run service is deployed in project
   `onyx-yeti-506606-i9`, region `europe-west2`, revision
-  `appeal-backend-00017-fxp`. Its health endpoint, Firestore-backed state,
+  `appeal-backend-00019-6zt`. Its health endpoint, Firestore-backed state,
   managed Model Armor -> Gemma boundary, and synthetic case lifecycle were
   verified; the aggregate record is
   [`evidence/cloud-run-deployment.json`](../evidence/cloud-run-deployment.json).

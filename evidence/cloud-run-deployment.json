@@ -1,12 +1,12 @@
 {
   "schema_version": "0.1",
-  "recorded_at": "2026-08-29",
+  "recorded_at": "2026-08-31",
   "kind": "cloud_run_deployment",
   "project_id": "onyx-yeti-506606-i9",
   "project_display_name": "Appeal",
   "region": "europe-west2",
   "service": "appeal-backend",
-  "revision": "appeal-backend-00017-fxp",
+  "revision": "appeal-backend-00019-6zt",
   "traffic_percent": 100,
   "service_url": "https://appeal-backend-hhcjpefk2q-nw.a.run.app",
   "regional_service_url": "https://appeal-backend-835653516606.europe-west2.run.app",
@@ -125,5 +125,5 @@
     "fixture_content_persisted": false
   },
   "real_case_data_uploaded": false,
-  "source_commit": "10fd7f6"
+  "source_commit": "dd627d5"
 }

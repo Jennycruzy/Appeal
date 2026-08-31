@@ -37,7 +37,7 @@ returned:
 - Cloud Run access logs recorded thirteen authenticated push deliveries with
   HTTP 200 responses.
 
-On current revision `appeal-backend-00017-fxp`, a unique synthetic case again
+On revision `appeal-backend-00017-fxp`, a unique synthetic case again
 produced thirteen workflow events. The authenticated push reached the
 protected handler; the allowlist admitted only the `intake/clear` checkpoint,
 and its Firestore invocation record completed at attempt 1. The managed query
@@ -54,4 +54,10 @@ mutation enforcement, broader subscriber workflow execution, and the separate
 payer service remain open integrations. Memory Bank retrieval and the current
 Agent Runtime trace export are verified synthetic probes, not a complete Appeal
 observability deployment.
+
+Revision `appeal-backend-00019-6zt` now serves 100% of traffic with the same
+synthetic-only trigger boundary, a 120-second Agent Runtime query budget, and
+streamed provider errors treated as failed deliveries for redelivery. The
+subscriber evidence above remains an immutable record of the earlier
+revision-bound smoke.
 No real case data was uploaded.
