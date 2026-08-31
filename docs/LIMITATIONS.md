@@ -46,7 +46,10 @@ complete.
   hit Gemini `_ResourceExhaustedError` after governance completed, so it is not
   a clean seven-role smoke. Firebase Auth and broader
   subscriber-driven Agent Runtime workflow execution are also not yet
-  deployed. The governance audit is in
+  deployed. The advisory quota failure was observed before the Vertex
+  resilience settings were deployed; it remains an operational condition to
+  re-verify, not an authentication or gateway-enforcement failure. The
+  governance audit is in
   [`docs/audits/agent-gateway.md`](audits/agent-gateway.md), with aggregate
   evidence in
   [`evidence/agent-gateway-governance.json`](../evidence/agent-gateway-governance.json).

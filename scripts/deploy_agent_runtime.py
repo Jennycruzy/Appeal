@@ -22,6 +22,7 @@ from typing import Any
 from appeal_agents.adk_workflow import (
     MCP_GOVERNANCE_PROBE_MARKER,
     MCP_GOVERNANCE_PROBE_STATE_KEY,
+    VertexGeminiResilience,
     build_adk_workflow,
 )
 
@@ -183,6 +184,7 @@ def main() -> int:
     os.environ["GOOGLE_CLOUD_PROJECT"] = args.project
     os.environ["GOOGLE_CLOUD_LOCATION"] = args.location
     os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "TRUE"
+    gemini_resilience = VertexGeminiResilience.from_environment()
 
     import vertexai
     from vertexai import agent_engines, types
@@ -240,6 +242,17 @@ def main() -> int:
             "GOOGLE_CLOUD_LOCATION": "global",
             "GOOGLE_GENAI_USE_VERTEXAI": "TRUE",
             "GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES": "False",
+            "ADK_GEMINI_RETRY_ATTEMPTS": str(gemini_resilience.retry_attempts),
+            "ADK_GEMINI_RETRY_INITIAL_DELAY_SECONDS": str(
+                gemini_resilience.retry_initial_delay_seconds
+            ),
+            "ADK_GEMINI_RETRY_MAX_DELAY_SECONDS": str(
+                gemini_resilience.retry_max_delay_seconds
+            ),
+            "ADK_GEMINI_RETRY_JITTER": str(gemini_resilience.retry_jitter),
+            "ADK_GEMINI_MIN_REQUEST_INTERVAL_SECONDS": str(
+                gemini_resilience.min_request_interval_seconds
+            ),
             "APPEAL_GEMINI_MODEL": args.model,
             "APPEAL_MCP_SERVER_RESOURCE": args.mcp_server_resource,
             "APPEAL_MCP_INVOKER_SERVICE_ACCOUNT": args.mcp_invoker_service_account,
@@ -273,6 +286,14 @@ def main() -> int:
         "min_instances": 0,
         "max_instances": 1,
         "resource_limits": {"cpu": "1", "memory": "2Gi"},
+        "gemini_resilience": {
+            "retry_attempts": gemini_resilience.retry_attempts,
+            "retry_initial_delay_seconds": gemini_resilience.retry_initial_delay_seconds,
+            "retry_max_delay_seconds": gemini_resilience.retry_max_delay_seconds,
+            "retry_jitter": gemini_resilience.retry_jitter,
+            "min_request_interval_seconds": gemini_resilience.min_request_interval_seconds,
+            "retry_http_status_codes": [408, 429, 500, 502, 503, 504],
+        },
         "staging_bucket": args.staging_bucket,
         "source_package": "src",
         "source_commit": _git_revision(),

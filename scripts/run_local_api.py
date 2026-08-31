@@ -116,7 +116,7 @@ def build_api(ledger_path: Path) -> LocalHttpApi:
                 resource_name=agent_runtime_resource,
                 project=os.getenv("GOOGLE_CLOUD_PROJECT", ""),
                 location=os.getenv("APPEAL_AGENT_RUNTIME_LOCATION", "europe-west2"),
-                timeout_seconds=float(os.getenv("APPEAL_AGENT_RUNTIME_TIMEOUT_SECONDS", "45")),
+                timeout_seconds=float(os.getenv("APPEAL_AGENT_RUNTIME_TIMEOUT_SECONDS", "120")),
             ),
             agent_runtime_store,
             synthetic_only=os.getenv("APPEAL_AGENT_RUNTIME_SYNTHETIC_ONLY", "true").lower() == "true",

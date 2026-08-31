@@ -4,6 +4,7 @@ import unittest
 from datetime import UTC, datetime, timedelta
 
 from appeal_platform import (
+    AgentRuntimeQueryError,
     AgentRuntimeInvocation,
     AgentRuntimeSubscriber,
     InvocationClaim,
@@ -37,6 +38,17 @@ class FakeRemoteAgent:
         async def stream():  # type: ignore[no-untyped-def]
             yield {"author": "intake", "text": "response content is not retained"}
             yield {"author": "policy_analyst", "text": "another response"}
+
+        return stream()
+
+
+class ErrorRemoteAgent:
+    def async_stream_query(self, *, user_id: str, message: str):  # type: ignore[no-untyped-def]
+        del user_id, message
+
+        async def stream():  # type: ignore[no-untyped-def]
+            yield {"author": "appeal_agent_fleet"}
+            yield {"error_code": "_ResourceExhaustedError"}
 
         return stream()
 
@@ -80,6 +92,17 @@ class AgentRuntimeTests(unittest.TestCase):
         self.assertNotIn("case-demo-secret", request["message"])
         self.assertNotIn("tenant-demo-secret", request["user_id"])
         self.assertNotIn("case-demo-secret", request["user_id"])
+
+    def test_error_event_is_not_reported_as_completed(self) -> None:
+        invoker = ManagedAgentRuntimeInvoker(
+            resource_name="projects/p/locations/r/reasoningEngines/1",
+            project="p",
+            location="r",
+            agent=ErrorRemoteAgent(),
+        )
+
+        with self.assertRaisesRegex(AgentRuntimeQueryError, "ResourceExhausted"):
+            invoker.invoke(trigger_event())
 
     def test_subscriber_allowlist_and_duplicate_delivery(self) -> None:
         invoker = RecordingInvoker()

@@ -9,6 +9,7 @@ remaining managed boundaries are explicit adapters with synthetic-only gates.
 from .agent_runtime import (
     AgentRuntimeInvocation,
     AgentRuntimeInvocationInProgress,
+    AgentRuntimeQueryError,
     AgentRuntimeSubscriber,
     FirestoreAgentRuntimeInvocationStore,
     InvocationClaim,
@@ -75,6 +76,7 @@ __all__ = [
     "EventIdempotencyConflict",
     "AgentRuntimeInvocation",
     "AgentRuntimeInvocationInProgress",
+    "AgentRuntimeQueryError",
     "AgentRuntimeSubscriber",
     "InvocationClaim",
     "LocalCaseRuntime",

@@ -59,3 +59,27 @@ workflow execution, a separate payer service, a hosted console, or a complete
 Appeal evaluation.
 The deployment and all smoke inputs are synthetic and aggregate-only; no real
 case data was uploaded.
+
+## Vertex quota resilience
+
+The managed graph uses Vertex AI through ADC/Agent Identity; it does not use an
+AI Studio API key. Vertex HTTP 429 responses are transient shared-capacity or
+quota responses, and ADK exposes them as `_ResourceExhaustedError`. Every
+advisory role now shares a small request interval to smooth the serial burst,
+and a before-model callback configures truncated exponential backoff with
+jitter for 408, 429, and 5xx responses. The settings are deployment-time
+environment variables:
+
+```text
+ADK_GEMINI_MIN_REQUEST_INTERVAL_SECONDS=2
+ADK_GEMINI_RETRY_ATTEMPTS=5
+ADK_GEMINI_RETRY_INITIAL_DELAY_SECONDS=2
+ADK_GEMINI_RETRY_MAX_DELAY_SECONDS=30
+ADK_GEMINI_RETRY_JITTER=1
+```
+
+The subscriber's default query budget is 120 seconds so a transient provider
+response can complete its backoff instead of being cut off at 45 seconds. A
+provider error event is treated as a failed delivery and remains eligible for
+Pub/Sub redelivery; it is never recorded as a completed Agent Runtime
+invocation.

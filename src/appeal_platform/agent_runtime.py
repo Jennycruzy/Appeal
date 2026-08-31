@@ -31,6 +31,14 @@ class AgentRuntimeInvocationInProgress(RuntimeError):
     """Raised when another delivery currently owns the invocation lease."""
 
 
+class AgentRuntimeQueryError(RuntimeError):
+    """Raised when Agent Runtime emits an error event for a query."""
+
+    def __init__(self, error_code: str) -> None:
+        self.error_code = _require(error_code, "Agent Runtime query error code")
+        super().__init__(f"managed Agent Runtime query failed: {self.error_code}")
+
+
 class InvocationClaim(str, Enum):
     CLAIMED = "claimed"
     COMPLETED = "completed"
@@ -268,6 +276,9 @@ class ManagedAgentRuntimeInvoker:
             authors: set[str] = set()
             async for response_event in stream:
                 event_count += 1
+                error_code = self._event_error_code(response_event)
+                if error_code is not None:
+                    raise AgentRuntimeQueryError(error_code)
                 author = self._event_author(response_event)
                 if author is not None:
                     authors.add(author)
@@ -338,6 +349,16 @@ class ManagedAgentRuntimeInvoker:
             return None
         return author[:_MAX_AUTHOR_LENGTH]
 
+    @staticmethod
+    def _event_error_code(value: object) -> str | None:
+        if isinstance(value, Mapping):
+            error_code = value.get("error_code")
+        else:
+            error_code = getattr(value, "error_code", None)
+        if not isinstance(error_code, str) or not error_code:
+            return None
+        return error_code[:_MAX_AUTHOR_LENGTH]
+
 
 class AgentRuntimeSubscriber:
     """Apply the allowlist and idempotency gate around a managed invoker."""
@@ -396,7 +417,10 @@ class AgentRuntimeSubscriber:
             if invocation.status != "completed":
                 raise RuntimeError("managed Agent Runtime invocation did not complete")
         except Exception as error:
-            self.store.fail(event, type(error).__name__, at=now)
+            error_type = type(error).__name__
+            if isinstance(error, AgentRuntimeQueryError):
+                error_type = f"{error_type}:{error.error_code}"
+            self.store.fail(event, error_type, at=now)
             raise
         self.store.complete(event, invocation, at=now)
         return invocation.to_public_json()
